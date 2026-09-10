@@ -56,3 +56,33 @@ jobs:
           name: playwright-report
           path: apps/demo/playwright-report
           retention-days: 7
+
+  visual:
+    # Same image that renders the committed baselines (apps/demo/scripts/visual.sh).
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host
+    env:
+      VISUAL: '1'
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Visual parity
+        run: pnpm --filter demo exec playwright test --project=visual
+
+      - name: Upload visual diffs
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-report
+          path: apps/demo/playwright-report
+          retention-days: 7
