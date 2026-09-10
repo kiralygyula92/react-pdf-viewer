@@ -19,7 +19,10 @@ const FOCUSABLE =
   'a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])';
 
 function trapFocus(event: KeyboardEvent, container: HTMLElement): void {
-  const focusable = [...container.querySelectorAll<HTMLElement>(FOCUSABLE)];
+  // Only elements Tab can reach: roving-tabindex buttons (tabindex=-1) and hidden ones are skipped.
+  const focusable = [...container.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
+    (element) => element.tabIndex >= 0 && element.getClientRects().length > 0,
+  );
   const first = focusable[0];
   const last = focusable.at(-1);
   const active = container.ownerDocument.activeElement;

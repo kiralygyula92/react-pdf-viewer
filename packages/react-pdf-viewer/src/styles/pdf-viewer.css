@@ -44,6 +44,9 @@
   }
 
   .rpv-root[data-fullscreen] {
+    /* The viewport fills the remaining height and scrolls itself, so the toolbar (and its exit
+       button) is always on screen, even on short windows. */
+    --_rpv-viewport-min-height: 0px;
     --_rpv-viewport-max-width: 100%;
     --_rpv-viewport-max-height: 100%;
     --_rpv-viewport-padding: var(--rpv-viewport-padding-fullscreen, 32px);
@@ -130,6 +133,10 @@
   .rpv-toolbar {
     position: relative;
     display: flex;
+    /* Wraps instead of clipping controls on very narrow screens (WCAG 1.4.10); when everything
+       fits, the layout is the original single row. */
+    flex-wrap: wrap;
+    row-gap: 4px;
     align-items: center;
     justify-content: space-between;
     min-height: var(--rpv-toolbar-min-height, 48px);
@@ -347,7 +354,8 @@
     line-height: 1.75;
     letter-spacing: 0.02857em;
     text-transform: uppercase;
-    color: var(--rpv-accent, #1976d2);
+    /* Darker than the accent so the text keeps 4.5:1 contrast on light-gray hosts too. */
+    color: var(--rpv-text-button-fg, #1565c0);
     cursor: pointer;
     background: transparent;
     border: 1px solid currentColor;
@@ -384,6 +392,47 @@
     }
     to {
       opacity: 1;
+    }
+  }
+
+  /* ── Dark preset: className="rpv-theme-dark", or "rpv-theme-auto" to follow the OS ── */
+  .rpv-root.rpv-theme-dark {
+    --rpv-toolbar-bg: #263238;
+    --rpv-toolbar-fg: #eceff1;
+    --rpv-focus-ring: 2px solid #90caf9;
+    --rpv-page-border: 1px solid #37474f;
+    --rpv-page-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+    --rpv-accent: #90caf9;
+    --rpv-text-button-fg: #90caf9;
+    --rpv-muted-fg: rgba(255, 255, 255, 0.7);
+    --rpv-error-bg: #160b0b;
+    --rpv-error-fg: #f4c7c7;
+    --rpv-error-icon: #f44336;
+    --rpv-fullscreen-bg: #121212;
+
+    color-scheme: dark;
+  }
+
+  .rpv-root.rpv-theme-dark .rpv-print-status {
+    background: rgba(18, 18, 18, 0.85);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .rpv-root.rpv-theme-auto {
+      --rpv-toolbar-bg: #263238;
+      --rpv-toolbar-fg: #eceff1;
+      --rpv-focus-ring: 2px solid #90caf9;
+      --rpv-page-border: 1px solid #37474f;
+      --rpv-page-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+      --rpv-accent: #90caf9;
+      --rpv-text-button-fg: #90caf9;
+      --rpv-muted-fg: rgba(255, 255, 255, 0.7);
+      --rpv-error-bg: #160b0b;
+      --rpv-error-fg: #f4c7c7;
+      --rpv-error-icon: #f44336;
+      --rpv-fullscreen-bg: #121212;
+
+      color-scheme: dark;
     }
   }
 

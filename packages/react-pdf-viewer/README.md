@@ -37,6 +37,11 @@ pnpm add @your-scope/react-pdf-viewer pdfjs-dist
 
 Peer dependencies: `react` and `react-dom` ≥ 18, `pdfjs-dist` ^6.
 
+**Browser support:** PDF.js 6 targets current browsers (it relies on recent APIs such as
+`Promise.try`): the latest two versions of Chrome, Edge, Firefox and Safari. For older browsers,
+use the legacy build: `configurePdfJs({ loader: () => import('pdfjs-dist/legacy/build/pdf.mjs') })`
+with `pdfjs-dist/legacy/build/pdf.worker.min.mjs` as the worker.
+
 ## Quick start
 
 ```tsx
@@ -253,9 +258,13 @@ on the viewer or on any ancestor:
 | `--rpv-accent` / `--rpv-muted-fg`                                 | `#1976D2` / `rgba(0,0,0,.6)`                      |
 | `--rpv-error-bg` / `--rpv-error-fg` / `--rpv-error-icon`          | `#FDEDED` / `#5F2120` / `#D32F2F`                 |
 | `--rpv-fullscreen-bg` / `--rpv-overlay-z-index`                   | `#FFFFFF` / `1300`                                |
+| `--rpv-text-button-fg`                                            | `#1565C0` (Retry / Cancel text)                   |
 
 The root exposes `data-status`, `data-compact`, `data-fullscreen`, `data-presentation` and
 `data-zoomed` for state-based styling.
+
+**Dark preset:** `className="rpv-theme-dark"` switches the viewer to dark colors;
+`className="rpv-theme-auto"` follows the operating system's color scheme.
 
 ## Labels and i18n
 
@@ -316,9 +325,10 @@ import '@your-scope/react-pdf-viewer/styles.css';
 
 Differences from the original, all fixes: renders are cancellable and sharp on HiDPI screens,
 pages with an intrinsic rotation display upright, errors keep the toolbar and offer Retry,
-download reuses the loaded bytes, print opens the print dialog instead of a new tab, and the
-fullscreen icon toggles. To match the host theme, set `--rpv-toolbar-bg` and `--rpv-accent` on a
-wrapper element.
+download reuses the loaded bytes, print opens the print dialog instead of a new tab, the
+fullscreen icon toggles, the toolbar wraps instead of clipping controls on very narrow screens,
+and in fullscreen the document area shrinks so the toolbar is always on screen. To match the host
+theme, set `--rpv-toolbar-bg` and `--rpv-accent` on a wrapper element.
 
 ## License
 
