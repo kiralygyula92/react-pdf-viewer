@@ -1,0 +1,50 @@
+[
+  {
+    "file": "letter-3pages.pdf",
+    "title": "US Letter, 3 pages",
+    "pages": 3,
+    "notes": "Large page numbers on a grid. Navigation and parity screenshots."
+  },
+  {
+    "file": "multipage.pdf",
+    "title": "Long document, 40 pages",
+    "pages": 40,
+    "notes": "Text-heavy. Continuous scroll, search, thumbnails and performance."
+  },
+  {
+    "file": "mixed-sizes.pdf",
+    "title": "Mixed page sizes",
+    "pages": 4,
+    "notes": "Letter, A4, A3 landscape and a narrow receipt. Fitting and centering."
+  },
+  {
+    "file": "intrinsic-rotation.pdf",
+    "title": "Intrinsic page rotation",
+    "pages": 3,
+    "notes": "Pages with /Rotate 90 and 180. Verifies KI-03."
+  },
+  {
+    "file": "links.pdf",
+    "title": "Internal and external links",
+    "pages": 2,
+    "notes": "Internal and external link annotations. Annotation layer."
+  },
+  {
+    "file": "non-embedded-fonts.pdf",
+    "title": "Standard 14 fonts (not embedded)",
+    "pages": 1,
+    "notes": "Uses the standard 14 fonts without embedding. Verifies KI-20."
+  },
+  {
+    "file": "password.pdf",
+    "title": "Û<zE'ü»åˆ¦*ó¸�¸ç˝+Ã~B¦d;⁄ ¹Ÿ⁄‰8Ù·Œ*\bpc‹ëÖÇR5Usaro)1ÞhÑ–•÷�é•báıe\u0017-ûò¸raY",
+    "pages": 1,
+    "notes": "Encrypted; user password \"demo\". Password prompt (KI-23)."
+  },
+  {
+    "file": "not-a-pdf.pdf",
+    "title": "Not a PDF (HTML page)",
+    "pages": 0,
+    "notes": "HTML content with a .pdf name. Produces an INVALID_PDF error."
+  }
+]
