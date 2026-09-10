@@ -1,0 +1,32 @@
+{
+  "name": "react-pdf-viewer-monorepo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.6.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "typecheck": "pnpm --filter @your-scope/react-pdf-viewer build && pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "e2e": "pnpm --filter demo e2e",
+    "qa": "pnpm --filter @your-scope/react-pdf-viewer qa",
+    "changeset": "changeset",
+    "version-packages": "changeset version"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.2",
+    "@eslint/js": "^9.39.0",
+    "@types/node": "^22.20.2",
+    "eslint": "^9.39.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.6",
+    "typescript": "~6.0.0",
+    "typescript-eslint": "^8.70.0"
+  }
+}
