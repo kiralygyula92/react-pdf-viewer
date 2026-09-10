@@ -1,5 +1,402 @@
+/*
+ * @your-scope/react-pdf-viewer styles.
+ *
+ * Everything lives in the `rpv` cascade layer, so any unlayered consumer rule wins without
+ * specificity fights. Theme with the `--rpv-*` custom properties (see the README); they are read
+ * with fallbacks rather than declared on `.rpv-root`, so values set on any ancestor apply.
+ * Defaults reproduce the original component.
+ */
 @layer rpv {
+  /* ── Root ─────────────────────────────────────────────────────────────── */
   .rpv-root {
+    --_rpv-viewport-max-width: var(--rpv-viewport-max-width, 650px);
+    --_rpv-viewport-min-height: var(--rpv-viewport-min-height, 712px);
+    --_rpv-viewport-max-height: var(--rpv-viewport-max-height, 800px);
+    --_rpv-viewport-padding: var(--rpv-viewport-padding, 0px);
+    --_rpv-toolbar-max-width: var(--rpv-toolbar-max-width, 482px);
+
+    position: relative;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: var(--rpv-font-family, inherit);
+    outline: none;
+  }
+
+  .rpv-root *,
+  .rpv-root *::before,
+  .rpv-root *::after {
+    box-sizing: border-box;
+  }
+
+  .rpv-root[data-compact] {
+    --_rpv-viewport-max-width: 100%;
+    --_rpv-viewport-min-height: var(--rpv-viewport-min-height-compact, 400px);
+    --_rpv-viewport-max-height: 100%;
+    --_rpv-viewport-padding: var(--rpv-viewport-padding-compact, 16px);
+  }
+
+  .rpv-root[data-fullscreen] {
+    --_rpv-viewport-max-width: 100%;
+    --_rpv-viewport-max-height: 100%;
+    --_rpv-viewport-padding: var(--rpv-viewport-padding-fullscreen, 32px);
+    --_rpv-toolbar-max-width: 100%;
+
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .rpv-root[data-presentation='native'],
+  .rpv-root[data-presentation='overlay'] {
+    height: 100%;
+    background: var(--rpv-fullscreen-bg, #ffffff);
+    border-radius: 0;
+  }
+
+  .rpv-root[data-presentation='overlay'] {
+    position: fixed;
+    inset: 0;
+    z-index: var(--rpv-overlay-z-index, 1300);
+  }
+
+  /* ── Viewport (scroll container) ──────────────────────────────────────── */
+  .rpv-viewport {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    align-items: flex-start;
+    width: 100%;
+    max-width: var(--_rpv-viewport-max-width);
+    min-height: var(--_rpv-viewport-min-height);
+    max-height: var(--_rpv-viewport-max-height);
+    padding: var(--_rpv-viewport-padding);
+    margin-bottom: var(--rpv-viewport-margin-bottom, 64px);
+    overflow: auto;
+    background: transparent;
+    overscroll-behavior: contain;
+  }
+
+  .rpv-viewport:focus-visible {
+    outline: 2px solid var(--rpv-accent, #1976d2);
+    outline-offset: 2px;
+  }
+
+  .rpv-root[data-toolbar-position='top'] .rpv-viewport {
+    margin-bottom: 0;
+  }
+
+  /* ── Page ─────────────────────────────────────────────────────────────── */
+  .rpv-page {
+    position: relative;
+    flex: none;
+    /* Safe centering: centered when it fits, fully scrollable (never clipped) when it does not. */
+    margin-inline: auto;
+    box-sizing: content-box;
+    overflow: hidden;
+    background: var(--rpv-page-bg, #ffffff);
+    border: var(--rpv-page-border, 1px solid #dddddd);
+    border-radius: var(--rpv-page-radius, 4px);
+    box-shadow: var(--rpv-page-shadow, 0 2px 8px rgba(0, 0, 0, 0.1));
+  }
+
+  .rpv-page__canvas-host,
+  .rpv-page__canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .rpv-page[data-state='error'] {
+    min-width: min(100%, 320px);
+    min-height: 240px;
+  }
+
+  .rpv-page[data-state='error'] .rpv-page__canvas-host {
+    display: none;
+  }
+
+  /* ── Toolbar ──────────────────────────────────────────────────────────── */
+  .rpv-toolbar-wrapper {
+    max-width: var(--_rpv-toolbar-max-width);
+  }
+
+  .rpv-toolbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--rpv-toolbar-min-height, 48px);
+    padding: 0 var(--rpv-toolbar-padding-x, 16px);
+    margin-bottom: var(--rpv-toolbar-margin-bottom, 40px);
+    color: var(--rpv-toolbar-fg, #ffffff);
+    background: var(--rpv-toolbar-bg, #54646e);
+    border-radius: var(--rpv-toolbar-radius, 8px);
+  }
+
+  .rpv-root[data-toolbar-position='top'] .rpv-toolbar {
+    margin-bottom: 16px;
+  }
+
+  .rpv-toolbar__group {
+    display: flex;
+    align-items: center;
+    gap: var(--rpv-toolbar-gap, 8px);
+  }
+
+  .rpv-toolbar__label {
+    min-width: 40px;
+    margin: 0;
+    font-size: var(--rpv-label-font-size, 14px);
+    font-weight: var(--rpv-label-font-weight, 600);
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .rpv-toolbar__pages {
+    min-width: 80px;
+  }
+
+  .rpv-root[data-compact] .rpv-toolbar__pages {
+    min-width: 40px;
+  }
+
+  .rpv-button {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--rpv-button-size, 34px);
+    height: var(--rpv-button-size, 34px);
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .rpv-button:hover:not(:disabled) {
+    background: var(--rpv-button-hover-bg, rgba(255, 255, 255, 0.1));
+  }
+
+  @media (hover: none) {
+    .rpv-button:hover:not(:disabled) {
+      background: transparent;
+    }
+  }
+
+  .rpv-button:focus-visible {
+    outline: var(--rpv-focus-ring, 2px solid #ffffff);
+    outline-offset: var(--rpv-focus-ring-offset, 2px);
+  }
+
+  .rpv-button:disabled {
+    color: var(--rpv-button-disabled-fg, rgba(255, 255, 255, 0.3));
+    cursor: default;
+  }
+
+  .rpv-icon {
+    flex: none;
+    width: var(--rpv-icon-size, 24px);
+    height: var(--rpv-icon-size, 24px);
+    fill: currentColor;
+  }
+
+  /* ── Loading ──────────────────────────────────────────────────────────── */
+  .rpv-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    transform: translate(-50%, -50%);
+  }
+
+  .rpv-loading__text,
+  .rpv-print-status__text {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+    color: var(--rpv-muted-fg, rgba(0, 0, 0, 0.6));
+  }
+
+  .rpv-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    color: var(--rpv-accent, #1976d2);
+    animation: rpv-spin 1.4s linear infinite;
+  }
+
+  .rpv-spinner svg {
+    display: block;
+  }
+
+  .rpv-spinner circle {
+    stroke: currentColor;
+    stroke-dasharray: 80px, 200px;
+    stroke-dashoffset: 0;
+    animation: rpv-dash 1.4s ease-in-out infinite;
+  }
+
+  @keyframes rpv-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rpv-dash {
+    0% {
+      stroke-dasharray: 1px, 200px;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 100px, 200px;
+      stroke-dashoffset: -15px;
+    }
+    100% {
+      stroke-dasharray: 100px, 200px;
+      stroke-dashoffset: -125px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rpv-spinner,
+    .rpv-spinner circle {
+      animation-duration: 4s;
+    }
+  }
+
+  /* ── Error ────────────────────────────────────────────────────────────── */
+  .rpv-error-area {
+    width: 100%;
+    max-width: var(--_rpv-viewport-max-width);
+  }
+
+  .rpv-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 400px;
+    padding: 32px;
+  }
+
+  .rpv-error--page {
+    height: 100%;
+    min-height: 240px;
+    padding: 16px;
+  }
+
+  .rpv-alert {
+    display: flex;
+    max-width: 100%;
+    padding: 6px 16px;
+    margin-bottom: 16px;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+    color: var(--rpv-error-fg, #5f2120);
+    background: var(--rpv-error-bg, #fdeded);
+    border-radius: 4px;
+  }
+
+  .rpv-alert__icon {
+    display: flex;
+    padding: 7px 0;
+    margin-right: 12px;
+    color: var(--rpv-error-icon, #d32f2f);
+  }
+
+  .rpv-alert__icon .rpv-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .rpv-alert__message {
+    min-width: 0;
+    padding: 8px 0;
+    overflow-wrap: anywhere;
+  }
+
+  .rpv-text-button {
+    min-width: 64px;
+    padding: 6px 16px;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.75;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase;
+    color: var(--rpv-accent, #1976d2);
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+  }
+
+  .rpv-text-button:hover {
+    background: color-mix(in srgb, currentColor 8%, transparent);
+  }
+
+  .rpv-text-button:focus-visible {
+    outline: 2px solid var(--rpv-accent, #1976d2);
+    outline-offset: 2px;
+  }
+
+  /* ── Print preparation ────────────────────────────────────────────────── */
+  .rpv-print-status {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.85);
+    /* Short jobs finish before this becomes visible, avoiding a flash. */
+    animation: rpv-fade-in 150ms ease-out 400ms both;
+  }
+
+  @keyframes rpv-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* ── Utilities ────────────────────────────────────────────────────────── */
+  .rpv-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 }

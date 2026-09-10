@@ -6,4 +6,9 @@
  * @packageDocumentation
  */
 
-export {};
+export {
+  CustomPdfViewer,
+  CustomPdfViewer as default,
+  type CustomPdfViewerCompatProps,
+  type CustomPdfViewerProps,
+} from './compat/CustomPdfViewer.js';

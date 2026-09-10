@@ -1,0 +1,9 @@
+@your-scope/react-pdf-viewer
+
+This product includes icon paths from Material Icons
+(https://github.com/google/material-design-icons), Copyright Google LLC,
+licensed under the Apache License, Version 2.0.
+
+This product is designed to be used with PDF.js (https://github.com/mozilla/pdf.js),
+Copyright Mozilla Foundation and contributors, licensed under the Apache License,
+Version 2.0. PDF.js (`pdfjs-dist`) is a peer dependency and is not bundled.
