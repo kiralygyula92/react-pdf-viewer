@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
+import { useCallback, useEffect, useRef, useState, type Ref } from 'react';
 import type {
   PageViewport,
   PDFDocumentProxy,
@@ -80,11 +80,11 @@ export interface UsePageRendererOptions {
 /** Refs to attach and render state returned by {@link usePageRenderer}. */
 export interface UsePageRendererResult {
   /** The page box; the renderer sets its CSS width and height. */
-  pageRef: RefObject<HTMLDivElement | null>;
+  pageRef: Ref<HTMLDivElement>;
   /** Element that receives the canvas. Must have no React children. */
-  canvasHostRef: RefObject<HTMLDivElement | null>;
+  canvasHostRef: Ref<HTMLDivElement>;
   /** Element that receives the text and annotation layers. Must have no React children. */
-  layersRef: RefObject<HTMLDivElement | null>;
+  layersRef: Ref<HTMLDivElement>;
   /** The last render failure, cleared by the next successful render. */
   error: PdfViewerError | null;
   /** Renders again after a failure. */

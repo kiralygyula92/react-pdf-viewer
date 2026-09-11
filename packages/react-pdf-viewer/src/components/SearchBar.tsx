@@ -1,9 +1,9 @@
-import type { KeyboardEvent, RefObject } from 'react';
+import type { KeyboardEvent, Ref } from 'react';
 import type { LabelContext, PdfViewerLabels } from '../labels.js';
 import { ExpandLessIcon, ExpandMoreIcon, SearchIcon } from './icons.js';
 
 interface SearchBarProps {
-  inputRef: RefObject<HTMLInputElement | null>;
+  inputRef: Ref<HTMLInputElement>;
   query: string;
   onQueryChange: (query: string) => void;
   total: number;
