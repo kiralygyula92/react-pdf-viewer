@@ -57,6 +57,52 @@ jobs:
           path: apps/demo/playwright-report
           retention-days: 7
 
+  react18:
+    # The peer range is react >= 18: run the unit suite against React 18 too (19 runs in `ci`).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install with React 18
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --filter @your-scope/react-pdf-viewer add -D react@^18.3.1 react-dom@^18.3.1 @types/react@^18.3.31 @types/react-dom@^18.3.7
+
+      - name: Typecheck
+        run: pnpm --filter @your-scope/react-pdf-viewer typecheck
+
+      - name: Unit tests
+        run: pnpm --filter @your-scope/react-pdf-viewer test
+
+  consumer-smoke:
+    # Installs the packed tarball into fresh Vite and Next.js (App Router, SSR) apps.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build library
+        run: pnpm --filter @your-scope/react-pdf-viewer build
+
+      - name: Consumer smoke tests
+        run: pnpm smoke
+
   visual:
     # Same image that renders the committed baselines (apps/demo/scripts/visual.sh).
     runs-on: ubuntu-latest

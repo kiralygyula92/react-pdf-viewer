@@ -14,6 +14,7 @@
     "test": "pnpm -r test",
     "e2e": "pnpm --filter demo e2e",
     "qa": "pnpm --filter @your-scope/react-pdf-viewer qa",
+    "smoke": "node scripts/consumer-smoke.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version"
   },
