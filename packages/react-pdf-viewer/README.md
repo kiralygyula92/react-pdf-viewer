@@ -192,6 +192,28 @@ Codes: `PDFJS_LOAD_FAILED`, `NETWORK_ERROR`, `HTTP_ERROR`, `INVALID_PDF`, `PASSW
 `INCORRECT_PASSWORD`, `RENDER_FAILED`, `DOWNLOAD_FAILED`, `PRINT_FAILED`, `UNKNOWN`. The default
 error view has a Retry button, and the toolbar stays usable (so fullscreen can always be exited).
 
+## Opt-in features
+
+Everything beyond the original viewer is off by default, so default props keep the original look
+and behavior.
+
+| Prop                  | Effect                                                                                                                                         |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `layout="continuous"` | Vertical scrolling through all pages. Only the visible pages ±1 are rendered; the page indicator follows the scroll position.                  |
+| `thumbnails`          | Page thumbnails sidebar (lazy-rendered; hidden in compact, non-fullscreen mode).                                                               |
+| `textLayer`           | Selectable, copyable text that assistive technology can read.                                                                                  |
+| `annotationLayer`     | Clickable links: internal links navigate, external links open in a new tab with `rel="noopener noreferrer"`.                                   |
+| `search`              | Find bar with highlighting (implies `textLayer`). `Ctrl`/`⌘` + `F` focuses it; `Enter` / `Shift` + `Enter` step through matches; `Esc` clears. |
+| `pageInput`           | Editable page number in the toolbar.                                                                                                           |
+| `zoomLevels`          | Preset ladder for the zoom buttons, e.g. `[0.5, 1, 1.5, 2, 4]`.                                                                                |
+| `zoomReset`           | The zoom label becomes a button that resets zoom.                                                                                              |
+| `fitMode`             | `'width'` or `'page'`: at the default scale, fill the width or fit the whole page.                                                             |
+| `wheelZoom`           | `Ctrl`/`⌘` + wheel and trackpad pinch zoom, anchored at the pointer.                                                                           |
+| `passwordPrompt`      | Ask for the password of encrypted documents; `renderPasswordPrompt({ incorrect, submit })` replaces the form.                                  |
+
+Styling hooks for these features: `--rpv-search-highlight`, `--rpv-search-highlight-selected`,
+`--rpv-selection-bg`, `--rpv-page-gap` and `--rpv-thumbnails-width`.
+
 ## Imperative API
 
 ```tsx

@@ -9,6 +9,7 @@
  */
 
 import './styles/pdf-viewer.css';
+import './styles/features.css';
 
 export { PdfViewer } from './PdfViewer.js';
 export { PdfToolbar, type PdfToolbarProps } from './components/Toolbar.js';
@@ -21,7 +22,7 @@ export {
   type UsePdfDocumentOptions,
   type UsePdfDocumentResult,
 } from './hooks/usePdfDocument.js';
-export type { PageRenderInfo } from './hooks/usePageRenderer.js';
+export type { PageHighlight, PageRenderInfo } from './hooks/usePageRenderer.js';
 export {
   useControllableState,
   type SetControllableState,

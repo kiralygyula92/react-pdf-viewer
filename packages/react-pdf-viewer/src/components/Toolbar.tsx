@@ -50,7 +50,9 @@ export interface PdfToolbarProps {
   compact?: boolean | undefined;
   /** Locale for number formatting. */
   locale?: string | undefined;
-  /** Rendered in place of the page indicator (used by the page-number input). */
+  /** The zoom label becomes a button that resets zoom. Default `false`. */
+  zoomReset?: boolean | undefined;
+  /** Replaces the page indicator text (e.g. with a page-number input). */
   pageIndicator?: ReactNode;
 }
 
@@ -67,6 +69,7 @@ function PdfToolbarImpl({
   config,
   compact = false,
   locale,
+  zoomReset = false,
   pageIndicator,
 }: PdfToolbarProps) {
   const labels = useLabels(labelOverrides);
@@ -81,6 +84,7 @@ function PdfToolbarImpl({
     ),
   );
   const ready = api.status === 'ready';
+  const zoomText = labels.zoomLevel(scaleToPercent(api.scale), context);
 
   const buttons: Partial<Record<ToolbarAction, ButtonSpec>> = {
     zoomOut: {
@@ -133,10 +137,12 @@ function PdfToolbarImpl({
     },
   };
 
-  // Roving tab index: one tab stop for the whole toolbar; arrow keys move between buttons.
+  // Roving tab index: one tab stop for the whole toolbar; arrow keys move between controls.
   const focusable = DEFAULT_TOOLBAR_ACTIONS.filter((action) => {
+    if (!visible.has(action)) return false;
+    if (action === 'zoomLevel') return zoomReset;
     const button = buttons[action];
-    return visible.has(action) && button !== undefined && !button.disabled;
+    return button !== undefined && !button.disabled;
   });
   const tabStop =
     focusedAction !== null && focusable.includes(focusedAction) ? focusedAction : focusable[0];
@@ -176,24 +182,43 @@ function PdfToolbarImpl({
       return null;
     }
     if (action === 'zoomLevel') {
-      return (
+      return zoomReset ? (
+        <button
+          key={action}
+          type="button"
+          className="rpv-toolbar__label rpv-toolbar__zoom rpv-zoom-reset"
+          aria-label={`${labels.resetZoom} (${zoomText})`}
+          data-action={action}
+          tabIndex={action === tabStop ? 0 : -1}
+          onFocus={() => setFocusedAction(action)}
+          onClick={api.resetZoom}
+        >
+          {zoomText}
+        </button>
+      ) : (
         <span key={action} className="rpv-toolbar__label rpv-toolbar__zoom">
-          {labels.zoomLevel(scaleToPercent(api.scale), context)}
+          {zoomText}
         </span>
       );
     }
     if (action === 'pageIndicator') {
-      return (
+      return pageIndicator ? (
+        <span
+          key={action}
+          className="rpv-toolbar__label rpv-toolbar__pages rpv-toolbar__pages--input"
+        >
+          {pageIndicator}
+        </span>
+      ) : (
         <span
           key={action}
           className="rpv-toolbar__label rpv-toolbar__pages"
           aria-live="polite"
           aria-atomic="true"
         >
-          {pageIndicator ??
-            (api.numPages > 0
-              ? labels.pageIndicator(api.page, api.numPages, context)
-              : labels.pageIndicator(0, 0, context))}
+          {api.numPages > 0
+            ? labels.pageIndicator(api.page, api.numPages, context)
+            : labels.pageIndicator(0, 0, context)}
         </span>
       );
     }

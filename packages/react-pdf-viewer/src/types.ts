@@ -226,6 +226,29 @@ export interface PdfViewerProps extends PdfRequestOptions {
   /** Locale for number formatting, e.g. `'hu-HU'`. */
   locale?: string | undefined;
 
+  /** Page layout: `'single'` (original) or `'continuous'` vertical scrolling. Default `'single'`. */
+  layout?: 'single' | 'continuous' | undefined;
+  /** Selectable text layer (copy, find, assistive technology). Default `false`. */
+  textLayer?: boolean | undefined;
+  /** Clickable links: internal links navigate, external links open in a new tab. Default `false`. */
+  annotationLayer?: boolean | undefined;
+  /** Editable page number in the toolbar. Default `false`. */
+  pageInput?: boolean | undefined;
+  /** The zoom label becomes a button that resets zoom. Default `false`. */
+  zoomReset?: boolean | undefined;
+  /** Ctrl/⌘ + wheel and trackpad-pinch zoom, anchored at the pointer. Default `false`. */
+  wheelZoom?: boolean | undefined;
+  /** Ask for the password of encrypted documents instead of showing an error. Default `false`. */
+  passwordPrompt?: boolean | undefined;
+  /** Replaces the built-in password prompt. */
+  renderPasswordPrompt?:
+    | ((context: { incorrect: boolean; submit: (password: string) => void }) => ReactNode)
+    | undefined;
+  /** Page thumbnails sidebar (hidden in compact, non-fullscreen mode). Default `false`. */
+  thumbnails?: boolean | undefined;
+  /** Find-in-document bar with highlighting (implies the text layer). Default `false`. */
+  search?: boolean | undefined;
+
   /** Replaces the loading view. */
   renderLoading?: (() => ReactNode) | undefined;
   /** Replaces the error view (document and page errors). */

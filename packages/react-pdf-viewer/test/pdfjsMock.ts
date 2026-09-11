@@ -51,6 +51,81 @@ export interface MockPageSpec {
   height: number;
   /** Intrinsic `/Rotate`. */
   rotate?: number;
+  /** Text items returned by `getTextContent`. */
+  text?: string[];
+  /** Annotations returned by `getAnnotations`. */
+  annotations?: MockAnnotation[];
+}
+
+/** A link annotation: `url` (external) or `dest` (internal, `[{ pageIndex }]`). */
+export interface MockAnnotation {
+  subtype: 'Link';
+  url?: string;
+  dest?: unknown;
+  label?: string;
+}
+
+interface MockTextLayerParams {
+  textContentSource: { items: unknown[] };
+  container: HTMLElement;
+}
+
+/** Stand-in for PDF.js `TextLayer`: one span per text item, like the real one. */
+export class MockTextLayer {
+  readonly textDivs: HTMLElement[] = [];
+  readonly textContentItemsStr: string[] = [];
+  readonly cancel = vi.fn();
+  constructor(private readonly params: MockTextLayerParams) {}
+  render(): Promise<void> {
+    for (const item of this.params.textContentSource.items) {
+      const str = (item as { str?: unknown }).str;
+      if (typeof str !== 'string') continue;
+      const span = this.params.container.ownerDocument.createElement('span');
+      span.textContent = str;
+      this.params.container.append(span);
+      this.textDivs.push(span);
+      this.textContentItemsStr.push(str);
+    }
+    return Promise.resolve();
+  }
+}
+
+interface MockLinkService {
+  addLinkAttributes: (link: HTMLAnchorElement, url: string) => void;
+  getDestinationHash: (dest: unknown) => string;
+  goToDestination: (dest: unknown) => void;
+}
+
+/** Stand-in for PDF.js `AnnotationLayer`: renders link sections through the link service. */
+export class MockAnnotationLayer {
+  render({
+    annotations,
+    linkService,
+    div,
+  }: {
+    annotations: MockAnnotation[];
+    linkService: MockLinkService;
+    div: HTMLDivElement;
+  }): Promise<void> {
+    for (const annotation of annotations) {
+      const section = div.ownerDocument.createElement('section');
+      section.className = 'linkAnnotation';
+      const link = div.ownerDocument.createElement('a');
+      link.textContent = annotation.label ?? '';
+      if (annotation.url) {
+        linkService.addLinkAttributes(link, annotation.url);
+      } else if (annotation.dest) {
+        link.href = linkService.getDestinationHash(annotation.dest);
+        link.onclick = () => {
+          linkService.goToDestination(annotation.dest);
+          return false;
+        };
+      }
+      section.append(link);
+      div.append(section);
+    }
+    return Promise.resolve();
+  }
 }
 
 export interface MockRenderTask {
@@ -72,7 +147,10 @@ export interface MockViewport {
 export interface MockPage {
   pageNumber: number;
   rotate: number;
+  userUnit: number;
   view: number[];
+  getTextContent: Mock<() => Promise<{ items: { str: string; hasEOL: boolean }[] }>>;
+  getAnnotations: Mock<() => Promise<MockAnnotation[]>>;
   getViewport: Mock<(params: GetViewportParameters) => PageViewport>;
   render: Mock<(params: RenderParameters) => MockRenderTask>;
   cleanup: Mock<() => boolean>;
@@ -85,6 +163,9 @@ export interface MockDocument {
   getPage: Mock<(pageNumber: number) => Promise<MockPage>>;
   getData: Mock<() => Promise<Uint8Array>>;
   destroy: Mock<() => Promise<void>>;
+  getDestination: Mock<(id: string) => Promise<unknown[] | null>>;
+  getPageIndex: Mock<(ref: unknown) => Promise<number>>;
+  annotationStorage: object;
 }
 
 export interface MockDocumentOptions {
@@ -134,11 +215,13 @@ function createRenderTask(params: RenderParameters, autoResolve: boolean): MockR
 function createViewport(spec: MockPageSpec, { scale, rotation }: GetViewportParameters) {
   const angle = (((rotation ?? spec.rotate ?? 0) % 360) + 360) % 360;
   const swap = angle === 90 || angle === 270;
-  const viewport: MockViewport = {
+  const viewport: MockViewport & { clone: (params?: GetViewportParameters) => PageViewport } = {
     width: (swap ? spec.height : spec.width) * scale,
     height: (swap ? spec.width : spec.height) * scale,
     scale,
     rotation: angle,
+    clone: (params) =>
+      createViewport(spec, { scale: params?.scale ?? scale, rotation: params?.rotation ?? angle }),
   };
   return viewport as unknown as PageViewport;
 }
@@ -151,7 +234,12 @@ export function createMockDocument(options: MockDocumentOptions = {}): MockDocum
   const pages = specs.map((spec, index): MockPage => ({
     pageNumber: index + 1,
     rotate: spec.rotate ?? 0,
+    userUnit: 1,
     view: [0, 0, spec.width, spec.height],
+    getTextContent: vi.fn(() =>
+      Promise.resolve({ items: (spec.text ?? []).map((str) => ({ str, hasEOL: false })) }),
+    ),
+    getAnnotations: vi.fn(() => Promise.resolve(spec.annotations ?? [])),
     getViewport: vi.fn((params: GetViewportParameters) => createViewport(spec, params)),
     render: vi.fn((params: RenderParameters) => {
       const task = createRenderTask(params, options.autoResolveRender ?? false);
@@ -170,6 +258,11 @@ export function createMockDocument(options: MockDocumentOptions = {}): MockDocum
     }),
     getData: vi.fn(() => Promise.resolve(new Uint8Array([0x25, 0x50, 0x44, 0x46]))),
     destroy: vi.fn(() => Promise.resolve()),
+    getDestination: vi.fn(() => Promise.resolve(null)),
+    getPageIndex: vi.fn((ref: unknown) =>
+      Promise.resolve((ref as { pageIndex?: number }).pageIndex ?? 0),
+    ),
+    annotationStorage: {},
   };
   return {
     document,
@@ -225,7 +318,13 @@ export function createMockPdfjs(options: MockPdfjsOptions = {}): MockPdfjs {
     return task;
   });
   const GlobalWorkerOptions = { workerSrc: '', workerPort: null };
-  const module = { getDocument, GlobalWorkerOptions, version: '6.3.289' };
+  const module = {
+    getDocument,
+    GlobalWorkerOptions,
+    version: '6.3.289',
+    TextLayer: MockTextLayer,
+    AnnotationLayer: MockAnnotationLayer,
+  };
   return {
     module: module as unknown as PdfJsModule,
     getDocument,

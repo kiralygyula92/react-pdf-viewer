@@ -39,6 +39,10 @@ export function getShortcut(event: KeyboardEvent, viewport: HTMLElement | null):
   if (isEditable(event.target)) {
     return null;
   }
+  // Shift + navigation keys extend a text selection.
+  if (event.shiftKey && /^(Arrow|Page|Home|End)/.test(event.key)) {
+    return null;
+  }
   // The toolbar uses arrows/Home/End for its roving focus. This native listener runs before
   // React's handler, so the toolbar cannot stop the event in time; skip those keys here.
   const inToolbar =
