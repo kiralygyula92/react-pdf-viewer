@@ -25,6 +25,15 @@ interface Options {
   fullscreenMode: 'native' | 'overlay' | 'controlled';
   fitMode: 'none' | 'width' | 'page';
   zoomPresets: boolean;
+  layout: 'single' | 'continuous';
+  textLayer: boolean;
+  annotationLayer: boolean;
+  search: boolean;
+  thumbnails: boolean;
+  pageInput: boolean;
+  zoomReset: boolean;
+  wheelZoom: boolean;
+  passwordPrompt: boolean;
   keyboardShortcuts: boolean;
   printMode: 'render' | 'open-url';
   compactBreakpoint: number;
@@ -42,6 +51,15 @@ const PARITY_DEFAULTS: Options = {
   fullscreenMode: 'native',
   fitMode: 'none',
   zoomPresets: false,
+  layout: 'single',
+  textLayer: false,
+  annotationLayer: false,
+  search: false,
+  thumbnails: false,
+  pageInput: false,
+  zoomReset: false,
+  wheelZoom: false,
+  passwordPrompt: false,
   keyboardShortcuts: true,
   printMode: 'render',
   compactBreakpoint: 960,
@@ -250,6 +268,42 @@ export function Playground() {
               />
               Zoom presets (25 … 500%)
             </label>
+            <Field label="Layout">
+              {(id) => (
+                <select
+                  id={id}
+                  value={options.layout}
+                  onChange={(event) => set('layout', event.target.value as Options['layout'])}
+                >
+                  <option value="single">Single page (original)</option>
+                  <option value="continuous">Continuous scroll</option>
+                </select>
+              )}
+            </Field>
+            <fieldset className="demo-stack">
+              <legend>Opt-in features</legend>
+              {(
+                [
+                  ['textLayer', 'Text layer'],
+                  ['annotationLayer', 'Links (annotation layer)'],
+                  ['search', 'Search'],
+                  ['thumbnails', 'Thumbnails'],
+                  ['pageInput', 'Page number input'],
+                  ['zoomReset', 'Zoom reset button'],
+                  ['wheelZoom', 'Ctrl/⌘ + wheel zoom'],
+                  ['passwordPrompt', 'Password prompt'],
+                ] as const
+              ).map(([key, label]) => (
+                <label key={key} className="demo-check">
+                  <input
+                    type="checkbox"
+                    checked={options[key]}
+                    onChange={(event) => set(key, event.target.checked)}
+                  />
+                  {label}
+                </label>
+              ))}
+            </fieldset>
             <label className="demo-check">
               <input
                 type="checkbox"
@@ -383,6 +437,15 @@ export function Playground() {
             toolbar={{ position: options.toolbarPosition }}
             fitMode={options.fitMode}
             zoomLevels={options.zoomPresets ? ZOOM_PRESETS : undefined}
+            layout={options.layout}
+            textLayer={options.textLayer}
+            annotationLayer={options.annotationLayer}
+            search={options.search}
+            thumbnails={options.thumbnails}
+            pageInput={options.pageInput}
+            zoomReset={options.zoomReset}
+            wheelZoom={options.wheelZoom}
+            passwordPrompt={options.passwordPrompt}
             keyboardShortcuts={options.keyboardShortcuts}
             printMode={options.printMode}
             compactBreakpoint={options.compactBreakpoint}

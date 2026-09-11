@@ -13,7 +13,7 @@ export const viewport = (page: Page) => page.locator('.rpv-viewport');
 
 /** Waits until a page has finished rendering (the canvas is swapped in only when complete). */
 export async function rendered(page: Page) {
-  await expect(page.locator('.rpv-page canvas')).toBeAttached();
+  await expect(page.locator('.rpv-page canvas').first()).toBeAttached();
 }
 
 /** Opens the standalone viewer with query parameters and waits for the first render. */

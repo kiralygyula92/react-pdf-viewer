@@ -32,9 +32,13 @@ test.describe('accessibility', () => {
 
   test('axe: no violations — examples (all mounted)', async ({ page }) => {
     await page.goto('/#/examples');
-    for (const section of await page.locator('.demo-example').all()) {
-      await section.scrollIntoViewIfNeeded();
-    }
+    // Mount every lazily rendered example (their layout shifts as they mount, so scroll by script).
+    await page.evaluate(async () => {
+      for (const section of document.querySelectorAll('.demo-example')) {
+        section.scrollIntoView();
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+    });
     await page.waitForLoadState('networkidle');
     expect(await violations(page)).toEqual([]);
   });

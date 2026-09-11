@@ -64,9 +64,12 @@ async function save(
   notes: string,
   transform?: (doc: PDFDocument) => Promise<Uint8Array>,
 ) {
+  // Read metadata before `transform`: encryption rewrites the Info strings.
+  const title = doc.getTitle() ?? file;
+  const pages = doc.getPageCount();
   const bytes = transform ? await transform(doc) : await doc.save({ useObjectStreams: false });
   writeFileSync(`${OUT_DIR}${file}`, bytes);
-  manifest.push({ file, title: doc.getTitle() ?? file, pages: doc.getPageCount(), notes });
+  manifest.push({ file, title, pages, notes });
 }
 
 function drawGrid(page: PDFPage, step = 36) {
