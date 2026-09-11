@@ -18,6 +18,7 @@ export const hungarianLabels: Partial<PdfViewerLabels> = {
   rotate: 'PDF elforgatása',
   download: 'PDF letöltése',
   print: 'PDF nyomtatása',
+  moreActions: 'További műveletek',
   loading: 'PDF betöltése…',
   retry: 'Újra',
   empty: 'Nincs dokumentum',

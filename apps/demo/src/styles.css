@@ -37,7 +37,8 @@ a {
   color: var(--demo-accent);
 }
 
-:focus-visible {
+/* Demo element styles never reach into the viewer, which brings its own. */
+:where(:focus-visible):not(.rpv-root, .rpv-root *) {
   outline: 2px solid var(--demo-accent);
   outline-offset: 2px;
 }
@@ -48,16 +49,11 @@ pre {
   font-size: 0.875em;
 }
 
-input,
-select,
-button {
+:where(input, select, button):not(.rpv-root *) {
   font: inherit;
 }
 
-input[type='url'],
-input[type='number'],
-input[type='text'],
-select {
+:where(input[type='url'], input[type='number'], input[type='text'], select):not(.rpv-root *) {
   width: 100%;
   min-height: 36px;
   padding: 6px 10px;
