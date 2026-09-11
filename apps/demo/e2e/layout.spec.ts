@@ -206,8 +206,16 @@ test.describe('layout — compact (390×844)', () => {
   test('L-04 / U-09: compact fullscreen', async ({ page }) => {
     await open(page, 'mode=fullscreen');
     expect(await styles(viewport(page), ['padding-top'])).toEqual({ 'padding-top': '32px' });
-    await expect(button(page, 'Rotate PDF')).toBeVisible();
-    await expect(button(page, 'Print PDF')).toBeVisible();
+    // Nine controls do not fit 390px on one row: the actions collapse into the "More" menu.
+    const more = button(page, 'More actions');
+    await more.click();
+    const menu = page.getByRole('menu', { name: 'More actions' });
+    await expect(menu.getByRole('menuitem', { name: 'Rotate PDF' })).toBeVisible();
+    await expect(menu.getByRole('menuitem', { name: 'Print PDF' })).toBeVisible();
+    // The toolbar stays one row, inside the screen.
+    const bar = await toolbar(page).boundingBox();
+    expect(bar && bar.height).toBeLessThanOrEqual(48);
+    expect(bar && bar.x >= 0 && bar.x + bar.width <= MOBILE.width).toBe(true);
   });
 
   test('L-11: the compact breakpoint is 960px', async ({ page }) => {
