@@ -15,6 +15,7 @@ const ROUTES: [name: string, path: string, waitForRender: boolean][] = [
   ['playground', '/#/', true],
   ['standalone viewer', '/#/view?src=/samples/letter-3pages.pdf', true],
   ['standalone open form', '/#/view', false],
+  ['docs', '/#/docs', false],
   ['parity loading', '/#/parity?state=loading', false],
   ['parity error', '/#/parity?state=error', false],
   ['parity empty', '/#/parity?state=empty', false],

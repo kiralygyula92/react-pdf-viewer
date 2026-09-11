@@ -1,3 +1,4 @@
+import { Docs } from './pages/Docs';
 import { Examples } from './pages/Examples';
 import { Parity } from './pages/Parity';
 import { Playground } from './pages/Playground';
@@ -8,6 +9,7 @@ const PAGES = [
   { path: '/', label: 'Playground', Component: Playground },
   { path: '/view', label: 'Viewer', Component: StandaloneViewer },
   { path: '/examples', label: 'Examples', Component: Examples },
+  { path: '/docs', label: 'Docs', Component: Docs },
 ] as const;
 
 export function App() {
