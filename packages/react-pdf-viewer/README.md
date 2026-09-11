@@ -288,6 +288,19 @@ The root exposes `data-status`, `data-compact`, `data-fullscreen`, `data-present
 **Dark preset:** `className="rpv-theme-dark"` switches the viewer to dark colors;
 `className="rpv-theme-auto"` follows the operating system's color scheme.
 
+**Responsive toolbar:** the toolbar is always a single row. When it does not fit the viewer's
+width, the actions (fullscreen, rotate, download, print) move into a "⋮ More actions" menu, and
+on very narrow viewers the zoom controls follow; page navigation always stays visible. The menu
+is themed with `--rpv-menu-bg`, `--rpv-menu-fg`, `--rpv-menu-icon-fg`, `--rpv-menu-hover-bg`,
+`--rpv-menu-border` and `--rpv-menu-shadow`; the page input with `--rpv-page-input-bg` and
+`--rpv-page-input-border`; `--rpv-toolbar-group-gap` spaces the groups when opt-in controls are
+shown.
+
+**Host styles:** because the viewer's CSS is layered, unlayered host rules that target bare
+elements (for example `button { background: … }`) also apply inside the viewer. Scope such rules
+(e.g. `:where(button):not(.rpv-root *)`). The page-number input is guarded against common
+`input` rules.
+
 ## Labels and i18n
 
 ```tsx
@@ -348,7 +361,8 @@ import '@your-scope/react-pdf-viewer/styles.css';
 Differences from the original, all fixes: renders are cancellable and sharp on HiDPI screens,
 pages with an intrinsic rotation display upright, errors keep the toolbar and offer Retry,
 download reuses the loaded bytes, print opens the print dialog instead of a new tab, the
-fullscreen icon toggles, the toolbar wraps instead of clipping controls on very narrow screens,
+fullscreen icon toggles, the toolbar collapses actions into a "More actions" menu instead of
+clipping them on narrow screens,
 and in fullscreen the document area shrinks so the toolbar is always on screen. To match the host
 theme, set `--rpv-toolbar-bg` and `--rpv-accent` on a wrapper element.
 

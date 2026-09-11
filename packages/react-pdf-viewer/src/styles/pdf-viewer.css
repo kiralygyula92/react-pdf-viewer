@@ -127,24 +127,37 @@
 
   /* ── Toolbar ──────────────────────────────────────────────────────────── */
   .rpv-toolbar-wrapper {
+    /* A toolbar with opt-in controls may be wider than the nominal max-width; it stays centred. */
+    display: flex;
+    justify-content: center;
     max-width: var(--_rpv-toolbar-max-width);
   }
 
   .rpv-toolbar {
     position: relative;
     display: flex;
-    /* Wraps instead of clipping controls on very narrow screens (WCAG 1.4.10); when everything
-       fits, the layout is the original single row. */
-    flex-wrap: wrap;
-    row-gap: 4px;
+    flex: none;
+    /* Always one row: controls that do not fit move into the "More actions" menu. */
+    flex-wrap: nowrap;
+    column-gap: 0;
     align-items: center;
     justify-content: space-between;
     min-height: var(--rpv-toolbar-min-height, 48px);
     padding: 0 var(--rpv-toolbar-padding-x, 16px);
     margin-bottom: var(--rpv-toolbar-margin-bottom, 40px);
+    /* Typography lives on the toolbar so host rules such as `button { font: inherit }` still
+       resolve to the viewer's values. */
+    font-size: var(--rpv-label-font-size, 14px);
+    font-weight: var(--rpv-label-font-weight, 600);
+    line-height: 1.43;
     color: var(--rpv-toolbar-fg, #ffffff);
     background: var(--rpv-toolbar-bg, #54646e);
     border-radius: var(--rpv-toolbar-radius, 8px);
+  }
+
+  /* Opt-in controls (page input, zoom reset) get breathing room between the groups. */
+  .rpv-toolbar[data-extended] {
+    column-gap: var(--rpv-toolbar-group-gap, 16px);
   }
 
   .rpv-root[data-toolbar-position='top'] .rpv-toolbar {
@@ -153,8 +166,123 @@
 
   .rpv-toolbar__group {
     display: flex;
+    flex: none;
     align-items: center;
     gap: var(--rpv-toolbar-gap, 8px);
+  }
+
+  /* ── "More actions" menu ──────────────────────────────────────────────── */
+  .rpv-menu-anchor {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .rpv-menu {
+    position: absolute;
+    right: -8px;
+    bottom: calc(100% + 14px);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 208px;
+    padding: 6px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--rpv-menu-fg, #1f2a30);
+    background: var(--rpv-menu-bg, #ffffff);
+    border: 1px solid var(--rpv-menu-border, rgb(0 0 0 / 0.08));
+    border-radius: 10px;
+    box-shadow: var(
+      --rpv-menu-shadow,
+      0 10px 28px rgb(15 23 42 / 0.18),
+      0 2px 6px rgb(15 23 42 / 0.12)
+    );
+    transform-origin: bottom right;
+    animation: rpv-menu-in 120ms ease-out;
+  }
+
+  .rpv-menu[data-placement='bottom'] {
+    top: calc(100% + 14px);
+    bottom: auto;
+    transform-origin: top right;
+  }
+
+  @keyframes rpv-menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px) scale(0.98);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rpv-menu {
+      animation: none;
+    }
+  }
+
+  .rpv-menu__item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    min-height: 40px;
+    padding: 0 12px;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+  }
+
+  .rpv-menu__item:hover:not([aria-disabled='true']),
+  .rpv-menu__item:focus-visible {
+    background: var(--rpv-menu-hover-bg, rgb(84 100 110 / 0.12));
+    outline: none;
+  }
+
+  .rpv-menu__item:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--rpv-accent, #1976d2);
+  }
+
+  .rpv-menu__item[aria-disabled='true'] {
+    cursor: default;
+    opacity: 0.45;
+  }
+
+  .rpv-menu__icon {
+    display: flex;
+    flex: none;
+    color: var(--rpv-menu-icon-fg, #54646e);
+  }
+
+  .rpv-menu__icon .rpv-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .rpv-root.rpv-theme-dark .rpv-menu {
+    --rpv-menu-bg: #2b363c;
+    --rpv-menu-fg: #eceff1;
+    --rpv-menu-icon-fg: #b0bec5;
+    --rpv-menu-border: rgb(255 255 255 / 0.08);
+    --rpv-menu-hover-bg: rgb(255 255 255 / 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .rpv-root.rpv-theme-auto .rpv-menu {
+      --rpv-menu-bg: #2b363c;
+      --rpv-menu-fg: #eceff1;
+      --rpv-menu-icon-fg: #b0bec5;
+      --rpv-menu-border: rgb(255 255 255 / 0.08);
+      --rpv-menu-hover-bg: rgb(255 255 255 / 0.08);
+    }
   }
 
   .rpv-toolbar__label {

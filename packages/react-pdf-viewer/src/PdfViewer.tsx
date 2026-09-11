@@ -600,6 +600,7 @@ export const PdfViewer = forwardRef<PdfViewerApi, PdfViewerProps>(function PdfVi
             compact={compact}
             locale={locale}
             zoomReset={zoomReset}
+            menuPlacement={toolbarPosition === 'top' ? 'bottom' : 'top'}
             pageIndicator={
               pageInput ? (
                 <PageInput

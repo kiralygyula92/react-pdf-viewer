@@ -312,41 +312,81 @@
   /* ── Page input and zoom reset ──────────────────────────────────────── */
   .rpv-toolbar__pages--input {
     display: inline-flex;
-    gap: 6px;
+    gap: 8px;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;
   }
 
-  .rpv-page-input {
-    height: 28px;
-    padding: 0 4px;
-    font: inherit;
-    color: inherit;
-    text-align: center;
-    background: rgb(255 255 255 / 0.12);
-    border: 1px solid rgb(255 255 255 / 0.5);
-    border-radius: 4px;
+  /*
+   * Form controls attract host-wide rules (e.g. `input[type='text'] { width: 100%; background: #fff }`)
+   * that would beat these layered styles, so the input's box and colours are guarded with
+   * !important. Theme it through the --rpv-page-input-* variables instead.
+   */
+  .rpv-toolbar .rpv-page-input {
+    box-sizing: border-box !important;
+    width: calc(var(--rpv-page-input-chars, 2) * 1ch + 22px) !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 28px !important;
+    min-height: 0 !important;
+    padding: 0 6px !important;
+    margin: 0 !important;
+    font: inherit !important;
+    font-variant-numeric: tabular-nums !important;
+    color: var(--rpv-toolbar-fg, #ffffff) !important;
+    text-align: center !important;
+    appearance: none !important;
+    /* A recessed (darker) field keeps white digits well above 4.5:1 on the toolbar colour. */
+    background: var(--rpv-page-input-bg, rgb(0 0 0 / 0.22)) !important;
+    border: 1px solid var(--rpv-page-input-border, rgb(255 255 255 / 0.35)) !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease;
   }
 
-  .rpv-page-input:focus-visible {
-    outline: var(--rpv-focus-ring, 2px solid #ffffff);
+  .rpv-toolbar .rpv-page-input:hover:not(:disabled) {
+    border-color: rgb(255 255 255 / 0.7) !important;
+  }
+
+  .rpv-toolbar .rpv-page-input:focus-visible {
+    background: rgb(0 0 0 / 0.32) !important;
+    border-color: var(--rpv-toolbar-fg, #ffffff) !important;
+    outline: 2px solid rgb(255 255 255 / 0.35);
     outline-offset: 1px;
   }
 
-  .rpv-zoom-reset {
-    padding: 4px 6px;
-    font: inherit;
-    font-size: var(--rpv-label-font-size, 14px);
-    font-weight: var(--rpv-label-font-weight, 600);
+  .rpv-toolbar .rpv-page-input::selection {
     color: inherit;
+    background: rgb(255 255 255 / 0.35);
+  }
+
+  .rpv-toolbar .rpv-page-input:disabled {
+    opacity: 0.5;
+  }
+
+  .rpv-zoom-reset {
+    min-width: 48px;
+    height: 28px;
+    padding: 0 8px;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-align: center;
     cursor: pointer;
     background: transparent;
-    border: 0;
-    border-radius: 4px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease;
   }
 
   .rpv-zoom-reset:hover {
     background: var(--rpv-button-hover-bg, rgba(255, 255, 255, 0.1));
+    border-color: rgb(255 255 255 / 0.25);
   }
 
   .rpv-zoom-reset:focus-visible {

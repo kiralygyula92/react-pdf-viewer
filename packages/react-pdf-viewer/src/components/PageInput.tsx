@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import type { LabelContext } from '../labels.js';
 
 interface PageInputProps {
@@ -29,6 +29,7 @@ export function PageInput({ page, numPages, label, context, onCommit }: PageInpu
         autoComplete="off"
         aria-label={label}
         size={Math.max(2, String(numPages).length)}
+        style={{ '--rpv-page-input-chars': Math.max(2, String(numPages).length) } as CSSProperties}
         disabled={numPages === 0}
         value={draft ?? (numPages > 0 ? context.formatNumber(page) : '0')}
         onChange={(event) => setDraft(event.target.value)}

@@ -36,6 +36,8 @@ export interface PdfViewerLabels {
   rotate: string;
   download: string;
   print: string;
+  /** Accessible name of the overflow menu button ("⋮") shown when the toolbar is too narrow. */
+  moreActions: string;
   loading: string;
   retry: string;
   /** Announced when there is no document. */
@@ -79,6 +81,7 @@ export const defaultLabels: PdfViewerLabels = {
   rotate: 'Rotate PDF',
   download: 'Download PDF',
   print: 'Print PDF',
+  moreActions: 'More actions',
   loading: 'Loading PDF...',
   retry: 'Retry',
   empty: 'No document',
