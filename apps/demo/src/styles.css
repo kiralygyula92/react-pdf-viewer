@@ -566,7 +566,12 @@ fieldset {
 }
 
 .demo-thumb {
-  display: block;
+  /* Reserve the thumbnail's size (Letter at 15% + border) before its canvas renders, so the
+     button is never smaller than the 24px target size (WCAG 2.5.8) and the list does not jump. */
+  display: grid;
+  place-items: center;
+  min-width: 106px;
+  min-height: 133px;
   padding: 4px;
   cursor: pointer;
   background: none;
