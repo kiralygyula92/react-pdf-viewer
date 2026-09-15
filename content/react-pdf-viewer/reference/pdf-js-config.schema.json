@@ -1,0 +1,77 @@
+{
+  "name": "PdfJsConfig",
+  "filename": "packages/react-pdf-viewer/src/core/pdfjs.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/core/pdfjs.ts#L14",
+  "usedBy": [
+    "/react-pdf-viewer/pdfjs-configuration/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PdfJsConfig } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "loader": {
+      "type": {
+        "name": "func",
+        "description": "() => Promise<module>"
+      },
+      "default": "() => import('pdfjs-dist')"
+    },
+    "workerSrc": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "the jsDelivr worker for the installed version"
+    },
+    "workerPort": {
+      "type": {
+        "name": "Worker",
+        "description": "Worker"
+      }
+    },
+    "cMapUrl": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "jsDelivr cmaps/ for the installed version"
+    },
+    "cMapPacked": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "true"
+    },
+    "standardFontDataUrl": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "jsDelivr standard_fonts/ for the installed version"
+    },
+    "wasmUrl": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "jsDelivr wasm/ for the installed version"
+    },
+    "iccUrl": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "jsDelivr iccs/ for the installed version"
+    },
+    "isEvalSupported": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    }
+  },
+  "inheritance": null
+}

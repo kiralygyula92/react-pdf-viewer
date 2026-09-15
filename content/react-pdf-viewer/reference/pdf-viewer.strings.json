@@ -1,0 +1,87 @@
+{
+  "symbolDescription": "A PDF viewer: one page at a time with a toolbar for zoom, navigation, fullscreen, rotation,\ndownload and print. Default props give a classic single-page layout; every\nadditional feature (text layer, links, continuous layout, thumbnails, search, …) is opt-in.",
+  "optionDescriptions": {
+    "annotationLayer": "Clickable links: internal links navigate, external links open in a new tab with <code>rel=\"noopener noreferrer\"</code>.",
+    "aria-label": "Accessible name of the viewer region.",
+    "compactBreakpoint": "Viewport width (px) below which the compact layout applies: less padding, and <code>hiddenWhenCompact</code> actions hidden outside fullscreen.",
+    "defaultFullscreen": "Initial fullscreen state while uncontrolled.",
+    "defaultPage": "Initial page while uncontrolled, and the page every new document opens on.",
+    "defaultRotation": "Initial rotation while uncontrolled.",
+    "defaultScale": "Initial scale while uncontrolled; also the reset-zoom target and the scale at which fitting applies.",
+    "fetcher": "Replaces <code>fetch</code> entirely, e.g. with an authenticated HTTP client.",
+    "fileName": "Download file name. Default: a <code>File</code>’s name, the URL’s last <code>.pdf</code> segment, else <code>document.pdf</code>.",
+    "fitMode": "At the default scale, fill the width (<code>width</code>) or fit the whole page (<code>page</code>). Zooming away shows the page at true size.",
+    "fitWidthAtDefaultScale": "At the default scale, shrink the page to the available width.",
+    "fullscreen": "Controlled fullscreen state. Passing it selects <code>fullscreenMode=\"controlled\"</code> unless a mode is set.",
+    "fullscreenMode": "<code>controlled</code>: layout only, the parent presents fullscreen (e.g. in its own dialog). <code>native</code>: the browser Fullscreen API on the viewer root, falling back to <code>overlay</code>. <code>overlay</code>: a fixed full-viewport layer with a focus trap; <code>Esc</code> closes it.",
+    "getHttpErrorMessage": "Builds the <code>HTTP_ERROR</code> message. Return <code>undefined</code> for the default: an RFC 7807 <code>detail</code>, then <code>title</code>, then a JSON string body, then <code>Failed to fetch PDF: {status} {statusText}</code>.",
+    "keyboardShortcuts": "Keyboard shortcuts while focus is inside the viewer.",
+    "labels": "Overrides for any visible string or accessible name. Keep the object stable (e.g. at module scope).",
+    "layout": "One page at a time or vertical scrolling through all pages. Only the visible pages ±1 are rendered; the page indicator follows the scroll position.",
+    "locale": "BCP 47 locale for number formatting, e.g. <code>hu-HU</code>.",
+    "maxCanvasPixels": "Canvas pixel budget per page (4096 × 4096). Above it, resolution degrades gracefully instead of failing.",
+    "maxScale": "Zoom ceiling (500%).",
+    "minScale": "Zoom floor (25%).",
+    "page": "Controlled 1-based page. Out-of-range values are clamped and reported through <code>onPageChange</code>.",
+    "pageInput": "Editable page number in the toolbar.",
+    "password": "Password for encrypted documents. Changing it reloads the document.",
+    "passwordPrompt": "Ask for the password of encrypted documents instead of reporting <code>PASSWORD_REQUIRED</code>.",
+    "pdfjsOptions": "Per-instance <code>getDocument</code> overrides such as <code>cMapUrl</code>, <code>standardFontDataUrl</code> or <code>verbosity</code>. Source-related options are managed by the viewer.",
+    "printMode": "<code>render</code> prints through a hidden iframe, with progress and Cancel; <code>open-url</code> opens the PDF in a new tab.",
+    "renderEmpty": "Replaces the view shown without a source.",
+    "renderError": "Replaces the document and page error views.",
+    "renderLoading": "Replaces the loading view.",
+    "renderPasswordPrompt": "Replaces the built-in password form (with <code>passwordPrompt</code>).",
+    "renderToolbar": "Replaces the toolbar. Render <code>&lt;PdfToolbar api={api} /&gt;</code> inside to reuse parts.",
+    "requestInit": "Extra <code>fetch</code> options for URL sources: headers, <code>credentials</code>, <code>mode</code>, …",
+    "rotation": "Controlled clockwise rotation, added to each page’s intrinsic rotation.",
+    "scale": "Controlled scale: <code>1</code> = 100%, one PDF point per CSS pixel.",
+    "scaleStep": "Increment of the zoom buttons and the <code>+</code> / <code>-</code> keys.",
+    "search": "Find bar with highlighting (implies <code>textLayer</code>). <code>Ctrl</code> / <code>⌘</code> + <code>F</code> focuses it, <code>Enter</code> / <code>Shift</code> + <code>Enter</code> step through matches, <code>Esc</code> clears.",
+    "source": "The document: a URL string or <code>URL</code>, or <code>ArrayBuffer</code> / <code>Uint8Array</code> / <code>Blob</code> / <code>File</code>. <code>null</code>, <code>undefined</code> and <code>''</code> show the empty state.",
+    "textLayer": "Selectable, copyable text that assistive technology can read.",
+    "thumbnails": "Lazily rendered page thumbnails sidebar, hidden in compact, non-fullscreen mode.",
+    "toolbar": "<code>false</code> hides the toolbar; an object sets <code>position</code>, <code>actions</code> and <code>hiddenWhenCompact</code>.",
+    "wheelZoom": "<code>Ctrl</code> / <code>⌘</code> + wheel and trackpad pinch zoom, anchored at the pointer.",
+    "zoomLevels": "Preset ladder, e.g. <code>[0.5, 1, 1.5, 2, 4]</code>: the zoom buttons step between presets instead of by <code>scaleStep</code>.",
+    "zoomReset": "The zoom label becomes a button that resets zoom.",
+    "className": "Added to the root (<code>.rpv-root</code>). <code>rpv-theme-dark</code> and <code>rpv-theme-auto</code> select the dark presets.",
+    "style": "Inline styles on the root, e.g. CSS variables.",
+    "id": "Id of the root element."
+  },
+  "eventDescriptions": {
+    "onDocumentLoad": "A document finished loading.",
+    "onDownload": "Before saving; <code>data</code> holds the already-loaded bytes. Return <code>false</code> to handle the download yourself.",
+    "onError": "Every failure except aborted loads, cancelled renders and HTTP errors handled by <code>onHttpError</code>.",
+    "onHttpError": "Called for non-2xx responses. Return <code>true</code> when handled (e.g. after redirecting to sign-in): the viewer shows its empty state and does not call <code>onError</code>.",
+    "onPageRender": "A page render completed.",
+    "onPrint": "Before printing. Return <code>false</code> to handle printing yourself.",
+    "onPageChange": "Called whenever the page changes, controlled or not.",
+    "onScaleChange": "Called whenever the scale changes.",
+    "onRotationChange": "Called whenever the rotation changes.",
+    "onFullscreenChange": "Called whenever fullscreen is entered or left."
+  },
+  "classDescriptions": {
+    "rpv-root": {
+      "description": "The root element. Add <code>rpv-theme-dark</code>, or <code>rpv-theme-auto</code> to follow the operating system, for the dark preset."
+    },
+    "data-status": {
+      "description": "Document status."
+    },
+    "data-layout": {
+      "description": "The <code>layout</code> prop."
+    },
+    "data-compact": {
+      "description": "The viewport is narrower than <code>compactBreakpoint</code>."
+    },
+    "data-fullscreen": {
+      "description": "In fullscreen, in any mode."
+    },
+    "data-presentation": {
+      "description": "How fullscreen is presented; <code>layout</code> in controlled mode."
+    },
+    "data-zoomed": {
+      "description": "The scale is above <code>defaultScale</code>."
+    }
+  }
+}

@@ -24,6 +24,7 @@
     "ajv-formats": "^3.0.1",
     "pagefind": "^1.5.2",
     "satori": "^0.33.4",
+    "typedoc": "^0.28.20",
     "yaml": "^2.9.0"
   },
   "peerDependencies": {

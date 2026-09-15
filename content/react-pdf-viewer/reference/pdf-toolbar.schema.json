@@ -1,0 +1,69 @@
+{
+  "name": "PdfToolbar",
+  "filename": "packages/react-pdf-viewer/src/components/Toolbar.tsx",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/components/Toolbar.tsx#L412",
+  "usedBy": [
+    "/react-pdf-viewer/custom-toolbar/"
+  ],
+  "kind": "component",
+  "imports": [
+    "import { PdfToolbar } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "api": {
+      "type": {
+        "name": "PdfViewerApi",
+        "description": "PdfViewerApi"
+      },
+      "required": true
+    },
+    "labels": {
+      "type": {
+        "name": "Partial<PdfViewerLabels>",
+        "description": "Partial<PdfViewerLabels>"
+      }
+    },
+    "config": {
+      "type": {
+        "name": "ToolbarConfig",
+        "description": "ToolbarConfig"
+      }
+    },
+    "compact": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      }
+    },
+    "locale": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      }
+    },
+    "zoomReset": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "pageIndicator": {
+      "type": {
+        "name": "ReactNode",
+        "description": "ReactNode"
+      }
+    },
+    "menuPlacement": {
+      "type": {
+        "name": "union",
+        "description": "'top' | 'bottom'"
+      }
+    }
+  },
+  "events": {},
+  "inheritance": {
+    "symbol": "PdfToolbarProps",
+    "pathname": "/react-pdf-viewer/api/pdf-toolbar-props/"
+  }
+}

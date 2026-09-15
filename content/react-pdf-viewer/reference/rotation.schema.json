@@ -1,0 +1,39 @@
+{
+  "name": "Rotation",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L18",
+  "usedBy": [
+    "/react-pdf-viewer/rotation/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { Rotation } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "type Rotation = 0 | 90 | 180 | 270",
+  "options": {
+    "0": {
+      "type": {
+        "name": "literal",
+        "description": "0"
+      }
+    },
+    "90": {
+      "type": {
+        "name": "literal",
+        "description": "90"
+      }
+    },
+    "180": {
+      "type": {
+        "name": "literal",
+        "description": "180"
+      }
+    },
+    "270": {
+      "type": {
+        "name": "literal",
+        "description": "270"
+      }
+    }
+  }
+}

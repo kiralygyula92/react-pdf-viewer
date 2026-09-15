@@ -1,0 +1,10 @@
+{
+  "symbolDescription": "State returned by <a href=\"/react-pdf-viewer/api/use-pdf-document/\"><code>usePdfDocument</code></a>.",
+  "optionDescriptions": {
+    "document": "The document while <code>ready</code>. Never a destroyed document.",
+    "error": "The failure while <code>error</code>.",
+    "numPages": "Page count; <code>0</code> without a document.",
+    "reload": "Load the current source again.",
+    "status": "<code>idle</code> without a source (or after a handled HTTP error)."
+  }
+}

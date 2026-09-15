@@ -1,0 +1,6 @@
+{
+  "symbolDescription": "Helpers passed to label functions.",
+  "optionDescriptions": {
+    "formatNumber": "Formats an integer for the viewer's <code>locale</code> (no grouping separators)."
+  }
+}

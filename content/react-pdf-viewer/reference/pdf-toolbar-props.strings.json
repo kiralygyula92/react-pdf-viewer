@@ -1,0 +1,13 @@
+{
+  "symbolDescription": "Props for <a href=\"/react-pdf-viewer/api/pdf-toolbar/\"><code>PdfToolbar</code></a>.",
+  "optionDescriptions": {
+    "api": "The viewer API, from a <code>ref</code> or <code>renderToolbar</code>.",
+    "compact": "Compact layout: hides <code>hiddenWhenCompact</code> actions outside fullscreen.",
+    "config": "Which actions to show.",
+    "labels": "Label overrides.",
+    "locale": "Locale for number formatting.",
+    "menuPlacement": "Where the More actions menu opens. <code>PdfViewer</code> picks the side away from the edge.",
+    "pageIndicator": "Replaces the page indicator text, e.g. with your own input.",
+    "zoomReset": "The zoom label becomes a reset button."
+  }
+}

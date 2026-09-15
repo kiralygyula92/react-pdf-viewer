@@ -1,0 +1,13 @@
+{
+  "name": "SetControllableState",
+  "filename": "packages/react-pdf-viewer/src/hooks/useControllableState.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/hooks/useControllableState.ts#L18",
+  "usedBy": [
+    "/react-pdf-viewer/controlled-state/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { SetControllableState } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "type SetControllableState<T> = (next: T | (previous: T) => T) => void"
+}

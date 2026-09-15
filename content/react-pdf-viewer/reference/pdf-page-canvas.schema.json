@@ -1,0 +1,129 @@
+{
+  "name": "PdfPageCanvas",
+  "filename": "packages/react-pdf-viewer/src/components/PdfPageCanvas.tsx",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/components/PdfPageCanvas.tsx#L113",
+  "usedBy": [
+    "/react-pdf-viewer/headless/"
+  ],
+  "kind": "component",
+  "imports": [
+    "import { PdfPageCanvas } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "document": {
+      "type": {
+        "name": "PDFDocumentProxy",
+        "description": "PDFDocumentProxy"
+      },
+      "required": true
+    },
+    "page": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "required": true
+    },
+    "scale": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "default": "1"
+    },
+    "rotation": {
+      "type": {
+        "name": "Rotation",
+        "description": "Rotation"
+      },
+      "default": "0"
+    },
+    "fit": {
+      "type": {
+        "name": "FitOptions",
+        "description": "FitOptions"
+      }
+    },
+    "maxCanvasPixels": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "default": "16_777_216"
+    },
+    "textLayer": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "annotationLayer": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "highlight": {
+      "type": {
+        "name": "PageHighlight",
+        "description": "PageHighlight"
+      }
+    },
+    "aria-label": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      }
+    },
+    "className": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      }
+    },
+    "style": {
+      "type": {
+        "name": "CSSProperties",
+        "description": "CSSProperties"
+      }
+    },
+    "renderError": {
+      "type": {
+        "name": "func",
+        "description": "(error: PdfViewerError, actions: { retry: () => void }) => ReactNode"
+      }
+    }
+  },
+  "events": {
+    "onLinkNavigate": {
+      "type": {
+        "name": "func",
+        "description": "(page: number) => void"
+      }
+    },
+    "onHighlight": {
+      "type": {
+        "name": "func",
+        "description": "(element: HTMLElement) => void"
+      }
+    },
+    "onRender": {
+      "type": {
+        "name": "func",
+        "description": "(info: PageRenderInfo) => void"
+      }
+    },
+    "onError": {
+      "type": {
+        "name": "func",
+        "description": "(error: PdfViewerError) => void"
+      }
+    }
+  },
+  "inheritance": {
+    "symbol": "PdfPageCanvasProps",
+    "pathname": "/react-pdf-viewer/api/pdf-page-canvas-props/"
+  }
+}

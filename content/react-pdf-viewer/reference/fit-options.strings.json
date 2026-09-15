@@ -1,0 +1,8 @@
+{
+  "symbolDescription": "Constrains the rendered page to a box.",
+  "optionDescriptions": {
+    "height": "Available height in CSS pixels, including border and padding.",
+    "upscale": "Scale up to fill the box; otherwise the page only ever shrinks.",
+    "width": "Available width in CSS pixels, including border and padding."
+  }
+}

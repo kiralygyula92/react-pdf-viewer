@@ -5,3 +5,5 @@ playwright-report/
 test-results/
 .changeset/*.md
 docs/ppds/
+content/*/reference/
+qa/conformance-report.md

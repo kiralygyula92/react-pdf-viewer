@@ -1,0 +1,404 @@
+{
+  "name": "PdfViewerProps",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L190",
+  "usedBy": [
+    "/react-pdf-viewer/page-navigation/",
+    "/react-pdf-viewer/zoom/",
+    "/react-pdf-viewer/rotation/",
+    "/react-pdf-viewer/download/",
+    "/react-pdf-viewer/print/",
+    "/react-pdf-viewer/fit-modes/",
+    "/react-pdf-viewer/fullscreen/",
+    "/react-pdf-viewer/continuous-layout/",
+    "/react-pdf-viewer/thumbnails/",
+    "/react-pdf-viewer/loading-states/",
+    "/react-pdf-viewer/page-number-input/",
+    "/react-pdf-viewer/links/",
+    "/react-pdf-viewer/text-layer/",
+    "/react-pdf-viewer/search/",
+    "/react-pdf-viewer/password-protection/",
+    "/react-pdf-viewer/rendering/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PdfViewerProps } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "source": {
+      "type": {
+        "name": "union",
+        "description": "PdfSource | null"
+      },
+      "required": true
+    },
+    "fileName": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "derived from the source"
+    },
+    "page": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      }
+    },
+    "defaultPage": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "default": "1"
+    },
+    "onPageChange": {
+      "type": {
+        "name": "func",
+        "description": "(page: number) => void"
+      }
+    },
+    "scale": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      }
+    },
+    "defaultScale": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "default": "1"
+    },
+    "onScaleChange": {
+      "type": {
+        "name": "func",
+        "description": "(scale: number) => void"
+      }
+    },
+    "rotation": {
+      "type": {
+        "name": "Rotation",
+        "description": "Rotation"
+      }
+    },
+    "defaultRotation": {
+      "type": {
+        "name": "Rotation",
+        "description": "Rotation"
+      },
+      "default": "0"
+    },
+    "onRotationChange": {
+      "type": {
+        "name": "func",
+        "description": "(rotation: Rotation) => void"
+      }
+    },
+    "fullscreen": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      }
+    },
+    "defaultFullscreen": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "onFullscreenChange": {
+      "type": {
+        "name": "func",
+        "description": "(fullscreen: boolean) => void"
+      }
+    },
+    "fullscreenMode": {
+      "type": {
+        "name": "FullscreenMode",
+        "description": "FullscreenMode"
+      },
+      "default": "'controlled' when fullscreen is passed, else 'native'"
+    },
+    "minScale": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "default": "0.25"
+    },
+    "maxScale": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "default": "5"
+    },
+    "scaleStep": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "default": "0.05"
+    },
+    "zoomLevels": {
+      "type": {
+        "name": "readonly number[]",
+        "description": "readonly number[]"
+      }
+    },
+    "fitWidthAtDefaultScale": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "true"
+    },
+    "fitMode": {
+      "type": {
+        "name": "union",
+        "description": "'page' | 'none' | 'width'"
+      },
+      "default": "'none'"
+    },
+    "password": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      }
+    },
+    "pdfjsOptions": {
+      "type": {
+        "name": "PdfJsDocumentOptions",
+        "description": "PdfJsDocumentOptions"
+      }
+    },
+    "toolbar": {
+      "type": {
+        "name": "union",
+        "description": "boolean | ToolbarConfig"
+      },
+      "default": "true"
+    },
+    "compactBreakpoint": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "default": "960"
+    },
+    "keyboardShortcuts": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "true"
+    },
+    "printMode": {
+      "type": {
+        "name": "union",
+        "description": "'render' | 'open-url'"
+      },
+      "default": "'render'"
+    },
+    "maxCanvasPixels": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "default": "16777216"
+    },
+    "labels": {
+      "type": {
+        "name": "Partial<PdfViewerLabels>",
+        "description": "Partial<PdfViewerLabels>"
+      },
+      "default": "English (defaultLabels)"
+    },
+    "locale": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "the browser locale"
+    },
+    "layout": {
+      "type": {
+        "name": "union",
+        "description": "'single' | 'continuous'"
+      },
+      "default": "'single'"
+    },
+    "textLayer": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "annotationLayer": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "pageInput": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "zoomReset": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "wheelZoom": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "passwordPrompt": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "renderPasswordPrompt": {
+      "type": {
+        "name": "func",
+        "description": "(context: { incorrect: boolean; submit: (password: string) => void }) => ReactNode"
+      }
+    },
+    "thumbnails": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "search": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    },
+    "renderLoading": {
+      "type": {
+        "name": "func",
+        "description": "() => ReactNode"
+      }
+    },
+    "renderError": {
+      "type": {
+        "name": "func",
+        "description": "(error: PdfViewerError, actions: { retry: () => void }) => ReactNode"
+      }
+    },
+    "renderToolbar": {
+      "type": {
+        "name": "func",
+        "description": "(api: PdfViewerApi) => ReactNode"
+      }
+    },
+    "renderEmpty": {
+      "type": {
+        "name": "func",
+        "description": "() => ReactNode"
+      }
+    },
+    "onDocumentLoad": {
+      "type": {
+        "name": "func",
+        "description": "(info: { numPages: number; fingerprint: string }) => void"
+      }
+    },
+    "onPageRender": {
+      "type": {
+        "name": "func",
+        "description": "(info: PageRenderInfo) => void"
+      }
+    },
+    "onError": {
+      "type": {
+        "name": "func",
+        "description": "(error: PdfViewerError) => void"
+      }
+    },
+    "onDownload": {
+      "type": {
+        "name": "func",
+        "description": "(context: { fileName: string; data: Uint8Array }) => false | void"
+      }
+    },
+    "onPrint": {
+      "type": {
+        "name": "func",
+        "description": "() => false | void"
+      }
+    },
+    "className": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      }
+    },
+    "style": {
+      "type": {
+        "name": "CSSProperties",
+        "description": "CSSProperties"
+      }
+    },
+    "id": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      }
+    },
+    "aria-label": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "labels.viewer"
+    },
+    "requestInit": {
+      "type": {
+        "name": "RequestInit",
+        "description": "RequestInit"
+      }
+    },
+    "fetcher": {
+      "type": {
+        "name": "func",
+        "description": "(url: string, init: RequestInit) => Promise<Response>"
+      }
+    },
+    "onHttpError": {
+      "type": {
+        "name": "func",
+        "description": "(response: Response) => boolean | void | Promise<boolean | void>"
+      }
+    },
+    "getHttpErrorMessage": {
+      "type": {
+        "name": "func",
+        "description": "(response: Response) => Promise<string>"
+      }
+    }
+  },
+  "inheritance": {
+    "symbol": "PdfRequestOptions",
+    "pathname": "/react-pdf-viewer/api/pdf-request-options/"
+  }
+}

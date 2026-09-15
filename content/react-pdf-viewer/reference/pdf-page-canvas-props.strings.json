@@ -1,0 +1,22 @@
+{
+  "symbolDescription": "Props for <a href=\"/react-pdf-viewer/api/pdf-page-canvas/\"><code>PdfPageCanvas</code></a>.",
+  "optionDescriptions": {
+    "annotationLayer": "Clickable links.",
+    "aria-label": "Accessible name, e.g. <code>Page 1 of 3</code>. With a name the page is an image (a group with <code>textLayer</code>); without one it is decorative.",
+    "document": "A loaded document, e.g. from <code>usePdfDocument</code>.",
+    "fit": "A box the page must fit into.",
+    "highlight": "Search matches to highlight (requires <code>textLayer</code>).",
+    "maxCanvasPixels": "Canvas pixel budget.",
+    "onError": "Rendering failed (cancellations are not failures).",
+    "onHighlight": "Receives the selected match’s element, e.g. to scroll it into view.",
+    "onLinkNavigate": "An internal link targets another page.",
+    "onRender": "After each completed render.",
+    "page": "1-based page; clamped to the document.",
+    "renderError": "Replaces the in-place error view.",
+    "rotation": "Added to the page’s intrinsic rotation.",
+    "scale": "Scale, <code>1</code> = 100%.",
+    "textLayer": "Selectable text layer.",
+    "className": "Added to the page element.",
+    "style": "Inline styles on the page element."
+  }
+}

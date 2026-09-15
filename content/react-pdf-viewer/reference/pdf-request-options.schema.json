@@ -1,0 +1,39 @@
+{
+  "name": "PdfRequestOptions",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L116",
+  "usedBy": [
+    "/react-pdf-viewer/authenticated-requests/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PdfRequestOptions } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "requestInit": {
+      "type": {
+        "name": "RequestInit",
+        "description": "RequestInit"
+      }
+    },
+    "fetcher": {
+      "type": {
+        "name": "func",
+        "description": "(url: string, init: RequestInit) => Promise<Response>"
+      }
+    },
+    "onHttpError": {
+      "type": {
+        "name": "func",
+        "description": "(response: Response) => boolean | void | Promise<boolean | void>"
+      }
+    },
+    "getHttpErrorMessage": {
+      "type": {
+        "name": "func",
+        "description": "(response: Response) => Promise<string>"
+      }
+    }
+  },
+  "inheritance": null
+}

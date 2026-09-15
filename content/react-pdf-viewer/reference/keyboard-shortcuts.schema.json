@@ -1,0 +1,89 @@
+{
+  "name": "Keyboard shortcuts",
+  "kind": "command",
+  "options": {
+    "0": {
+      "type": {
+        "name": "key",
+        "description": "0"
+      }
+    },
+    "PageUp": {
+      "type": {
+        "name": "key",
+        "description": "PageUp"
+      }
+    },
+    "PageDown": {
+      "type": {
+        "name": "key",
+        "description": "PageDown"
+      }
+    },
+    "ArrowLeft": {
+      "type": {
+        "name": "key",
+        "description": "ArrowLeft"
+      }
+    },
+    "ArrowRight": {
+      "type": {
+        "name": "key",
+        "description": "ArrowRight"
+      }
+    },
+    "Home": {
+      "type": {
+        "name": "key",
+        "description": "Home"
+      }
+    },
+    "End": {
+      "type": {
+        "name": "key",
+        "description": "End"
+      }
+    },
+    "+": {
+      "type": {
+        "name": "key",
+        "description": " + "
+      }
+    },
+    "-": {
+      "type": {
+        "name": "key",
+        "description": "-"
+      }
+    },
+    "r": {
+      "type": {
+        "name": "key",
+        "description": "r"
+      }
+    },
+    "Shift+R": {
+      "type": {
+        "name": "key",
+        "description": "Shift + R"
+      }
+    },
+    "f": {
+      "type": {
+        "name": "key",
+        "description": "f"
+      }
+    },
+    "Ctrl+F": {
+      "type": {
+        "name": "key",
+        "description": "Ctrl + F"
+      }
+    }
+  },
+  "usedBy": [
+    "/react-pdf-viewer/keyboard-shortcuts/"
+  ],
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L271"
+}

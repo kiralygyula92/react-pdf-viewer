@@ -1,0 +1,82 @@
+{
+  "name": "configurePdfJs",
+  "filename": "packages/react-pdf-viewer/src/core/pdfjs.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/core/pdfjs.ts#L106",
+  "usedBy": [
+    "/react-pdf-viewer/pdfjs-configuration/"
+  ],
+  "kind": "function",
+  "imports": [
+    "import { configurePdfJs } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "configurePdfJs(next: PdfJsConfig): void",
+  "returns": "void",
+  "options": {
+    "loader": {
+      "type": {
+        "name": "func",
+        "description": "() => Promise<module>"
+      },
+      "default": "() => import('pdfjs-dist')"
+    },
+    "workerSrc": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "the jsDelivr worker for the installed version"
+    },
+    "workerPort": {
+      "type": {
+        "name": "Worker",
+        "description": "Worker"
+      }
+    },
+    "cMapUrl": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "jsDelivr cmaps/ for the installed version"
+    },
+    "cMapPacked": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "true"
+    },
+    "standardFontDataUrl": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "jsDelivr standard_fonts/ for the installed version"
+    },
+    "wasmUrl": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "jsDelivr wasm/ for the installed version"
+    },
+    "iccUrl": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "default": "jsDelivr iccs/ for the installed version"
+    },
+    "isEvalSupported": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "default": "false"
+    }
+  },
+  "inheritance": {
+    "symbol": "PdfJsConfig",
+    "pathname": "/react-pdf-viewer/api/pdf-js-config/"
+  }
+}

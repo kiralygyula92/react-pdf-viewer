@@ -1,0 +1,36 @@
+{
+  "name": "ToolbarConfig",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L136",
+  "usedBy": [
+    "/react-pdf-viewer/toolbar/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { ToolbarConfig } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "position": {
+      "type": {
+        "name": "union",
+        "description": "'top' | 'bottom'"
+      },
+      "default": "'bottom'"
+    },
+    "actions": {
+      "type": {
+        "name": "readonly ToolbarAction[]",
+        "description": "readonly ToolbarAction[]"
+      },
+      "default": "all actions"
+    },
+    "hiddenWhenCompact": {
+      "type": {
+        "name": "readonly ToolbarAction[]",
+        "description": "readonly ToolbarAction[]"
+      },
+      "default": "['rotate', 'print']"
+    }
+  },
+  "inheritance": null
+}

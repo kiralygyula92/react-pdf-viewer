@@ -42,8 +42,14 @@ async function main() {
     }
     case 'reference': {
       // Loaded by URL: the generator pulls in TypeDoc, which the other commands never need.
-      const { runReference } = (await import(new URL('./reference/generate.ts', import.meta.url).href)) as {
-        runReference: (options: { contentRoot: string; entry: string; check: boolean }) => Promise<number>;
+      const { runReference } = (await import(
+        new URL('./reference/generate.ts', import.meta.url).href
+      )) as {
+        runReference: (options: {
+          contentRoot: string;
+          entry: string;
+          check: boolean;
+        }) => Promise<number>;
       };
       return runReference({
         contentRoot: resolve(positional[0] ?? '.'),

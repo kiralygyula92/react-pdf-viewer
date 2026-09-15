@@ -1,0 +1,13 @@
+{
+  "symbolDescription": "Options for <a href=\"/react-pdf-viewer/api/use-pdf-document/\"><code>usePdfDocument</code></a>. Changes apply on the next load, except <code>password</code>.",
+  "optionDescriptions": {
+    "fetcher": "As on <code>PdfViewer</code>.",
+    "getHttpErrorMessage": "As on <code>PdfViewer</code>.",
+    "onError": "Every load failure except aborts and handled HTTP errors.",
+    "onHttpError": "As on <code>PdfViewer</code>.",
+    "onLoad": "The document is ready.",
+    "password": "Password for encrypted documents. Changing it reloads the document.",
+    "pdfjsOptions": "Per-instance <code>getDocument</code> overrides.",
+    "requestInit": "As on <code>PdfViewer</code>."
+  }
+}

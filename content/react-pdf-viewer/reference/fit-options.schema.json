@@ -1,0 +1,33 @@
+{
+  "name": "FitOptions",
+  "filename": "packages/react-pdf-viewer/src/core/geometry.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/core/geometry.ts#L48",
+  "usedBy": [
+    "/react-pdf-viewer/rendering/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { FitOptions } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "width": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      }
+    },
+    "height": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      }
+    },
+    "upscale": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      }
+    }
+  },
+  "inheritance": null
+}

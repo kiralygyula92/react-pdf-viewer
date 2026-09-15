@@ -1,0 +1,13 @@
+{
+  "name": "PdfJsDocumentOptions",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L110",
+  "usedBy": [
+    "/react-pdf-viewer/pdfjs-configuration/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PdfJsDocumentOptions } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "type PdfJsDocumentOptions = Omit<DocumentInitParameters, 'url' | 'data' | 'password' | 'range' | 'worker' | 'httpHeaders' | 'withCredentials'>"
+}

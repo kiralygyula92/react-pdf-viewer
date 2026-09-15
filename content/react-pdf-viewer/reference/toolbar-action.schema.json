@@ -1,0 +1,75 @@
+{
+  "name": "ToolbarAction",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L44",
+  "usedBy": [
+    "/react-pdf-viewer/toolbar/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { ToolbarAction } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "type ToolbarAction = 'zoomOut' | 'zoomLevel' | 'zoomIn' | 'previousPage' | 'pageIndicator' | 'nextPage' | 'fullscreen' | 'rotate' | 'download' | 'print'",
+  "options": {
+    "zoomOut": {
+      "type": {
+        "name": "literal",
+        "description": "'zoomOut'"
+      }
+    },
+    "zoomLevel": {
+      "type": {
+        "name": "literal",
+        "description": "'zoomLevel'"
+      }
+    },
+    "zoomIn": {
+      "type": {
+        "name": "literal",
+        "description": "'zoomIn'"
+      }
+    },
+    "previousPage": {
+      "type": {
+        "name": "literal",
+        "description": "'previousPage'"
+      }
+    },
+    "pageIndicator": {
+      "type": {
+        "name": "literal",
+        "description": "'pageIndicator'"
+      }
+    },
+    "nextPage": {
+      "type": {
+        "name": "literal",
+        "description": "'nextPage'"
+      }
+    },
+    "fullscreen": {
+      "type": {
+        "name": "literal",
+        "description": "'fullscreen'"
+      }
+    },
+    "rotate": {
+      "type": {
+        "name": "literal",
+        "description": "'rotate'"
+      }
+    },
+    "download": {
+      "type": {
+        "name": "literal",
+        "description": "'download'"
+      }
+    },
+    "print": {
+      "type": {
+        "name": "literal",
+        "description": "'print'"
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "FullscreenMode",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L35",
+  "usedBy": [
+    "/react-pdf-viewer/fullscreen/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { FullscreenMode } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "type FullscreenMode = 'controlled' | 'native' | 'overlay'",
+  "options": {
+    "controlled": {
+      "type": {
+        "name": "literal",
+        "description": "'controlled'"
+      }
+    },
+    "native": {
+      "type": {
+        "name": "literal",
+        "description": "'native'"
+      }
+    },
+    "overlay": {
+      "type": {
+        "name": "literal",
+        "description": "'overlay'"
+      }
+    }
+  }
+}

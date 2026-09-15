@@ -1,0 +1,50 @@
+{
+  "name": "UsePdfDocumentResult",
+  "filename": "packages/react-pdf-viewer/src/hooks/usePdfDocument.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/hooks/usePdfDocument.ts#L28",
+  "usedBy": [
+    "/react-pdf-viewer/headless/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { UsePdfDocumentResult } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "status": {
+      "type": {
+        "name": "PdfDocumentStatus",
+        "description": "PdfDocumentStatus"
+      },
+      "required": true
+    },
+    "document": {
+      "type": {
+        "name": "union",
+        "description": "PDFDocumentProxy | null"
+      },
+      "required": true
+    },
+    "numPages": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "required": true
+    },
+    "error": {
+      "type": {
+        "name": "union",
+        "description": "PdfViewerError | null"
+      },
+      "required": true
+    },
+    "reload": {
+      "type": {
+        "name": "func",
+        "description": "() => void"
+      },
+      "required": true
+    }
+  },
+  "inheritance": null
+}

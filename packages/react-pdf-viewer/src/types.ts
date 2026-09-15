@@ -15,7 +15,15 @@ import type { PdfViewerLabels } from './labels.js';
 export type PdfSource = string | URL | ArrayBuffer | Uint8Array | Blob;
 
 /** Clockwise rotation in degrees, relative to the page's natural orientation. */
-export type Rotation = 0 | 90 | 180 | 270;
+export type Rotation =
+  /** Upright (the page's natural orientation). */
+  | 0
+  /** A quarter turn clockwise. */
+  | 90
+  /** Upside down. */
+  | 180
+  /** A quarter turn counter-clockwise. */
+  | 270;
 
 /**
  * How fullscreen is presented.
@@ -24,7 +32,13 @@ export type Rotation = 0 | 90 | 180 | 270;
  * - `'native'`: the browser Fullscreen API on the viewer root, falling back to `'overlay'`.
  * - `'overlay'`: a fixed, full-viewport layer with a focus trap; `Esc` closes it.
  */
-export type FullscreenMode = 'controlled' | 'native' | 'overlay';
+export type FullscreenMode =
+  /** Layout only: the parent decides how to present fullscreen. */
+  | 'controlled'
+  /** The browser Fullscreen API on the viewer root, falling back to `'overlay'`. */
+  | 'native'
+  /** A fixed, full-viewport layer with a focus trap and scroll lock; `Esc` closes it. */
+  | 'overlay';
 
 /** Identifies a toolbar control. */
 export type ToolbarAction =
@@ -40,7 +54,15 @@ export type ToolbarAction =
   | 'print';
 
 /** Lifecycle status of a document load. */
-export type PdfDocumentStatus = 'idle' | 'loading' | 'ready' | 'error';
+export type PdfDocumentStatus =
+  /** No source, or an HTTP error that `onHttpError` handled. */
+  | 'idle'
+  /** Fetching or parsing the document. */
+  | 'loading'
+  /** The document is loaded and pages can render. */
+  | 'ready'
+  /** Loading failed; the error is available. */
+  | 'error';
 
 /** Machine-readable category of a {@link PdfViewerError}. */
 export type PdfViewerErrorCode =
@@ -114,7 +136,11 @@ export interface PdfRequestOptions {
 export interface ToolbarConfig {
   /** Toolbar placement. Default `'bottom'`. */
   position?: 'bottom' | 'top' | undefined;
-  /** Actions to show. Default: all, in display order. */
+  /**
+   * Actions to show. Their order within each group is fixed.
+   *
+   * @defaultValue all actions
+   */
   actions?: readonly ToolbarAction[] | undefined;
   /** Actions hidden in compact, non-fullscreen mode. Default `['rotate', 'print']`. */
   hiddenWhenCompact?: readonly ToolbarAction[] | undefined;
@@ -164,7 +190,11 @@ export interface PdfViewerApi {
 export interface PdfViewerProps extends PdfRequestOptions {
   /** The document. `null`, `undefined` and `''` show the empty state. */
   source: PdfSource | null | undefined;
-  /** Download file name. Default: a `File`'s name, the URL's `.pdf` segment, else `document.pdf`. */
+  /**
+   * Download file name: a `File`'s name, else the URL's last `.pdf` segment, else `document.pdf`.
+   *
+   * @defaultValue derived from the source
+   */
   fileName?: string | undefined;
 
   /** Controlled 1-based page. */
@@ -187,7 +217,13 @@ export interface PdfViewerProps extends PdfRequestOptions {
   /** Initial fullscreen state when uncontrolled. Default `false`. */
   defaultFullscreen?: boolean | undefined;
   onFullscreenChange?: ((fullscreen: boolean) => void) | undefined;
-  /** Default: `'controlled'` when `fullscreen` is passed, else `'native'`. */
+  /**
+   * How fullscreen is presented. `'controlled'`: layout only, the parent presents it. `'native'`:
+   * the browser Fullscreen API on the viewer, falling back to `'overlay'`. `'overlay'`: a fixed
+   * full-viewport layer with a focus trap and scroll lock; `Esc` closes it.
+   *
+   * @defaultValue `'controlled'` when `fullscreen` is passed, else `'native'`
+   */
   fullscreenMode?: FullscreenMode | undefined;
 
   /** Zoom floor. Default `0.25`. */
@@ -215,15 +251,43 @@ export interface PdfViewerProps extends PdfRequestOptions {
   toolbar?: boolean | ToolbarConfig | undefined;
   /** Viewport width (px) below which the compact layout applies. Default `960`. */
   compactBreakpoint?: number | undefined;
-  /** Keyboard shortcuts while focus is inside the viewer. Default `true`. */
+  /**
+   * Keyboard shortcuts while focus is inside the viewer (never while typing in a field, or with
+   * Alt, Ctrl or ⌘ held). Default `true`.
+   *
+   * @shortcut PageUp Previous page.
+   * @shortcut PageDown Next page.
+   * @shortcut ArrowLeft Previous page; a zoomed page scrolls horizontally first.
+   * @shortcut ArrowRight Next page; a zoomed page scrolls horizontally first.
+   * @shortcut Home First page.
+   * @shortcut End Last page.
+   * @shortcut + Zoom in (`=` also works).
+   * @shortcut - Zoom out (`_` also works).
+   * @shortcut 0 Reset zoom to `defaultScale`.
+   * @shortcut r Rotate clockwise.
+   * @shortcut Shift+R Rotate counter-clockwise.
+   * @shortcut f Toggle fullscreen.
+   */
   keyboardShortcuts?: boolean | undefined;
   /** `'render'` prints through a hidden iframe; `'open-url'` opens the PDF in a new tab. Default `'render'`. */
   printMode?: 'render' | 'open-url' | undefined;
-  /** Canvas pixel budget per page. Default `16_777_216`. */
+  /**
+   * Canvas pixel budget per page (4096 × 4096). Above it, resolution degrades gracefully.
+   *
+   * @defaultValue `16777216`
+   */
   maxCanvasPixels?: number | undefined;
-  /** Label overrides (i18n). */
+  /**
+   * Label overrides (i18n). Keep the object stable (e.g. at module scope).
+   *
+   * @defaultValue English (`defaultLabels`)
+   */
   labels?: Partial<PdfViewerLabels> | undefined;
-  /** Locale for number formatting, e.g. `'hu-HU'`. */
+  /**
+   * BCP 47 locale for number formatting, e.g. `'hu-HU'`.
+   *
+   * @defaultValue the browser locale
+   */
   locale?: string | undefined;
 
   /** Page layout: `'single'` or `'continuous'` vertical scrolling. Default `'single'`. */
@@ -246,7 +310,11 @@ export interface PdfViewerProps extends PdfRequestOptions {
     | undefined;
   /** Page thumbnails sidebar (hidden in compact, non-fullscreen mode). Default `false`. */
   thumbnails?: boolean | undefined;
-  /** Find-in-document bar with highlighting (implies the text layer). Default `false`. */
+  /**
+   * Find-in-document bar with highlighting (implies the text layer). Default `false`.
+   *
+   * @shortcut Ctrl+F Focus the search field (`⌘+F` on macOS); `Enter` and `Shift+Enter` step through matches, `Escape` clears.
+   */
   search?: boolean | undefined;
 
   /** Replaces the loading view. */
@@ -274,6 +342,10 @@ export interface PdfViewerProps extends PdfRequestOptions {
   className?: string | undefined;
   style?: CSSProperties | undefined;
   id?: string | undefined;
-  /** Accessible name of the viewer. Default `labels.viewer`. */
+  /**
+   * Accessible name of the viewer region.
+   *
+   * @defaultValue `labels.viewer`
+   */
   'aria-label'?: string | undefined;
 }

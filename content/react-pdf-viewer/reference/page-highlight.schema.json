@@ -1,0 +1,29 @@
+{
+  "name": "PageHighlight",
+  "filename": "packages/react-pdf-viewer/src/hooks/usePageRenderer.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/hooks/usePageRenderer.ts#L46",
+  "usedBy": [
+    "/react-pdf-viewer/search/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PageHighlight } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "query": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "selected": {
+      "type": {
+        "name": "union",
+        "description": "number | null"
+      },
+      "required": true
+    }
+  },
+  "inheritance": null
+}

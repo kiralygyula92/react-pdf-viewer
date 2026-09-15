@@ -1,0 +1,13 @@
+{
+  "name": "PdfSource",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L15",
+  "usedBy": [
+    "/react-pdf-viewer/document-sources/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PdfSource } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "type PdfSource = string | URL | ArrayBuffer | Uint8Array | Blob"
+}

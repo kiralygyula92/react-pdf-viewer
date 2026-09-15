@@ -1,0 +1,39 @@
+{
+  "name": "PdfDocumentStatus",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L57",
+  "usedBy": [
+    "/react-pdf-viewer/loading-states/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PdfDocumentStatus } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "type PdfDocumentStatus = 'idle' | 'loading' | 'ready' | 'error'",
+  "options": {
+    "idle": {
+      "type": {
+        "name": "literal",
+        "description": "'idle'"
+      }
+    },
+    "loading": {
+      "type": {
+        "name": "literal",
+        "description": "'loading'"
+      }
+    },
+    "ready": {
+      "type": {
+        "name": "literal",
+        "description": "'ready'"
+      }
+    },
+    "error": {
+      "type": {
+        "name": "literal",
+        "description": "'error'"
+      }
+    }
+  }
+}

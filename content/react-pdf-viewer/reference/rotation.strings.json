@@ -1,0 +1,9 @@
+{
+  "symbolDescription": "Clockwise rotation in degrees, relative to the page's natural orientation.",
+  "optionDescriptions": {
+    "0": "Upright (the page's natural orientation).",
+    "90": "A quarter turn clockwise.",
+    "180": "Upside down.",
+    "270": "A quarter turn counter-clockwise."
+  }
+}

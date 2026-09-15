@@ -1,0 +1,133 @@
+{
+  "name": "rpv-theme-auto",
+  "kind": "setting-group",
+  "imports": [
+    "import '@kiralygyula92/react-pdf-viewer/styles.css';"
+  ],
+  "options": {
+    "--rpv-accent": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#90caf9"
+    },
+    "--rpv-error-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#160b0b"
+    },
+    "--rpv-error-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#f4c7c7"
+    },
+    "--rpv-error-icon": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#f44336"
+    },
+    "--rpv-focus-ring": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "2px solid #90caf9"
+    },
+    "--rpv-fullscreen-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#121212"
+    },
+    "--rpv-menu-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#2b363c"
+    },
+    "--rpv-menu-border": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgb(255 255 255 / 0.08)"
+    },
+    "--rpv-menu-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#eceff1"
+    },
+    "--rpv-menu-hover-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgb(255 255 255 / 0.08)"
+    },
+    "--rpv-menu-icon-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#b0bec5"
+    },
+    "--rpv-muted-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgba(255, 255, 255, 0.7)"
+    },
+    "--rpv-page-border": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "1px solid #37474f"
+    },
+    "--rpv-page-shadow": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "0 2px 12px rgba(0, 0, 0, 0.6)"
+    },
+    "--rpv-text-button-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#90caf9"
+    },
+    "--rpv-toolbar-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#263238"
+    },
+    "--rpv-toolbar-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#eceff1"
+    }
+  },
+  "usedBy": [
+    "/react-pdf-viewer/customization/theming/"
+  ],
+  "filename": "packages/react-pdf-viewer/src/styles/pdf-viewer.css",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/styles/pdf-viewer.css#L278"
+}

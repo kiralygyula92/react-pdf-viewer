@@ -1,0 +1,75 @@
+{
+  "name": "PdfViewerErrorCode",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L68",
+  "usedBy": [
+    "/react-pdf-viewer/error-states/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PdfViewerErrorCode } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "type PdfViewerErrorCode = 'PDFJS_LOAD_FAILED' | 'NETWORK_ERROR' | 'HTTP_ERROR' | 'INVALID_PDF' | 'PASSWORD_REQUIRED' | 'INCORRECT_PASSWORD' | 'RENDER_FAILED' | 'DOWNLOAD_FAILED' | 'PRINT_FAILED' | 'UNKNOWN'",
+  "options": {
+    "PDFJS_LOAD_FAILED": {
+      "type": {
+        "name": "literal",
+        "description": "'PDFJS_LOAD_FAILED'"
+      }
+    },
+    "NETWORK_ERROR": {
+      "type": {
+        "name": "literal",
+        "description": "'NETWORK_ERROR'"
+      }
+    },
+    "HTTP_ERROR": {
+      "type": {
+        "name": "literal",
+        "description": "'HTTP_ERROR'"
+      }
+    },
+    "INVALID_PDF": {
+      "type": {
+        "name": "literal",
+        "description": "'INVALID_PDF'"
+      }
+    },
+    "PASSWORD_REQUIRED": {
+      "type": {
+        "name": "literal",
+        "description": "'PASSWORD_REQUIRED'"
+      }
+    },
+    "INCORRECT_PASSWORD": {
+      "type": {
+        "name": "literal",
+        "description": "'INCORRECT_PASSWORD'"
+      }
+    },
+    "RENDER_FAILED": {
+      "type": {
+        "name": "literal",
+        "description": "'RENDER_FAILED'"
+      }
+    },
+    "DOWNLOAD_FAILED": {
+      "type": {
+        "name": "literal",
+        "description": "'DOWNLOAD_FAILED'"
+      }
+    },
+    "PRINT_FAILED": {
+      "type": {
+        "name": "literal",
+        "description": "'PRINT_FAILED'"
+      }
+    },
+    "UNKNOWN": {
+      "type": {
+        "name": "literal",
+        "description": "'UNKNOWN'"
+      }
+    }
+  }
+}

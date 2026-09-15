@@ -1,0 +1,3 @@
+{
+  "symbolDescription": "Per-instance options forwarded to <code>pdfjs-dist</code>'s <code>getDocument</code> (for example <code>cMapUrl</code>,\n<code>standardFontDataUrl</code> or <code>verbosity</code>). Source-related options are managed by the viewer."
+}

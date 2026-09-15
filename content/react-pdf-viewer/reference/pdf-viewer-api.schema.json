@@ -1,0 +1,149 @@
+{
+  "name": "PdfViewerApi",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L153",
+  "usedBy": [
+    "/react-pdf-viewer/imperative-api/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PdfViewerApi } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "status": {
+      "type": {
+        "name": "PdfDocumentStatus",
+        "description": "PdfDocumentStatus"
+      },
+      "required": true
+    },
+    "numPages": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "required": true
+    },
+    "page": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "required": true
+    },
+    "scale": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "required": true
+    },
+    "rotation": {
+      "type": {
+        "name": "Rotation",
+        "description": "Rotation"
+      },
+      "required": true
+    },
+    "fullscreen": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "required": true
+    },
+    "canZoomIn": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "required": true
+    },
+    "canZoomOut": {
+      "type": {
+        "name": "boolean",
+        "description": "boolean"
+      },
+      "required": true
+    },
+    "goToPage": {
+      "type": {
+        "name": "func",
+        "description": "(page: number) => void"
+      }
+    },
+    "nextPage": {
+      "type": {
+        "name": "func",
+        "description": "() => void"
+      }
+    },
+    "previousPage": {
+      "type": {
+        "name": "func",
+        "description": "() => void"
+      }
+    },
+    "zoomIn": {
+      "type": {
+        "name": "func",
+        "description": "() => void"
+      }
+    },
+    "zoomOut": {
+      "type": {
+        "name": "func",
+        "description": "() => void"
+      }
+    },
+    "setScale": {
+      "type": {
+        "name": "func",
+        "description": "(scale: number) => void"
+      }
+    },
+    "resetZoom": {
+      "type": {
+        "name": "func",
+        "description": "() => void"
+      }
+    },
+    "rotate": {
+      "type": {
+        "name": "func",
+        "description": "(direction?: 'cw' | 'ccw') => void"
+      }
+    },
+    "toggleFullscreen": {
+      "type": {
+        "name": "func",
+        "description": "() => void"
+      }
+    },
+    "download": {
+      "type": {
+        "name": "func",
+        "description": "() => Promise<void>"
+      }
+    },
+    "print": {
+      "type": {
+        "name": "func",
+        "description": "() => Promise<void>"
+      }
+    },
+    "reload": {
+      "type": {
+        "name": "func",
+        "description": "() => void"
+      }
+    },
+    "getDocument": {
+      "type": {
+        "name": "func",
+        "description": "() => PDFDocumentProxy | null"
+      }
+    }
+  },
+  "inheritance": null
+}

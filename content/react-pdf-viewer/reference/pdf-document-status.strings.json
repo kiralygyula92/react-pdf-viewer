@@ -1,0 +1,9 @@
+{
+  "symbolDescription": "Lifecycle status of a document load.",
+  "optionDescriptions": {
+    "idle": "No source, or an HTTP error that <code>onHttpError</code> handled.",
+    "loading": "Fetching or parsing the document.",
+    "ready": "The document is loaded and pages can render.",
+    "error": "Loading failed; the error is available."
+  }
+}

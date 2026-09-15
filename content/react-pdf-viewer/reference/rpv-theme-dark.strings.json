@@ -1,0 +1,22 @@
+{
+  "symbolDescription": "Dark preset: add <code>className=\"rpv-theme-dark\"</code> to the viewer to apply these values.",
+  "optionDescriptions": {
+    "--rpv-accent": "Accent: focus outlines outside the toolbar, progress, the current thumbnail (dark value).",
+    "--rpv-error-bg": "Error view background (dark value).",
+    "--rpv-error-fg": "Error view text (dark value).",
+    "--rpv-error-icon": "Error view icon (dark value).",
+    "--rpv-focus-ring": "Focus outline of toolbar controls (dark value).",
+    "--rpv-fullscreen-bg": "Fullscreen background (dark value).",
+    "--rpv-menu-bg": "Menu surface (dark value).",
+    "--rpv-menu-border": "Menu border color (dark value).",
+    "--rpv-menu-fg": "Menu item text (dark value).",
+    "--rpv-menu-hover-bg": "Hovered and focused item (dark value).",
+    "--rpv-menu-icon-fg": "Menu item icons (dark value).",
+    "--rpv-muted-fg": "Secondary text (dark value).",
+    "--rpv-page-border": "Page border (dark value).",
+    "--rpv-page-shadow": "Page shadow (dark value).",
+    "--rpv-text-button-fg": "Retry and Cancel text buttons (dark value).",
+    "--rpv-toolbar-bg": "Toolbar background (dark value).",
+    "--rpv-toolbar-fg": "Toolbar icons and text (dark value)."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "symbolDescription": "Loads a PDF document. Every source change aborts the previous fetch, discards its result and\ndestroys the previous document; unmounting does the same.",
+  "optionDescriptions": {
+    "fetcher": "As on <code>PdfViewer</code>.",
+    "getHttpErrorMessage": "As on <code>PdfViewer</code>.",
+    "onError": "Every load failure except aborts and handled HTTP errors.",
+    "onHttpError": "As on <code>PdfViewer</code>.",
+    "onLoad": "The document is ready.",
+    "password": "Password for encrypted documents. Changing it reloads the document.",
+    "pdfjsOptions": "Per-instance <code>getDocument</code> overrides.",
+    "requestInit": "As on <code>PdfViewer</code>."
+  }
+}

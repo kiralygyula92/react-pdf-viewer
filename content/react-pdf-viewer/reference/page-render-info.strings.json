@@ -1,0 +1,10 @@
+{
+  "symbolDescription": "Details of a completed page render.",
+  "optionDescriptions": {
+    "durationMs": "Time from request to completion.",
+    "height": "Rendered CSS height in pixels.",
+    "page": "The page rendered (after clamping).",
+    "scale": "The scale actually rendered (after fitting).",
+    "width": "Rendered CSS width in pixels."
+  }
+}

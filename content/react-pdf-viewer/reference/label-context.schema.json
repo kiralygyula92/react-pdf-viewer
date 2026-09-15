@@ -1,0 +1,22 @@
+{
+  "name": "LabelContext",
+  "filename": "packages/react-pdf-viewer/src/labels.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/labels.ts#L4",
+  "usedBy": [
+    "/react-pdf-viewer/labels/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { LabelContext } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "formatNumber": {
+      "type": {
+        "name": "func",
+        "description": "(value: number) => string"
+      },
+      "required": true
+    }
+  },
+  "inheritance": null
+}

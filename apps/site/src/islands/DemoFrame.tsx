@@ -1,14 +1,7 @@
 import '@kiralygyula92/react-pdf-viewer/styles.css';
 import sdk from '@stackblitz/sdk';
 import { DemoToolbar } from 'ppds-kit/react/DemoToolbar.tsx';
-import {
-  Component,
-  lazy,
-  Suspense,
-  useState,
-  type ComponentType,
-  type ReactNode,
-} from 'react';
+import { Component, lazy, Suspense, useState, type ComponentType, type ReactNode } from 'react';
 import '../pdfjs';
 import '../styles/demos.css';
 import { stackblitzProject } from './sandbox';
@@ -18,7 +11,9 @@ const PREFIX = '../../../../content/react-pdf-viewer/';
 /** One lazy component per colocated demo, created once at module level. */
 const demos = Object.fromEntries(
   Object.entries(
-    import.meta.glob<{ default: ComponentType }>('../../../../content/react-pdf-viewer/**/demo-*.tsx'),
+    import.meta.glob<{ default: ComponentType }>(
+      '../../../../content/react-pdf-viewer/**/demo-*.tsx',
+    ),
   ).map(([path, load]) => [path.slice(PREFIX.length).replace(/.tsx$/, ''), lazy(load)]),
 );
 

@@ -1,0 +1,7 @@
+{
+  "symbolDescription": "Search highlighting for one page's text layer.",
+  "optionDescriptions": {
+    "query": "Text to highlight, case-insensitive.",
+    "selected": "Index of the page’s match to mark as selected."
+  }
+}

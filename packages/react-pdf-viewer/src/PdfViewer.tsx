@@ -92,6 +92,14 @@ function revealWithin(scroller: HTMLElement, element: HTMLElement) {
  *
  * <PdfViewer source="/files/document.pdf" fileName="document.pdf" />
  * ```
+ *
+ * @cssClass rpv-root The root element. Add `rpv-theme-dark`, or `rpv-theme-auto` to follow the operating system, for the dark preset.
+ * @cssAttribute data-status Document status: `idle`, `loading`, `ready` or `error`.
+ * @cssAttribute data-layout The `layout` prop: `single` or `continuous`.
+ * @cssAttribute data-compact Present while the viewport is narrower than `compactBreakpoint`.
+ * @cssAttribute data-fullscreen Present in fullscreen, in any mode.
+ * @cssAttribute data-presentation How fullscreen is presented: `layout` (controlled mode), `native` or `overlay`.
+ * @cssAttribute data-zoomed Present while the scale is above `defaultScale`.
  */
 export const PdfViewer = forwardRef<PdfViewerApi, PdfViewerProps>(function PdfViewer(props, ref) {
   const {

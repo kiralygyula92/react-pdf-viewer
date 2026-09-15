@@ -1,0 +1,9 @@
+{
+  "symbolDescription": "Controls how string and <code>URL</code> sources are fetched.",
+  "optionDescriptions": {
+    "fetcher": "Replaces <code>fetch</code> entirely, e.g. with an authenticated HTTP client.",
+    "getHttpErrorMessage": "Builds the <code>HTTP_ERROR</code> message. Return <code>undefined</code> for the default: an RFC 7807 <code>detail</code>, then <code>title</code>, then a JSON string body, then <code>Failed to fetch PDF: {status} {statusText}</code>.",
+    "onHttpError": "Called for non-2xx responses. Return <code>true</code> when handled (e.g. after redirecting to sign-in): the viewer shows its empty state and does not call <code>onError</code>.",
+    "requestInit": "Extra <code>fetch</code> options for URL sources: headers, <code>credentials</code>, <code>mode</code>, …"
+  }
+}

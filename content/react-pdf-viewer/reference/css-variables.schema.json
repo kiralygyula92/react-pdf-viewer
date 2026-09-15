@@ -1,0 +1,392 @@
+{
+  "name": "CSS variables",
+  "kind": "setting-group",
+  "imports": [
+    "import '@kiralygyula92/react-pdf-viewer/styles.css';"
+  ],
+  "options": {
+    "--rpv-accent": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#1976d2"
+    },
+    "--rpv-button-disabled-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgba(255, 255, 255, 0.3)"
+    },
+    "--rpv-button-hover-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgba(255, 255, 255, 0.1)"
+    },
+    "--rpv-button-size": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "34px"
+    },
+    "--rpv-error-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#fdeded"
+    },
+    "--rpv-error-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#5f2120"
+    },
+    "--rpv-error-icon": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#d32f2f"
+    },
+    "--rpv-focus-ring": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "2px solid #ffffff"
+    },
+    "--rpv-focus-ring-offset": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "2px"
+    },
+    "--rpv-font-family": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "inherit"
+    },
+    "--rpv-fullscreen-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#ffffff"
+    },
+    "--rpv-icon-size": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "24px"
+    },
+    "--rpv-label-font-size": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "14px"
+    },
+    "--rpv-label-font-weight": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "600"
+    },
+    "--rpv-menu-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#ffffff"
+    },
+    "--rpv-menu-border": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgb(0 0 0 / 0.08)"
+    },
+    "--rpv-menu-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#1f2a30"
+    },
+    "--rpv-menu-hover-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgb(84 100 110 / 0.12)"
+    },
+    "--rpv-menu-icon-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#54646e"
+    },
+    "--rpv-menu-shadow": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "0 10px 28px rgb(15 23 42 / 0.18),\n      0 2px 6px rgb(15 23 42 / 0.12)"
+    },
+    "--rpv-muted-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgba(0, 0, 0, 0.6)"
+    },
+    "--rpv-overlay-z-index": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "1300"
+    },
+    "--rpv-page-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#ffffff"
+    },
+    "--rpv-page-border": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "1px solid #dddddd"
+    },
+    "--rpv-page-gap": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "16px"
+    },
+    "--rpv-page-input-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgb(0 0 0 / 0.22)"
+    },
+    "--rpv-page-input-border": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgb(255 255 255 / 0.35)"
+    },
+    "--rpv-page-input-chars": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "2"
+    },
+    "--rpv-page-radius": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "4px"
+    },
+    "--rpv-page-shadow": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "0 2px 8px rgba(0, 0, 0, 0.1)"
+    },
+    "--rpv-search-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#ffffff"
+    },
+    "--rpv-search-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#37474f"
+    },
+    "--rpv-search-highlight": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgb(255 213 0 / 0.5)"
+    },
+    "--rpv-search-highlight-selected": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgb(255 111 0 / 0.6)"
+    },
+    "--rpv-selection-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "rgb(0 0 255 / 0.25)"
+    },
+    "--rpv-text-button-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#1565c0"
+    },
+    "--rpv-thumbnails-width": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "148px"
+    },
+    "--rpv-toolbar-bg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#54646e"
+    },
+    "--rpv-toolbar-fg": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "#ffffff"
+    },
+    "--rpv-toolbar-gap": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "8px"
+    },
+    "--rpv-toolbar-group-gap": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "16px"
+    },
+    "--rpv-toolbar-margin-bottom": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "40px"
+    },
+    "--rpv-toolbar-max-width": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "482px"
+    },
+    "--rpv-toolbar-min-height": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "48px"
+    },
+    "--rpv-toolbar-padding-x": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "16px"
+    },
+    "--rpv-toolbar-radius": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "8px"
+    },
+    "--rpv-viewport-margin-bottom": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "64px"
+    },
+    "--rpv-viewport-max-height": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "800px"
+    },
+    "--rpv-viewport-max-width": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "650px"
+    },
+    "--rpv-viewport-min-height": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "712px"
+    },
+    "--rpv-viewport-min-height-compact": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "400px"
+    },
+    "--rpv-viewport-padding": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "0px"
+    },
+    "--rpv-viewport-padding-compact": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "16px"
+    },
+    "--rpv-viewport-padding-fullscreen": {
+      "type": {
+        "name": "css",
+        "description": "CSS value"
+      },
+      "default": "32px"
+    }
+  },
+  "usedBy": [
+    "/react-pdf-viewer/customization/theming/"
+  ],
+  "filename": "packages/react-pdf-viewer/src/styles/pdf-viewer.css",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/styles/pdf-viewer.css#L90"
+}

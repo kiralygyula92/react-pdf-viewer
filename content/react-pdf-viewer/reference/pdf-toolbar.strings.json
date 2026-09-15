@@ -1,0 +1,13 @@
+{
+  "symbolDescription": "The default toolbar: zoom, page navigation, fullscreen, rotate, download and print, on one\nrow. When the row does not fit, secondary actions collapse into a \"More actions\" menu. Usable\non its own, e.g. inside <code>renderToolbar</code>.",
+  "optionDescriptions": {
+    "api": "The viewer API, from a <code>ref</code> or <code>renderToolbar</code>.",
+    "compact": "Compact layout: hides <code>hiddenWhenCompact</code> actions outside fullscreen.",
+    "config": "Which actions to show.",
+    "labels": "Label overrides.",
+    "locale": "Locale for number formatting.",
+    "menuPlacement": "Where the More actions menu opens. <code>PdfViewer</code> picks the side away from the edge.",
+    "pageIndicator": "Replaces the page indicator text, e.g. with your own input.",
+    "zoomReset": "The zoom label becomes a reset button."
+  }
+}

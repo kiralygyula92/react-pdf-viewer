@@ -1,0 +1,68 @@
+{
+  "name": "usePdfDocument",
+  "filename": "packages/react-pdf-viewer/src/hooks/usePdfDocument.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/hooks/usePdfDocument.ts#L54",
+  "usedBy": [
+    "/react-pdf-viewer/headless/"
+  ],
+  "kind": "hook",
+  "imports": [
+    "import { usePdfDocument } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "usePdfDocument(source: PdfSource | null, options?: UsePdfDocumentOptions): UsePdfDocumentResult",
+  "returns": "UsePdfDocumentResult",
+  "options": {
+    "password": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      }
+    },
+    "pdfjsOptions": {
+      "type": {
+        "name": "PdfJsDocumentOptions",
+        "description": "PdfJsDocumentOptions"
+      }
+    },
+    "onLoad": {
+      "type": {
+        "name": "func",
+        "description": "(document: PDFDocumentProxy) => void"
+      }
+    },
+    "onError": {
+      "type": {
+        "name": "func",
+        "description": "(error: PdfViewerError) => void"
+      }
+    },
+    "requestInit": {
+      "type": {
+        "name": "RequestInit",
+        "description": "RequestInit"
+      }
+    },
+    "fetcher": {
+      "type": {
+        "name": "func",
+        "description": "(url: string, init: RequestInit) => Promise<Response>"
+      }
+    },
+    "onHttpError": {
+      "type": {
+        "name": "func",
+        "description": "(response: Response) => boolean | void | Promise<boolean | void>"
+      }
+    },
+    "getHttpErrorMessage": {
+      "type": {
+        "name": "func",
+        "description": "(response: Response) => Promise<string>"
+      }
+    }
+  },
+  "inheritance": {
+    "symbol": "UsePdfDocumentOptions",
+    "pathname": "/react-pdf-viewer/api/use-pdf-document-options/"
+  }
+}

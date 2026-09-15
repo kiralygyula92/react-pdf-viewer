@@ -1,0 +1,13 @@
+{
+  "name": "PdfJsModule",
+  "filename": "packages/react-pdf-viewer/src/core/pdfjs.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/core/pdfjs.ts#L7",
+  "usedBy": [
+    "/react-pdf-viewer/pdfjs-configuration/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PdfJsModule } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "type PdfJsModule = typeof PdfJsNamespace"
+}

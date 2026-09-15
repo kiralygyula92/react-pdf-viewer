@@ -1,0 +1,9 @@
+{
+  "symbolDescription": "A typed viewer error. Aborted loads and cancelled renders are never reported as errors.",
+  "optionDescriptions": {
+    "cause": "The underlying error, when there is one.",
+    "code": "Machine-readable category.",
+    "message": "Human-readable message; for <code>HTTP_ERROR</code> it comes from <code>getHttpErrorMessage</code>.",
+    "status": "The HTTP status, for <code>HTTP_ERROR</code>."
+  }
+}

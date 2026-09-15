@@ -13,23 +13,46 @@ export type PdfJsModule = typeof PdfJsNamespace;
  */
 export interface PdfJsConfig {
   /**
-   * Returns the `pdfjs-dist` module. Defaults to `() => import('pdfjs-dist')`. Use it to select the
-   * legacy build (`() => import('pdfjs-dist/legacy/build/pdf.mjs')`) or a pre-loaded instance.
+   * Returns the `pdfjs-dist` module. Use it to select the legacy build
+   * (`() => import('pdfjs-dist/legacy/build/pdf.mjs')`) or a pre-loaded instance.
+   *
+   * @defaultValue `() => import('pdfjs-dist')`
    */
   loader?: () => Promise<PdfJsModule>;
-  /** Worker script URL (e.g. from `import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url'`). */
+  /**
+   * Worker script URL (e.g. from `import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url'`).
+   * A worker already set on `GlobalWorkerOptions` is respected.
+   *
+   * @defaultValue the jsDelivr worker for the installed version
+   */
   workerSrc?: string;
   /** A ready `Worker` running the PDF.js worker script. Takes precedence over `workerSrc`. */
   workerPort?: Worker;
-  /** Base URL of the CMap files, with a trailing slash. */
+  /**
+   * Base URL of the CMap files, with a trailing slash.
+   *
+   * @defaultValue jsDelivr `cmaps/` for the installed version
+   */
   cMapUrl?: string;
   /** Whether the CMaps are binary-packed. Default `true`. */
   cMapPacked?: boolean;
-  /** Base URL of the standard font data, with a trailing slash. */
+  /**
+   * Base URL of the standard font data, with a trailing slash.
+   *
+   * @defaultValue jsDelivr `standard_fonts/` for the installed version
+   */
   standardFontDataUrl?: string;
-  /** Base URL of the WebAssembly decoders, with a trailing slash. */
+  /**
+   * Base URL of the WebAssembly decoders, with a trailing slash.
+   *
+   * @defaultValue jsDelivr `wasm/` for the installed version
+   */
   wasmUrl?: string;
-  /** Base URL of the ICC color profiles, with a trailing slash. */
+  /**
+   * Base URL of the ICC color profiles, with a trailing slash.
+   *
+   * @defaultValue jsDelivr `iccs/` for the installed version
+   */
   iccUrl?: string;
   /**
    * Forwarded to `getDocument` for builds that still support it. Default `false` (defense in depth

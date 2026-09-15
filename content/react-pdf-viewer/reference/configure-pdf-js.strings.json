@@ -1,0 +1,14 @@
+{
+  "symbolDescription": "Configures PDF.js for every viewer instance. Call it once at startup, before the first viewer\nmounts. Calls merge with previous configuration.",
+  "optionDescriptions": {
+    "cMapPacked": "Whether the CMaps are packed.",
+    "cMapUrl": "CMap files, trailing slash.",
+    "iccUrl": "ICC color profiles, trailing slash.",
+    "isEvalSupported": "Forwarded to <code>getDocument</code>; kept <code>false</code> as defense in depth (CVE-2024-4367).",
+    "loader": "Returns the <code>pdfjs-dist</code> module, e.g. <code>() =&gt; import('pdfjs-dist/legacy/build/pdf.mjs')</code> for older browsers.",
+    "standardFontDataUrl": "Standard font data, trailing slash.",
+    "wasmUrl": "WebAssembly image decoders, trailing slash.",
+    "workerPort": "A ready <code>Worker</code> running the PDF.js worker; takes precedence over <code>workerSrc</code>.",
+    "workerSrc": "Worker script URL. A worker you set on <code>GlobalWorkerOptions</code> yourself is respected."
+  }
+}

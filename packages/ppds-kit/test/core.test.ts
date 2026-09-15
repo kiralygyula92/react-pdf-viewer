@@ -49,7 +49,9 @@ describe('csv', () => {
 
 describe('markdown', () => {
   it('splits frontmatter and finds headings outside code fences', () => {
-    const { frontmatter, body } = parseDoc('---\ntitle: T\n---\n## Basics\n```md\n## Not a heading\n```\n### Variant A\n');
+    const { frontmatter, body } = parseDoc(
+      '---\ntitle: T\n---\n## Basics\n```md\n## Not a heading\n```\n### Variant A\n',
+    );
     assert.equal(frontmatter['title'], 'T');
     assert.deepEqual(
       headingsOf(body).map((h) => [h.depth, h.text, h.slug]),
@@ -64,7 +66,7 @@ describe('markdown', () => {
 
   it('converts MDX to a Markdown twin', () => {
     const markdown = toMarkdownTwin(
-      "import X from 'x';\n\n## Basics\n\n<Demo id=\"features/a/demo-basics\" title=\"Basic\" />\n\n<Callout type=\"warning\">Careful</Callout>\n\nSee [API](/p/api/).\n",
+      'import X from \'x\';\n\n## Basics\n\n<Demo id="features/a/demo-basics" title="Basic" />\n\n<Callout type="warning">Careful</Callout>\n\nSee [API](/p/api/).\n',
       {
         demoSource: () => ({ code: 'export default 1;', lang: 'tsx' }),
         absolute: (href) => `https://site.test${href}`,
@@ -90,15 +92,26 @@ describe('machine surface', () => {
     config: { id: 'p', name: 'Plugin', tagline: 'Tag.', description: 'Desc.' },
     pages: [
       { pathname: '/p/', title: 'Overview', sectionTitle: 'Getting started', archetype: 'A' },
-      { pathname: '/p/llms.txt', title: 'llms.txt', sectionTitle: 'Getting started', archetype: null },
+      {
+        pathname: '/p/llms.txt',
+        title: 'llms.txt',
+        sectionTitle: 'Getting started',
+        archetype: null,
+      },
       { pathname: '/p/zoom/', title: 'Zoom', sectionTitle: 'Features', archetype: 'B' },
     ],
   } as unknown as PluginModel;
 
   it('writes llms.txt in the §7.7 format', () => {
     const text = llmsTxt(model, 'https://site.test', new Map([['/p/zoom/', 'Zoom in and out.']]));
-    assert.match(text, /^# Plugin\n\n> Tag\.\n\nDesc\.\n\n## Getting started\n\n- \[Overview\]\(https:\/\/site\.test\/p\.md\): \n/);
-    assert.match(text, /## Features\n\n- \[Zoom\]\(https:\/\/site\.test\/p\/zoom\.md\): Zoom in and out\./);
+    assert.match(
+      text,
+      /^# Plugin\n\n> Tag\.\n\nDesc\.\n\n## Getting started\n\n- \[Overview\]\(https:\/\/site\.test\/p\.md\): \n/,
+    );
+    assert.match(
+      text,
+      /## Features\n\n- \[Zoom\]\(https:\/\/site\.test\/p\/zoom\.md\): Zoom in and out\./,
+    );
     assert.doesNotMatch(text, /llms\.txt\]/);
   });
 

@@ -1,0 +1,50 @@
+{
+  "name": "PageRenderInfo",
+  "filename": "packages/react-pdf-viewer/src/hooks/usePageRenderer.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/hooks/usePageRenderer.ts#L32",
+  "usedBy": [
+    "/react-pdf-viewer/events/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PageRenderInfo } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "page": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "required": true
+    },
+    "scale": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "required": true
+    },
+    "width": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "required": true
+    },
+    "height": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "required": true
+    },
+    "durationMs": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      },
+      "required": true
+    }
+  },
+  "inheritance": null
+}

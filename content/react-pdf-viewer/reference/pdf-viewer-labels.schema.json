@@ -1,0 +1,246 @@
+{
+  "name": "PdfViewerLabels",
+  "filename": "packages/react-pdf-viewer/src/labels.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/labels.ts#L13",
+  "usedBy": [
+    "/react-pdf-viewer/labels/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PdfViewerLabels } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "viewer": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "toolbar": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "document": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "zoomOut": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "zoomIn": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "zoomLevel": {
+      "type": {
+        "name": "func",
+        "description": "(percent: number, context: LabelContext) => string"
+      },
+      "required": true
+    },
+    "resetZoom": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "previousPage": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "nextPage": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "pageIndicator": {
+      "type": {
+        "name": "func",
+        "description": "(page: number, total: number, context: LabelContext) => string"
+      },
+      "required": true
+    },
+    "pageAriaLabel": {
+      "type": {
+        "name": "func",
+        "description": "(page: number, total: number, context: LabelContext) => string"
+      },
+      "required": true
+    },
+    "pageInput": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "enterFullscreen": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "exitFullscreen": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "rotate": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "download": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "print": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "moreActions": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "loading": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "retry": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "empty": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "printProgress": {
+      "type": {
+        "name": "func",
+        "description": "(done: number, total: number, context: LabelContext) => string"
+      },
+      "required": true
+    },
+    "cancel": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "passwordPrompt": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "passwordLabel": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "passwordSubmit": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "passwordIncorrect": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "thumbnails": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "search": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "searchResults": {
+      "type": {
+        "name": "func",
+        "description": "(current: number, total: number, context: LabelContext) => string"
+      },
+      "required": true
+    },
+    "searchPrevious": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "searchNext": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "searchNoResults": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    }
+  },
+  "inheritance": null
+}

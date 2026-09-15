@@ -1,0 +1,279 @@
+{
+  "name": "defaultLabels",
+  "filename": "packages/react-pdf-viewer/src/labels.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/labels.ts#L64",
+  "usedBy": [
+    "/react-pdf-viewer/labels/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import { defaultLabels } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "signature": "const defaultLabels: PdfViewerLabels",
+  "options": {
+    "viewer": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'PDF viewer'"
+    },
+    "toolbar": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'PDF controls'"
+    },
+    "document": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Document'"
+    },
+    "zoomOut": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Zoom out'"
+    },
+    "zoomIn": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Zoom in'"
+    },
+    "zoomLevel": {
+      "type": {
+        "name": "func",
+        "description": "(percent: number, context: LabelContext) => string"
+      },
+      "required": true,
+      "default": "function"
+    },
+    "resetZoom": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Reset zoom'"
+    },
+    "previousPage": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Previous page'"
+    },
+    "nextPage": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Next page'"
+    },
+    "pageIndicator": {
+      "type": {
+        "name": "func",
+        "description": "(page: number, total: number, context: LabelContext) => string"
+      },
+      "required": true,
+      "default": "function"
+    },
+    "pageAriaLabel": {
+      "type": {
+        "name": "func",
+        "description": "(page: number, total: number, context: LabelContext) => string"
+      },
+      "required": true,
+      "default": "function"
+    },
+    "pageInput": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Page number'"
+    },
+    "enterFullscreen": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Enter fullscreen'"
+    },
+    "exitFullscreen": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Exit fullscreen'"
+    },
+    "rotate": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Rotate PDF'"
+    },
+    "download": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Download PDF'"
+    },
+    "print": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Print PDF'"
+    },
+    "moreActions": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'More actions'"
+    },
+    "loading": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Loading PDF...'"
+    },
+    "retry": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Retry'"
+    },
+    "empty": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'No document'"
+    },
+    "printProgress": {
+      "type": {
+        "name": "func",
+        "description": "(done: number, total: number, context: LabelContext) => string"
+      },
+      "required": true,
+      "default": "function"
+    },
+    "cancel": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Cancel'"
+    },
+    "passwordPrompt": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'This document is password protected'"
+    },
+    "passwordLabel": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Password'"
+    },
+    "passwordSubmit": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Open'"
+    },
+    "passwordIncorrect": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Incorrect password. Please try again.'"
+    },
+    "thumbnails": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Pages'"
+    },
+    "search": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Search in document'"
+    },
+    "searchResults": {
+      "type": {
+        "name": "func",
+        "description": "(current: number, total: number, context: LabelContext) => string"
+      },
+      "required": true,
+      "default": "function"
+    },
+    "searchPrevious": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Previous match'"
+    },
+    "searchNext": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'Next match'"
+    },
+    "searchNoResults": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true,
+      "default": "'No matches'"
+    }
+  }
+}

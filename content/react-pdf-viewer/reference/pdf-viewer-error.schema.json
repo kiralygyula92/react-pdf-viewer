@@ -1,0 +1,41 @@
+{
+  "name": "PdfViewerError",
+  "filename": "packages/react-pdf-viewer/src/types.ts",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/types.ts#L93",
+  "usedBy": [
+    "/react-pdf-viewer/error-states/"
+  ],
+  "kind": "type",
+  "imports": [
+    "import type { PdfViewerError } from '@kiralygyula92/react-pdf-viewer';"
+  ],
+  "options": {
+    "code": {
+      "type": {
+        "name": "PdfViewerErrorCode",
+        "description": "PdfViewerErrorCode"
+      },
+      "required": true
+    },
+    "message": {
+      "type": {
+        "name": "string",
+        "description": "string"
+      },
+      "required": true
+    },
+    "status": {
+      "type": {
+        "name": "number",
+        "description": "number"
+      }
+    },
+    "cause": {
+      "type": {
+        "name": "unknown",
+        "description": "unknown"
+      }
+    }
+  },
+  "inheritance": null
+}

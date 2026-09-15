@@ -1,0 +1,15 @@
+{
+  "symbolDescription": "Machine-readable category of a <a href=\"/react-pdf-viewer/api/pdf-viewer-error/\"><code>PdfViewerError</code></a>.",
+  "optionDescriptions": {
+    "PDFJS_LOAD_FAILED": "The <code>pdfjs-dist</code> module or its worker failed to load.",
+    "NETWORK_ERROR": "<code>fetch</code> rejected: offline, CORS, DNS, …",
+    "HTTP_ERROR": "The server answered with a non-2xx status (<code>status</code> is set).",
+    "INVALID_PDF": "The bytes are not a valid PDF.",
+    "PASSWORD_REQUIRED": "The document is encrypted and no password was supplied.",
+    "INCORRECT_PASSWORD": "The supplied password is wrong.",
+    "RENDER_FAILED": "A page failed to render.",
+    "DOWNLOAD_FAILED": "Saving the document failed.",
+    "PRINT_FAILED": "Printing failed.",
+    "UNKNOWN": "Anything else."
+  }
+}

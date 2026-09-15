@@ -1,0 +1,26 @@
+{
+  "symbolDescription": "Imperative viewer API, available through <code>ref</code> and passed to <code>renderToolbar</code>. Values are a\nsnapshot of the render that produced the object.",
+  "optionDescriptions": {
+    "canZoomIn": "Whether <code>zoomIn()</code> would change the scale.",
+    "canZoomOut": "Whether <code>zoomOut()</code> would change the scale.",
+    "numPages": "Page count; <code>0</code> without a document.",
+    "page": "Current 1-based page, clamped to the document.",
+    "scale": "Current scale (<code>1</code> = 100%).",
+    "download": "Save the loaded document (no second request).",
+    "getDocument": "The loaded PDF.js document, for advanced use. Do not destroy it.",
+    "print": "Print according to <code>printMode</code>.",
+    "reload": "Load the source again, e.g. after an error.",
+    "resetZoom": "Return to <code>defaultScale</code>.",
+    "rotate": "Rotate by 90°, clockwise by default.",
+    "setScale": "Set the scale, clamped to <code>[minScale, maxScale]</code>.",
+    "status": "Document status.",
+    "rotation": "Current user rotation.",
+    "fullscreen": "Whether the viewer is in fullscreen.",
+    "goToPage": "Go to a page (clamped).",
+    "nextPage": "Next page.",
+    "previousPage": "Previous page.",
+    "zoomIn": "One step (or preset) up.",
+    "zoomOut": "One step (or preset) down.",
+    "toggleFullscreen": "Enter or leave fullscreen."
+  }
+}

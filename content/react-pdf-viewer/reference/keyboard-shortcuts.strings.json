@@ -1,0 +1,18 @@
+{
+  "symbolDescription": "Keys the component handles, generated from <code>@shortcut</code> tags next to the implementation.",
+  "optionDescriptions": {
+    "0": "Reset zoom to <code>defaultScale</code>.",
+    "PageUp": "Previous page.",
+    "PageDown": "Next page.",
+    "ArrowLeft": "Previous page; a zoomed page scrolls horizontally first.",
+    "ArrowRight": "Next page; a zoomed page scrolls horizontally first.",
+    "Home": "First page.",
+    "End": "Last page.",
+    "+": "Zoom in (<code>=</code> also works).",
+    "-": "Zoom out (<code>_</code> also works).",
+    "r": "Rotate clockwise.",
+    "Shift+R": "Rotate counter-clockwise.",
+    "f": "Toggle fullscreen.",
+    "Ctrl+F": "Focus the search field (<code>⌘+F</code> on macOS); <code>Enter</code> and <code>Shift+Enter</code> step through matches, <code>Escape</code> clears."
+  }
+}
