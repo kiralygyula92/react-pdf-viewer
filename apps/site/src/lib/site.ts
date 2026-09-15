@@ -23,12 +23,16 @@ export const PLUGIN_ID = 'react-pdf-viewer';
 let model: PluginModel | undefined;
 let portfolio: PortfolioConfig | undefined;
 
+// Cached for the build; re-read on every request in dev, so edits to nav.json, titles.json,
+// plugin.config.json and portfolio.json show up without restarting the dev server.
 export function getModel(): PluginModel {
+  if (import.meta.env.DEV) return loadPluginModel(CONTENT_ROOT);
   model ??= loadPluginModel(CONTENT_ROOT);
   return model;
 }
 
 export function getPortfolio(): PortfolioConfig {
+  if (import.meta.env.DEV) return loadPortfolio(`${REPO_ROOT}content/portfolio.json`);
   portfolio ??= loadPortfolio(`${REPO_ROOT}content/portfolio.json`);
   return portfolio;
 }
@@ -49,10 +53,6 @@ export async function getDescriptions(): Promise<Map<string, string>> {
   descriptions.set(
     `/${PLUGIN_ID}/api/`,
     'Generated reference for every public component, hook, function and type.',
-  );
-  descriptions.set(
-    `/${PLUGIN_ID}/llms.txt`,
-    'Machine-readable index of this documentation for AI agents.',
   );
   return descriptions;
 }
