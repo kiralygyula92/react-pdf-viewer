@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node", "astro/client"],
+    "allowImportingTsExtensions": true,
+    "plugins": [{ "name": "@astrojs/ts-plugin" }]
+  },
+  "include": [
+    ".astro/types.d.ts",
+    "src",
+    "e2e",
+    "scripts",
+    "astro.config.mjs",
+    "playwright.config.ts"
+  ],
+  "exclude": ["dist", "src/legacy"]
+}

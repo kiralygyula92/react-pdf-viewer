@@ -1,0 +1,50 @@
+---
+title: Playground
+description: Try every option of the viewer live, on bundled samples, your own URL or a local file, and watch its events.
+capabilities:
+  - document-sources
+  - controlled-state
+  - toolbar
+  - fullscreen
+  - fit-modes
+  - zoom
+  - continuous-layout
+  - text-layer
+  - links
+  - search
+  - thumbnails
+  - page-number-input
+  - password-protection
+  - keyboard-shortcuts
+  - print
+  - labels
+  - events
+  - imperative-api
+---
+
+<Scenario name="playground" title="Playground" />
+
+## What this shows
+
+Every switch in the options panel maps to one prop, so you can see the effect of a feature before you read its page:
+
+- Loading bundled samples, a URL or a local file: [Document sources](/react-pdf-viewer/document-sources/) and [Authenticated requests](/react-pdf-viewer/authenticated-requests/).
+- Controlled page, scale and rotation with the imperative API buttons: [Controlled state](/react-pdf-viewer/controlled-state/) and [Imperative API](/react-pdf-viewer/imperative-api/).
+- Toolbar position, the compact breakpoint and the responsive “More actions” menu (drag the container width): [Toolbar](/react-pdf-viewer/toolbar/).
+- Native, overlay and controlled fullscreen: [Fullscreen](/react-pdf-viewer/fullscreen/).
+- Fit modes, zoom presets, zoom reset and Ctrl/⌘ + wheel zoom: [Fit modes](/react-pdf-viewer/fit-modes/) and [Zoom](/react-pdf-viewer/zoom/).
+- Continuous layout and thumbnails: [Continuous layout](/react-pdf-viewer/continuous-layout/) and [Thumbnails](/react-pdf-viewer/thumbnails/).
+- Text layer, links and search: [Text layer](/react-pdf-viewer/text-layer/), [Links](/react-pdf-viewer/links/) and [Search](/react-pdf-viewer/search/).
+- Page number input and the password prompt: [Page number input](/react-pdf-viewer/page-number-input/) and [Password protection](/react-pdf-viewer/password-protection/).
+- Keyboard shortcuts and print modes: [Keyboard shortcuts](/react-pdf-viewer/keyboard-shortcuts/) and [Print](/react-pdf-viewer/print/).
+- Dark and custom themes and Hungarian labels: [Theming](/react-pdf-viewer/customization/theming/) and [Labels and locale](/react-pdf-viewer/labels/).
+- The event log records `onPageChange`, `onScaleChange`, `onDocumentLoad`, `onPageRender` and `onError`: [Events](/react-pdf-viewer/events/).
+
+## Source
+
+The playground is a regular React component built on the public API:
+[apps/site/src/islands/Playground.tsx](https://github.com/kiralygyula92/react-pdf-viewer/blob/main/apps/site/src/islands/Playground.tsx).
+
+## Try it with your own data
+
+Paste any CORS-enabled PDF URL into the **URL** tab, or drop a PDF anywhere on the page. Local files never leave your browser.

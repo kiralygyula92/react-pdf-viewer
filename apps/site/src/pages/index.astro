@@ -1,0 +1,54 @@
+---
+/** Portfolio home (marketing surface root, PPDS §2.1). */
+import MarketingLayout from 'ppds-kit/astro/MarketingLayout.astro';
+import { absoluteUrl, ogImagePath } from 'ppds-kit';
+import LegacyRedirect from '../components/LegacyRedirect.astro';
+import { feeds, getModel, getPortfolio, marketingLinks, marketingMenus, origin } from '../lib/site';
+
+const portfolio = getPortfolio();
+const config = getModel().config;
+const meta = {
+  title: portfolio.name,
+  description: portfolio.description,
+  canonical: absoluteUrl(origin(), '/'),
+  ogImage: absoluteUrl(origin(), ogImagePath('/')),
+  ogType: 'website' as const,
+  language: 'en',
+};
+---
+
+<MarketingLayout
+  meta={meta}
+  portfolio={portfolio}
+  menus={marketingMenus()}
+  links={marketingLinks()}
+  repo={config.repo}
+  feeds={feeds}
+>
+  <LegacyRedirect slot="head" />
+  <section class="ppds-hero">
+    <div class="ppds-hero__inner ppds-hero__inner--single">
+      <div>
+        <p class="ppds-eyebrow">Open source</p>
+        <h1 class="ppds-hero__title">{portfolio.tagline}</h1>
+        <p class="ppds-hero__lead">{portfolio.description}</p>
+        <div class="ppds-actions">
+          <a class="ppds-button ppds-button--primary" href={`/products/${config.id}/`}>Explore {config.name}</a>
+          <a class="ppds-button ppds-button--secondary" href={`/${config.id}/`}>Read the docs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ppds-section" aria-labelledby="products-title">
+    <p class="ppds-eyebrow">Products</p>
+    <h2 id="products-title" class="ppds-section__title">What's available</h2>
+    <p class="ppds-section__subtitle">Each product has its own documentation, with the same structure.</p>
+    <ul class="ppds-cards">
+      <li class="ppds-card">
+        <h3 class="ppds-card__title"><a href={`/products/${config.id}/`}>{config.name}</a></h3>
+        <p class="ppds-card__description">{config.tagline}</p>
+      </li>
+    </ul>
+  </section>
+</MarketingLayout>

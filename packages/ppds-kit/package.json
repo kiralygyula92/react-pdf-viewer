@@ -1,0 +1,40 @@
+{
+  "name": "ppds-kit",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Plugin-agnostic site kit for the Plugin Presentation & Documentation Standard (PPDS v1.1): layouts, archetype templates, navigation, metadata, generators, reference extraction and the conformance checker.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./astro/*": "./src/astro/*",
+    "./react/*": "./src/react/*",
+    "./styles/*": "./src/styles/*",
+    "./integration": "./src/integration.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"test/**/*.test.ts\"",
+    "ppds": "node src/cli.ts"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "pagefind": "^1.5.2",
+    "satori": "^0.33.4",
+    "yaml": "^2.9.0"
+  },
+  "peerDependencies": {
+    "astro": "^7.3.0",
+    "react": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.2",
+    "@types/react": "^19.3.0",
+    "astro": "^7.3.2",
+    "react": "^19.3.0",
+    "typescript": "~6.0.3"
+  }
+}

@@ -1,0 +1,61 @@
+---
+/** “Edit this page” and “Was this page helpful?” (PPDS §7.3): layout, not content. */
+interface Props {
+  repo: string;
+  /** Source file path relative to the repository root; omitted for generated pages. */
+  sourcePath?: string | undefined;
+  generatedFrom?: string | undefined;
+  title: string;
+  url: string;
+  previous?: { title: string; pathname: string } | undefined;
+  next?: { title: string; pathname: string } | undefined;
+}
+
+const { repo, sourcePath, generatedFrom, title, url, previous, next } = Astro.props;
+const feedback = (answer: 'yes' | 'no') => {
+  const params = new URLSearchParams({
+    title: `Docs feedback: ${title}`,
+    labels: 'docs-feedback',
+    body: `Page: ${url}\nHelpful: ${answer}\n\nWhat could be better?\n`,
+  });
+  return `${repo}/issues/new?${params.toString()}`;
+};
+const editHref = sourcePath ? `${repo}/edit/main/${sourcePath}` : generatedFrom ? `${repo}/blob/main/${generatedFrom}` : undefined;
+---
+
+<footer class="ppds-page-footer">
+  <div class="ppds-page-footer__actions">
+    {
+      editHref && (
+        <a class="ppds-page-footer__edit" href={editHref} rel="noopener" data-action="edit">
+          {sourcePath ? 'Edit this page' : 'View the source this page is generated from'}
+        </a>
+      )
+    }
+    <div class="ppds-feedback" data-action="feedback">
+      <span id="ppds-feedback-label">Was this page helpful?</span>
+      <a class="ppds-feedback__answer" href={feedback('yes')} rel="noopener" aria-describedby="ppds-feedback-label">Yes</a>
+      <a class="ppds-feedback__answer" href={feedback('no')} rel="noopener" aria-describedby="ppds-feedback-label">No</a>
+    </div>
+  </div>
+  {
+    (previous || next) && (
+      <nav class="ppds-pager" aria-label="Previous and next pages">
+        {previous ? (
+          <a class="ppds-pager__link ppds-pager__link--previous" href={previous.pathname}>
+            <span class="ppds-pager__hint">Previous</span>
+            <span>{previous.title}</span>
+          </a>
+        ) : (
+          <span />
+        )}
+        {next && (
+          <a class="ppds-pager__link ppds-pager__link--next" href={next.pathname}>
+            <span class="ppds-pager__hint">Next</span>
+            <span>{next.title}</span>
+          </a>
+        )}
+      </nav>
+    )
+  }
+</footer>

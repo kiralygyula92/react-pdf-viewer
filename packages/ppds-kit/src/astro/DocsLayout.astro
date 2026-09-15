@@ -1,0 +1,106 @@
+---
+/**
+ * Docs surface shell (PPDS §2.2): announcement → docs header → sidebar · content · right rail →
+ * page footer actions → global footer.
+ */
+import { neighbours } from '../model.ts';
+import type { PageMeta } from '../surfaces.ts';
+import type { NavPage, PluginModel, PortfolioConfig } from '../types.ts';
+import DocsHeader from './DocsHeader.astro';
+import Head from './Head.astro';
+import PageFooterActions from './PageFooterActions.astro';
+import Sidebar from './Sidebar.astro';
+import SiteFooter from './SiteFooter.astro';
+import Toc from './Toc.astro';
+import '../styles/site.css';
+
+interface Props {
+  model: PluginModel;
+  portfolio: PortfolioConfig;
+  page: NavPage;
+  meta: PageMeta;
+  headings: { depth: number; slug: string; text: string }[];
+  descriptions: Map<string, string>;
+  sourcePath?: string | undefined;
+  generatedFrom?: string | undefined;
+  twin?: string | undefined;
+  feeds?: { title: string; href: string }[];
+  announcement?: { text: string; href: string } | undefined;
+}
+
+const { model, portfolio, page, meta, headings, descriptions, sourcePath, generatedFrom, twin, feeds, announcement } =
+  Astro.props;
+const { previous, next } = neighbours(model, page.pathname);
+---
+
+<!doctype html>
+<html lang={meta.language}>
+  <head>
+    <Head meta={meta} siteName={model.config.name} twin={twin} feed={feeds?.[0]} />
+  </head>
+  <body class="ppds ppds--docs" data-archetype={page.archetype}>
+    <a class="ppds-skip-link" href="#main">Skip to content</a>
+    {
+      announcement && (
+        <div class="ppds-announcement" role="region" aria-label="Announcement">
+          <a href={announcement.href}>{announcement.text}</a>
+        </div>
+      )
+    }
+    <DocsHeader portfolio={portfolio} config={model.config} />
+    <div class="ppds-docs">
+      <div class="ppds-docs__sidebar" id="ppds-sidebar-panel" data-sidebar>
+        <Sidebar model={model} current={page.pathname} descriptions={descriptions} />
+      </div>
+      <main
+        id="main"
+        class="ppds-docs__main"
+        tabindex="-1"
+        data-pagefind-body
+        data-pagefind-filter-plugin={model.config.id}
+      >
+        <span hidden data-pagefind-filter={`version:${model.config.currentVersion}`}></span>
+        <span hidden data-pagefind-filter={`plugin:${model.config.id}`}></span>
+        <nav class="ppds-breadcrumbs" aria-label="Breadcrumb" data-pagefind-ignore>
+          <ol>
+            <li><a href={`/${model.config.id}/`}>{model.config.name}</a></li>
+            <li>{page.sectionTitle}</li>
+            {page.group && <li>{page.group}</li>}
+          </ol>
+        </nav>
+        <article class="ppds-article">
+          <slot />
+        </article>
+        <PageFooterActions
+          repo={model.config.repo}
+          sourcePath={sourcePath}
+          generatedFrom={generatedFrom}
+          title={page.title}
+          url={meta.canonical}
+          previous={previous}
+          next={next}
+        />
+      </main>
+      <aside class="ppds-docs__rail" aria-label="On this page">
+        <Toc headings={headings} />
+      </aside>
+    </div>
+    <SiteFooter portfolio={portfolio} feeds={feeds ?? []} />
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>('[data-sidebar-toggle]');
+      const panel = document.querySelector<HTMLElement>('[data-sidebar]');
+      toggle?.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(open));
+        // The name stays constant; aria-expanded conveys the state.
+        panel?.classList.toggle('ppds-docs__sidebar--open', open);
+      });
+      // Keep the current page visible inside the sidebar without scrolling the document.
+      const current = panel?.querySelector<HTMLElement>('[aria-current="page"]');
+      if (current && panel) {
+        const offset = current.getBoundingClientRect().top - panel.getBoundingClientRect().top;
+        panel.scrollTop = Math.max(0, offset - panel.clientHeight / 3);
+      }
+    </script>
+  </body>
+</html>

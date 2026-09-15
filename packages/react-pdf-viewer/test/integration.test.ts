@@ -13,7 +13,7 @@ import { toPdfViewerError } from '../src/core/errors';
 import { effectiveRotation } from '../src/core/geometry';
 import { loadSource } from '../src/core/loadSource';
 
-const SAMPLES = new URL('../../../apps/demo/public/samples/', import.meta.url);
+const SAMPLES = new URL('../../../apps/site/public/samples/', import.meta.url);
 const require = createRequire(import.meta.url);
 let pdfjs: typeof PdfJs;
 

@@ -1,0 +1,97 @@
+---
+/**
+ * Archetype template (PPDS v1.1 §6). Emits the blocks that are layout or generated from data
+ * (H1, one-line description, badges, resource chips, card grids, `## API` links); the authored
+ * body is the default slot.
+ */
+import { slugify } from '../markdown.ts';
+import type { NavPage, PluginModel } from '../types.ts';
+import Badge from './Badge.astro';
+import CardGrid from './CardGrid.astro';
+import ResourceChips from './ResourceChips.astro';
+
+export interface GeneratedBlocks {
+  /** Archetype B: public symbols documented by the page, with their reference URLs. */
+  api?: { symbol: string; href: string; description?: string | undefined }[];
+  /** Archetype C: capability groups in sidebar order. */
+  groups?: { title: string; items: NavPage[] }[];
+  /** Archetype K: the section's pages. */
+  cards?: { title: string; description?: string | undefined; href: string; page?: NavPage | undefined }[];
+}
+
+interface Props {
+  model: PluginModel;
+  page: NavPage;
+  title?: string | undefined;
+  description: string;
+  links?: Record<string, string> | undefined;
+  descriptions: Map<string, string>;
+  generated?: GeneratedBlocks;
+}
+
+const { model, page, title, description, links, descriptions, generated = {} } = Astro.props;
+const heading =
+  title ?? (page.archetype === 'A' ? `${model.config.name} — Overview` : page.title);
+---
+
+<header class="ppds-article__header">
+  <h1 class="ppds-article__title">
+    {heading}
+    <Badge page={page} tiers={model.config.tiers} />
+  </h1>
+  <p class="ppds-article__subtitle" data-description>{description}</p>
+  {page.archetype === 'B' && links && <ResourceChips links={links} repo={model.config.repo} />}
+</header>
+
+<div class="ppds-prose">
+  <slot />
+
+  {
+    page.archetype === 'C' &&
+      (generated.groups ?? []).map((group) => (
+        <section class="ppds-group">
+          <h2 id={slugify(group.title)}>{group.title}</h2>
+          <CardGrid
+            tiers={model.config.tiers}
+            items={group.items.map((item) => ({
+              title: item.title,
+              description: descriptions.get(item.pathname),
+              href: item.pathname,
+              page: item,
+            }))}
+          />
+        </section>
+      ))
+  }
+
+  {
+    page.archetype === 'K' && generated.cards && (
+      <section>
+        <h2 id="in-this-section">In this section</h2>
+        <CardGrid items={generated.cards} tiers={model.config.tiers} />
+      </section>
+    )
+  }
+
+  {
+    page.archetype === 'B' && (
+      <section class="ppds-api" aria-labelledby="api">
+        <h2 id="api">API</h2>
+        {generated.api && generated.api.length > 0 ? (
+          <ul>
+            {generated.api.map((entry) => (
+              <li>
+                <a href={entry.href}>
+                  <code>{entry.symbol}</code>
+                </a>
+                {entry.description && <span> — {entry.description}</span>}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>This capability has no public symbols of its own.</p>
+        )}
+      </section>
+    )
+  }
+</div>

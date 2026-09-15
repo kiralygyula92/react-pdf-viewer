@@ -1,6 +1,7 @@
 packages:
   - packages/*
   - apps/*
+  - content
 allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:

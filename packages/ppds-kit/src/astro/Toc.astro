@@ -1,0 +1,62 @@
+---
+/** Right-rail table of contents from H2/H3 with active-section highlighting (PPDS §7.4). */
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const items = Astro.props.headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+---
+
+{
+  items.length > 0 && (
+    <nav class="ppds-toc" aria-labelledby="ppds-toc-title">
+      <p id="ppds-toc-title" class="ppds-toc__title">
+        On this page
+      </p>
+      <ul class="ppds-toc__list">
+        {items.map((heading) => (
+          <li class={`ppds-toc__item ppds-toc__item--h${heading.depth}`}>
+            <a href={`#${heading.slug}`} data-toc-link={heading.slug}>
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="ppds-toc__slot" data-slot="rail-promo" />
+    </nav>
+  )
+}
+
+<script>
+  const links = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')].map((link) => [
+      link.dataset['tocLink'],
+      link,
+    ]),
+  );
+  if (links.size > 0) {
+    const visible = new Set<string>();
+    const order = [...links.keys()];
+    const update = () => {
+      const active = order.find((slug) => slug !== undefined && visible.has(slug)) ?? null;
+      for (const [slug, link] of links) {
+        if (slug === active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      }
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) visible.add(entry.target.id);
+          else visible.delete(entry.target.id);
+        }
+        update();
+      },
+      { rootMargin: '-72px 0px -60% 0px' },
+    );
+    for (const slug of order) {
+      const target = slug ? document.getElementById(slug) : null;
+      if (target) observer.observe(target);
+    }
+  }
+</script>

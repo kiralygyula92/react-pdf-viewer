@@ -1,0 +1,38 @@
+---
+/** Resource chip row under a capability H1 (archetype B), rendered from frontmatter `links`. */
+interface Props {
+  links: Record<string, string>;
+  repo: string;
+}
+
+const LABELS: Record<string, string> = {
+  issues: 'Feedback',
+  source: 'Source',
+  spec: 'Standard',
+  design: 'Design',
+  size: 'Bundle size',
+};
+
+const { links, repo } = Astro.props;
+const resolve = (key: string, value: string) =>
+  key === 'source' && !/^https?:/.test(value) ? `${repo}/tree/main/${value}` : value;
+const chips = Object.entries(links).map(([key, value]) => ({
+  key,
+  label: LABELS[key] ?? key,
+  href: resolve(key, value),
+}));
+---
+
+{
+  chips.length > 0 && (
+    <ul class="ppds-chips" aria-label="Resources">
+      {chips.map((chip) => (
+        <li>
+          <a class="ppds-chip" href={chip.href} rel="noopener" data-chip={chip.key}>
+            {chip.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}

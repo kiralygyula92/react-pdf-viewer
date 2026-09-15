@@ -43,8 +43,21 @@ jobs:
       - name: Package QA
         run: pnpm qa
 
+      - name: Docs model and conformance (PPDS v1.1)
+        run: |
+          pnpm ppds:validate
+          pnpm ppds:conformance
+
+      - name: Upload conformance report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: conformance-report
+          path: qa/conformance-report.md
+          retention-days: 30
+
       - name: Install Playwright browsers
-        run: pnpm --filter demo exec playwright install --with-deps
+        run: pnpm --filter site exec playwright install --with-deps
 
       - name: E2E
         run: pnpm e2e
@@ -54,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: playwright-report
-          path: apps/demo/playwright-report
+          path: apps/site/playwright-report
           retention-days: 7
 
   react18:
@@ -104,7 +117,7 @@ jobs:
         run: pnpm smoke
 
   visual:
-    # Same image that renders the committed baselines (apps/demo/scripts/visual.sh).
+    # Same image that renders the committed baselines (apps/site/scripts/visual.sh).
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.63.0-noble
@@ -123,12 +136,12 @@ jobs:
         run: pnpm build
 
       - name: Visual regression
-        run: pnpm --filter demo exec playwright test --project=visual
+        run: pnpm --filter site exec playwright test --project=visual
 
       - name: Upload visual diffs
         if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: visual-report
-          path: apps/demo/playwright-report
+          path: apps/site/playwright-report
           retention-days: 7

@@ -1,0 +1,28 @@
+---
+/** Real 404 for unknown paths (EXCEPTIONS E-04). Legacy `#/…` links are redirected first. */
+import MarketingLayout from 'ppds-kit/astro/MarketingLayout.astro';
+import { feeds, getModel, getPortfolio, marketingLinks, marketingMenus, pageMeta, PLUGIN_ID } from '../lib/site';
+import LegacyRedirect from '../components/LegacyRedirect.astro';
+
+const meta = pageMeta({ pathname: '/404.html' }, 'Page not found', 'The page you were looking for does not exist or has moved.', false);
+---
+
+<MarketingLayout
+  meta={meta}
+  portfolio={getPortfolio()}
+  menus={marketingMenus()}
+  links={marketingLinks()}
+  repo={getModel().config.repo}
+  feeds={feeds}
+>
+  <LegacyRedirect slot="head" />
+  <section class="ppds-section">
+    <p class="ppds-eyebrow">404</p>
+    <h1 class="ppds-section__title">Page not found</h1>
+    <p class="ppds-section__subtitle">The page you were looking for does not exist or has moved.</p>
+    <div class="ppds-actions">
+      <a class="ppds-button ppds-button--primary" href={`/${PLUGIN_ID}/`}>Read the documentation</a>
+      <a class="ppds-button ppds-button--secondary" href="/">Go to the home page</a>
+    </div>
+  </section>
+</MarketingLayout>

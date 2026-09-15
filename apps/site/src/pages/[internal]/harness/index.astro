@@ -1,0 +1,27 @@
+---
+/**
+ * Deterministic viewer configurations for the layout and visual Playwright suites
+ * (EXCEPTIONS E-03): no site chrome, noindex, not in nav, sitemap or llms.txt.
+ */
+import { Harness } from '../../../islands/Harness';
+
+export function getStaticPaths() {
+  // Astro ignores _-prefixed route folders; a dynamic segment keeps the /_internal/ URL (E-03).
+  return [{ params: { internal: '_internal' } }];
+}
+import '@kiralygyula92/react-pdf-viewer/styles.css';
+import '../../../styles/harness.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Test harness · React PDF Viewer</title>
+  </head>
+  <body>
+    <Harness client:only="react" />
+  </body>
+</html>

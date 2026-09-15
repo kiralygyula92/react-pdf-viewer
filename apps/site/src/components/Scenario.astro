@@ -1,0 +1,19 @@
+---
+/** A Demos scenario (archetype L): the live, full-width app with the standard demo toolbar. */
+import ScenarioFrame from '../islands/ScenarioFrame';
+import playgroundSource from '../islands/Playground.tsx?raw';
+import viewerSource from '../islands/StandaloneViewer.tsx?raw';
+
+interface Props {
+  name: 'playground' | 'document-viewer';
+  title: string;
+}
+
+const { name, title } = Astro.props;
+const source = name === 'playground' ? playgroundSource : viewerSource;
+---
+
+<div class="demo-root ppds-scenario" data-scenario={name}>
+  <ScenarioFrame client:only="react" name={name} title={title} source={source} />
+  <noscript><p>This interactive demo needs JavaScript.</p></noscript>
+</div>

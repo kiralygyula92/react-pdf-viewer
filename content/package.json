@@ -1,0 +1,21 @@
+{
+  "name": "content",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "PPDS content model, pages and colocated demos for every plugin site.",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@kiralygyula92/react-pdf-viewer": "workspace:*",
+    "pdfjs-dist": "^6.3.289",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "~6.0.0"
+  }
+}

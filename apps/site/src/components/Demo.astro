@@ -1,0 +1,31 @@
+---
+/**
+ * A live demo colocated with its page (PPDS §7.2): `<Demo id="features/zoom/demo-basics" title="…" />`
+ * renders `content/react-pdf-viewer/features/zoom/demo-basics.tsx` with the standard toolbar.
+ * Without JavaScript the source is shown instead (§7.8).
+ */
+import DemoFrame from '../islands/DemoFrame';
+
+interface Props {
+  id: string;
+  title: string;
+}
+
+const sources = import.meta.glob<string>('../../../../content/react-pdf-viewer/**/demo-*.tsx', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+
+const { id, title } = Astro.props;
+const key = `../../../../content/react-pdf-viewer/${id}.tsx`;
+const source = sources[key];
+if (source === undefined) throw new Error(`Demo "${id}" not found (expected content/react-pdf-viewer/${id}.tsx)`);
+---
+
+<div class="demo-root ppds-demo-host" data-demo={id}>
+  <DemoFrame client:only="react" id={id} title={title} source={source} />
+  <noscript>
+    <pre><code>{source}</code></pre>
+  </noscript>
+</div>

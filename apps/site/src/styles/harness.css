@@ -1,0 +1,132 @@
+/* Test harness (/_internal/harness/): the original global demo rules, unchanged, so the visual
+   baselines stay byte-identical. Loaded only by the harness page. */
+:root {
+  color-scheme: light;
+  --demo-bg: #f4f5f7;
+  --demo-surface: #ffffff;
+  --demo-border: #d5d9df;
+  --demo-text: #1b2430;
+  --demo-muted: #556070;
+  --demo-accent: #0a58ca;
+  --demo-header: #111827;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--demo-text);
+  background: var(--demo-bg);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  color: var(--demo-accent);
+}
+
+/* Demo element styles never reach into the viewer, which brings its own. */
+:where(:focus-visible):not(.rpv-root, .rpv-root *) {
+  outline: 2px solid var(--demo-accent);
+  outline-offset: 2px;
+}
+
+code,
+pre {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 0.875em;
+}
+
+:where(input, select, button):not(.rpv-root *) {
+  font: inherit;
+}
+
+:where(input[type='url'], input[type='number'], input[type='text'], select):not(.rpv-root *) {
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 10px;
+  color: inherit;
+  background: #fff;
+  border: 1px solid #8a94a3;
+  border-radius: 6px;
+}
+
+input[aria-invalid='true'] {
+  border-color: #b42318;
+}
+
+fieldset {
+  padding: 8px 12px;
+  margin: 0;
+  border: 1px solid var(--demo-border);
+  border-radius: 8px;
+}
+
+.demo-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.demo-skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 2000;
+  padding: 8px 12px;
+  color: #fff;
+  background: var(--demo-accent);
+  border-radius: 6px;
+}
+
+.demo-skip-link:focus {
+  top: 8px;
+}
+
+/* ── Test harness ───────────────────────────────────────────────────────── */
+.harness {
+  min-height: 100vh;
+  padding: 24px;
+  /* Explicit, cross-platform stack (Liberation Sans is metric-compatible with Arial and ships in
+     the Playwright image) so screenshots do not depend on what system-ui resolves to. */
+  font-family: Roboto, 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+  background: #f4f5f7;
+}
+
+.harness--fullscreen {
+  padding: 0;
+}
+
+.harness-inline {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.harness-dialog {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: #fff;
+}

@@ -6,7 +6,13 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  globalIgnores(['**/dist/', '**/coverage/', '**/playwright-report/', '**/test-results/']),
+  globalIgnores([
+    '**/dist/',
+    '**/coverage/',
+    '**/playwright-report/',
+    '**/test-results/',
+    '**/.astro/',
+  ]),
   js.configs.recommended,
   tseslint.configs.strict,
   reactHooks.configs.flat.recommended,
@@ -18,6 +24,8 @@ export default defineConfig([
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
+      // Scrollable regions must be keyboard-reachable (axe scrollable-region-focusable).
+      'jsx-a11y-x/no-noninteractive-tabindex': ['error', { roles: ['tabpanel', 'region'] }],
       '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -27,7 +35,13 @@ export default defineConfig([
   },
   {
     // Tooling and config files run in Node.
-    files: ['**/*.config.{js,ts}', '**/scripts/**', '**/e2e/**'],
+    files: [
+      '**/*.config.{js,mjs,ts}',
+      '**/scripts/**',
+      '**/e2e/**',
+      'packages/ppds-kit/src/**/*.{ts,mjs}',
+      'apps/site/src/lib/**',
+    ],
     languageOptions: {
       globals: globals.node,
     },

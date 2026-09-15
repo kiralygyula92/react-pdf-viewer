@@ -1,0 +1,101 @@
+---
+/**
+ * Every authored docs page in nav.json (PPDS §3). The archetype template, sidebar, ToC, badges,
+ * metadata and footer actions all come from ppds-kit; this route only joins nav data to content.
+ */
+import { getEntry, render } from 'astro:content';
+import { loadReference, slugify, type NavPage } from 'ppds-kit';
+import DocsArticle from 'ppds-kit/astro/DocsArticle.astro';
+import DocsLayout from 'ppds-kit/astro/DocsLayout.astro';
+import Callout from 'ppds-kit/astro/Callout.astro';
+import Demo from '../../components/Demo.astro';
+import Scenario from '../../components/Scenario.astro';
+import {
+  CONTENT_PATH,
+  CONTENT_ROOT,
+  feeds,
+  getDescriptions,
+  getModel,
+  getPortfolio,
+  pageMeta,
+  PLUGIN_ID,
+  twin,
+} from '../../lib/site';
+
+export function getStaticPaths() {
+  return getModel()
+    .pages.filter((page) => page.sourceFile !== null)
+    .map((page) => ({
+      params: { path: page.pathname.slice(`/${PLUGIN_ID}/`.length).replace(/\/$/, '') || undefined },
+      props: { pathname: page.pathname },
+    }));
+}
+
+const model = getModel();
+const page = model.byPath.get(Astro.props.pathname) as NavPage;
+const entry = await getEntry('docs', page.sourceFile!);
+if (!entry) throw new Error(`Missing content file ${page.sourceFile} for ${page.pathname}`);
+const { Content, headings } = await render(entry);
+const descriptions = await getDescriptions();
+const reference = loadReference(CONTENT_ROOT);
+const { description, links, symbols = [] } = entry.data;
+
+const generated: {
+  api?: { symbol: string; href: string; description?: string | undefined }[];
+  groups?: { title: string; items: NavPage[] }[];
+  cards?: { title: string; description?: string | undefined; href: string; page?: NavPage | undefined }[];
+} = {};
+const extraHeadings: { depth: number; slug: string; text: string }[] = [];
+
+if (page.archetype === 'B') {
+  generated.api = symbols.map((symbol) => ({
+    symbol,
+    href: `/${PLUGIN_ID}/api/${reference.slugOf(symbol)}/`,
+    description: reference.symbols.get(symbol)?.strings.symbolDescription?.replace(/<[^>]+>/g, ''),
+  }));
+  extraHeadings.push({ depth: 2, slug: 'api', text: 'API' });
+}
+if (page.archetype === 'C') {
+  generated.groups = model.config.taxonomy.map((title) => ({
+    title,
+    items: model.pages.filter((candidate) => candidate.archetype === 'B' && candidate.group === title),
+  }));
+  extraHeadings.push(...generated.groups.map((group) => ({ depth: 2, slug: slugify(group.title), text: group.title })));
+}
+if (page.archetype === 'K') {
+  generated.cards = model.pages
+    .filter((candidate) => candidate.section === page.section && candidate.pathname !== page.pathname)
+    .map((candidate) => ({
+      title: candidate.title,
+      description: descriptions.get(candidate.pathname),
+      href: candidate.pathname,
+      page: candidate,
+    }));
+}
+
+const allHeadings = [...headings, ...extraHeadings];
+const meta = pageMeta(page, page.archetype === 'A' ? `${model.config.name} — Overview` : page.title, description);
+---
+
+<DocsLayout
+  model={model}
+  portfolio={getPortfolio()}
+  page={page}
+  meta={meta}
+  headings={allHeadings}
+  descriptions={descriptions}
+  sourcePath={`${CONTENT_PATH}/${page.sourceFile}`}
+  twin={twin(page.pathname)}
+  feeds={feeds}
+>
+  <DocsArticle
+    model={model}
+    page={page}
+    description={description}
+    links={links}
+    descriptions={descriptions}
+    generated={generated}
+  >
+    <Content components={{ Demo, Callout, Scenario }} />
+  </DocsArticle>
+</DocsLayout>

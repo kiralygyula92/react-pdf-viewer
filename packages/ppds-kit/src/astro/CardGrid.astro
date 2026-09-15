@@ -1,0 +1,28 @@
+---
+/** Card grid `{title, one-line, href, badges}` (archetypes A, C, G, K). */
+import type { NavPage, Tier } from '../types.ts';
+import Badge from './Badge.astro';
+
+interface Props {
+  items: { title: string; description?: string | undefined; href: string; page?: NavPage | undefined }[];
+  tiers?: Tier[];
+  headingLevel?: 3 | 4;
+}
+
+const { items, tiers = [], headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}`;
+---
+
+<ul class="ppds-cards">
+  {
+    items.map((item) => (
+      <li class="ppds-card">
+        <Heading class="ppds-card__title">
+          <a href={item.href}>{item.title}</a>
+          {item.page && <Badge page={item.page} tiers={tiers} />}
+        </Heading>
+        {item.description && <p class="ppds-card__description">{item.description}</p>}
+      </li>
+    ))
+  }
+</ul>

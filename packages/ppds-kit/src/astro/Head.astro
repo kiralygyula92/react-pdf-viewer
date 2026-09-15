@@ -1,0 +1,52 @@
+---
+/**
+ * Metadata contract (PPDS §7.6): every tag derives from one title and one description.
+ */
+import type { PageMeta } from '../surfaces.ts';
+
+interface Props {
+  meta: PageMeta;
+  siteName: string;
+  themeColor?: string;
+  twin?: string | undefined;
+  feed?: { title: string; href: string } | undefined;
+  noindex?: boolean;
+}
+
+const { meta, siteName, themeColor = '#0b1220', twin, feed, noindex = false } = Astro.props;
+const fullTitle = meta.title === siteName ? siteName : `${meta.title} · ${siteName}`;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{fullTitle}</title>
+<meta name="description" content={meta.description} />
+<link rel="canonical" href={meta.canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+<meta name="theme-color" content={themeColor} />
+<meta property="og:title" content={meta.title} />
+<meta property="og:description" content={meta.description} />
+<meta property="og:image" content={meta.ogImage} />
+<meta property="og:type" content={meta.ogType} />
+<meta property="og:url" content={meta.canonical} />
+<meta property="og:site_name" content={siteName} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={meta.title} />
+<meta name="twitter:description" content={meta.description} />
+<meta name="twitter:image" content={meta.ogImage} />
+<meta name="search:language" content={meta.language} />
+{meta.version && <meta name="search:version" content={meta.version} />}
+{meta.version && <meta name="docsearch:version" content={meta.version} />}
+{meta.pluginId && <meta name="plugin:id" content={meta.pluginId} />}
+{meta.pluginId && <meta name="plugin:categoryId" content={meta.categoryId || 'none'} />}
+{twin && <link rel="alternate" type="text/markdown" href={twin} />}
+{feed && <link rel="alternate" type="application/rss+xml" title={feed.title} href={feed.href} />}
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<script is:inline>
+  try {
+    const stored = localStorage.getItem('ppds-theme');
+    if (stored === 'dark' || stored === 'light') document.documentElement.dataset.theme = stored;
+  } catch {
+    // Storage unavailable: follow the operating system.
+  }
+</script>

@@ -38,3 +38,11 @@ Every entry starts as **Proposed** and needs owner approval before Phase 3 build
 - **Scope:** `/#/does-not-exist` in `migration/url-map.csv`.
 - **Reason:** the audit probed an arbitrary unknown route to record the legacy “Page not found” behaviour (HTTP 200). It is not a legacy page and has no traffic or content. Redirecting unknown URLs would hide broken links, which check 23 is meant to catch.
 - **Mitigation:** unknown paths get a real HTTP 404 page (`/404.html`) with links to the docs root and search. Unknown legacy _fragments_ follow E-01's fallback.
+
+## E-05 — Plugin-scoped metadata only on plugin-scoped pages
+
+- **Status:** Accepted (D-03, D-04)
+- **Rule deviated from:** §7.6 (“Every page MUST emit … `search:version` · `plugin:id` · `plugin:categoryId`”).
+- **Scope:** the portfolio home `/` and the `404.html` page.
+- **Reason:** these pages belong to the portfolio, not to a plugin or a version. Emitting a plugin id or version there would scope search and analytics to the wrong product.
+- **Mitigation:** every docs page and every product landing page emits the full set; the conformance check (19) enforces it there and requires the rest of the set everywhere else. `plugin:categoryId` is emitted as `none` while the category is undecided (GAPS G-50).

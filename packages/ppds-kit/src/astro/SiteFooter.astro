@@ -1,0 +1,56 @@
+---
+/** Global footer shared by both surfaces (PPDS §2.3): four fixed columns. */
+import type { PortfolioConfig } from '../types.ts';
+
+interface Props {
+  portfolio: PortfolioConfig;
+  feeds?: { title: string; href: string }[];
+}
+
+const { portfolio, feeds = [] } = Astro.props;
+const COLUMNS = ['Products', 'Resources', 'Explore', 'Company'] as const;
+---
+
+<footer class="ppds-site-footer">
+  <div class="ppds-site-footer__inner">
+    <div class="ppds-site-footer__columns">
+      {
+        COLUMNS.map((column) => (
+          <section class="ppds-site-footer__column" aria-labelledby={`ppds-footer-${column}`}>
+            <h2 id={`ppds-footer-${column}`} class="ppds-site-footer__heading">
+              {column}
+            </h2>
+            <ul>
+              {portfolio.footer[column].map((link) => (
+                <li>
+                  <a href={link.href}>{link.title}</a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+    <div class="ppds-site-footer__bottom">
+      <p>{portfolio.copyright}</p>
+      <ul class="ppds-site-footer__social">
+        {
+          (portfolio.social ?? []).map((link) => (
+            <li>
+              <a href={link.href} rel="noopener">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+        {
+          feeds.map((feed) => (
+            <li>
+              <a href={feed.href}>{feed.title}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</footer>

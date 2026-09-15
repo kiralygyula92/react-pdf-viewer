@@ -1,0 +1,180 @@
+---
+/**
+ * Product landing (archetype G): hero → credibility → capabilities → pillars → live demo →
+ * social proof → pricing teaser → final CTA. Every card links to a real capability page; every
+ * number is measured at build time (src/lib/metrics.ts). No testimonials exist yet, so that block
+ * is omitted rather than invented (GAPS G-23).
+ */
+import MarketingLayout from 'ppds-kit/astro/MarketingLayout.astro';
+import { absoluteUrl, ogImagePath } from 'ppds-kit';
+import Demo from '../../../components/Demo.astro';
+import { productMetrics } from '../../../lib/metrics';
+import { feeds, getDescriptions, getModel, getPortfolio, marketingLinks, marketingMenus, origin } from '../../../lib/site';
+
+const model = getModel();
+const { config } = model;
+const descriptions = await getDescriptions();
+const metrics = productMetrics();
+const pathname = `/products/${config.id}/`;
+const meta = {
+  title: config.name,
+  description: config.description,
+  canonical: absoluteUrl(origin(), pathname),
+  ogImage: absoluteUrl(origin(), ogImagePath(pathname)),
+  ogType: 'website' as const,
+  language: 'en',
+  version: config.currentVersion,
+  pluginId: config.id,
+  categoryId: config.categoryId ?? null,
+};
+
+const showcase = ['search', 'continuous-layout', 'fullscreen', 'authenticated-requests', 'headless', 'keyboard-shortcuts']
+  .map((id) => model.pages.find((page) => page.capabilityId === id))
+  .filter((page) => page !== undefined);
+
+const pillars = [
+  {
+    title: 'Accessible by default',
+    text: 'WAI-ARIA toolbar and menu, keyboard shortcuts, live page announcements and visible focus. Every demo route is checked with axe against WCAG 2.2 AA.',
+    href: `/${config.id}/guides/accessibility/`,
+  },
+  {
+    title: 'Yours to style',
+    text: 'Plain CSS in a cascade layer with CSS variables for every colour and size, plus dark and auto presets. No UI kit, no CSS-in-JS.',
+    href: `/${config.id}/customization/theming/`,
+  },
+  {
+    title: 'Robust rendering',
+    text: 'Cancellable renders, aborted loads, typed errors with retry, and sharp HiDPI output under a canvas pixel budget.',
+    href: `/${config.id}/rendering/`,
+  },
+  {
+    title: 'Composable',
+    text: 'Use the batteries-included viewer, replace the toolbar, or build your own interface from the headless hooks and page canvas.',
+    href: `/${config.id}/headless/`,
+  },
+];
+---
+
+<MarketingLayout
+  meta={meta}
+  portfolio={getPortfolio()}
+  menus={marketingMenus()}
+  links={marketingLinks()}
+  repo={config.repo}
+  feeds={feeds}
+>
+  <section class="ppds-hero">
+    <div class="ppds-hero__inner">
+      <div>
+        <p class="ppds-eyebrow">{config.name}</p>
+        <h1 class="ppds-hero__title">Show PDFs in React without giving up accessibility or control</h1>
+        <p class="ppds-hero__lead">{config.description}</p>
+        <div class="ppds-actions">
+          <a class="ppds-button ppds-button--primary" href={`/${config.id}/getting-started/installation/`}>Get started</a>
+          <a class="ppds-button ppds-button--secondary" href={`/${config.id}/demos/playground/`}>Open the playground</a>
+        </div>
+        <p class="ppds-install"><span aria-hidden="true">$</span> npm install @kiralygyula92/react-pdf-viewer pdfjs-dist</p>
+      </div>
+      <div class="ppds-demo-stage">
+        <Demo id="marketing/demo-hero" title="Continuous layout with thumbnails, search and page input" />
+      </div>
+    </div>
+  </section>
+
+  <section class="ppds-section ppds-section--tight" aria-labelledby="credibility-title">
+    <p class="ppds-eyebrow">By the numbers</p>
+    <h2 id="credibility-title" class="ppds-section__title">Small, tested, dependency-free</h2>
+    <p class="ppds-section__subtitle">Measured from the repository on every build.</p>
+    <ul class="ppds-metrics">
+      {
+        metrics.map((metric) => (
+          <li class="ppds-metric">
+            <span class="ppds-metric__value">{metric.value}</span>
+            <span class="ppds-metric__label">{metric.label}</span>
+            <span class="ppds-metric__source">{metric.source}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="ppds-section" aria-labelledby="capabilities-title">
+    <p class="ppds-eyebrow">Capabilities</p>
+    <h2 id="capabilities-title" class="ppds-section__title">Everything a document viewer needs</h2>
+    <p class="ppds-section__subtitle">
+      Each feature is one prop away, and each has its own page with a live demo.
+      <a href={`/${config.id}/all-features/`}>See all features</a>.
+    </p>
+    <ul class="ppds-cards">
+      {
+        showcase.map((page) => (
+          <li class="ppds-card">
+            <h3 class="ppds-card__title">
+              <a href={page.pathname}>{page.title}</a>
+            </h3>
+            <p class="ppds-card__description">{descriptions.get(page.pathname)}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="ppds-section" aria-labelledby="pillars-title">
+    <p class="ppds-eyebrow">Why it's different</p>
+    <h2 id="pillars-title" class="ppds-section__title">Built for production apps</h2>
+    <p class="ppds-section__subtitle">Four things you don't have to build yourself.</p>
+    <ul class="ppds-pillars">
+      {
+        pillars.map((pillar) => (
+          <li class="ppds-pillar">
+            <h3>
+              <a href={pillar.href}>{pillar.title}</a>
+            </h3>
+            <p>{pillar.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="ppds-section" aria-labelledby="proof-title">
+    <p class="ppds-eyebrow">Quality</p>
+    <h2 id="proof-title" class="ppds-section__title">Tested where it matters</h2>
+    <p class="ppds-section__subtitle">
+      Unit tests with a mocked PDF.js, browser tests in Chromium, Firefox and WebKit, visual regression screenshots, and
+      consumer installs of the packed tarball in Vite and Next.js apps on every change.
+    </p>
+    <ul class="ppds-metrics">
+      {
+        metrics.slice(0, 3).map((metric) => (
+          <li class="ppds-metric">
+            <span class="ppds-metric__value">{metric.value}</span>
+            <span class="ppds-metric__label">{metric.label}</span>
+            <span class="ppds-metric__source">{metric.source}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="ppds-section" aria-labelledby="pricing-title">
+    <p class="ppds-eyebrow">Pricing</p>
+    <h2 id="pricing-title" class="ppds-section__title">Free and open source</h2>
+    <p class="ppds-section__subtitle">
+      Released under the MIT License: use it in commercial and personal projects at no cost.
+    </p>
+    <a class="ppds-button ppds-button--secondary" href={`/${config.id}/getting-started/faq/`}>Licensing questions</a>
+  </section>
+
+  <section class="ppds-cta" aria-labelledby="cta-title">
+    <div class="ppds-section">
+      <h2 id="cta-title" class="ppds-section__title">Add a PDF viewer in five minutes</h2>
+      <p class="ppds-section__subtitle">Install the package, import the stylesheet, pass a URL.</p>
+      <div class="ppds-actions">
+        <a class="ppds-button ppds-button--primary" href={`/${config.id}/getting-started/installation/`}>Get started</a>
+        <a class="ppds-button ppds-button--secondary" href={`/${config.id}/`}>Read the docs</a>
+      </div>
+    </div>
+  </section>
+</MarketingLayout>
