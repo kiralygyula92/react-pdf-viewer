@@ -2,23 +2,59 @@
 pluginId: react-pdf-viewer
 capabilityId: zoom
 title: Zoom
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Zoom in steps or through presets, with the toolbar, the keyboard or Ctrl/⌘ + wheel, between limits you choose.
 group: Core features
 plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Azoom
+  source: packages/react-pdf-viewer/src/core/scale.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+The zoom buttons change the scale in 5% steps between 25% and 500%; the label shows the rounded percentage.
+
+<Demo id="features/zoom/demo-basics" title="Default zoom controls" />
+
+At 100% a page is shown at its true size (one PDF point per CSS pixel). While at the default scale, a page wider than the viewer is shrunk to fit; once zoomed, it keeps its size and the document area scrolls. <kbd>+</kbd>, <kbd>-</kbd> and <kbd>0</kbd> zoom from the keyboard.
+
+### Presets
+
+`zoomLevels` replaces the fixed step with a ladder of presets. `zoomReset` turns the percentage into a button that returns to `defaultScale`.
+
+<Demo id="features/zoom/demo-presets" title="Zoom presets with a reset button" />
+
+### Wheel and pinch
+
+`wheelZoom` zooms with <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + mouse wheel and trackpad pinch, anchored at the pointer. A plain wheel still scrolls the page.
+
+<Demo id="features/zoom/demo-wheel" title="Ctrl/⌘ + wheel zoom" />
+
+## Controlled zoom
+
+`scale` and `onScaleChange` put the zoom level in your state, for example to remember it per user. Values outside `[minScale, maxScale]` are clamped.
+
+```tsx
+const [scale, setScale] = useState(1.25);
+
+<PdfViewer source={url} scale={scale} onScaleChange={setScale} />;
+```
 
 ## Customization
 
-TODO: Customization.
+Change the step with `scaleStep`, the wording with `labels`, and the look with CSS variables.
+
+<Demo id="features/zoom/demo-customization" title="10% steps, custom labels and larger buttons" />
+
+See the [customization guide](/react-pdf-viewer/customization/) and the full list of [CSS variables](/react-pdf-viewer/api/css-variables/).
+
+## Advanced / escape hatch
+
+`setScale(scale)`, `zoomIn()`, `zoomOut()` and `resetZoom()` on the [imperative API](/react-pdf-viewer/imperative-api/) zoom from your own controls; `canZoomIn` and `canZoomOut` tell you when to disable them. To fit the page to the viewer instead of choosing a percentage, see [Fit modes](/react-pdf-viewer/fit-modes/).
 
 ## Limitations
 
-TODO: Limitations.
+- **Very high zoom is capped by the canvas budget.** Above `maxCanvasPixels` (16,777,216 pixels per page by default) the page is rendered at a lower resolution and scaled up, so it looks softer. Workaround: raise `maxCanvasPixels` on desktop-only apps, or lower `maxScale`. See [Rendering](/react-pdf-viewer/rendering/).
+- **Browser zoom is separate.** Ctrl/⌘ + wheel zooms the page only when `wheelZoom` is on and the pointer is over the document; elsewhere the browser zooms the whole page as usual.

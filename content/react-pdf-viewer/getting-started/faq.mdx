@@ -1,8 +1,62 @@
 ---
 title: FAQ
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Answers to common questions about licensing, capabilities, frameworks and troubleshooting.
 ---
+
+## Licensing
+
+### Is it free for commercial use?
+
+Yes. React PDF Viewer is released under the [MIT License](https://github.com/kiralygyula92/react-pdf-viewer/blob/main/LICENSE): you can use it in commercial and personal projects without a fee. PDF.js, which it uses, is Apache-2.0 licensed; the package's `NOTICE` file lists third-party attributions.
+
+### Do I need to credit the project?
+
+Keep the copyright and license notice when you redistribute the package's code, as the MIT License requires. No credit in your app's UI is needed.
+
+## Capabilities
+
+### Can users edit, annotate, sign or fill in forms?
+
+No. The viewer displays documents. Links are interactive; form fields and other annotations are not. See [Links](/react-pdf-viewer/links/).
+
+### Can it show several pages at once?
+
+`layout="continuous"` scrolls through all pages. For spreads or custom layouts, use the [headless](/react-pdf-viewer/headless/) building blocks.
+
+### Does it work on phones?
+
+Yes. Below 960px the viewer switches to a compact layout, and the toolbar collapses actions into a **More actions** menu when space runs out. See [Toolbar](/react-pdf-viewer/toolbar/).
+
+### Does it work with React Native?
+
+No. It renders with the DOM and canvas APIs of web browsers.
+
+## Frameworks and setup
+
+### Does it work with server rendering?
+
+Yes. The entry points start with `'use client'` and touch no browser globals at import time; the server renders the loading state. See [Next.js](/react-pdf-viewer/integrations/nextjs/).
+
+### Why does the console mention a CDN?
+
+Without configuration the PDF.js worker and assets load from jsDelivr, pinned to your installed version. Self-host them for production; see [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/).
+
+## Troubleshooting
+
+### My PDF from another domain doesn't load.
+
+The server must send CORS headers for your origin. See [Authenticated requests](/react-pdf-viewer/authenticated-requests/#cross-origin-documents).
+
+### The document reloads on every render.
+
+A binary source (`Blob`, `File`, `ArrayBuffer`) is being created during render. Keep it in state; see [Document sources](/react-pdf-viewer/document-sources/).
+
+### My labels don't update or re-render constantly.
+
+Define the `labels` object at module scope or memoise it; see [Labels and locale](/react-pdf-viewer/labels/).
 
 ## Related
 
-TODO: Related.
+- [Support](/react-pdf-viewer/getting-started/support/)
+- [Requirements](/react-pdf-viewer/getting-started/requirements/)
+- [Best practices](/react-pdf-viewer/guides/best-practices/)

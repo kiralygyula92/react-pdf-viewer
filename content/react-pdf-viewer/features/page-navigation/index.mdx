@@ -2,23 +2,58 @@
 pluginId: react-pdf-viewer
 capabilityId: page-navigation
 title: Page navigation
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Move between pages with the toolbar, the keyboard or your own controls, and keep the current page in sync with your app.
 group: Core features
 plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Anavigation
+  source: packages/react-pdf-viewer/src/components/Toolbar.tsx
+  spec: https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/
 ---
 
 ## Basics
 
-TODO: Basics.
+The toolbar shows the current page and total, with previous and next buttons that disable at the ends.
+
+<Demo id="features/page-navigation/demo-basics" title="Toolbar navigation" />
+
+The page label is a polite live region, so screen readers announce page changes. With focus inside the viewer, <kbd>←</kbd> <kbd>→</kbd>, <kbd>PageUp</kbd> <kbd>PageDown</kbd> and <kbd>Home</kbd> <kbd>End</kbd> also navigate; see [Keyboard shortcuts](/react-pdf-viewer/keyboard-shortcuts/).
+
+### Controlled page
+
+Pass `page` and `onPageChange` to drive navigation from your app, for example from a table of contents or the URL.
+
+<Demo id="features/page-navigation/demo-controlled" title="A table of contents controls the page" />
+
+Out-of-range values are clamped: `page={99}` on a 40-page document shows page 40 and calls `onPageChange(40)` once. For the full pattern see [Controlled state](/react-pdf-viewer/controlled-state/).
+
+### Initial page
+
+Uncontrolled viewers start on `defaultPage` (default `1`), and every new `source` opens on `defaultPage` again.
+
+```tsx
+<PdfViewer source={report} defaultPage={3} />
+```
+
+## Deep links
+
+Keep the page in the address bar so every view is shareable. The [Document viewer demo](/react-pdf-viewer/demos/document-viewer/) syncs `page`, `zoom` and `rotation` with the query string.
 
 ## Customization
 
-TODO: Customization.
+Rename the controls and the page label through `labels`, and restyle the toolbar with CSS variables.
+
+<Demo id="features/page-navigation/demo-customization" title="Custom labels and toolbar colour" />
+
+To let users type a page number, turn on [`pageInput`](/react-pdf-viewer/page-number-input/). More options: the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+`goToPage`, `nextPage` and `previousPage` on the [imperative API](/react-pdf-viewer/imperative-api/) navigate without controlling the page, which is convenient for buttons outside the viewer.
 
 ## Limitations
 
-TODO: Limitations.
+- **One page at a time by default.** The default layout shows a single page. Workaround: set `layout="continuous"` for scrolling through all pages; see [Continuous layout](/react-pdf-viewer/continuous-layout/).
+- **No outline (bookmarks) panel.** The document outline embedded in some PDFs is not shown. Workaround: build a table of contents from `getDocument().getOutline()` on the [imperative API](/react-pdf-viewer/imperative-api/) and drive `page` from it.

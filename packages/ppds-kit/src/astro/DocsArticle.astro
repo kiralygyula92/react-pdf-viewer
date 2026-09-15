@@ -25,11 +25,13 @@ interface Props {
   title?: string | undefined;
   description: string;
   links?: Record<string, string> | undefined;
+  /** Archetype I: publication or last-updated date (ISO). */
+  date?: string | undefined;
   descriptions: Map<string, string>;
   generated?: GeneratedBlocks;
 }
 
-const { model, page, title, description, links, descriptions, generated = {} } = Astro.props;
+const { model, page, title, description, links, date, descriptions, generated = {} } = Astro.props;
 const heading =
   title ?? (page.archetype === 'A' ? `${model.config.name} — Overview` : page.title);
 ---
@@ -40,6 +42,13 @@ const heading =
     <Badge page={page} tiers={model.config.tiers} />
   </h1>
   <p class="ppds-article__subtitle" data-description>{description}</p>
+  {
+    page.archetype === 'I' && date && (
+      <p class="ppds-article__meta">
+        Updated <time datetime={date}>{new Date(date).toLocaleDateString('en', { dateStyle: 'long' })}</time>
+      </p>
+    )
+  }
   {page.archetype === 'B' && links && <ResourceChips links={links} repo={model.config.repo} />}
 </header>
 
@@ -68,7 +77,11 @@ const heading =
     page.archetype === 'K' && generated.cards && (
       <section>
         <h2 id="in-this-section">In this section</h2>
-        <CardGrid items={generated.cards} tiers={model.config.tiers} />
+        {generated.cards.length > 0 ? (
+          <CardGrid items={generated.cards} tiers={model.config.tiers} />
+        ) : (
+          <p>There are no pages in this section yet.</p>
+        )}
       </section>
     )
   }

@@ -31,9 +31,12 @@ async function renderViewer(props: Partial<PdfViewerProps> = {}, pages?: MockPag
   installMockPdfjs({ autoResolveDocument: true, autoResolveRender: true, pages });
   const user = userEvent.setup();
   const utils = render(<PdfViewer source={BYTES} {...props} />);
-  await screen.findByRole(props.textLayer || props.search ? 'group' : 'img', {
-    name: /^Page 1 of \d+$/,
-  });
+  await screen.findByRole(
+    props.textLayer || props.search || props.annotationLayer ? 'group' : 'img',
+    {
+      name: /^Page 1 of \d+$/,
+    },
+  );
   return { user, ...utils };
 }
 
@@ -165,8 +168,11 @@ describe('opt-in features', () => {
     const external = await screen.findByRole('link', { name: 'External' });
     expect(external).toHaveAttribute('target', '_blank');
     expect(external).toHaveAttribute('rel', 'noopener noreferrer nofollow');
+    // Links sit inside a group, never inside role="img" (axe nested-interactive).
+    expect(screen.getByRole('group', { name: 'Page 1 of 2' })).toContainElement(external);
+    expect(screen.queryByRole('img', { name: /^Page/ })).toBeNull();
     await user.click(screen.getByRole('link', { name: 'Internal' }));
-    expect(await screen.findByRole('img', { name: 'Page 2 of 2' })).toBeInTheDocument();
+    expect(await screen.findByRole('group', { name: 'Page 2 of 2' })).toBeInTheDocument();
   });
 
   it('password prompt asks again after a wrong password', async () => {

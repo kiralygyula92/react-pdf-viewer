@@ -2,7 +2,7 @@
 pluginId: react-pdf-viewer
 capabilityId: controlled-state
 title: Controlled state
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Own the page, zoom, rotation and fullscreen state in your app, or let the viewer keep it, with one consistent pattern.
 group: Developer tools
 plan: free
 symbols:
@@ -10,17 +10,61 @@ symbols:
   - UseControllableStateOptions
   - SetControllableState
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Astate
+  source: packages/react-pdf-viewer/src/hooks/useControllableState.ts
+  spec: https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components
 ---
+
+Every piece of viewer state follows the same trio: `x` controls the value, `defaultX` sets its initial value while uncontrolled, and `onXChange` reports every change in both modes.
+
+| State      | Controlled   | Initial             | Change               |
+| ---------- | ------------ | ------------------- | -------------------- |
+| Page       | `page`       | `defaultPage`       | `onPageChange`       |
+| Zoom       | `scale`      | `defaultScale`      | `onScaleChange`      |
+| Rotation   | `rotation`   | `defaultRotation`   | `onRotationChange`   |
+| Fullscreen | `fullscreen` | `defaultFullscreen` | `onFullscreenChange` |
 
 ## Basics
 
-TODO: Basics.
+Pass a value and its change handler to put that state in your app.
+
+<Demo
+  id="features/controlled-state/demo-basics"
+  title="Page, zoom and rotation controlled from outside"
+/>
+
+The toolbar and keyboard keep working: they call your handlers, and the viewer shows whatever you pass back. Out-of-range values are clamped and reported: “Go to page 99” shows page 40 and calls `onPageChange(40)`.
+
+### Mixing modes
+
+Control only what you need. Leave `x` undefined to let the viewer keep that state, and use `defaultX` to choose where it starts; the demo under [Customization](#customization) opens on page 5 at 125%, rotated.
+
+Switching a prop between controlled and uncontrolled during the component's life logs a development warning, as React inputs do.
+
+## The same pattern in your components
+
+`useControllableState` is the hook the viewer uses. Build your own controls with the same contract.
+
+<Demo id="features/controlled-state/demo-hook" title="useControllableState in a custom component" />
+
+The setter is stable and accepts a value or an updater function; `onChange` fires only when the value actually changes.
 
 ## Customization
 
-TODO: Customization.
+Start an uncontrolled viewer exactly where you want it. The zoom reset button returns to `defaultScale`.
+
+<Demo
+  id="features/controlled-state/demo-customization"
+  title="Uncontrolled, with chosen starting values"
+/>
+
+For styling, see the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+For one-off commands (“go to page 3”) without owning the state, use the [imperative API](/react-pdf-viewer/imperative-api/).
 
 ## Limitations
 
-TODO: Limitations.
+- **Values cannot be functions.** `useControllableState` treats a function passed to the setter as an updater. Workaround: wrap function values in an object.
+- **New documents reset uncontrolled state only.** A new `source` opens on `defaultPage`; a controlled `page` is yours to reset. Workaround: reset your state when you change the source.

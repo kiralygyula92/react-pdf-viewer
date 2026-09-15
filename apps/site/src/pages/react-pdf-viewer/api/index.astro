@@ -4,7 +4,7 @@ import { KIND_LABEL, loadReference, slugify, type NavPage } from 'ppds-kit';
 import CardGrid from 'ppds-kit/astro/CardGrid.astro';
 import DocsArticle from 'ppds-kit/astro/DocsArticle.astro';
 import DocsLayout from 'ppds-kit/astro/DocsLayout.astro';
-import { CONTENT_ROOT, feeds, getDescriptions, getModel, getPortfolio, pageMeta, PLUGIN_ID, twin } from '../../../lib/site';
+import { CONTENT_ROOT, feeds, getDescriptions, getModel, getPortfolio, injectedNav, pageMeta, PLUGIN_ID, twin } from '../../../lib/site';
 
 const model = getModel();
 const page = model.byPath.get(`/${PLUGIN_ID}/api/`) as NavPage;
@@ -36,6 +36,7 @@ const headings = [...groups.keys()].map((text) => ({ depth: 2, slug: slugify(tex
   generatedFrom={`${model.config.referenceSource?.entry ?? ''}`}
   twin={twin(page.pathname)}
   feeds={feeds}
+  injectedNav={injectedNav()}
 >
   <DocsArticle model={model} page={page} description={description} descriptions={descriptions}>
     <p>

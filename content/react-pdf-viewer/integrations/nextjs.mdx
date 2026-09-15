@@ -1,24 +1,86 @@
 ---
 title: Next.js
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Use React PDF Viewer in the Next.js App Router, including Server Components and a self-hosted PDF.js worker.
 ---
 
 ## Before you start
 
-TODO: Before you start.
+- Tested with Next.js 16.3 (App Router), React 19.3, `pdfjs-dist` 6.3 and TypeScript 6.0. The consumer smoke test builds this setup against the packed package on every CI run and checks that the viewer renders in the prerendered HTML.
+- Install the package first: see [Installation](/react-pdf-viewer/getting-started/installation/).
 
 ## Setup
 
-TODO: Setup.
+**1. Import the stylesheet in your root layout:**
+
+```tsx
+// app/layout.tsx
+import type { ReactNode } from 'react';
+import '@kiralygyula92/react-pdf-viewer/styles.css';
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+**2. Configure the worker in a client module.** The bundler emits the worker as an asset from `new URL(…, import.meta.url)`:
+
+```tsx
+// app/viewer.tsx
+'use client';
+
+import { configurePdfJs, PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+
+configurePdfJs({
+  workerSrc: new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString(),
+});
+
+export function Viewer({ source }: { source: string }) {
+  return <PdfViewer source={source} />;
+}
+```
+
+**3. Render it from a page.** Pages can stay Server Components:
+
+```tsx
+// app/page.tsx
+import { Viewer } from './viewer';
+
+export default function Page() {
+  return <Viewer source="/report.pdf" />;
+}
+```
+
+The package entry starts with `'use client'`, so a Server Component can also render `PdfViewer` directly with serialisable props, such as a URL string. Callbacks, `ref` and `configurePdfJs` need a client module.
+
+**4. Optional: self-host the other assets.** Copy the asset folders into `public/pdfjs/`, for example in a `postinstall` script:
+
+```json
+{
+  "scripts": {
+    "postinstall": "node -e \"for (const d of ['cmaps','standard_fonts','wasm','iccs']) require('fs').cpSync('node_modules/pdfjs-dist/'+d, 'public/pdfjs/'+d, {recursive: true})\""
+  }
+}
+```
+
+Then pass `cMapUrl: '/pdfjs/cmaps/'`, `standardFontDataUrl: '/pdfjs/standard_fonts/'`, `wasmUrl: '/pdfjs/wasm/'` and `iccUrl: '/pdfjs/iccs/'` to `configurePdfJs`, and add `public/pdfjs/` to `.gitignore`.
 
 ## Verify
 
-TODO: Verify.
+1. Run `next build`. It must finish without “window is not defined” or similar server errors.
+2. Open `.next/server/app/index.html`: it contains `class="rpv-root"` and the loading state, showing the viewer rendered on the server.
+3. Run `next start`, open the page and confirm the document renders and the worker loads from your origin.
 
 ## Known issues
 
-TODO: Known issues.
+- **Callbacks from a Server Component.** Passing `onError` or other functions from a Server Component fails, because functions are not serialisable. Render the viewer from a client module, as in step 2.
+- **Document requests during prerendering.** Nothing is fetched on the server; documents load in the browser after hydration, so the prerendered HTML shows the loading state.
 
 ## Related
 
-TODO: Related.
+- [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/)
+- [Vite](/react-pdf-viewer/integrations/vite/)
+- [Requirements](/react-pdf-viewer/getting-started/requirements/)

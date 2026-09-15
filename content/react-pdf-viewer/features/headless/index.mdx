@@ -2,7 +2,7 @@
 pluginId: react-pdf-viewer
 capabilityId: headless
 title: Headless
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Build a completely custom PDF interface from the same document loader and page renderer the viewer uses.
 group: Advanced features
 plan: free
 symbols:
@@ -12,17 +12,40 @@ symbols:
   - PdfPageCanvas
   - PdfPageCanvasProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Aheadless
+  source: packages/react-pdf-viewer/src/hooks/usePdfDocument.ts
 ---
+
+`PdfViewer` is assembled from two public building blocks. Use them directly when your layout is not a toolbar and a page: comparison views, galleries, spreads, or pages embedded in a larger UI.
 
 ## Basics
 
-TODO: Basics.
+`usePdfDocument(source)` loads a document; `PdfPageCanvas` renders one of its pages.
+
+<Demo id="features/headless/demo-basics" title="A thumbnail strip and a fitted page" />
+
+`usePdfDocument` returns `{ status, document, numPages, error, reload }`. It handles fetching, aborting when the source changes, HTTP errors and destroying documents, and never exposes a destroyed document. It accepts the same sources and request options as the viewer.
+
+`PdfPageCanvas` renders with cancellation, double buffering, HiDPI output and the pixel budget. It sizes itself from `scale`, or from a `fit` box (`{ width, height, upscale }`), adds the page's intrinsic rotation to `rotation`, and can render `textLayer` and `annotationLayer`.
 
 ## Customization
 
-TODO: Customization.
+Combine the pieces into layouts the viewer does not offer, such as a two-page spread with highlighted matches.
+
+<Demo id="features/headless/demo-customization" title="A spread with search highlights" />
+
+Style pages with the same `--rpv-page-*` variables as the viewer; see the [customization guide](/react-pdf-viewer/customization/).
+
+## Accessibility in headless layouts
+
+Give each `PdfPageCanvas` an `aria-label` (“Page 3 of 10”) so it is exposed as an image, or as a group containing its text and links when `textLayer` or `annotationLayer` is on; without a label it is decorative. Keyboard navigation, focus management and live announcements are yours to provide.
+
+## Advanced / escape hatch
+
+`document` is a PDF.js `PDFDocumentProxy`: anything PDF.js can do (metadata, outline, text extraction, annotations) is available from it.
 
 ## Limitations
 
-TODO: Limitations.
+- **No toolbar, shortcuts or fullscreen.** Headless pieces render pages only. Workaround: use `PdfViewer` with [`renderToolbar`](/react-pdf-viewer/custom-toolbar/) if you only need a different toolbar.
+- **One `usePdfDocument` per document.** Each hook call loads its own copy. Workaround: load once near the top of your tree and pass `document` down.
+- **Many canvases cost memory.** Rendering dozens of full-size pages at once is expensive. Workaround: render thumbnails with a small `scale` or `fit`, and mount large pages only when visible.

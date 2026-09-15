@@ -2,23 +2,50 @@
 pluginId: react-pdf-viewer
 capabilityId: continuous-layout
 title: Continuous layout
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Scroll through every page in one column, rendering only the pages near the screen so long documents stay fast.
 group: Display & layout
 plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Acontinuous
+  source: packages/react-pdf-viewer/src/components/ContinuousPages.tsx
 ---
 
 ## Basics
 
-TODO: Basics.
+`layout="continuous"` shows all pages in a vertical, scrollable column.
+
+<Demo id="features/continuous-layout/demo-basics" title="A 40-page document, scrolling" />
+
+Every page reserves its space immediately, so the scrollbar is accurate from the start, but only the visible pages and one page on each side are rendered to a canvas. The page indicator follows the scroll position, and previous and next scroll to the neighbouring page.
+
+### With thumbnails and page input
+
+Continuous layout pairs well with [thumbnails](/react-pdf-viewer/thumbnails/) and the [page number input](/react-pdf-viewer/page-number-input/) for long documents.
+
+<Demo
+  id="features/continuous-layout/demo-with-thumbnails"
+  title="Continuous layout, thumbnails and page input"
+/>
 
 ## Customization
 
-TODO: Customization.
+The gap between pages and the page frame are CSS variables.
+
+<Demo
+  id="features/continuous-layout/demo-customization"
+  title="Wider gaps and softer page shadows"
+/>
+
+See `--rpv-page-gap`, `--rpv-page-shadow`, `--rpv-page-border` and `--rpv-page-radius` in the [CSS variables reference](/react-pdf-viewer/api/css-variables/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+For layouts the viewer does not offer, such as two pages side by side, render pages yourself with [`usePdfDocument` and `PdfPageCanvas`](/react-pdf-viewer/headless/).
 
 ## Limitations
 
-TODO: Limitations.
+- **No spreads.** Pages are always shown one per row. Workaround: a [headless](/react-pdf-viewer/headless/) layout that places two `PdfPageCanvas` elements per row.
+- **Scrolling fast shows blank pages briefly.** Pages outside the rendered window paint when they come into view. Workaround: none needed for most documents; very slow devices benefit from a lower `maxCanvasPixels`.
+- **Search and links render per visible page.** Highlights and link areas appear as pages render, which is expected.

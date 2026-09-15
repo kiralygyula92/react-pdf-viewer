@@ -13,7 +13,7 @@
   "pdf-js-document-options.schema.json": "4ea86030cec0a3aea7f4388a0445c13cf7880ed2b7ea2b3702a8f5c9cbbcc6d7",
   "pdf-js-module.schema.json": "17c6c687e338238a22c47fade5b1931c36ed9c9f2eafe0b88d7ebbbad9dffaf6",
   "pdf-page-canvas-props.schema.json": "3d7479242cac7c716aa1f67a7780712438d19d44ddc64f9f5210d4476194001a",
-  "pdf-page-canvas.schema.json": "3dfd4c04e90223f8fdf7b1b414aa66ac8377c449fabfc41c8ddf22c52be51eca",
+  "pdf-page-canvas.schema.json": "b203337d17a838992d298325672ad8ac4849718707ff66f159a5b23e1d0be148",
   "pdf-request-options.schema.json": "8ca349ddfa608ce4ab13ef2da3c69fe63a090ee02efc5882497eeff6b6d9793e",
   "pdf-source.schema.json": "6c4fe88d621a536934d9009db22a22705caba568d95a8a8cff2ad6135f5d142f",
   "pdf-toolbar-props.schema.json": "a6fb5e7a783d3bf3a5d7eada0ff8a8bd8ee6f37195f2b567bbe2dd55ae52de7b",

@@ -7,13 +7,19 @@ interface Props {
   model: PluginModel;
   current: string;
   descriptions: Map<string, string>;
+  /**
+   * Generated nodes injected under a section group (N3: generated API pages are never typed into
+   * nav.json by hand), keyed by the group pathname.
+   */
+  injected?: Record<string, NavNode[]> | undefined;
 }
 
-const { model, current, descriptions } = Astro.props;
+const { model, current, descriptions, injected = {} } = Astro.props;
 const { nav, titles, config, byPath } = model;
 const titleOf = (node: NavNode) => node.title ?? titles[node.pathname] ?? node.subheader ?? '';
+const withInjected = (node: NavNode): NavNode[] => [...(node.children ?? []), ...(injected[node.pathname] ?? [])];
 const containsCurrent = (node: NavNode): boolean =>
-  node.pathname === current || (node.children ?? []).some(containsCurrent);
+  node.pathname === current || withInjected(node).some(containsCurrent);
 ---
 
 <nav class="ppds-sidebar" aria-label={`${config.name} documentation`}>
@@ -22,7 +28,7 @@ const containsCurrent = (node: NavNode): boolean =>
       <details class="ppds-sidebar__section" open={containsCurrent(section) || undefined}>
         <summary class="ppds-sidebar__section-title">{titleOf(section)}</summary>
         <ul class="ppds-sidebar__list">
-          {(section.children ?? []).map((node) =>
+          {withInjected(section).map((node) =>
             node.children ? (
               <li class="ppds-sidebar__group">
                 <span class="ppds-sidebar__subheader">{titleOf(node)}</span>

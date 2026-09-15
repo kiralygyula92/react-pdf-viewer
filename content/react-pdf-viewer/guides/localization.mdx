@@ -1,8 +1,62 @@
 ---
 title: Localization
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Ship the viewer in several languages with translated labels, locale-aware numbers and translated error messages.
 ---
+
+## Keep one labels object per language
+
+Store viewer labels next to the rest of your app's translations and pick the object for the active language. Define each object once (module scope or memoised), because labels are merged per object identity.
+
+```tsx
+import type { PdfViewerLabels } from '@kiralygyula92/react-pdf-viewer';
+
+const VIEWER_LABELS: Record<'en' | 'de', Partial<PdfViewerLabels>> = {
+  en: {},
+  de: {
+    zoomIn: 'Vergrößern',
+    zoomOut: 'Verkleinern',
+    previousPage: 'Vorherige Seite',
+    nextPage: 'Nächste Seite',
+    moreActions: 'Weitere Aktionen',
+    pageAriaLabel: (page, total, { formatNumber }) =>
+      `Seite ${formatNumber(page)} von ${formatNumber(total)}`,
+  },
+};
+
+<PdfViewer source={url} locale={language} labels={VIEWER_LABELS[language]} />;
+```
+
+The [`PdfViewerLabels` reference](/react-pdf-viewer/api/pdf-viewer-labels/) lists every key with its English default; translate the accessible names too, not only visible text.
+
+## Format numbers with the locale
+
+`locale` controls how numbers in labels are formatted, including non-Latin digits. Function labels receive `formatNumber` for exactly this reason. See the live demo on [Labels and locale](/react-pdf-viewer/labels/#customization).
+
+## Translate error messages
+
+`PdfViewerError.message` is English. Translate by `code` in `renderError`:
+
+```tsx
+const ERRORS: Record<PdfViewerErrorCode, string> = {
+  HTTP_ERROR: 'Das Dokument konnte nicht geladen werden.',
+  NETWORK_ERROR: 'Keine Verbindung zum Server.',
+  // …one entry per code
+};
+
+<PdfViewer
+  source={url}
+  renderError={(error, { retry }) => <ErrorPanel message={ERRORS[error.code]} onRetry={retry} />}
+/>;
+```
+
+For HTTP errors your API describes, `getHttpErrorMessage` can return the server's localised message; see [Authenticated requests](/react-pdf-viewer/authenticated-requests/#customization).
+
+## Right-to-left pages
+
+The viewer works inside right-to-left pages, but its toolbar keeps a left-to-right order. For a mirrored toolbar, render your own with [`renderToolbar`](/react-pdf-viewer/custom-toolbar/). PDF content is rendered as authored.
 
 ## Related
 
-TODO: Related.
+- [Labels and locale](/react-pdf-viewer/labels/)
+- [Error states](/react-pdf-viewer/error-states/)
+- [Accessibility](/react-pdf-viewer/guides/accessibility/)

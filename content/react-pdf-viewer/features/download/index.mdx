@@ -2,23 +2,45 @@
 pluginId: react-pdf-viewer
 capabilityId: download
 title: Download
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Save the open document under a sensible file name without requesting it again, or take over the download yourself.
 group: Core features
 plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Adownload
+  source: packages/react-pdf-viewer/src/core/download.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+The download button saves the bytes that are already loaded, so authenticated or expiring URLs are never requested twice.
+
+<Demo id="features/download/demo-basics" title="Download from the toolbar" />
+
+The file name is `fileName` when you pass one; otherwise a `File`'s name, the last `.pdf` segment of the URL, or `document.pdf`.
+
+### Intercepting the download
+
+`onDownload` receives `{ fileName, data }` before anything is saved. Return `false` to handle the bytes yourself.
+
+<Demo id="features/download/demo-intercept" title="Intercept the download" />
+
+If saving fails, `onError` receives a `DOWNLOAD_FAILED` error; see [Error states](/react-pdf-viewer/error-states/).
 
 ## Customization
 
-TODO: Customization.
+Set the file name, rename the button, and choose which toolbar actions appear.
+
+<Demo id="features/download/demo-customization" title="A custom file name and button label" />
+
+See the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+`download()` on the [imperative API](/react-pdf-viewer/imperative-api/) starts the same download from your own button. `getDocument()` returns the PDF.js document if you need its `getData()` for something other than saving.
 
 ## Limitations
 
-TODO: Limitations.
+- **The original file is saved.** Rotation, zoom and search highlights are not written into the download. Workaround: none within the viewer; post-process the bytes from `onDownload` with a PDF library if you need a modified file.
+- **Some mobile browsers open instead of saving.** iOS Safari may show the PDF in a new view rather than a download prompt; this is browser behaviour. Workaround: none reliable; the user can share or save from there.

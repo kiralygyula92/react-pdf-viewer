@@ -2,7 +2,7 @@
 /** Generated reference page (archetype E), one per public symbol (PPDS §6 E, §8.4–8.5). */
 import { loadReference, optionsHeading, type NavPage, type ReferenceEntry } from 'ppds-kit';
 import DocsLayout from 'ppds-kit/astro/DocsLayout.astro';
-import { CONTENT_PATH, CONTENT_ROOT, feeds, getDescriptions, getModel, getPortfolio, pageMeta, PLUGIN_ID, twin } from '../../../lib/site';
+import { CONTENT_PATH, CONTENT_ROOT, feeds, getDescriptions, getModel, getPortfolio, injectedNav, pageMeta, PLUGIN_ID, twin } from '../../../lib/site';
 
 export function getStaticPaths() {
   const reference = loadReference(CONTENT_ROOT);
@@ -50,6 +50,7 @@ const rows = (entries: [string, (typeof optionRows)[number][1]][], prose: Record
   generatedFrom={schema.filename}
   twin={twin(pathname)}
   feeds={feeds}
+  injectedNav={injectedNav()}
 >
   <header class="ppds-article__header">
     <h1 class="ppds-article__title">{title}</h1>
@@ -88,6 +89,7 @@ const rows = (entries: [string, (typeof optionRows)[number][1]][], prose: Record
       optionRows.length > 0 && (
         <>
           <h2 id="options">{heading}</h2>
+          <div class="ppds-table-scroll" role="region" tabindex="0" aria-label={heading}>
           <table>
             <thead>
               <tr>
@@ -115,6 +117,7 @@ const rows = (entries: [string, (typeof optionRows)[number][1]][], prose: Record
               ))}
             </tbody>
           </table>
+          </div>
         </>
       )
     }
@@ -123,6 +126,7 @@ const rows = (entries: [string, (typeof optionRows)[number][1]][], prose: Record
       eventRows.length > 0 && (
         <>
           <h2 id="events">Events</h2>
+          <div class="ppds-table-scroll" role="region" tabindex="0" aria-label="Events">
           <table>
             <thead>
               <tr>
@@ -149,6 +153,7 @@ const rows = (entries: [string, (typeof optionRows)[number][1]][], prose: Record
               ))}
             </tbody>
           </table>
+          </div>
         </>
       )
     }
@@ -157,6 +162,7 @@ const rows = (entries: [string, (typeof optionRows)[number][1]][], prose: Record
       schema.classes && schema.classes.length > 0 && (
         <>
           <h2 id="css-classes">CSS classes</h2>
+          <div class="ppds-table-scroll" role="region" tabindex="0" aria-label="CSS classes">
           <table>
             <thead>
               <tr>
@@ -177,6 +183,7 @@ const rows = (entries: [string, (typeof optionRows)[number][1]][], prose: Record
               ))}
             </tbody>
           </table>
+          </div>
         </>
       )
     }

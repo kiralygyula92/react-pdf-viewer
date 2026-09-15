@@ -2,23 +2,76 @@
 pluginId: react-pdf-viewer
 capabilityId: keyboard-shortcuts
 title: Keyboard shortcuts
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Navigate, zoom, rotate and go fullscreen from the keyboard while focus is in the viewer, without stealing keys from the rest of your app.
 group: Interaction
 plan: free
 symbols:
   - Keyboard shortcuts
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Akeyboard
+  source: packages/react-pdf-viewer/src/hooks/useKeyboardShortcuts.ts
+  spec: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/
 ---
 
 ## Basics
 
-TODO: Basics.
+Shortcuts work while focus is anywhere inside the viewer; click the page or <kbd>Tab</kbd> to the document area first.
+
+<Demo id="features/keyboard-shortcuts/demo-basics" title="Try the shortcuts" />
+
+| Keys                                                         | Action                                                              |
+| ------------------------------------------------------------ | ------------------------------------------------------------------- |
+| <kbd>←</kbd> <kbd>PageUp</kbd>                               | Previous page (a zoomed page scrolls horizontally first)            |
+| <kbd>→</kbd> <kbd>PageDown</kbd>                             | Next page                                                           |
+| <kbd>Home</kbd> / <kbd>End</kbd>                             | First / last page                                                   |
+| <kbd>+</kbd> or <kbd>=</kbd> / <kbd>-</kbd> or <kbd>\_</kbd> | Zoom in / out                                                       |
+| <kbd>0</kbd>                                                 | Reset zoom                                                          |
+| <kbd>r</kbd> / <kbd>Shift</kbd> + <kbd>R</kbd>               | Rotate clockwise / counter-clockwise                                |
+| <kbd>f</kbd>                                                 | Toggle fullscreen                                                   |
+| <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>F</kbd>                  | Focus the search field (with [`search`](/react-pdf-viewer/search/)) |
+
+The table above is also generated, with the exact key names, in the [Keyboard shortcuts reference](/react-pdf-viewer/api/keyboard-shortcuts/), which is built from the same source the viewer uses.
+
+Shortcuts never fire while typing in an input, select or text area, or with <kbd>Alt</kbd>, <kbd>Ctrl</kbd> or <kbd>⌘</kbd> held, so browser and app shortcuts keep working. <kbd>Shift</kbd> with arrows is left alone for text selection.
+
+### Toolbar and menu keys
+
+The toolbar is a single tab stop. Inside it, <kbd>←</kbd> <kbd>→</kbd> <kbd>Home</kbd> <kbd>End</kbd> move between controls. On the **⋮ More actions** button, <kbd>Enter</kbd>, <kbd>Space</kbd> or <kbd>↓</kbd> open the menu on its first item and <kbd>↑</kbd> on its last; inside the menu, arrows move and <kbd>Esc</kbd> closes it and returns focus.
+
+### Turning shortcuts off
+
+`keyboardShortcuts={false}` disables the viewer's shortcuts when your app uses the same keys. Toolbar, menu and form keys keep working.
+
+<Demo id="features/keyboard-shortcuts/demo-disabled" title="Shortcuts disabled" />
 
 ## Customization
 
-TODO: Customization.
+Focus indicators are CSS variables: `--rpv-focus-ring` and `--rpv-focus-ring-offset` for toolbar controls, `--rpv-accent` for the document area, thumbnails and links.
+
+<Demo id="features/keyboard-shortcuts/demo-customization" title="A high-visibility focus ring" />
+
+See the [customization guide](/react-pdf-viewer/customization/) and [Accessibility](/react-pdf-viewer/guides/accessibility/).
+
+## Advanced / escape hatch
+
+To bind different keys, turn the built-in shortcuts off and call the [imperative API](/react-pdf-viewer/imperative-api/) from your own key handler:
+
+```tsx
+const viewer = useRef<PdfViewerApi>(null);
+
+useEffect(() => {
+  const onKey = (event: KeyboardEvent) => {
+    if (event.key === 'j') viewer.current?.nextPage();
+    if (event.key === 'k') viewer.current?.previousPage();
+  };
+  window.addEventListener('keydown', onKey);
+  return () => window.removeEventListener('keydown', onKey);
+}, []);
+
+<PdfViewer ref={viewer} source={url} keyboardShortcuts={false} />;
+```
 
 ## Limitations
 
-TODO: Limitations.
+- **Keys cannot be remapped.** The key map is fixed. Workaround: disable it and handle keys yourself, as above.
+- **Shortcuts need focus inside the viewer.** They are scoped to the viewer so they never interfere with the rest of the page. Workaround: focus the viewer programmatically, or use a global handler with the imperative API.

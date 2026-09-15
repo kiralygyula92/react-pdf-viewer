@@ -2,23 +2,68 @@
 pluginId: react-pdf-viewer
 capabilityId: authenticated-requests
 title: Authenticated requests
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Load protected PDFs with cookies, headers or your own HTTP client, and handle expired sessions and HTTP errors your way.
 group: Connectivity
 plan: free
 symbols:
   - PdfRequestOptions
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Arequests
+  source: packages/react-pdf-viewer/src/core/loadSource.ts
+  spec: https://www.rfc-editor.org/rfc/rfc9457
 ---
+
+URL sources are fetched by the viewer with `fetch` and handed to PDF.js as bytes. That lets you shape the request, and lets the viewer see HTTP statuses.
 
 ## Basics
 
-TODO: Basics.
+`requestInit` adds `fetch` options such as credentials and headers to the request.
+
+<Demo id="features/authenticated-requests/demo-basics" title="Send cookies and a header" />
+
+### Your own HTTP client
+
+`fetcher(url, init)` replaces `fetch` entirely, for example with a client that adds and refreshes tokens. `init.signal` is aborted when the source changes.
+
+<Demo id="features/authenticated-requests/demo-fetcher" title="A bearer token and a handled 401" />
+
+### Handling HTTP errors
+
+`onHttpError(response)` runs for every non-2xx response. Return `true` when you have handled it (for example by redirecting to sign-in): the viewer shows its empty state and does not call `onError`. Otherwise the error view appears with the message from `getHttpErrorMessage`.
+
+```tsx
+<PdfViewer
+  source={url}
+  requestInit={{ credentials: 'include' }}
+  onHttpError={(response) => {
+    if (response.status === 401) {
+      signIn({ returnTo: window.location.href });
+      return true;
+    }
+  }}
+/>
+```
+
+By default the message is read from an RFC 9457 (formerly 7807) problem body (`detail`, then `title`), then a JSON string body, then `Failed to fetch PDF: {status} {statusText}`.
+
+## Cross-origin documents
+
+Reading a PDF from another origin requires the server to send `Access-Control-Allow-Origin` for your origin; sending cookies additionally requires `credentials: 'include'` and `Access-Control-Allow-Credentials: true`. A blocked request surfaces as a `NETWORK_ERROR`, because browsers do not tell scripts why a request was blocked. When you cannot change the server, proxy the file through your own origin.
 
 ## Customization
 
-TODO: Customization.
+`getHttpErrorMessage(response)` writes the error message for your API's statuses. Return `undefined` to keep the default.
+
+<Demo id="features/authenticated-requests/demo-customization" title="A friendlier 404 message" />
+
+To replace the whole error view, see [Error states](/react-pdf-viewer/error-states/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+If requests need logic the viewer cannot express (multi-step downloads, signed URLs fetched from another endpoint), fetch the bytes yourself and pass them as a `Blob` or `ArrayBuffer` [source](/react-pdf-viewer/document-sources/). [`usePdfDocument`](/react-pdf-viewer/headless/) accepts the same request options.
 
 ## Limitations
 
-TODO: Limitations.
+- **Request options apply to the next load.** Changing `requestInit` or `fetcher` does not reload the current document. Workaround: change the viewer's `key`, or call `reload()` on the [imperative API](/react-pdf-viewer/imperative-api/).
+- **No range requests.** The whole file is downloaded before rendering starts. Workaround: none within the viewer; keep very large documents split server-side.
+- **Error handlers share one response.** `onHttpError` and `getHttpErrorMessage` receive the same `Response`, and the default message reads a clone of its body. Workaround: read bodies with `response.clone().json()` in your handlers so the default message still works.

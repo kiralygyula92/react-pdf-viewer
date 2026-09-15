@@ -34,7 +34,8 @@ export interface PdfPageCanvasProps {
   onHighlight?: ((element: HTMLElement) => void) | undefined;
   /**
    * Accessible name, e.g. `Page 1 of 3`. With a name the page is exposed as an image (or, with
-   * a text layer, as a group containing the text); without one it is decorative.
+   * a text or annotation layer, as a group containing the text and links); without one it is
+   * decorative.
    */
   'aria-label'?: string | undefined;
   className?: string | undefined;
@@ -88,7 +89,8 @@ function PdfPageCanvasImpl({
       ref={pageRef}
       className={className ? `rpv-page ${className}` : 'rpv-page'}
       style={style}
-      role={labelled ? (textLayer ? 'group' : 'img') : undefined}
+      // An image must not contain interactive or readable content: pages with text or links are groups.
+      role={labelled ? (textLayer || annotationLayer ? 'group' : 'img') : undefined}
       aria-label={labelled ? ariaLabel : undefined}
       data-state={error ? 'error' : undefined}
     >

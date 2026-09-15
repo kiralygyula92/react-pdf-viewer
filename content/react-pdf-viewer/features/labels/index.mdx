@@ -2,7 +2,7 @@
 pluginId: react-pdf-viewer
 capabilityId: labels
 title: Labels and locale
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Translate or reword every visible text and accessible name, and format numbers for any locale.
 group: Content & data
 plan: free
 symbols:
@@ -10,17 +10,54 @@ symbols:
   - defaultLabels
   - LabelContext
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Ai18n
+  source: packages/react-pdf-viewer/src/labels.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+`labels` overrides any subset of the viewer's texts and `locale` sets number formatting.
+
+<Demo id="features/labels/demo-basics" title="Hungarian labels" />
+
+Keys you leave out keep their English defaults, exported as `defaultLabels`. Accessible names (the toolbar, buttons, the page image, the thumbnails sidebar) are labels too, so a translated viewer is fully translated for screen reader users.
+
+<Callout type="warning" title="Keep the labels object stable">
+  Labels are merged once per object identity. An object literal written inline in JSX creates a new
+  object on every render. Define labels at module scope, or wrap them in `useMemo`.
+</Callout>
+
+### Text and function labels
+
+Most labels are strings. Labels that contain numbers are functions that receive the numbers and a `{ formatNumber }` helper, so they read naturally in any language:
+
+```tsx
+const labels = {
+  pageIndicator: (page, total, { formatNumber }) =>
+    `${formatNumber(page)} / ${formatNumber(total)}`,
+  printProgress: (done, total) => `Preparing ${done} of ${total}…`,
+};
+```
+
+Every key, its default and its purpose is listed in the [`PdfViewerLabels` reference](/react-pdf-viewer/api/pdf-viewer-labels/).
 
 ## Customization
 
-TODO: Customization.
+`formatNumber` follows `locale`, including non-Latin digits.
+
+<Demo
+  id="features/labels/demo-customization"
+  title="Persian digits with custom page and zoom labels"
+/>
+
+For translation workflows and right-to-left pages, see the [Localization guide](/react-pdf-viewer/guides/localization/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+`PdfToolbar` accepts the same `labels` and `locale` props for [custom toolbars](/react-pdf-viewer/custom-toolbar/).
 
 ## Limitations
 
-TODO: Limitations.
+- **Error messages are not labels.** `PdfViewerError.message` is English. Workaround: map `error.code` to translated text in [`renderError`](/react-pdf-viewer/error-states/).
+- **No bundled translations.** Only English ships with the package. Workaround: keep a labels object per language in your app's translation files.
+- **No right-to-left toolbar mirroring.** The toolbar keeps its order in right-to-left pages. Workaround: build a mirrored toolbar with [`renderToolbar`](/react-pdf-viewer/custom-toolbar/).

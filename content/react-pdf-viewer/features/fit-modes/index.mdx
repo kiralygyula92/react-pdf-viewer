@@ -2,23 +2,58 @@
 pluginId: react-pdf-viewer
 capabilityId: fit-modes
 title: Fit modes
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Size pages to the available width, to the whole page, or to their true size, and switch to true size as soon as users zoom.
 group: Display & layout
 plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Afit
+  source: packages/react-pdf-viewer/src/core/geometry.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+`fitMode="width"` scales pages to fill the width of the document area at the default scale.
+
+<Demo id="features/fit-modes/demo-basics" title="Fill the width" />
+
+Fitting applies only while the scale equals `defaultScale`. As soon as the user zooms, the page is shown at its true size and the document area scrolls. Reset zoom (<kbd>0</kbd>) to fit again.
+
+### Fit the whole page
+
+`fitMode="page"` scales each page so it fits entirely, width and height, which suits slide decks and documents with mixed page sizes.
+
+<Demo id="features/fit-modes/demo-page" title="Fit each page entirely" />
+
+### Shrink only, or true size
+
+Without `fitMode`, a page wider than the document area is shrunk to fit but never enlarged (`fitWidthAtDefaultScale`, on by default). Turn it off to always show pages at their true size.
+
+<Demo id="features/fit-modes/demo-true-size" title="Always true size (A3 landscape page)" />
+
+## Choosing a mode
+
+| You want                                       | Use                              |
+| ---------------------------------------------- | -------------------------------- |
+| Readable text on phones and in narrow columns  | the default (shrink only)        |
+| Documents that use all the space you give them | `fitMode="width"`                |
+| Presentations, posters, mixed page sizes       | `fitMode="page"`                 |
+| Pixel-exact 100% (e.g. comparing prints)       | `fitWidthAtDefaultScale={false}` |
 
 ## Customization
 
-TODO: Customization.
+The size of the document area is set by CSS variables, so the same fit mode behaves differently in different layouts.
+
+<Demo id="features/fit-modes/demo-customization" title="A wide, short document area" />
+
+See `--rpv-viewport-max-width`, `--rpv-viewport-min-height` and `--rpv-viewport-max-height` in the [CSS variables reference](/react-pdf-viewer/api/css-variables/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+[`PdfPageCanvas`](/react-pdf-viewer/headless/) takes a `fit` box (`{ width, height, upscale }`) so custom layouts can size pages to any container; see [`FitOptions`](/react-pdf-viewer/api/fit-options/).
 
 ## Limitations
 
-TODO: Limitations.
+- **Fitting only happens at the default scale.** A controlled `scale` that differs from `defaultScale` always shows true size. Workaround: set `defaultScale` to the value you control, or reset to it.
+- **Page fit uses the document area's height.** Inline, that area is at most 800px tall (100% of the viewer in fullscreen), so a tall portrait page fits to that height. Workaround: set `--rpv-viewport-max-height` to the height you want to fill.

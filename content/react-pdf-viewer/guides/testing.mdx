@@ -1,8 +1,70 @@
 ---
 title: Testing
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Test apps that use React PDF Viewer with unit tests for your logic and browser tests for real rendering.
 ---
+
+## Split what you test
+
+- **Unit tests** (Vitest or Jest with jsdom) are good for your own logic around the viewer: which source you pass, how you react to `onPageChange` or `onError`. jsdom has no canvas, so they cannot check rendering.
+- **Browser tests** (Playwright, Cypress) load real documents in a real browser and are the right place to check that pages render and controls work.
+
+## Unit tests: test your props and callbacks
+
+Mock the component at the module boundary and assert what your code passes to it:
+
+```tsx
+vi.mock('@kiralygyula92/react-pdf-viewer', () => ({
+  PdfViewer: (props: { source: unknown; onPageChange?: (page: number) => void }) => (
+    <button onClick={() => props.onPageChange?.(2)}>viewer for {String(props.source)}</button>
+  ),
+}));
+
+it('opens the selected report and tracks the page', async () => {
+  render(<ReportScreen reportId="42" />);
+  expect(screen.getByRole('button')).toHaveTextContent('viewer for /api/reports/42.pdf');
+  await userEvent.click(screen.getByRole('button'));
+  expect(screen.getByText('Page 2')).toBeInTheDocument();
+});
+```
+
+## Browser tests: wait for the canvas
+
+A page has finished rendering when its canvas is attached, because the viewer swaps the canvas in only when a render completes:
+
+```ts
+import { expect, test } from '@playwright/test';
+
+test('shows the report and navigates', async ({ page }) => {
+  await page.goto('/reports/42');
+  await expect(page.locator('.rpv-page canvas').first()).toBeAttached();
+
+  const toolbar = page.getByRole('toolbar', { name: 'PDF controls' });
+  await toolbar.getByRole('button', { name: 'Next page', exact: true }).click();
+  await expect(toolbar).toContainText('2 /');
+});
+```
+
+Query controls by role and accessible name, as above; the names come from `labels`, so tests stay stable across styling changes. If you translate labels, use the translated names.
+
+## Accessibility checks
+
+Run axe in your browser tests on screens that include the viewer. The viewer itself is tested against WCAG 2.2 AA in all its states; checking your pages catches issues in your surrounding UI and theming (for example colour contrast).
+
+```ts
+import AxeBuilder from '@axe-core/playwright';
+
+const results = await new AxeBuilder({ page })
+  .withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
+  .analyze();
+expect(results.violations).toEqual([]);
+```
+
+## Deterministic states
+
+To test your loading and error UI, pass a `fetcher` that never resolves or returns an error response, as the [Loading states](/react-pdf-viewer/loading-states/) and [Authenticated requests](/react-pdf-viewer/authenticated-requests/) demos do.
 
 ## Related
 
-TODO: Related.
+- [Accessibility](/react-pdf-viewer/guides/accessibility/)
+- [Events](/react-pdf-viewer/events/)
+- [Error states](/react-pdf-viewer/error-states/)

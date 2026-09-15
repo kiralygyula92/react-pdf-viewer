@@ -2,7 +2,7 @@ import type { AstroIntegration } from 'astro';
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseDoc, toMarkdownTwin } from './markdown.ts';
+import { parseDoc, slugify, toMarkdownTwin } from './markdown.ts';
 import { contentPages, loadPluginModel, loadPortfolio, twinPath } from './model.ts';
 import { renderOgImage } from './og.ts';
 import { referenceIndexMarkdown, referenceMarkdown, loadReference } from './reference/render.ts';
@@ -163,16 +163,17 @@ export function ppds(options: PpdsOptions): AstroIntegration {
           const { body } = parseDoc(
             readFileSync(join(options.contentRoot, changelogPage.sourceFile), 'utf8'),
           );
-          const items: FeedItem[] = [
-            ...body.matchAll(/^## (.+)$([\s\S]*?)(?=^## |$(?![\s\S]))/gm),
-          ].map((match) => ({
-            title: `${config.name} ${match[1] ?? ''}`.trim(),
-            link: `${absoluteUrl(origin, changelogPage.pathname)}#${(match[1] ?? '').toLowerCase().replace(/[^a-z0-9]+/g, '')}`,
-            description: (match[2] ?? '')
-              .replace(/[#*`[\]]/g, '')
-              .trim()
-              .slice(0, 600),
-          }));
+          // One item per release heading (`## 1.2.0 …`); other sections such as Related are skipped.
+          const items: FeedItem[] = [...body.matchAll(/^## (.+)$([\s\S]*?)(?=^## |$(?![\s\S]))/gm)]
+            .filter((match) => /^v?\d/.test(match[1] ?? ''))
+            .map((match) => ({
+              title: `${config.name} ${match[1] ?? ''}`.trim(),
+              link: `${absoluteUrl(origin, changelogPage.pathname)}#${slugify(match[1] ?? '')}`,
+              description: (match[2] ?? '')
+                .replace(/[#*`[\]]/g, '')
+                .trim()
+                .slice(0, 600),
+            }));
           write(
             join(dist, config.id, 'discover-more', 'changelog', 'rss.xml'),
             rssXml(

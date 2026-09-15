@@ -5,7 +5,7 @@
  */
 import { neighbours } from '../model.ts';
 import type { PageMeta } from '../surfaces.ts';
-import type { NavPage, PluginModel, PortfolioConfig } from '../types.ts';
+import type { NavNode, NavPage, PluginModel, PortfolioConfig } from '../types.ts';
 import DocsHeader from './DocsHeader.astro';
 import Head from './Head.astro';
 import PageFooterActions from './PageFooterActions.astro';
@@ -26,10 +26,24 @@ interface Props {
   twin?: string | undefined;
   feeds?: { title: string; href: string }[];
   announcement?: { text: string; href: string } | undefined;
+  /** Generated sidebar nodes, keyed by section group pathname (N3). */
+  injectedNav?: Record<string, NavNode[]> | undefined;
 }
 
-const { model, portfolio, page, meta, headings, descriptions, sourcePath, generatedFrom, twin, feeds, announcement } =
-  Astro.props;
+const {
+  model,
+  portfolio,
+  page,
+  meta,
+  headings,
+  descriptions,
+  sourcePath,
+  generatedFrom,
+  twin,
+  feeds,
+  announcement,
+  injectedNav,
+} = Astro.props;
 const { previous, next } = neighbours(model, page.pathname);
 ---
 
@@ -50,7 +64,7 @@ const { previous, next } = neighbours(model, page.pathname);
     <DocsHeader portfolio={portfolio} config={model.config} />
     <div class="ppds-docs">
       <div class="ppds-docs__sidebar" id="ppds-sidebar-panel" data-sidebar>
-        <Sidebar model={model} current={page.pathname} descriptions={descriptions} />
+        <Sidebar model={model} current={page.pathname} descriptions={descriptions} injected={injectedNav} />
       </div>
       <main
         id="main"

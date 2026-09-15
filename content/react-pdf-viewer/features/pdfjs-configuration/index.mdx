@@ -2,7 +2,7 @@
 pluginId: react-pdf-viewer
 capabilityId: pdfjs-configuration
 title: PDF.js configuration
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Self-host the PDF.js worker, fonts and decoders for production, choose a build for older browsers, and tune PDF.js per viewer.
 group: Connectivity
 plan: free
 symbols:
@@ -11,17 +11,73 @@ symbols:
   - PdfJsDocumentOptions
   - PdfJsModule
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Apdfjs
+  source: packages/react-pdf-viewer/src/core/pdfjs.ts
+  spec: https://github.com/mozilla/pdf.js
 ---
+
+PDF.js runs its parser in a Web Worker and loads extra assets on demand: CMaps for CJK text, standard font data for documents that don't embed their fonts, WebAssembly image decoders and ICC colour profiles. The viewer loads PDF.js lazily, the first time a document opens.
 
 ## Basics
 
-TODO: Basics.
+Call `configurePdfJs` once at startup to self-host the worker and assets.
+
+<Demo
+  id="features/pdfjs-configuration/demo-basics"
+  title="A document that needs standard font data"
+/>
+
+```ts
+import { configurePdfJs } from '@kiralygyula92/react-pdf-viewer';
+import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+
+configurePdfJs({
+  workerSrc,
+  cMapUrl: '/pdfjs/cmaps/',
+  standardFontDataUrl: '/pdfjs/standard_fonts/',
+  wasmUrl: '/pdfjs/wasm/',
+  iccUrl: '/pdfjs/iccs/',
+});
+```
+
+Without configuration everything still works: the worker and assets load from jsDelivr, pinned to the **exact installed** `pdfjs-dist` version, and a one-time notice in development reminds you to self-host. Copy the asset folders from `node_modules/pdfjs-dist/` as part of your build; the [Vite](/react-pdf-viewer/integrations/vite/), [Next.js](/react-pdf-viewer/integrations/nextjs/) and [webpack](/react-pdf-viewer/integrations/webpack/) pages show how.
+
+### Older browsers
+
+PDF.js 6 relies on recent browser APIs. Load the legacy build for older browsers:
+
+```ts
+configurePdfJs({
+  loader: () => import('pdfjs-dist/legacy/build/pdf.mjs'),
+  workerSrc: legacyWorkerUrl, // from pdfjs-dist/legacy/build/pdf.worker.min.mjs
+});
+```
+
+### Your own worker
+
+Pass a ready `Worker` as `workerPort` when you create the worker yourself, for example to share it or to satisfy a strict Content Security Policy. A worker you have already set on PDF.js's `GlobalWorkerOptions` is respected too.
+
+## Content Security Policy
+
+- `worker-src` must allow the worker's origin, or `blob:` when you pass a `workerPort` created from a blob.
+- `connect-src` must allow the asset URLs (and the document URLs).
+- `script-src` needs no `'unsafe-eval'`: the viewer passes `isEvalSupported: false`. Documents with JPEG 2000 or JBIG2 images use the WebAssembly decoders, which a strict policy allows with `'wasm-unsafe-eval'`.
 
 ## Customization
 
-TODO: Customization.
+`pdfjsOptions` passes per-viewer options to PDF.js `getDocument`, for example its log level.
+
+<Demo id="features/pdfjs-configuration/demo-customization" title="Per-viewer PDF.js options" />
+
+Source-related options (URL, data, password, headers) are managed by the viewer and cannot be overridden this way. See the [`PdfJsDocumentOptions` reference](/react-pdf-viewer/api/pdf-js-document-options/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+`loader` can return any `pdfjs-dist` module instance, for example one your app already imported. `getDocument()` on the [imperative API](/react-pdf-viewer/imperative-api/) exposes the loaded PDF.js document for anything the viewer does not wrap.
 
 ## Limitations
 
-TODO: Limitations.
+- **Configuration is global.** `configurePdfJs` applies to every viewer on the page. Workaround: use `pdfjsOptions` for per-viewer differences.
+- **Configure before the first document opens.** Changing `loader` later only affects documents opened afterwards; a worker change applies to the loaded module. Workaround: call it in your entry module.
+- **The CDN default is for development.** Loading the worker from a third-party CDN depends on its availability and your CSP. Workaround: self-host as shown above.
+- **Only the tested `pdfjs-dist` 6 line is supported.** The peer range is `^6.0.0`; the test suite runs against 6.3. See [Requirements](/react-pdf-viewer/getting-started/requirements/).

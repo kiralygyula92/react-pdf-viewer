@@ -1,8 +1,47 @@
 ---
 title: Overriding structure
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Replace the viewer's loading, empty, error, password and toolbar views with your own components.
 ---
+
+Render props replace whole parts of the viewer while it keeps doing the work: loading, error handling, retries and state.
+
+## Replace a view
+
+| Prop                                          | Replaces                                  | Receives                                                                             |
+| --------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------ |
+| `renderLoading()`                             | The loading spinner and message           | nothing                                                                              |
+| `renderEmpty()`                               | The view shown without a source           | nothing                                                                              |
+| `renderError(error, { retry })`               | The document and page error views         | the [`PdfViewerError`](/react-pdf-viewer/api/pdf-viewer-error/) and a retry function |
+| `renderPasswordPrompt({ incorrect, submit })` | The password form (with `passwordPrompt`) | whether the last password was wrong, and a submit function                           |
+| `renderToolbar(api)`                          | The toolbar                               | the [viewer API](/react-pdf-viewer/imperative-api/)                                  |
+
+```tsx
+<PdfViewer
+  source={url}
+  renderLoading={() => <Skeleton height={640} />}
+  renderEmpty={() => <EmptyState title="Select a document" />}
+  renderError={(error, { retry }) => <ErrorPanel message={error.message} onRetry={retry} />}
+/>
+```
+
+Each capability page shows its slot live: [Loading states](/react-pdf-viewer/loading-states/), [Document sources](/react-pdf-viewer/document-sources/#customization), [Error states](/react-pdf-viewer/error-states/#customization), [Password protection](/react-pdf-viewer/password-protection/#customization) and [Custom toolbar](/react-pdf-viewer/custom-toolbar/).
+
+## Keep what the default views provide
+
+The built-in views are accessible by default. When you replace one, keep these behaviours:
+
+- **Loading:** give the element `role="status"` so the change is announced.
+- **Errors:** use `role="alert"` and keep a way to retry.
+- **Password:** label the field, mark it `aria-invalid` after a wrong password and announce the error.
+- **Toolbar:** label every control and keep disabled states in sync; see the note on [Custom toolbar](/react-pdf-viewer/custom-toolbar/#advanced--escape-hatch).
+
+## Beyond render props
+
+When the viewer's overall structure is wrong for you, not just one view, build the interface yourself with the [headless](/react-pdf-viewer/headless/) pieces.
 
 ## Related
 
-TODO: Related.
+- [How to customize](/react-pdf-viewer/customization/)
+- [Custom toolbar](/react-pdf-viewer/custom-toolbar/)
+- [Headless](/react-pdf-viewer/headless/)
+- [`PdfViewer` reference](/react-pdf-viewer/api/pdf-viewer/)

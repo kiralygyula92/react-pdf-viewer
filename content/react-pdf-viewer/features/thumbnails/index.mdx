@@ -2,23 +2,40 @@
 pluginId: react-pdf-viewer
 capabilityId: thumbnails
 title: Thumbnails
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Add a sidebar of page previews that shows where you are and jumps to any page.
 group: Display & layout
 plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Athumbnails
+  source: packages/react-pdf-viewer/src/components/Thumbnails.tsx
 ---
 
 ## Basics
 
-TODO: Basics.
+`thumbnails` adds a sidebar with a small preview of every page; the current page is highlighted.
+
+<Demo id="features/thumbnails/demo-basics" title="Page thumbnails" />
+
+Thumbnails render lazily as they scroll into view, so a long document costs nothing until the user looks at it. Each thumbnail is a button labelled with its page number, and the sidebar is a named navigation region.
 
 ## Customization
 
-TODO: Customization.
+The sidebar width and the highlight colour are CSS variables; the sidebar's accessible name comes from `labels.thumbnails`.
+
+<Demo
+  id="features/thumbnails/demo-customization"
+  title="A narrower sidebar with an orange highlight"
+/>
+
+See `--rpv-thumbnails-width` and `--rpv-accent` in the [CSS variables reference](/react-pdf-viewer/api/css-variables/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+For a thumbnail strip in your own layout (for example horizontally under the page), use [`PdfPageCanvas`](/react-pdf-viewer/headless/) with a small `scale` or `fit` box.
 
 ## Limitations
 
-TODO: Limitations.
+- **Hidden in compact layouts.** Below `compactBreakpoint` the sidebar is hidden outside fullscreen, because it would take too much of a narrow screen. Workaround: lower `compactBreakpoint`, or build a horizontal strip with [`PdfPageCanvas`](/react-pdf-viewer/headless/).
+- **The sidebar is on the left.** Its position is fixed. Workaround: a [headless](/react-pdf-viewer/headless/) layout.

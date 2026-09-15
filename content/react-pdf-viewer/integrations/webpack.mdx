@@ -1,24 +1,82 @@
 ---
 title: webpack
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Set up React PDF Viewer with webpack 5, emitting the PDF.js worker as an asset and extracting the stylesheet.
 ---
 
 ## Before you start
 
-TODO: Before you start.
+- Tested with webpack 5.111, `css-loader` 7.1, `mini-css-extract-plugin` 2.9, React 19.3 and `pdfjs-dist` 6.3. The consumer smoke test builds this setup against the packed package on every CI run.
+- Install the package first: see [Installation](/react-pdf-viewer/getting-started/installation/).
 
 ## Setup
 
-TODO: Setup.
+**1. Configure the loaders.** The package ships ES modules and a plain CSS file:
+
+```js
+// webpack.config.mjs
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
+export default {
+  entry: './src/main.jsx',
+  output: {
+    filename: '[name].[contenthash].js',
+    assetModuleFilename: '[name].[contenthash][ext]',
+    clean: true,
+  },
+  resolve: { extensions: ['.jsx', '.js', '.mjs'] },
+  module: {
+    rules: [
+      // your JSX / TypeScript loader here
+      { test: /\.m?js$/, resolve: { fullySpecified: false } },
+      { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
+    ],
+  },
+  plugins: [new MiniCssExtractPlugin()],
+};
+```
+
+**2. Configure the worker in your entry module.** webpack 5 emits the file referenced by `new URL(…, import.meta.url)` as an asset:
+
+```jsx
+// src/main.jsx
+import { configurePdfJs, PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import '@kiralygyula92/react-pdf-viewer/styles.css';
+import { createRoot } from 'react-dom/client';
+
+configurePdfJs({
+  workerSrc: new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString(),
+});
+
+createRoot(document.getElementById('root')).render(<PdfViewer source="/report.pdf" />);
+```
+
+**3. Optional: self-host the other assets** with `copy-webpack-plugin`:
+
+```js
+import CopyPlugin from 'copy-webpack-plugin';
+
+new CopyPlugin({
+  patterns: ['cmaps', 'standard_fonts', 'wasm', 'iccs'].map((dir) => ({
+    from: `node_modules/pdfjs-dist/${dir}`,
+    to: `pdfjs/${dir}`,
+  })),
+});
+```
+
+Then pass `cMapUrl: '/pdfjs/cmaps/'`, `standardFontDataUrl: '/pdfjs/standard_fonts/'`, `wasmUrl: '/pdfjs/wasm/'` and `iccUrl: '/pdfjs/iccs/'` to `configurePdfJs`.
 
 ## Verify
 
-TODO: Verify.
+1. Run `webpack --mode production` and check that `dist/` contains a `pdf.worker.min.*.mjs` file and a CSS file that includes `.rpv-root`.
+2. Serve `dist/`, open the page and confirm the first page renders and the worker loads from your origin.
 
 ## Known issues
 
-TODO: Known issues.
+- **“Can't resolve” errors for extensionless imports inside `pdfjs-dist`.** Strict ESM resolution rejects them; the `fullySpecified: false` rule in step 1 fixes it.
+- **Worker served with the wrong MIME type.** Serve `.mjs` files as `text/javascript`, or the browser refuses to start the worker.
 
 ## Related
 
-TODO: Related.
+- [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/)
+- [Vite](/react-pdf-viewer/integrations/vite/)
+- [Next.js](/react-pdf-viewer/integrations/nextjs/)

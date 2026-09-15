@@ -2,23 +2,59 @@
 pluginId: react-pdf-viewer
 capabilityId: print
 title: Print
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Print the document at 150 DPI with progress and a cancel button, or hand printing to the browser's own PDF viewer.
 group: Core features
 plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Aprint
+  source: packages/react-pdf-viewer/src/core/print.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+The print button renders every page at 150 DPI into a hidden frame, then opens the browser's print dialog.
+
+<Demo id="features/print/demo-basics" title="Print a 40-page document" />
+
+While pages are prepared, a status message shows the progress with a Cancel button, so long documents never look frozen. Failures reach `onError` as `PRINT_FAILED`.
+
+### Opening the PDF instead
+
+`printMode="open-url"` opens the document in a new tab and lets the browser's built-in viewer print it.
+
+<Demo id="features/print/demo-open-url" title="Open the PDF in a new tab to print" />
+
+### Intercepting print
+
+`onPrint` runs before printing starts. Return `false` to print your own way, for example through a server-generated copy.
+
+```tsx
+<PdfViewer
+  source={url}
+  onPrint={() => {
+    window.open(`/reports/${id}/print`, '_blank');
+    return false;
+  }}
+/>
+```
 
 ## Customization
 
-TODO: Customization.
+Rename the button and the progress message through `labels`.
+
+<Demo id="features/print/demo-customization" title="Custom print labels" />
+
+See the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+`print()` on the [imperative API](/react-pdf-viewer/imperative-api/) prints from your own controls; its promise resolves after the print dialog closes.
 
 ## Limitations
 
-TODO: Limitations.
+- **The print dialog itself cannot be cancelled by the app.** Cancel stops page preparation; once the browser's dialog is open, it belongs to the browser.
+- **Printing is rasterised.** Pages are rendered to images for printing, so text is not selectable in a printed-to-PDF copy. Workaround: `printMode="open-url"` prints through the browser's viewer, which keeps vector text.
+- **Hidden in compact layouts.** Below `compactBreakpoint` the print button is hidden outside fullscreen by default. Workaround: `toolbar={{ hiddenWhenCompact: [] }}`.
+- **`open-url` needs a URL.** With binary sources, `open-url` opens a temporary object URL, which some pop-up blockers block. Workaround: use the default `render` mode.

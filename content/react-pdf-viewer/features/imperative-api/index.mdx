@@ -2,23 +2,53 @@
 pluginId: react-pdf-viewer
 capabilityId: imperative-api
 title: Imperative API
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Command the viewer from your own buttons and code through a ref, and read its current page, zoom and status.
 group: Developer tools
 plan: free
 symbols:
   - PdfViewerApi
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Aapi
+  source: packages/react-pdf-viewer/src/PdfViewer.tsx
 ---
 
 ## Basics
 
-TODO: Basics.
+A `ref` on `PdfViewer` gives you methods to navigate, zoom, rotate and go fullscreen.
+
+<Demo id="features/imperative-api/demo-basics" title="Buttons outside the viewer" />
+
+```tsx
+const viewer = useRef<PdfViewerApi>(null);
+
+<PdfViewer ref={viewer} source={url} />;
+
+viewer.current?.goToPage(3);
+```
+
+| Read                                                                                       | Do                                                                                                                                                               |
+| ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `status`, `numPages`, `page`, `scale`, `rotation`, `fullscreen`, `canZoomIn`, `canZoomOut` | `goToPage`, `nextPage`, `previousPage`, `zoomIn`, `zoomOut`, `setScale`, `resetZoom`, `rotate`, `toggleFullscreen`, `download`, `print`, `reload`, `getDocument` |
+
+The same object is passed to [`renderToolbar`](/react-pdf-viewer/custom-toolbar/). Its values are a snapshot of the render that produced it: read them from `ref.current` when you need them, rather than keeping an old copy. Every member is documented in the [`PdfViewerApi` reference](/react-pdf-viewer/api/pdf-viewer-api/).
 
 ## Customization
 
-TODO: Customization.
+Hide the toolbar and build the whole interface from the API: download, print, reload, or read document metadata through PDF.js.
+
+<Demo
+  id="features/imperative-api/demo-customization"
+  title="A toolbar-less viewer driven by your buttons"
+/>
+
+See the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+`getDocument()` returns the loaded PDF.js `PDFDocumentProxy` (or `null`) for anything the viewer does not wrap: metadata, the outline, attachments or text extraction. Do not destroy it; the viewer owns its lifecycle.
 
 ## Limitations
 
-TODO: Limitations.
+- **Values are a snapshot.** An API object captured in an old closure reports old values. Workaround: read from `ref.current` at the time you need the value, or use the `onXChange` [events](/react-pdf-viewer/events/).
+- **`ref.current` is `null` before mount.** Workaround: guard with optional chaining, as in the examples.
+- **The PDF.js document is not a stable API of this package.** Its methods follow `pdfjs-dist`. Workaround: pin `pdfjs-dist` when you depend on them.

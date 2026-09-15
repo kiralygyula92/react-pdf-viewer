@@ -2,23 +2,43 @@
 pluginId: react-pdf-viewer
 capabilityId: password-protection
 title: Password protection
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Open encrypted documents with a password your app provides, or ask the user for it with a built-in or custom form.
 group: Content & data
 plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Apassword
+  source: packages/react-pdf-viewer/src/components/PasswordPrompt.tsx
 ---
 
 ## Basics
 
-TODO: Basics.
+`passwordPrompt` shows a password form when a document is encrypted, and asks again after a wrong password.
+
+<Demo id="features/password-protection/demo-basics" title="Ask for the password (it is “demo”)" />
+
+The form is labelled, announces an incorrect password as an alert, and marks the field invalid. Without `passwordPrompt`, an encrypted document reports a `PASSWORD_REQUIRED` [error](/react-pdf-viewer/error-states/).
+
+### A known password
+
+Pass `password` when your app already has it; changing it reloads the document.
+
+<Demo id="features/password-protection/demo-known-password" title="Open with a known password" />
 
 ## Customization
 
-TODO: Customization.
+`renderPasswordPrompt({ incorrect, submit })` replaces the form with your own.
+
+<Demo id="features/password-protection/demo-customization" title="A custom unlock form" />
+
+Default texts are `labels.passwordPrompt`, `passwordLabel`, `passwordSubmit` and `passwordIncorrect`; see [Labels and locale](/react-pdf-viewer/labels/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+With [`usePdfDocument`](/react-pdf-viewer/headless/), pass `password` in the options and handle `error.code === 'PASSWORD_REQUIRED'` or `'INCORRECT_PASSWORD'` in your own UI.
 
 ## Limitations
 
-TODO: Limitations.
+- **The password is held in memory.** Anything that controls `password` (props, state) can read it. Workaround: clear it from your state after the document opens if that matters in your threat model.
+- **Owner restrictions are not enforced.** Permissions such as “no printing” or “no copying” set by the PDF author are not applied by the viewer. Workaround: hide `print` and `download` from the toolbar and leave `textLayer` off for such documents.

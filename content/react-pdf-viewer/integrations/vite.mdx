@@ -1,24 +1,84 @@
 ---
 title: Vite
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Set up React PDF Viewer in a Vite app with a self-hosted PDF.js worker and assets.
 ---
 
 ## Before you start
 
-TODO: Before you start.
+- Tested with Vite 8.3, `@vitejs/plugin-react` 6.1, React 19.3, `pdfjs-dist` 6.3 and TypeScript 6.0. The consumer smoke test type-checks and builds this setup against the packed package on every CI run.
+- Install the package first: see [Installation](/react-pdf-viewer/getting-started/installation/).
 
 ## Setup
 
-TODO: Setup.
+**1. Configure the worker in your entry module.** Vite's `?url` suffix emits the worker as a hashed asset and returns its URL:
+
+```tsx
+// src/main.tsx
+import { configurePdfJs } from '@kiralygyula92/react-pdf-viewer';
+import '@kiralygyula92/react-pdf-viewer/styles.css';
+import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+
+configurePdfJs({ workerSrc });
+```
+
+**2. Render the viewer** anywhere in your app:
+
+```tsx
+import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+
+export function Report() {
+  return <PdfViewer source="/report.pdf" fileName="report.pdf" />;
+}
+```
+
+**3. Optional: self-host the other assets.** To serve CMaps, standard fonts, WebAssembly decoders and ICC profiles from your origin, copy them at build time, for example with `vite-plugin-static-copy`:
+
+```ts
+// vite.config.ts
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
+
+export default defineConfig({
+  plugins: [
+    react(),
+    viteStaticCopy({
+      targets: ['cmaps', 'standard_fonts', 'wasm', 'iccs'].map((dir) => ({
+        src: `node_modules/pdfjs-dist/${dir}`,
+        dest: 'pdfjs',
+      })),
+    }),
+  ],
+});
+```
+
+Then point `configurePdfJs` at them:
+
+```ts
+configurePdfJs({
+  workerSrc,
+  cMapUrl: '/pdfjs/cmaps/',
+  standardFontDataUrl: '/pdfjs/standard_fonts/',
+  wasmUrl: '/pdfjs/wasm/',
+  iccUrl: '/pdfjs/iccs/',
+});
+```
+
+This documentation site uses the same copy step.
 
 ## Verify
 
-TODO: Verify.
+1. Run `vite build` and check that `dist/assets/` contains a `pdf.worker.min-*.mjs` file and that the CSS bundle includes `.rpv-root`.
+2. Run `vite preview`, open the page and confirm the first page renders.
+3. In the browser's network panel, the worker loads from your origin, not from `cdn.jsdelivr.net`, and the development notice about CDN assets is gone.
 
 ## Known issues
 
-TODO: Known issues.
+- **Worker served with the wrong MIME type.** Some static hosts serve `.mjs` as `application/octet-stream`, and the browser refuses to start the worker. Configure the host to serve `.mjs` as `text/javascript`.
+- **Assets under a base path.** With `base: '/app/'`, prefix the asset URLs too (`/app/pdfjs/cmaps/`), or build them from `import.meta.env.BASE_URL`.
 
 ## Related
 
-TODO: Related.
+- [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/)
+- [Next.js](/react-pdf-viewer/integrations/nextjs/)
+- [webpack](/react-pdf-viewer/integrations/webpack/)

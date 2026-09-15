@@ -2,23 +2,42 @@
 pluginId: react-pdf-viewer
 capabilityId: page-number-input
 title: Page number input
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Let users type the page they want in the toolbar instead of clicking through a long document.
 group: Interaction
 plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Apage-input
+  source: packages/react-pdf-viewer/src/components/PageInput.tsx
 ---
 
 ## Basics
 
-TODO: Basics.
+`pageInput` turns the page label into an editable field followed by the page count.
+
+<Demo id="features/page-number-input/demo-basics" title="Type a page number" />
+
+<kbd>Enter</kbd> or leaving the field goes to the page; <kbd>Esc</kbd> reverts to the current page.
+Numbers outside the document are clamped to the first or last page. The field is sized to the number
+of digits in the page count, and on narrow toolbars it stays visible while other actions move into
+the **More actions** menu.
 
 ## Customization
 
-TODO: Customization.
+The field's background and border are CSS variables, and its accessible name is `labels.pageInput`.
+
+<Demo
+  id="features/page-number-input/demo-customization"
+  title="A light toolbar with a white page field"
+/>
+
+See `--rpv-page-input-bg` and `--rpv-page-input-border` in the [CSS variables reference](/react-pdf-viewer/api/css-variables/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+[`PdfToolbar`](/react-pdf-viewer/custom-toolbar/) accepts a `pageIndicator` node, so a custom toolbar can put any control, such as a page select, in the same place.
 
 ## Limitations
 
-TODO: Limitations.
+- **Numeric pages only.** Page labels defined inside the PDF (such as “iv” or “A-1”) are not shown or accepted. Workaround: map your own labels to page numbers and drive `page` from a custom control.

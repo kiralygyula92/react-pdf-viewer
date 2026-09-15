@@ -1,8 +1,58 @@
 ---
 title: Best practices
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Habits that keep a React PDF Viewer integration fast, correct and maintainable in production.
 ---
+
+## Self-host PDF.js for production
+
+The CDN default is convenient in development, but production apps should serve the worker and assets from their own origin: it removes a third-party dependency, speeds up loading, and fits a strict Content Security Policy. Call `configurePdfJs` once in your entry module. See [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/).
+
+## Keep sources and objects stable
+
+- **Binary sources** (`File`, `Blob`, `ArrayBuffer`, `Uint8Array`) compare by identity. Keep them in state or memoise them; creating one during render reloads the document every time.
+- **`labels`** are merged per object identity. Define them at module scope or with `useMemo`.
+- **`toolbar` config and `zoomLevels`** are cheap, but module-scope constants make intent clear and avoid needless work.
+
+```tsx
+// ✅ Stable
+const LABELS = { zoomIn: 'Enlarge' };
+
+function Viewer({ file }: { file: File }) {
+  return <PdfViewer source={file} labels={LABELS} />;
+}
+```
+
+<Callout type="warning" title="Anti-pattern: a new source on every render">
+
+```tsx
+// ❌ Wrong: a new Blob every render reloads the document continuously
+<PdfViewer source={new Blob([bytes], { type: 'application/pdf' })} />
+```
+
+</Callout>
+
+## Control only the state you use
+
+Leave state uncontrolled unless your app reads or sets it. Controlling everything means handling every change yourself; controlling only `page` (for example to sync it with the URL) keeps the rest effortless. See [Controlled state](/react-pdf-viewer/controlled-state/).
+
+## Remount deliberately
+
+Changing `source` already aborts and reloads correctly. Use a `key` only when you need a clean slate, such as after changing `fetcher` or `requestInit`, which apply to the next load.
+
+## Handle errors once, visibly
+
+The default error view already offers Retry. Use `onError` for logging, `renderError` for wording that fits your product, and `onHttpError` for authentication flows that should not look like errors. See [Error states](/react-pdf-viewer/error-states/).
+
+## Give each viewer a name
+
+When a page shows more than one viewer, give each an `aria-label` (“Invoice preview”, “Contract”) so screen reader users can tell the regions apart. See [Accessibility](/react-pdf-viewer/guides/accessibility/).
+
+## Prefer props over CSS overrides
+
+Style through CSS variables and props rather than targeting internal `rpv-` class names: variables are the supported contract; internal structure can change between versions. See [Theming](/react-pdf-viewer/customization/theming/).
 
 ## Related
 
-TODO: Related.
+- [Performance](/react-pdf-viewer/guides/performance/)
+- [Security](/react-pdf-viewer/guides/security/)
+- [FAQ](/react-pdf-viewer/getting-started/faq/)

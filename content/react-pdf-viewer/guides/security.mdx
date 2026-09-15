@@ -1,8 +1,52 @@
 ---
 title: Security
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: How React PDF Viewer handles untrusted documents, which defaults protect you, and how to deploy it under a strict Content Security Policy.
 ---
+
+## Defaults that protect you
+
+- **A patched PDF.js.** The `pdfjs-dist` peer range (`^6.0.0`) excludes versions affected by CVE-2024-4367, which allowed arbitrary JavaScript through crafted fonts. The viewer also passes `isEvalSupported: false` as defence in depth.
+- **No script injection or globals.** The viewer never adds `<script>` tags and never reads or writes globals such as `window.pdfjsLib`; PDF.js is imported as a module.
+- **Safe external links.** With [links](/react-pdf-viewer/links/) enabled, external links open in a new tab with `rel="noopener noreferrer nofollow"`, so the opened site cannot reach back into your page.
+- **Local files stay local.** `File`, `Blob` and byte sources are read in the browser and never uploaded.
+- **No JavaScript from documents.** PDF JavaScript actions are not executed.
+
+## Treat documents as untrusted input
+
+PDFs from users or third parties are parsed by PDF.js in a Web Worker. Keep `pdfjs-dist` up to date within the supported range so parser fixes reach your users, and follow [PDF.js security advisories](https://github.com/mozilla/pdf.js/security).
+
+## Content Security Policy
+
+A strict policy works when the PDF.js worker and assets are self-hosted:
+
+```text
+default-src 'self';
+script-src 'self' 'wasm-unsafe-eval';
+worker-src 'self' blob:;
+connect-src 'self';
+img-src 'self' blob: data:;
+style-src 'self';
+```
+
+- `worker-src` must allow the worker's origin (and `blob:` if you create the worker from a blob).
+- `connect-src` must allow the document and asset URLs.
+- `'wasm-unsafe-eval'` is only needed for documents with JPEG 2000 or JBIG2 images, which use WebAssembly decoders.
+- `'unsafe-eval'` is not needed.
+
+See [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/#content-security-policy).
+
+## Credentials and passwords
+
+- `requestInit` and `fetcher` send whatever credentials you give them; scope them to the document endpoints.
+- Document passwords passed through `password` or the prompt are held in memory by your app and the viewer; clear them from your state when they are no longer needed.
+- Owner restrictions inside PDFs (for example “no printing”) are not enforced by the viewer; hide `print`, `download` and the text layer for such documents if they matter to you.
+
+## Reporting vulnerabilities
+
+Report vulnerabilities privately; see [Support](/react-pdf-viewer/getting-started/support/#reporting-a-security-issue) and [SECURITY.md](https://github.com/kiralygyula92/react-pdf-viewer/blob/main/SECURITY.md).
 
 ## Related
 
-TODO: Related.
+- [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/)
+- [Authenticated requests](/react-pdf-viewer/authenticated-requests/)
+- [Requirements](/react-pdf-viewer/getting-started/requirements/)

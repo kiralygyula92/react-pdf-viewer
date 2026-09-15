@@ -1,8 +1,34 @@
 ---
 title: Accessibility
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: What React PDF Viewer does for keyboard and screen reader users, how it is tested, and what remains your responsibility.
 ---
+
+## What the viewer provides
+
+- **Structure.** The viewer is a named region; the document area is a named, keyboard-scrollable group; each page is exposed as an image named “Page X of N”, or as a group containing its text and links when the [text layer](/react-pdf-viewer/text-layer/) or [links](/react-pdf-viewer/links/) are on.
+- **Toolbar.** A WAI-ARIA toolbar with a single tab stop and arrow-key navigation. Every control has an accessible name; disabled controls use the `disabled` attribute. The overflow **More actions** menu follows the menu button pattern.
+- **Announcements.** The page indicator is a polite live region; loading uses `role="status"`; errors and wrong passwords use `role="alert"`; search results are announced as they change.
+- **Keyboard.** Every action is reachable from the keyboard, with [shortcuts](/react-pdf-viewer/keyboard-shortcuts/) for navigation, zoom, rotation and fullscreen that never fire while typing.
+- **Focus.** Focus is always visible. The overlay fullscreen mode traps focus, closes with <kbd>Esc</kbd> and returns focus to where it was.
+- **Reduced motion.** Animations respect `prefers-reduced-motion`.
+
+## How it is tested
+
+Axe checks WCAG 2.2 A and AA rules in the automated browser tests: the viewer in its inline, fullscreen, loading, error and empty states on desktop and mobile sizes, and every page of this documentation site in light and dark colour schemes. A keyboard walkthrough test checks the tab order and the toolbar's single tab stop.
+
+Automated checks catch many issues but not all; if you find a barrier, please [report it](/react-pdf-viewer/getting-started/support/).
+
+## What remains yours
+
+- **Name multiple viewers.** Give each viewer on a page a distinct `aria-label`.
+- **Keep contrast when theming.** Changing `--rpv-toolbar-bg`, `--rpv-toolbar-fg` or `--rpv-accent` can break the 4.5:1 text contrast and 3:1 focus indicator contrast. Check your theme with axe.
+- **Custom views.** `renderToolbar`, `renderError`, `renderLoading` and `renderPasswordPrompt` replace built-in accessible markup; see [Overriding structure](/react-pdf-viewer/customization/overriding-structure/#keep-what-the-default-views-provide).
+- **Headless layouts.** Label every `PdfPageCanvas` and provide your own keyboard support; see [Headless](/react-pdf-viewer/headless/#accessibility-in-headless-layouts).
+- **The documents.** A scanned PDF without text cannot be read by screen readers, and the viewer cannot add structure a PDF lacks. Provide accessible alternatives for important documents.
+- **Translations.** Translate accessible names along with visible text; see [Localization](/react-pdf-viewer/guides/localization/).
 
 ## Related
 
-TODO: Related.
+- [Keyboard shortcuts](/react-pdf-viewer/keyboard-shortcuts/)
+- [Testing](/react-pdf-viewer/guides/testing/#accessibility-checks)
+- [Text layer](/react-pdf-viewer/text-layer/)

@@ -1,16 +1,58 @@
 ---
 title: Overview
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: 'React PDF Viewer is an accessible, themeable React component for displaying PDF documents with PDF.js: zoom, rotation, fullscreen, search, thumbnails, download and print, with keyboard support, SSR-safe rendering and no UI-kit dependency.'
 ---
 
 ## Introduction
 
-TODO: Introduction.
+React PDF Viewer is a React component and a set of building blocks for showing PDF documents in web applications. It renders with [PDF.js](https://github.com/mozilla/pdf.js), Mozilla's PDF engine, and wraps it in a complete, accessible viewer: a toolbar for zoom, page navigation, fullscreen, rotation, download and print, plus opt-in features such as continuous scrolling, thumbnails, search, selectable text and clickable links.
+
+Everything is controlled through props, CSS variables and callbacks, so the viewer fits into your design system and your state management instead of the other way round. When the complete viewer is not the right shape, the same document loader and page renderer are available as a hook and a component.
+
+The package is for viewing. It does not edit, annotate, sign or fill in PDF forms, and it runs in the browser (server rendering outputs the loading state).
 
 ## Why React PDF Viewer
 
-TODO: Why React PDF Viewer.
+- **Accessible:** WAI-ARIA toolbar and menu semantics, keyboard shortcuts, labelled controls, live page announcements and visible focus, checked with axe against WCAG 2.2 AA on every build.
+- **Themeable without a UI kit:** plain CSS in a cascade layer with CSS variables for every colour and size, plus dark and automatic presets. No MUI, no CSS-in-JS, no icon library.
+- **Controlled or not, your choice:** page, zoom, rotation and fullscreen each follow the `x` / `defaultX` / `onXChange` pattern, with an imperative API for one-off commands.
+- **Robust rendering:** cancellable renders, aborted loads, typed errors with retry, and sharp output on high-density screens within a canvas memory budget.
+- **Production loading:** authenticated requests, custom HTTP clients, local files and bytes, self-hosted PDF.js assets and a strict-CSP-friendly setup.
+- **Composable:** replace the toolbar, reuse parts of it, or build your own interface from `usePdfDocument` and `PdfPageCanvas`.
 
 ## Start now
 
-TODO: Start now.
+<CardGrid
+  items={[
+    {
+      title: 'Installation',
+      description: 'Add the package and PDF.js to your project.',
+      href: '/react-pdf-viewer/getting-started/installation/',
+    },
+    {
+      title: 'Usage',
+      description: 'Render your first document and turn on features.',
+      href: '/react-pdf-viewer/getting-started/usage/',
+    },
+    {
+      title: 'All features',
+      description: 'Every capability, each with live demos.',
+      href: '/react-pdf-viewer/all-features/',
+    },
+    {
+      title: 'Playground',
+      description: 'Try every option live before writing code.',
+      href: '/react-pdf-viewer/demos/playground/',
+    },
+    {
+      title: 'Customization',
+      description: 'Theme the viewer and replace its parts.',
+      href: '/react-pdf-viewer/customization/',
+    },
+    {
+      title: 'API reference',
+      description: 'Generated reference for every component, hook and type.',
+      href: '/react-pdf-viewer/api/',
+    },
+  ]}
+/>

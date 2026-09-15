@@ -2,9 +2,11 @@ import { getCollection } from 'astro:content';
 import {
   absoluteUrl,
   loadPluginModel,
+  loadReference,
   loadPortfolio,
   ogImagePath,
   twinPath,
+  type NavNode,
   type NavPage,
   type PageMeta,
   type PluginModel,
@@ -112,3 +114,13 @@ export function marketingLinks() {
 export const feeds = [
   { title: 'Changelog RSS', href: `/${PLUGIN_ID}/discover-more/changelog/rss.xml` },
 ];
+
+/** Generated API pages injected under the Reference section of the sidebar (PPDS N3). */
+export function injectedNav(): Record<string, NavNode[]> {
+  const reference = loadReference(CONTENT_ROOT);
+  return {
+    [`/${PLUGIN_ID}/api-group`]: [...reference.symbols.values()]
+      .map((entry) => ({ pathname: `/${PLUGIN_ID}/api/${entry.slug}/`, title: entry.schema.name }))
+      .sort((a, b) => a.title.localeCompare(b.title)),
+  };
+}

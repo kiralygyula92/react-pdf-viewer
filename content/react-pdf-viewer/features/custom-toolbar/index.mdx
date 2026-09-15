@@ -2,24 +2,58 @@
 pluginId: react-pdf-viewer
 capabilityId: custom-toolbar
 title: Custom toolbar
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Replace the toolbar with your own controls, or combine parts of the built-in toolbar with buttons of your own.
 group: Developer tools
 plan: free
 symbols:
   - PdfToolbar
   - PdfToolbarProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Atoolbar
+  source: packages/react-pdf-viewer/src/components/Toolbar.tsx
 ---
 
 ## Basics
 
-TODO: Basics.
+`renderToolbar(api)` replaces the toolbar with anything you render, driven by the [viewer API](/react-pdf-viewer/imperative-api/).
+
+<Demo id="features/custom-toolbar/demo-basics" title="Your own controls" />
+
+The custom toolbar sits where the built-in one would, honouring `toolbar.position`. It re-renders with a fresh `api` whenever page, zoom, rotation or status change.
+
+### Reusing the built-in toolbar
+
+`PdfToolbar` is the built-in toolbar as a component. Render it with a subset of actions next to your own buttons.
+
+<Demo
+  id="features/custom-toolbar/demo-reuse"
+  title="Built-in navigation plus a custom print button"
+/>
+
+`PdfToolbar` keeps its accessibility (single tab stop, arrow-key navigation, the responsive **More actions** menu) wherever you place it.
 
 ## Customization
 
-TODO: Customization.
+`PdfToolbar` takes `config`, `labels`, `locale`, `compact`, `zoomReset`, a replacement `pageIndicator` and `menuPlacement`.
+
+<Demo
+  id="features/custom-toolbar/demo-customization"
+  title="A wider toolbar with a custom page indicator"
+/>
+
+Every prop is listed in the [`PdfToolbarProps` reference](/react-pdf-viewer/api/pdf-toolbar-props/); see also the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+Hide the toolbar (`toolbar={false}`) and render controls anywhere in your layout with a [ref](/react-pdf-viewer/imperative-api/), or build a viewer from scratch with the [headless](/react-pdf-viewer/headless/) pieces.
+
+<Callout type="warning" title="Accessibility is yours in a custom toolbar">
+  A `renderToolbar` UI replaces the built-in keyboard and screen reader behaviour. Label every
+  control, keep disabled states in sync with `canZoomIn`, `canZoomOut`, `page` and `numPages`, and
+  announce page changes, as the first demo does with `aria-live`.
+</Callout>
 
 ## Limitations
 
-TODO: Limitations.
+- **One toolbar slot.** `renderToolbar` renders in the toolbar position only. Workaround: hide the toolbar and place controls anywhere with a ref.
+- **`PdfToolbar` needs a viewer API.** It cannot drive a headless `PdfPageCanvas` directly. Workaround: build headless controls from `usePdfDocument` state.

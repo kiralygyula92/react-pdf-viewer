@@ -2,23 +2,43 @@
 pluginId: react-pdf-viewer
 capabilityId: text-layer
 title: Text layer
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Overlay real, selectable text on each page so users can copy it and screen readers can read the document.
 group: Content & data
 plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Atext-layer
+  source: packages/react-pdf-viewer/src/hooks/usePageRenderer.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+`textLayer` places invisible, selectable text over each rendered page.
+
+<Demo id="features/text-layer/demo-basics" title="Select and copy text" />
+
+With a text layer, each page is exposed to assistive technology as a group containing its text instead of a single image, so screen readers can read the document. Browser find (<kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>F</kbd> outside the viewer) finds text on rendered pages too.
+
+[Search](/react-pdf-viewer/search/) turns the text layer on automatically.
 
 ## Customization
 
-TODO: Customization.
+The selection colour is `--rpv-selection-bg`.
+
+<Demo
+  id="features/text-layer/demo-customization"
+  title="A green selection on a document with standard fonts"
+/>
+
+See the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+[`PdfPageCanvas`](/react-pdf-viewer/headless/) accepts `textLayer` for custom layouts, and `getDocument()` on the [imperative API](/react-pdf-viewer/imperative-api/) gives access to PDF.js `getTextContent()` for extracting text without rendering.
 
 ## Limitations
 
-TODO: Limitations.
+- **Scanned documents have no text.** Pages that are images contain no text to select. Workaround: run OCR on the server and serve a PDF with a text layer.
+- **Selection can be imprecise with unusual fonts.** Text is positioned from the PDF's font metrics, so some fonts select slightly off the visible glyphs. Workaround: none within the viewer.
+- **Adds work per page.** Building the text layer costs extra time on text-heavy pages. Workaround: leave it off when users only need to look at the document.

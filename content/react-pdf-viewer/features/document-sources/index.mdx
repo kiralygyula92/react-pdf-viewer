@@ -2,24 +2,67 @@
 pluginId: react-pdf-viewer
 capabilityId: document-sources
 title: Document sources
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Open PDFs from a URL, a File the user picked, or bytes you already have, without uploading anything.
 group: Core features
 plan: free
 symbols:
   - PdfViewer
   - PdfSource
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Asources
+  source: packages/react-pdf-viewer/src/core/loadSource.ts
 ---
+
+`source` accepts everything a web app usually has at hand when it wants to show a PDF:
+
+- a URL string or `URL` object, fetched by the viewer;
+- a `File` or `Blob`, for example from a file input or drag and drop;
+- an `ArrayBuffer` or `Uint8Array` you fetched, generated or decrypted yourself.
 
 ## Basics
 
-TODO: Basics.
+Pass a URL and the viewer fetches, parses and renders the document.
+
+<Demo id="features/document-sources/demo-basics" title="A URL source" />
+
+`null`, `undefined` and an empty string show the empty state. Changing `source` aborts the previous request and destroys the previous document, so switching documents quickly never shows a stale page.
+
+### Local files
+
+A `File` is read in the browser and never leaves the user's device.
+
+<Demo id="features/document-sources/demo-file" title="A File from an input" />
+
+### Bytes
+
+`ArrayBuffer` and `Uint8Array` sources are copied before PDF.js takes ownership of them, so the buffer you pass stays usable afterwards.
+
+<Demo id="features/document-sources/demo-bytes" title="An ArrayBuffer source" />
+
+<Callout type="warning" title="Keep binary sources stable">
+  Strings compare by value, but every other source compares by identity. Creating a `Blob` or
+  `Uint8Array` during render gives the viewer a new source on every render and reloads the document
+  each time. Keep binary sources in state or memoise them.
+</Callout>
+
+## Download file name
+
+The download button uses `fileName` when you pass one; otherwise a `File`'s own name, then the last `.pdf` segment of the URL, then `document.pdf`. See [Download](/react-pdf-viewer/download/).
 
 ## Customization
 
-TODO: Customization.
+`renderEmpty` replaces the view shown while there is no document, for example with a call to action.
+
+<Demo id="features/document-sources/demo-customization" title="A custom empty state" />
+
+The loading and error views have their own slots; see [Loading states](/react-pdf-viewer/loading-states/), [Error states](/react-pdf-viewer/error-states/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+To load documents without the viewer, for example to count pages or render thumbnails in your own layout, use [`usePdfDocument`](/react-pdf-viewer/headless/) directly. It accepts the same sources and request options.
 
 ## Limitations
 
-TODO: Limitations.
+- **Cross-origin URLs need CORS.** The browser blocks reading a PDF from another origin unless the server sends `Access-Control-Allow-Origin`. The viewer reports a `NETWORK_ERROR`. Workaround: enable CORS on the server, or proxy the file through your own origin. See [Authenticated requests](/react-pdf-viewer/authenticated-requests/).
+- **Large files are loaded in full.** URL sources are fetched completely before rendering starts (range requests are not used), so a very large PDF takes as long as its download. Workaround: split huge documents server-side, or show your own progress UI with `renderLoading`.
+- **Streams are not accepted.** A `ReadableStream` is not a `PdfSource`. Workaround: read it into a `Blob` or `ArrayBuffer` first (`await new Response(stream).blob()`).

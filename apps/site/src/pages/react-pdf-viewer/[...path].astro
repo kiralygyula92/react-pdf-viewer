@@ -8,6 +8,8 @@ import { loadReference, slugify, type NavPage } from 'ppds-kit';
 import DocsArticle from 'ppds-kit/astro/DocsArticle.astro';
 import DocsLayout from 'ppds-kit/astro/DocsLayout.astro';
 import Callout from 'ppds-kit/astro/Callout.astro';
+import CardGrid from 'ppds-kit/astro/CardGrid.astro';
+import ScrollTable from 'ppds-kit/astro/ScrollTable.astro';
 import Demo from '../../components/Demo.astro';
 import Scenario from '../../components/Scenario.astro';
 import {
@@ -17,6 +19,7 @@ import {
   getDescriptions,
   getModel,
   getPortfolio,
+  injectedNav,
   pageMeta,
   PLUGIN_ID,
   twin,
@@ -38,7 +41,7 @@ if (!entry) throw new Error(`Missing content file ${page.sourceFile} for ${page.
 const { Content, headings } = await render(entry);
 const descriptions = await getDescriptions();
 const reference = loadReference(CONTENT_ROOT);
-const { description, links, symbols = [] } = entry.data;
+const { description, links, date, symbols = [] } = entry.data;
 
 const generated: {
   api?: { symbol: string; href: string; description?: string | undefined }[];
@@ -87,15 +90,17 @@ const meta = pageMeta(page, page.archetype === 'A' ? `${model.config.name} — O
   sourcePath={`${CONTENT_PATH}/${page.sourceFile}`}
   twin={twin(page.pathname)}
   feeds={feeds}
+  injectedNav={injectedNav()}
 >
   <DocsArticle
     model={model}
     page={page}
     description={description}
     links={links}
+    date={date}
     descriptions={descriptions}
     generated={generated}
   >
-    <Content components={{ Demo, Callout, Scenario }} />
+    <Content components={{ Demo, Callout, Scenario, CardGrid, table: ScrollTable }} />
   </DocsArticle>
 </DocsLayout>

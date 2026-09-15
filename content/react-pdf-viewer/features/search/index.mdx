@@ -2,24 +2,45 @@
 pluginId: react-pdf-viewer
 capabilityId: search
 title: Search
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Find text across the whole document, highlight every match, and step through results from the keyboard.
 group: Content & data
 plan: free
 symbols:
   - PageHighlight
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Asearch
+  source: packages/react-pdf-viewer/src/core/search.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+`search` adds a find bar that searches every page and highlights the matches.
+
+<Demo id="features/search/demo-basics" title="Search a 40-page document" />
+
+Matching is case-insensitive. <kbd>Enter</kbd> and <kbd>Shift</kbd> + <kbd>Enter</kbd> step to the next and previous match, moving to its page and scrolling it into view; <kbd>Esc</kbd> clears the field. With focus inside the viewer, <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>F</kbd> focuses the search field. The result count (“2 of 5”) is announced as it changes. `search` implies the [text layer](/react-pdf-viewer/text-layer/).
+
+### With continuous layout
+
+In [continuous layout](/react-pdf-viewer/continuous-layout/), stepping through matches scrolls the document to each one.
+
+<Demo id="features/search/demo-continuous" title="Search with continuous layout and thumbnails" />
 
 ## Customization
 
-TODO: Customization.
+Highlight colours and the search bar surface are CSS variables; the field's name and result texts are labels.
+
+<Demo id="features/search/demo-customization" title="Blue highlights and shorter result labels" />
+
+See `--rpv-search-highlight`, `--rpv-search-highlight-selected`, `--rpv-search-bg` and `--rpv-search-fg` in the [CSS variables reference](/react-pdf-viewer/api/css-variables/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+[`PdfPageCanvas`](/react-pdf-viewer/headless/) accepts a `highlight` (`{ query, selected }`, see [`PageHighlight`](/react-pdf-viewer/api/page-highlight/)) and reports the selected match's element through `onHighlight`, so a custom UI can drive search itself.
 
 ## Limitations
 
-TODO: Limitations.
+- **Plain text matching.** No regular expressions, whole-word or case-sensitive options. Workaround: extract text with `getDocument()` and PDF.js `getTextContent()`, search it yourself, and highlight with `PdfPageCanvas`.
+- **Text split across lines is not matched as one phrase.** A phrase broken by a line or column break may not be found. Workaround: search for a shorter part of the phrase.
+- **Scanned pages cannot be searched.** Image-only pages contain no text; see [Text layer](/react-pdf-viewer/text-layer/).

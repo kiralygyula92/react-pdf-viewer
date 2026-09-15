@@ -2,24 +2,60 @@
 pluginId: react-pdf-viewer
 capabilityId: fullscreen
 title: Fullscreen
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Show the document fullscreen with the browser's Fullscreen API, an in-page overlay, or inside your own dialog.
 group: Display & layout
 plan: free
 symbols:
   - FullscreenMode
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Afullscreen
+  source: packages/react-pdf-viewer/src/hooks/useFullscreen.ts
+  spec: https://developer.mozilla.org/docs/Web/API/Fullscreen_API
 ---
 
 ## Basics
 
-TODO: Basics.
+The fullscreen button puts the viewer into browser fullscreen; <kbd>Esc</kbd> or the button leaves it.
+
+<Demo id="features/fullscreen/demo-basics" title="Native fullscreen" />
+
+The button's label and icon follow the state, and the document is never reloaded when fullscreen changes. <kbd>f</kbd> toggles fullscreen from the keyboard.
+
+### Overlay
+
+`fullscreenMode="overlay"` covers the browser window with a fixed layer instead. Focus stays inside the viewer, the page behind stops scrolling, and <kbd>Esc</kbd> closes it.
+
+<Demo id="features/fullscreen/demo-overlay" title="Overlay fullscreen" />
+
+Where element fullscreen is unavailable, `native` mode falls back to the overlay automatically.
+
+### Controlled by your app
+
+Passing `fullscreen` selects `fullscreenMode="controlled"`: the viewer switches to its fullscreen layout and your component decides how to present it, for example in your own dialog.
+
+<Demo id="features/fullscreen/demo-controlled" title="Fullscreen inside your own dialog" />
+
+| Mode                                     | Who presents fullscreen         | Use when                                                 |
+| ---------------------------------------- | ------------------------------- | -------------------------------------------------------- |
+| `native` (default without `fullscreen`)  | The browser                     | You want real fullscreen                                 |
+| `overlay`                                | The viewer, as an in-page layer | Embedded pages, or iframes without fullscreen permission |
+| `controlled` (default with `fullscreen`) | Your app                        | Your design system already has a full-screen dialog      |
 
 ## Customization
 
-TODO: Customization.
+The fullscreen background, padding and stacking order are CSS variables, and both button labels can be renamed.
+
+<Demo id="features/fullscreen/demo-customization" title="A dark “focus mode”" />
+
+See `--rpv-fullscreen-bg`, `--rpv-viewport-padding-fullscreen` and `--rpv-overlay-z-index` in the [CSS variables reference](/react-pdf-viewer/api/css-variables/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+`toggleFullscreen()` and the `fullscreen` value on the [imperative API](/react-pdf-viewer/imperative-api/) work in every mode. `onFullscreenChange` reports changes made by the browser too, such as pressing <kbd>Esc</kbd> in native fullscreen.
 
 ## Limitations
 
-TODO: Limitations.
+- **Native fullscreen needs permission inside iframes.** A cross-origin iframe must allow it (`allow="fullscreen"`); otherwise the viewer falls back to the overlay, which covers only the iframe. Workaround: add the `allow` attribute, or open the document in a top-level page.
+- **The overlay is confined by transformed ancestors.** A CSS `transform`, `filter` or `contain` on an ancestor makes the fixed layer cover that ancestor instead of the window. Workaround: use `controlled` mode and render your dialog outside the transformed element.
+- **Some mobile browsers do not support element fullscreen.** The viewer falls back to the overlay where the Fullscreen API is unavailable; this fallback has not been verified on every mobile browser.

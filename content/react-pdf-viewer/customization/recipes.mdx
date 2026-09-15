@@ -1,8 +1,78 @@
 ---
 title: Recipes
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Copy-paste solutions for common customisations, from full-height viewers to host styles that leak into the viewer.
 ---
+
+## Fill the available height
+
+By default the document area has a minimum and maximum height. To make the viewer fill a container (a panel, a dialog, a page below a header), lift those limits and give the viewer a height:
+
+```css
+.viewer-panel {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - 64px);
+}
+
+.viewer-panel .rpv-root {
+  --rpv-viewport-max-width: 100%;
+  --rpv-viewport-max-height: 100%;
+  --rpv-viewport-min-height: 0px;
+  --rpv-viewport-min-height-compact: 0px;
+  flex: 1;
+  min-height: 0;
+}
+```
+
+The [Document viewer demo](/react-pdf-viewer/demos/document-viewer/) uses this recipe.
+
+## Keep host styles out of the viewer
+
+The viewer's CSS is in a cascade layer, so unlayered rules in your app always win, including rules that target bare elements such as `button { … }` or `input[type='text'] { width: 100% }`. Scope those rules so they skip the viewer:
+
+```css
+:where(button):not(.rpv-root *) {
+  background: var(--brand-surface);
+}
+```
+
+The page-number input is guarded against common `input` rules, but broad element selectors are best scoped.
+
+## Match a design system's toolbar
+
+Set the toolbar variables from your design tokens once, on a shared ancestor:
+
+```css
+:root {
+  --rpv-toolbar-bg: var(--color-surface-inverse);
+  --rpv-toolbar-fg: var(--color-text-inverse);
+  --rpv-toolbar-radius: var(--radius-lg);
+  --rpv-accent: var(--color-focus);
+  --rpv-font-family: var(--font-sans);
+}
+```
+
+## A toolbar-less, embedded preview
+
+For small previews in lists or cards, hide the toolbar and shortcuts and fit the page:
+
+```tsx
+<PdfViewer
+  source={url}
+  toolbar={false}
+  keyboardShortcuts={false}
+  fitMode="page"
+  style={
+    { '--rpv-viewport-min-height': '240px', '--rpv-viewport-max-height': '240px' } as CSSProperties
+  }
+  aria-label={`Preview of ${name}`}
+/>
+```
+
+For many previews at once, [`PdfPageCanvas`](/react-pdf-viewer/headless/) is lighter.
 
 ## Related
 
-TODO: Related.
+- [Theming](/react-pdf-viewer/customization/theming/)
+- [Overriding structure](/react-pdf-viewer/customization/overriding-structure/)
+- [Performance](/react-pdf-viewer/guides/performance/)

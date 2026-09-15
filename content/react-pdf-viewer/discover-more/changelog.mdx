@@ -1,6 +1,25 @@
 ---
 title: Changelog
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Every release of React PDF Viewer, newest first, with new features, fixes and breaking changes.
+date: '2026-09-15'
 ---
 
-TODO: page body.
+Releases follow the [versioning policy](/react-pdf-viewer/getting-started/versions/#versioning-policy) and are generated from changesets. Subscribe to the [RSS feed](/react-pdf-viewer/discover-more/changelog/rss.xml) to hear about new releases.
+
+## 0.1.0 (unreleased)
+
+Initial release of `PdfViewer`, an accessible, themeable React PDF viewer built on `pdfjs-dist`.
+
+- Loads URLs, `URL` objects, `ArrayBuffer`, `Uint8Array`, `Blob` and `File` sources, with custom `fetch` options, a replaceable fetcher, HTTP error hooks and typed `PdfViewerError`s with retry. See [Document sources](/react-pdf-viewer/document-sources/).
+- Controlled or uncontrolled page, scale, rotation and fullscreen (`x` / `defaultX` / `onXChange`), plus an imperative `PdfViewerApi` through `ref`. See [Controlled state](/react-pdf-viewer/controlled-state/).
+- Cancellable, HiDPI, pixel-capped rendering that respects each page's intrinsic rotation. See [Rendering](/react-pdf-viewer/rendering/).
+- A single-row responsive toolbar that collapses actions into a “More actions” menu, keyboard shortcuts, WAI-ARIA toolbar and menu semantics, and native, overlay or controlled fullscreen.
+- Opt-in features: continuous layout, thumbnails, text layer, links, search, page-number input, zoom presets and reset, fit modes, Ctrl/⌘ + wheel zoom and a password prompt. See [Features](/react-pdf-viewer/all-features/).
+- Label overrides with locale-aware number formatting, 50+ CSS variables and dark / auto presets. See [Customization](/react-pdf-viewer/customization/).
+- Headless building blocks: `usePdfDocument`, `PdfPageCanvas`, `PdfToolbar` and `useControllableState`. See [Headless](/react-pdf-viewer/headless/).
+
+## Related
+
+- [Versions](/react-pdf-viewer/getting-started/versions/)
+- [Migration](/react-pdf-viewer/migration/)
+- [Roadmap](/react-pdf-viewer/discover-more/roadmap/)

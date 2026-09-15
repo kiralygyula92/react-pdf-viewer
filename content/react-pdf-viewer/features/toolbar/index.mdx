@@ -2,24 +2,56 @@
 pluginId: react-pdf-viewer
 capabilityId: toolbar
 title: Toolbar
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Place the toolbar above or below the page, choose its actions, and let it collapse into a “More actions” menu on narrow screens.
 group: Display & layout
 plan: free
 symbols:
   - ToolbarConfig
   - ToolbarAction
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Atoolbar
+  source: packages/react-pdf-viewer/src/components/Toolbar.tsx
+  spec: https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/
 ---
 
 ## Basics
 
-TODO: Basics.
+`toolbar={{ position: 'top' }}` moves the toolbar above the page; the default is below it.
+
+<Demo id="features/toolbar/demo-basics" title="Toolbar above the page" />
+
+The toolbar groups its controls into zoom, page navigation and actions. It is a single tab stop: <kbd>Tab</kbd> enters it and <kbd>←</kbd> <kbd>→</kbd> <kbd>Home</kbd> <kbd>End</kbd> move between controls. `toolbar={false}` hides it.
+
+### Choosing actions
+
+`actions` lists the controls to show. `hiddenWhenCompact` lists those hidden below `compactBreakpoint` (960px by default) outside fullscreen; by default that is rotate and print.
+
+<Demo id="features/toolbar/demo-actions" title="Navigation, zoom and download only" />
+
+The order of controls within each group is fixed, so every toolbar reads the same way. The available actions are listed in the [`ToolbarAction` reference](/react-pdf-viewer/api/toolbar-action/).
+
+### Responsive overflow
+
+The toolbar is always a single row. When it does not fit its container, the actions (fullscreen, rotate, download, print) move into a **⋮ More actions** menu; on very narrow viewers the zoom controls follow. Page navigation always stays visible.
+
+<Demo id="features/toolbar/demo-overflow" title="Drag the width to watch the toolbar collapse" />
+
+The menu follows the WAI-ARIA menu button pattern (<kbd>Enter</kbd> or <kbd>↓</kbd> opens it, arrows move, <kbd>Esc</kbd> closes it and returns focus) and opens away from the edge the toolbar sits on.
 
 ## Customization
 
-TODO: Customization.
+Colours, radius, spacing, button and icon sizes, and the menu surface are CSS variables.
+
+<Demo id="features/toolbar/demo-customization" title="A pill-shaped purple toolbar" />
+
+All toolbar variables (`--rpv-toolbar-*`, `--rpv-button-*`, `--rpv-menu-*`) are listed in the [CSS variables reference](/react-pdf-viewer/api/css-variables/); see also the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+To replace the toolbar with your own UI, or place parts of the default toolbar somewhere else, use [`renderToolbar`](/react-pdf-viewer/custom-toolbar/) with [`PdfToolbar`](/react-pdf-viewer/api/pdf-toolbar/).
 
 ## Limitations
 
-TODO: Limitations.
+- **Controls cannot be reordered within a group.** `actions` selects controls but keeps their order. Workaround: build your own toolbar with [`renderToolbar`](/react-pdf-viewer/custom-toolbar/).
+- **The compact layout follows the window width, not the container.** `compactBreakpoint` compares with the viewport, while the overflow menu reacts to the container. Workaround: set `compactBreakpoint={0}` in narrow containers on wide screens and rely on the overflow menu.
+- **No custom buttons in the default toolbar.** Workaround: render `PdfToolbar` next to your own buttons inside `renderToolbar`.

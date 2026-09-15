@@ -1,7 +1,16 @@
 import '@kiralygyula92/react-pdf-viewer/styles.css';
 import sdk from '@stackblitz/sdk';
 import { DemoToolbar } from 'ppds-kit/react/DemoToolbar.tsx';
-import { Component, lazy, Suspense, useState, type ComponentType, type ReactNode } from 'react';
+import {
+  Component,
+  lazy,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+  type ComponentType,
+  type ReactNode,
+} from 'react';
 import '../pdfjs';
 import '../styles/demos.css';
 import { stackblitzProject } from './sandbox';
@@ -14,7 +23,7 @@ const demos = Object.fromEntries(
     import.meta.glob<{ default: ComponentType }>(
       '../../../../content/react-pdf-viewer/**/demo-*.tsx',
     ),
-  ).map(([path, load]) => [path.slice(PREFIX.length).replace(/.tsx$/, ''), lazy(load)]),
+  ).map(([path, load]) => [path.slice(PREFIX.length).replace(/\.tsx$/, ''), lazy(load)]),
 );
 
 class DemoBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
@@ -33,6 +42,26 @@ class DemoBoundary extends Component<{ children: ReactNode }, { error: Error | n
   }
 }
 
+/** True once the element has come near the viewport (demos mount lazily; pages carry several). */
+function useNearViewport<T extends Element>() {
+  const ref = useRef<T>(null);
+  // Islands are client-only; without IntersectionObserver, mount immediately.
+  const [near, setNear] = useState(() => typeof IntersectionObserver === 'undefined');
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || near) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) setNear(true);
+      },
+      { rootMargin: '400px 0px' },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [near]);
+  return [ref, near] as const;
+}
+
 /** Mounts a colocated demo with the PPDS demo toolbar; Reset remounts it. */
 export default function DemoFrame({
   id,
@@ -44,6 +73,7 @@ export default function DemoFrame({
   source: string;
 }) {
   const [generation, setGeneration] = useState(0);
+  const [ref, near] = useNearViewport<HTMLDivElement>();
   const Demo = demos[id];
   if (!Demo) throw new Error(`Unknown demo ${id}`);
 
@@ -60,11 +90,17 @@ export default function DemoFrame({
         })
       }
     >
-      <DemoBoundary key={generation}>
-        <Suspense fallback={<p className="ppds-demo__loading">Loading demo…</p>}>
-          <Demo />
-        </Suspense>
-      </DemoBoundary>
+      <div ref={ref} className="ppds-demo__mount" data-mounted={near ? '' : undefined}>
+        {near ? (
+          <DemoBoundary key={generation}>
+            <Suspense fallback={<p className="ppds-demo__loading">Loading demo…</p>}>
+              <Demo />
+            </Suspense>
+          </DemoBoundary>
+        ) : (
+          <p className="ppds-demo__loading">Demo loads when scrolled into view.</p>
+        )}
+      </div>
     </DemoToolbar>
   );
 }

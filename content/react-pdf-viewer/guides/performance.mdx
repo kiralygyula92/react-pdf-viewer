@@ -1,8 +1,50 @@
 ---
 title: Performance
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Keep large documents, many viewers and slow devices fast with the right layout, loading and rendering settings.
 ---
+
+The package itself is small and has no runtime dependencies; most of the cost of showing a PDF is PDF.js parsing the file and painting pages. These techniques keep that cost where users don't notice it.
+
+## Load PDF.js only when needed
+
+PDF.js is imported lazily the first time a document opens, so pages without a viewer never download it. To also defer the viewer's own code, load the component lazily:
+
+```tsx
+const PdfViewer = lazy(() =>
+  import('@kiralygyula92/react-pdf-viewer').then((module) => ({ default: module.PdfViewer })),
+);
+
+<Suspense fallback={<Spinner />}>
+  <PdfViewer source={url} />
+</Suspense>;
+```
+
+## Serve assets from your origin
+
+Self-hosting the worker, CMaps and fonts avoids an extra connection to a CDN and lets your cache headers apply. Hashed worker file names from your bundler can be cached for a long time. See [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/).
+
+## Use continuous layout for long documents
+
+In `layout="continuous"`, every page reserves its space but only the visible pages and one page on each side are rendered. Thumbnails render as they scroll into view. Both keep memory flat regardless of page count. See [Continuous layout](/react-pdf-viewer/continuous-layout/).
+
+## Mind the pixel budget on mobile
+
+Canvas memory grows with zoom and screen density. `maxCanvasPixels` (16,777,216 by default, the iOS Safari limit) caps each page's canvas; on memory-constrained devices a lower budget trades sharpness for stability. See [Rendering](/react-pdf-viewer/rendering/).
+
+## Turn on only what you use
+
+The text layer, links and search add work per page. Leave them off when users only need to look at documents.
+
+## Many small previews
+
+For grids of previews, `PdfPageCanvas` with a small `fit` box is far lighter than many full viewers: load each document once with `usePdfDocument` and render only its first page. See [Headless](/react-pdf-viewer/headless/).
+
+## Measure
+
+`onPageRender` reports `durationMs` for every render; debounce it and send it to your monitoring to see real-world render times. See [Events](/react-pdf-viewer/events/).
 
 ## Related
 
-TODO: Related.
+- [Rendering](/react-pdf-viewer/rendering/)
+- [Continuous layout](/react-pdf-viewer/continuous-layout/)
+- [Best practices](/react-pdf-viewer/guides/best-practices/)

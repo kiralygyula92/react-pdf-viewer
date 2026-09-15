@@ -502,3 +502,110 @@
 .custom-toolbar input {
   width: auto;
 }
+
+/* ── Capability demos ─────────────────────────────────────────────────── */
+/* Compact viewer heights inside demo stages, so a page can show several demos. Set here, not in
+   the demo code, so the copyable source stays minimal. */
+.ppds-demo-host .ppds-demo__stage {
+  --rpv-viewport-min-height: 420px;
+  --rpv-viewport-max-height: 520px;
+  --rpv-viewport-margin-bottom: 20px;
+  --rpv-toolbar-margin-bottom: 0px;
+}
+
+/* In the site's dark theme, demo viewers use the package's dark preset colours, so loading, error
+   and empty states keep their contrast on the dark stage. Demos that set their own theme class or
+   variables still win (both are declared closer to the viewer). */
+:root[data-theme='dark'] .ppds-demo__stage {
+  --rpv-toolbar-bg: #263238;
+  --rpv-toolbar-fg: #eceff1;
+  --rpv-focus-ring: 2px solid #90caf9;
+  --rpv-page-border: 1px solid #37474f;
+  --rpv-page-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  --rpv-accent: #90caf9;
+  --rpv-text-button-fg: #90caf9;
+  --rpv-muted-fg: rgba(255, 255, 255, 0.7);
+  --rpv-error-bg: #160b0b;
+  --rpv-error-fg: #f4c7c7;
+  --rpv-error-icon: #f44336;
+  --rpv-fullscreen-bg: #121212;
+}
+
+:root[data-theme='dark'] .ppds-demo__stage .rpv-root:not([class*='rpv-theme-']) .rpv-search {
+  --rpv-search-fg: #eceff1;
+  --rpv-search-bg: #1e272c;
+}
+
+:root[data-theme='dark'] .ppds-demo__stage .rpv-root:not([class*='rpv-theme-']) .rpv-password {
+  color: #eceff1;
+  background: #1e272c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .ppds-demo__stage {
+    --rpv-toolbar-bg: #263238;
+    --rpv-toolbar-fg: #eceff1;
+    --rpv-focus-ring: 2px solid #90caf9;
+    --rpv-page-border: 1px solid #37474f;
+    --rpv-page-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+    --rpv-accent: #90caf9;
+    --rpv-text-button-fg: #90caf9;
+    --rpv-muted-fg: rgba(255, 255, 255, 0.7);
+    --rpv-error-bg: #160b0b;
+    --rpv-error-fg: #f4c7c7;
+    --rpv-error-icon: #f44336;
+    --rpv-fullscreen-bg: #121212;
+  }
+
+  :root:not([data-theme='light'])
+    .ppds-demo__stage
+    .rpv-root:not([class*='rpv-theme-'])
+    .rpv-search {
+    --rpv-search-fg: #eceff1;
+    --rpv-search-bg: #1e272c;
+  }
+
+  :root:not([data-theme='light'])
+    .ppds-demo__stage
+    .rpv-root:not([class*='rpv-theme-'])
+    .rpv-password {
+    color: #eceff1;
+    background: #1e272c;
+  }
+}
+
+.ppds-demo__mount {
+  min-height: 120px;
+}
+
+.ppds-demo__mount[data-mounted] {
+  min-height: 0;
+}
+
+.demo-root .demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.demo-root .demo-controls label {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.demo-root .demo-controls input:not([type='checkbox']):not([type='range']),
+.demo-root .demo-controls select {
+  width: auto;
+}
+
+.demo-root .demo-output {
+  padding: 10px 12px;
+  margin: 12px 0 0;
+  overflow: auto;
+  font-size: 0.8125rem;
+  background: var(--ppds-bg-muted, #f1f5f9);
+  border-radius: 8px;
+}

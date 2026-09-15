@@ -1,7 +1,7 @@
 {
   "name": "PdfPageCanvas",
   "filename": "packages/react-pdf-viewer/src/components/PdfPageCanvas.tsx",
-  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/components/PdfPageCanvas.tsx#L113",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/components/PdfPageCanvas.tsx#L115",
   "usedBy": [
     "/react-pdf-viewer/headless/"
   ],

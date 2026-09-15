@@ -1,12 +1,63 @@
 ---
 title: Theming
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Match the viewer to your design with CSS variables, dark and automatic presets, and state-based styling.
 symbols:
   - CSS variables
   - rpv-theme-dark
   - rpv-theme-auto
 ---
 
+## Set CSS variables
+
+Every colour, size and spacing value in the viewer is a CSS variable. Set them on the viewer (`style` or `className`) or on any ancestor, so a whole section of your app can share one theme.
+
+<Demo id="customization/demo-variables" title="A custom theme from a few variables" />
+
+The most useful variables:
+
+| Variable                                                                             | Controls                                        |
+| ------------------------------------------------------------------------------------ | ----------------------------------------------- |
+| `--rpv-toolbar-bg`, `--rpv-toolbar-fg`                                               | Toolbar colours                                 |
+| `--rpv-accent`                                                                       | Focus outlines, the current thumbnail, progress |
+| `--rpv-toolbar-radius`, `--rpv-button-size`, `--rpv-icon-size`                       | Toolbar shape and sizes                         |
+| `--rpv-page-bg`, `--rpv-page-border`, `--rpv-page-radius`, `--rpv-page-shadow`       | The page frame                                  |
+| `--rpv-viewport-max-width`, `--rpv-viewport-min-height`, `--rpv-viewport-max-height` | The document area                               |
+| `--rpv-font-family`                                                                  | Viewer text (inherits by default)               |
+
+All 54 variables, with their default values, are generated from the stylesheet in the [CSS variables reference](/react-pdf-viewer/api/css-variables/).
+
+## Dark mode
+
+`className="rpv-theme-dark"` applies the dark preset. `className="rpv-theme-auto"` applies it only when the operating system prefers a dark colour scheme.
+
+<Demo id="customization/demo-dark" title="The dark preset" />
+
+The values each preset sets are in the [`rpv-theme-dark`](/react-pdf-viewer/api/rpv-theme-dark/) and [`rpv-theme-auto`](/react-pdf-viewer/api/rpv-theme-auto/) references. If your app has its own dark-mode switch, toggle the class from your theme state, or set the variables yourself inside your dark-mode selector.
+
+## State-based styling
+
+The root element (`.rpv-root`) reflects the viewer's state as attributes, so CSS can react to it without JavaScript:
+
+| Attribute           | Present or value                      |
+| ------------------- | ------------------------------------- |
+| `data-status`       | `idle`, `loading`, `ready` or `error` |
+| `data-layout`       | `single` or `continuous`              |
+| `data-compact`      | below `compactBreakpoint`             |
+| `data-fullscreen`   | in fullscreen, in any mode            |
+| `data-presentation` | `layout`, `native` or `overlay`       |
+| `data-zoomed`       | while zoomed above `defaultScale`     |
+
+<Demo id="customization/demo-state" title="A red toolbar while in the error state" />
+
+The attributes are generated from the component source in the [`PdfViewer` reference](/react-pdf-viewer/api/pdf-viewer/#css-classes).
+
+## Fonts
+
+The viewer inherits your page's font. Set `--rpv-font-family` to use a different one for viewer text. Page content always uses the fonts embedded in the PDF.
+
 ## Related
 
-TODO: Related.
+- [How to customize](/react-pdf-viewer/customization/)
+- [Recipes](/react-pdf-viewer/customization/recipes/)
+- [Accessibility](/react-pdf-viewer/guides/accessibility/): keep contrast when you change colours
+- [CSS variables reference](/react-pdf-viewer/api/css-variables/)

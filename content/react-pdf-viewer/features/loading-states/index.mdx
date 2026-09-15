@@ -2,24 +2,56 @@
 pluginId: react-pdf-viewer
 capabilityId: loading-states
 title: Loading states
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Show a loading view while a document downloads and an empty state when there is nothing to show, or replace both with your own.
 group: Display & layout
 plan: free
 symbols:
   - PdfDocumentStatus
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Aloading
+  source: packages/react-pdf-viewer/src/components/LoadingView.tsx
 ---
 
 ## Basics
 
-TODO: Basics.
+While a document loads, the viewer shows a spinner and a status message, and keeps the toolbar in place.
+
+<Demo id="features/loading-states/demo-basics" title="The loading view" />
+
+The message is announced to assistive technology, and zoom and rotation already work so the first page renders the way the user left it.
+
+### Empty state
+
+With no source (`null`, `undefined` or `''`) the viewer is idle: the toolbar shows `0 / 0` with navigation disabled and nothing loads.
+
+<Demo id="features/loading-states/demo-empty" title="No document yet" />
+
+An empty source is idle from the very first render, so pages that pick a document later never flash a spinner.
+
+## Document status
+
+`status` on the [imperative API](/react-pdf-viewer/imperative-api/) and on [`usePdfDocument`](/react-pdf-viewer/headless/) is one of `idle`, `loading`, `ready` or `error`. The root element also carries `data-status`, so you can style states in CSS:
+
+```css
+.report-viewer[data-status='loading'] {
+  opacity: 0.8;
+}
+```
 
 ## Customization
 
-TODO: Customization.
+`renderLoading` and `renderEmpty` replace the two views, for example with a skeleton that matches your page.
+
+<Demo id="features/loading-states/demo-customization" title="A skeleton loading view" />
+
+Label text comes from `labels.loading` and `labels.empty`; see the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+`onDocumentLoad` fires once the document is ready, with its page count; see [Events](/react-pdf-viewer/events/).
 
 ## Limitations
 
-TODO: Limitations.
+- **No download progress.** The loading view does not show a percentage, because the viewer fetches the whole file before handing it to PDF.js. Workaround: download the file yourself with progress, then pass the bytes as the `source`.
+- **Page rendering has no separate indicator.** After the document loads, each page appears when it finishes rendering; the previous page stays visible until then, so there is no blank flash.

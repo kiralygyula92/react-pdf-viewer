@@ -1,24 +1,54 @@
 ---
 title: Requirements
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: The React, PDF.js, bundler and browser versions React PDF Viewer is tested with.
 ---
+
+Only versions covered by the project's automated tests are listed here. Other versions may work but are not verified.
 
 ## Prerequisites
 
-TODO: Prerequisites.
+| Dependency                      | Supported                             | Tested in CI  |
+| ------------------------------- | ------------------------------------- | ------------- |
+| `react`, `react-dom`            | peer `>=18.0.0`                       | 18.3 and 19.3 |
+| `pdfjs-dist`                    | peer `^6.0.0`                         | 6.3           |
+| TypeScript (optional)           | declarations target modern TypeScript | 6.0           |
+| Node.js (for building your app) | `>=20`                                | 22            |
+
+The package is ESM-only and has no runtime dependencies besides its peers.
+
+### Bundlers and frameworks
+
+Each of these is exercised by a consumer smoke test that installs the packed package into a fresh app and builds it for production:
+
+| Target                                 | Tested version | Guide                                              |
+| -------------------------------------- | -------------- | -------------------------------------------------- |
+| Vite                                   | 8.3            | [Vite](/react-pdf-viewer/integrations/vite/)       |
+| Next.js (App Router, server rendering) | 16.3           | [Next.js](/react-pdf-viewer/integrations/nextjs/)  |
+| webpack                                | 5.111          | [webpack](/react-pdf-viewer/integrations/webpack/) |
+
+### Browsers
+
+Browser tests run in the current versions of Chromium, Firefox and WebKit (Playwright engines). PDF.js 6 relies on recent browser APIs, so use current browsers, or the legacy PDF.js build for older ones; see [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/#older-browsers). Microsoft Edge (Chromium) and Safari (WebKit) share those engines but are not tested separately.
 
 ## Installation
 
-TODO: Installation.
+See [Installation](/react-pdf-viewer/getting-started/installation/).
 
 ## Minimal example
 
-TODO: Minimal example.
+```tsx
+import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import '@kiralygyula92/react-pdf-viewer/styles.css';
+
+export const Viewer = () => <PdfViewer source="/files/report.pdf" />;
+```
 
 ## Verify
 
-TODO: Verify.
+Your install matches the supported versions when `npm ls react pdfjs-dist` (or the pnpm/yarn equivalent) lists versions inside the ranges above and the minimal example renders the first page.
 
 ## Next steps
 
-TODO: Next steps.
+- [Installation](/react-pdf-viewer/getting-started/installation/)
+- [Versions](/react-pdf-viewer/getting-started/versions/) for the support policy
+- [Security](/react-pdf-viewer/guides/security/) for the PDF.js version constraints

@@ -2,24 +2,50 @@
 pluginId: react-pdf-viewer
 capabilityId: rendering
 title: Rendering
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Sharp pages on high-density screens, smooth zooming without flicker, and graceful quality limits on memory-constrained devices.
 group: Advanced features
 plan: free
 symbols:
   - FitOptions
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Arendering
+  source: packages/react-pdf-viewer/src/hooks/usePageRenderer.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+Pages render to a canvas at the screen's pixel density, so text stays crisp on high-density displays and when the browser is zoomed.
+
+<Demo id="features/rendering/demo-basics" title="Zoom quickly: no flicker, no stale pages" />
+
+Rendering is built to stay correct under fast interaction:
+
+- **Cancellable.** Starting a new render (another zoom step, a page change) cancels the one in progress, so ten quick clicks produce one finished render.
+- **Double-buffered.** The previous page stays on screen until the next render is complete, so zooming never flashes blank.
+- **Density-aware.** A change of `devicePixelRatio` (moving the window to another monitor, browser zoom) re-renders at the new density.
+- **Rotation-aware.** Each page's intrinsic rotation is applied before yours.
+
+### Pixel budget
+
+`maxCanvasPixels` caps the size of each page's canvas (16,777,216 pixels, 4096 × 4096, by default, the limit iOS Safari enforces). Beyond it, the page keeps its on-screen size but renders at a lower resolution.
+
+<Demo id="features/rendering/demo-pixel-budget" title="A deliberately small pixel budget" />
 
 ## Customization
 
-TODO: Customization.
+The page surface (background, border, radius and shadow) is styled with CSS variables.
+
+<Demo id="features/rendering/demo-customization" title="A paper-like page frame" />
+
+See `--rpv-page-bg`, `--rpv-page-border`, `--rpv-page-radius` and `--rpv-page-shadow` in the [CSS variables reference](/react-pdf-viewer/api/css-variables/) and the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+[`PdfPageCanvas`](/react-pdf-viewer/headless/) exposes the renderer directly, with `maxCanvasPixels`, `fit` (see [`FitOptions`](/react-pdf-viewer/api/fit-options/)) and an `onRender` callback reporting the scale actually rendered. For performance advice across the whole viewer, see the [Performance guide](/react-pdf-viewer/guides/performance/).
 
 ## Limitations
 
-TODO: Limitations.
+- **Canvas rendering, not vector.** Pages are bitmaps; extreme zoom levels are limited by the pixel budget. Workaround: raise `maxCanvasPixels` on desktop-only apps.
+- **Rendering happens on the main thread.** PDF.js parses in a worker, but painting a complex page can briefly block interaction on slow devices. Workaround: use [continuous layout](/react-pdf-viewer/continuous-layout/), which renders only nearby pages, and avoid very high default zoom on mobile.
+- **Colour management depends on assets.** Documents with ICC profiles need the ICC assets; see [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/).

@@ -2,23 +2,40 @@
 pluginId: react-pdf-viewer
 capabilityId: links
 title: Links
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Make links inside documents work, jumping to pages within the document or opening websites safely in a new tab.
 group: Interaction
 plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Alinks
+  source: packages/react-pdf-viewer/src/core/linkService.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+`annotationLayer` makes link annotations clickable: internal links go to their page and external links open in a new tab.
+
+<Demo id="features/links/demo-basics" title="Internal and external links" />
+
+External links open with `rel="noopener noreferrer nofollow"`, so the opened site cannot reach back into your page. Link areas are keyboard-focusable and show a focus outline.
 
 ## Customization
 
-TODO: Customization.
+The focus outline of link areas uses `--rpv-accent`. Combining links with the [text layer](/react-pdf-viewer/text-layer/) keeps text selectable around them.
+
+<Demo
+  id="features/links/demo-customization"
+  title="Links with selectable text and a pink focus colour"
+/>
+
+See the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+[`PdfPageCanvas`](/react-pdf-viewer/headless/) accepts `annotationLayer` and an `onLinkNavigate(page)` callback, so custom layouts decide what an internal link does.
 
 ## Limitations
 
-TODO: Limitations.
+- **Only links are interactive.** Form fields, comments and other annotations are not rendered as interactive elements. Workaround: none within the viewer; fill forms in a dedicated PDF form tool.
+- **External links always open a new tab.** Workaround: none within the viewer. If you need to intercept external navigation, render pages with [`PdfPageCanvas`](/react-pdf-viewer/headless/) and handle clicks on the link layer yourself.

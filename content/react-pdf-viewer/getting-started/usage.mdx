@@ -1,24 +1,75 @@
 ---
 title: Usage
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Render a document, turn on the features you need, and connect the viewer to your app's state.
 ---
 
 ## Prerequisites
 
-TODO: Prerequisites.
+The package, `pdfjs-dist` and the stylesheet are installed as described in [Installation](/react-pdf-viewer/getting-started/installation/).
 
 ## Installation
 
-TODO: Installation.
+No further setup is needed to follow this page. For production, also [self-host the PDF.js worker](/react-pdf-viewer/pdfjs-configuration/).
 
 ## Minimal example
 
-TODO: Minimal example.
+```tsx
+import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import '@kiralygyula92/react-pdf-viewer/styles.css';
+
+export function Report({ url }: { url: string }) {
+  return <PdfViewer source={url} fileName="report.pdf" />;
+}
+```
+
+Out of the box you get a single-page view with a toolbar below it: zoom in 5% steps between 25% and 500%, page navigation, fullscreen, rotation, download and print. Pages wider than the viewer shrink to fit.
+
+### Turn on features
+
+Each feature beyond the defaults is one prop:
+
+```tsx
+<PdfViewer
+  source={url}
+  layout="continuous" // scroll through all pages
+  thumbnails // page sidebar
+  search // find bar with highlighting
+  pageInput // type a page number
+  zoomReset // click the zoom label to reset
+  annotationLayer // clickable links
+  wheelZoom // Ctrl/⌘ + wheel zoom
+  className="rpv-theme-auto" // dark mode that follows the OS
+/>
+```
+
+Every feature has its own page with live demos: see [All features](/react-pdf-viewer/all-features/).
+
+### Connect to your state
+
+Control any piece of state with `x` / `onXChange`, for example to keep the page in the URL:
+
+```tsx
+const [page, setPage] = useState(1);
+
+<PdfViewer source={url} page={page} onPageChange={setPage} />;
+```
+
+See [Controlled state](/react-pdf-viewer/controlled-state/) and the [imperative API](/react-pdf-viewer/imperative-api/).
+
+### Handle errors
+
+```tsx
+<PdfViewer source={url} onError={(error) => report(error.code, error.message)} />
+```
+
+The viewer already shows an error view with Retry; `onError` is for logging. See [Error states](/react-pdf-viewer/error-states/).
 
 ## Verify
 
-TODO: Verify.
+Open the page: the document renders with the features you enabled. Resize the window below 960px to see the compact layout, and narrow the container to watch toolbar actions move into the **More actions** menu.
 
 ## Next steps
 
-TODO: Next steps.
+- [All features](/react-pdf-viewer/all-features/): everything the viewer can do.
+- [Customization](/react-pdf-viewer/customization/): make it match your design.
+- [Playground](/react-pdf-viewer/demos/playground/): try every option live.

@@ -2,23 +2,46 @@
 pluginId: react-pdf-viewer
 capabilityId: events
 title: Events
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: React to the document loading, pages rendering and the user navigating, for analytics, logging or your own UI.
 group: Developer tools
 plan: free
 symbols:
   - PageRenderInfo
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Aevents
+  source: packages/react-pdf-viewer/src/types.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+Pass callbacks to hear what the viewer is doing.
+
+<Demo id="features/events/demo-basics" title="An event log" />
+
+| Callback                                                                  | Called with                                  | When                                                                                          |
+| ------------------------------------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `onDocumentLoad`                                                          | `{ numPages, fingerprint }`                  | A document finished loading                                                                   |
+| `onPageRender`                                                            | `{ page, scale, width, height, durationMs }` | A page finished rendering                                                                     |
+| `onPageChange`, `onScaleChange`, `onRotationChange`, `onFullscreenChange` | the new value                                | The user or your code changed it; see [Controlled state](/react-pdf-viewer/controlled-state/) |
+| `onError`                                                                 | `PdfViewerError`                             | Something failed; see [Error states](/react-pdf-viewer/error-states/)                         |
+| `onDownload`, `onPrint`                                                   | the file, or nothing                         | Before saving or printing; return `false` to take over                                        |
+| `onHttpError`                                                             | `Response`                                   | A URL source returned a non-2xx status                                                        |
+
+`fingerprint` identifies the document's content, which is handy as a cache or analytics key. Callbacks can change between renders without reloading anything.
 
 ## Customization
 
-TODO: Customization.
+Use render measurements to drive your own UI, such as a status bar.
+
+<Demo id="features/events/demo-customization" title="Show the size and render time of each page" />
+
+See the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+`PdfPageCanvas` has its own `onRender` and `onError` for [headless](/react-pdf-viewer/headless/) layouts.
 
 ## Limitations
 
-TODO: Limitations.
+- **No scroll or selection events.** The viewer does not report scroll position or text selection. Workaround: listen on the document area yourself (`.rpv-viewport`) or use `document.getSelection()` with the [text layer](/react-pdf-viewer/text-layer/).
+- **`onPageRender` fires often.** It fires after every render, including re-renders after zoom and resize. Workaround: debounce it before sending analytics.

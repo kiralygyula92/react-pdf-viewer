@@ -10,6 +10,8 @@
  *   worker is emitted and the stylesheet is bundled.
  * - next: App Router production build; the page is prerendered on the server, proving the
  *   package imports and renders during SSR ("use client" boundary, no browser globals).
+ * - webpack: webpack 5 production build with the `new URL(…, import.meta.url)` worker recipe;
+ *   the worker is emitted as an asset and the stylesheet is extracted.
  */
 import { execSync } from 'node:child_process';
 import {
@@ -27,7 +29,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const packageDir = join(root, 'packages', 'react-pdf-viewer');
-const sample = join(root, 'apps', 'demo', 'public', 'samples', 'letter-3pages.pdf');
+const sample = join(root, 'apps', 'site', 'public', 'samples', 'letter-3pages.pdf');
 const selected = process.argv.slice(2);
 
 function run(command, cwd) {
@@ -57,6 +59,19 @@ const checks = {
       .map((file) => readFileSync(join(app, 'dist', 'assets', file), 'utf8'))
       .join('');
     assert(css.includes('.rpv-root'), 'vite: viewer stylesheet bundled');
+  },
+  webpack(app) {
+    const files = readdirSync(join(app, 'dist'));
+    assert(existsSync(join(app, 'dist', 'index.html')), 'webpack: index.html built');
+    assert(
+      files.some((file) => /^pdf.worker.*.m?js$/.test(file)),
+      'webpack: PDF.js worker emitted',
+    );
+    const css = files
+      .filter((file) => file.endsWith('.css'))
+      .map((file) => readFileSync(join(app, 'dist', file), 'utf8'))
+      .join('');
+    assert(css.includes('.rpv-root'), 'webpack: viewer stylesheet extracted');
   },
   next(app) {
     const html = readFileSync(join(app, '.next', 'server', 'app', 'index.html'), 'utf8');

@@ -2,24 +2,70 @@
 pluginId: react-pdf-viewer
 capabilityId: error-states
 title: Error states
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Show a clear message with Retry when a document can't load or render, and receive a typed error for your own handling.
 group: Core features
 plan: free
 symbols:
   - PdfViewerError
   - PdfViewerErrorCode
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Aerrors
+  source: packages/react-pdf-viewer/src/core/errors.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+When a document fails to load, the viewer shows an alert with a Retry button and keeps the toolbar usable.
+
+<Demo id="features/error-states/demo-basics" title="A missing file" />
+
+The toolbar stays so that fullscreen can always be left. Aborted loads and cancelled renders are never reported as errors.
+
+### Failure types
+
+Every failure reaches `onError` as a `PdfViewerError` with a machine-readable `code`, a readable `message`, the HTTP `status` where there is one, and the original `cause`.
+
+<Demo id="features/error-states/demo-cases" title="Each failure and its onError payload" />
+
+| Code                                       | When                                                                                         |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| `NETWORK_ERROR`                            | `fetch` rejected: offline, blocked by CORS, DNS failure                                      |
+| `HTTP_ERROR`                               | The server answered with a non-2xx status                                                    |
+| `INVALID_PDF`                              | The bytes are not a PDF                                                                      |
+| `PASSWORD_REQUIRED` / `INCORRECT_PASSWORD` | The document is encrypted; see [Password protection](/react-pdf-viewer/password-protection/) |
+| `RENDER_FAILED`                            | A page failed to render; the error replaces that page only                                   |
+| `PDFJS_LOAD_FAILED`                        | The PDF.js module or worker could not load                                                   |
+| `DOWNLOAD_FAILED` / `PRINT_FAILED`         | Saving or printing failed                                                                    |
+| `UNKNOWN`                                  | Anything else                                                                                |
+
+The complete list with descriptions is generated in the [`PdfViewerErrorCode` reference](/react-pdf-viewer/api/pdf-viewer-error-code/).
+
+## Reporting errors
+
+```tsx
+<PdfViewer
+  source={url}
+  onError={(error) =>
+    logger.warn('pdf-viewer', error.code, { status: error.status, cause: error.cause })
+  }
+/>
+```
+
+HTTP errors that `onHttpError` handles (for example a 401 that redirects to sign-in) are not reported; see [Authenticated requests](/react-pdf-viewer/authenticated-requests/).
 
 ## Customization
 
-TODO: Customization.
+`renderError(error, { retry })` replaces the error view for document and page errors.
+
+<Demo id="features/error-states/demo-customization" title="A custom error view" />
+
+Colours of the default view are CSS variables (`--rpv-error-bg`, `--rpv-error-fg`, `--rpv-error-icon`); see the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+`reload()` on the [imperative API](/react-pdf-viewer/imperative-api/) retries from anywhere in your app. With [`usePdfDocument`](/react-pdf-viewer/headless/), `error` and `reload` are returned directly.
 
 ## Limitations
 
-TODO: Limitations.
+- **Messages are in English by default.** `HTTP_ERROR` messages come from `getHttpErrorMessage`, which reads RFC 7807 bodies; other codes carry English messages. Workaround: map `error.code` to your own text in `renderError`.
+- **CORS failures are indistinguishable from offline.** Browsers do not tell scripts why a cross-origin request failed, so both appear as `NETWORK_ERROR`. Workaround: explain both possibilities in your error view, as the demo above does.

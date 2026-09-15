@@ -452,4 +452,25 @@
   .rpv-root.rpv-theme-dark .rpv-search .rpv-button:disabled {
     color: rgb(255 255 255 / 0.3);
   }
+
+  .rpv-root.rpv-theme-dark .rpv-password {
+    color: #eceff1;
+    background: var(--rpv-page-bg, #1e272c);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .rpv-root.rpv-theme-auto .rpv-search {
+      --rpv-search-fg: #eceff1;
+      --rpv-search-bg: #1e272c;
+    }
+
+    .rpv-root.rpv-theme-auto .rpv-search .rpv-button:disabled {
+      color: rgb(255 255 255 / 0.3);
+    }
+
+    .rpv-root.rpv-theme-auto .rpv-password {
+      color: #eceff1;
+      background: var(--rpv-page-bg, #1e272c);
+    }
+  }
 }

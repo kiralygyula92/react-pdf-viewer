@@ -1,12 +1,37 @@
 ---
 title: How to customize
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Choose the right way to change how the viewer looks and behaves, from a CSS variable to a completely custom interface.
 ---
+
+React PDF Viewer is customised in layers. Start with the lightest mechanism that achieves your goal; each step down gives more control and more responsibility.
 
 ## Ways to customize
 
-TODO: Ways to customize.
+| You want to…                                         | Use                                          | Where                                                                         |
+| ---------------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------- |
+| Match your brand colours, radius, spacing and fonts  | CSS variables                                | [Theming](/react-pdf-viewer/customization/theming/)                           |
+| Support dark mode                                    | `rpv-theme-dark` or `rpv-theme-auto` classes | [Theming](/react-pdf-viewer/customization/theming/#dark-mode)                 |
+| Style a state, such as loading or fullscreen         | `data-*` attributes on the root              | [Theming](/react-pdf-viewer/customization/theming/#state-based-styling)       |
+| Change or translate texts and accessible names       | `labels` and `locale`                        | [Labels and locale](/react-pdf-viewer/labels/)                                |
+| Choose, place or hide toolbar controls               | `toolbar` config                             | [Toolbar](/react-pdf-viewer/toolbar/)                                         |
+| Replace the loading, empty, error or password views  | `render*` props                              | [Overriding structure](/react-pdf-viewer/customization/overriding-structure/) |
+| Replace the toolbar, or mix it with your own buttons | `renderToolbar` and `PdfToolbar`             | [Custom toolbar](/react-pdf-viewer/custom-toolbar/)                           |
+| Build a completely different interface               | `usePdfDocument` and `PdfPageCanvas`         | [Headless](/react-pdf-viewer/headless/)                                       |
+
+## How the styles are built
+
+The stylesheet is plain CSS in a cascade layer named `rpv`, with every class prefixed `rpv-`. Because it is layered, **any unlayered CSS in your app wins without `!important`**. Every colour and size reads a CSS variable with a fallback, so setting a variable on the viewer or on any ancestor changes it.
+
+```css
+.reports {
+  --rpv-toolbar-bg: #1f2937;
+  --rpv-accent: #7c3aed;
+}
+```
 
 ## Related
 
-TODO: Related.
+- [Theming](/react-pdf-viewer/customization/theming/)
+- [Overriding structure](/react-pdf-viewer/customization/overriding-structure/)
+- [Recipes](/react-pdf-viewer/customization/recipes/)
+- [CSS variables reference](/react-pdf-viewer/api/css-variables/)

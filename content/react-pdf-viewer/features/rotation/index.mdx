@@ -2,24 +2,45 @@
 pluginId: react-pdf-viewer
 capabilityId: rotation
 title: Rotation
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Rotate pages in quarter turns, on top of the orientation each page already declares.
 group: Core features
 plan: free
 symbols:
   - Rotation
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Arotation
+  source: packages/react-pdf-viewer/src/core/geometry.ts
 ---
 
 ## Basics
 
-TODO: Basics.
+The rotate button turns every page 90° clockwise; pages that declare their own rotation open upright.
+
+<Demo id="features/rotation/demo-basics" title="A document with intrinsically rotated pages" />
+
+Rotation is added to each page's intrinsic `/Rotate` value, so a scanned landscape page stays landscape. <kbd>r</kbd> and <kbd>Shift</kbd> + <kbd>R</kbd> rotate clockwise and counter-clockwise from the keyboard.
+
+### Controlled rotation
+
+`rotation` and `onRotationChange` accept `0`, `90`, `180` or `270`.
+
+<Demo id="features/rotation/demo-controlled" title="Rotate in both directions from outside" />
 
 ## Customization
 
-TODO: Customization.
+Start rotated with `defaultRotation`, rename the button with `labels.rotate`, or choose which actions the toolbar shows.
+
+<Demo id="features/rotation/demo-customization" title="Start upside down with a renamed button" />
+
+See the [customization guide](/react-pdf-viewer/customization/).
+
+## Advanced / escape hatch
+
+`rotate('cw')` and `rotate('ccw')` on the [imperative API](/react-pdf-viewer/imperative-api/) rotate without controlling the value. `PdfPageCanvas` takes the same `rotation` prop in [headless](/react-pdf-viewer/headless/) layouts.
 
 ## Limitations
 
-TODO: Limitations.
+- **Rotation applies to the whole document.** Every page turns by the same amount. Workaround: render individual pages with [`PdfPageCanvas`](/react-pdf-viewer/headless/), each with its own `rotation`.
+- **Hidden in compact layouts.** Below `compactBreakpoint` the rotate button is hidden outside fullscreen, as it is by default in `hiddenWhenCompact`. Workaround: pass `toolbar={{ hiddenWhenCompact: [] }}`; see [Toolbar](/react-pdf-viewer/toolbar/).
+- **Rotation is not saved into the file.** Downloads and prints use the original page orientation.

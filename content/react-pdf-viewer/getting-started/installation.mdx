@@ -1,24 +1,67 @@
 ---
 title: Installation
-description: 'TODO: one-line description (reused in nav, meta and llms.txt).'
+description: Install React PDF Viewer and PDF.js with your package manager and import the stylesheet once.
 ---
 
 ## Prerequisites
 
-TODO: Prerequisites.
+- React and React DOM 18 or 19.
+- `pdfjs-dist` 6 (installed next to the package; it is a peer dependency so you control its version).
+- A bundler that supports ES modules and CSS imports, such as Vite, Next.js or webpack 5.
+
+Full details, including tested browsers, are on the [Requirements](/react-pdf-viewer/getting-started/requirements/) page.
 
 ## Installation
 
-TODO: Installation.
+Install the package and PDF.js with your package manager.
+
+**npm**
+
+```sh
+npm install @kiralygyula92/react-pdf-viewer pdfjs-dist
+```
+
+**pnpm**
+
+```sh
+pnpm add @kiralygyula92/react-pdf-viewer pdfjs-dist
+```
+
+**yarn**
+
+```sh
+yarn add @kiralygyula92/react-pdf-viewer pdfjs-dist
+```
+
+The package is ESM-only, ships its TypeScript declarations, and has no runtime dependencies of its own.
 
 ## Minimal example
 
-TODO: Minimal example.
+Import the component and, once in your app, the stylesheet:
+
+```tsx
+import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import '@kiralygyula92/react-pdf-viewer/styles.css';
+
+export function Report() {
+  return <PdfViewer source="/files/report.pdf" />;
+}
+```
+
+`source` can be a URL, a `File`, a `Blob` or bytes; see [Document sources](/react-pdf-viewer/document-sources/).
 
 ## Verify
 
-TODO: Verify.
+Start your development server and open the page. You should see the first page of the document with a toolbar below it showing the zoom level and `1 / N`. In the browser console, a one-time development notice says PDF.js assets are loading from a CDN; that is expected until you [self-host them](/react-pdf-viewer/pdfjs-configuration/).
+
+## Troubleshooting
+
+- **The viewer has no styles.** The stylesheet is imported separately. Add `import '@kiralygyula92/react-pdf-viewer/styles.css'` once, for example in your root layout.
+- **“Failed to fetch” or a network error.** The document URL is on another origin without CORS headers. See [Authenticated requests](/react-pdf-viewer/authenticated-requests/#cross-origin-documents).
+- **`PDFJS_LOAD_FAILED`.** `pdfjs-dist` is missing or the worker URL is blocked by your Content Security Policy. Install `pdfjs-dist` and see [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/#content-security-policy).
 
 ## Next steps
 
-TODO: Next steps.
+- [Usage](/react-pdf-viewer/getting-started/usage/): the common props and features.
+- [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/): self-host the worker for production.
+- Framework setup: [Vite](/react-pdf-viewer/integrations/vite/), [Next.js](/react-pdf-viewer/integrations/nextjs/) or [webpack](/react-pdf-viewer/integrations/webpack/).
