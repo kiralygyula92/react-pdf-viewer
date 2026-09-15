@@ -504,11 +504,12 @@
 }
 
 /* ── Capability demos ─────────────────────────────────────────────────── */
-/* Compact viewer heights inside demo stages, so a page can show several demos. Set here, not in
-   the demo code, so the copyable source stays minimal. */
+/* Viewer heights inside demo stages. The cap fits the tallest sample page (A4, 842 pt plus its
+   border) at 100%, so a demo shows a whole page without scrolling; shorter pages shrink the viewer
+   down to the minimum. Set here, not in the demo code, so the copyable source stays minimal. */
 .ppds-demo-host .ppds-demo__stage {
   --rpv-viewport-min-height: 420px;
-  --rpv-viewport-max-height: 520px;
+  --rpv-viewport-max-height: 860px;
   --rpv-viewport-margin-bottom: 20px;
   --rpv-toolbar-margin-bottom: 0px;
 }
