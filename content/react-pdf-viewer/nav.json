@@ -1,0 +1,223 @@
+[
+  {
+    "pathname": "/react-pdf-viewer/getting-started-group",
+    "icon": "getting-started",
+    "children": [
+      { "pathname": "/react-pdf-viewer/" },
+      { "pathname": "/react-pdf-viewer/getting-started/installation/" },
+      { "pathname": "/react-pdf-viewer/getting-started/usage/" },
+      { "pathname": "/react-pdf-viewer/getting-started/requirements/" },
+      { "pathname": "/react-pdf-viewer/getting-started/faq/" },
+      { "pathname": "/react-pdf-viewer/getting-started/support/" },
+      { "pathname": "/react-pdf-viewer/getting-started/versions/" },
+      { "pathname": "/react-pdf-viewer/llms.txt" }
+    ]
+  },
+  {
+    "pathname": "/react-pdf-viewer/features-group",
+    "icon": "features",
+    "children": [
+      { "pathname": "/react-pdf-viewer/all-features/" },
+      {
+        "pathname": "/react-pdf-viewer/core-features-group",
+        "subheader": "Core features",
+        "children": [
+          {
+            "pathname": "/react-pdf-viewer/document-sources/",
+            "capabilityId": "document-sources",
+            "plan": "free"
+          },
+          {
+            "pathname": "/react-pdf-viewer/page-navigation/",
+            "capabilityId": "page-navigation",
+            "plan": "free"
+          },
+          { "pathname": "/react-pdf-viewer/zoom/", "capabilityId": "zoom", "plan": "free" },
+          { "pathname": "/react-pdf-viewer/rotation/", "capabilityId": "rotation", "plan": "free" },
+          { "pathname": "/react-pdf-viewer/download/", "capabilityId": "download", "plan": "free" },
+          { "pathname": "/react-pdf-viewer/print/", "capabilityId": "print", "plan": "free" },
+          {
+            "pathname": "/react-pdf-viewer/error-states/",
+            "capabilityId": "error-states",
+            "plan": "free"
+          }
+        ]
+      },
+      {
+        "pathname": "/react-pdf-viewer/display-and-layout-group",
+        "subheader": "Display & layout",
+        "children": [
+          { "pathname": "/react-pdf-viewer/toolbar/", "capabilityId": "toolbar", "plan": "free" },
+          {
+            "pathname": "/react-pdf-viewer/fit-modes/",
+            "capabilityId": "fit-modes",
+            "plan": "free"
+          },
+          {
+            "pathname": "/react-pdf-viewer/fullscreen/",
+            "capabilityId": "fullscreen",
+            "plan": "free"
+          },
+          {
+            "pathname": "/react-pdf-viewer/continuous-layout/",
+            "capabilityId": "continuous-layout",
+            "plan": "free"
+          },
+          {
+            "pathname": "/react-pdf-viewer/thumbnails/",
+            "capabilityId": "thumbnails",
+            "plan": "free"
+          },
+          {
+            "pathname": "/react-pdf-viewer/loading-states/",
+            "capabilityId": "loading-states",
+            "plan": "free"
+          }
+        ]
+      },
+      {
+        "pathname": "/react-pdf-viewer/interaction-group",
+        "subheader": "Interaction",
+        "children": [
+          {
+            "pathname": "/react-pdf-viewer/keyboard-shortcuts/",
+            "capabilityId": "keyboard-shortcuts",
+            "plan": "free"
+          },
+          {
+            "pathname": "/react-pdf-viewer/page-number-input/",
+            "capabilityId": "page-number-input",
+            "plan": "free"
+          },
+          { "pathname": "/react-pdf-viewer/links/", "capabilityId": "links", "plan": "free" }
+        ]
+      },
+      {
+        "pathname": "/react-pdf-viewer/content-and-data-group",
+        "subheader": "Content & data",
+        "children": [
+          {
+            "pathname": "/react-pdf-viewer/text-layer/",
+            "capabilityId": "text-layer",
+            "plan": "free"
+          },
+          { "pathname": "/react-pdf-viewer/search/", "capabilityId": "search", "plan": "free" },
+          {
+            "pathname": "/react-pdf-viewer/password-protection/",
+            "capabilityId": "password-protection",
+            "plan": "free"
+          },
+          { "pathname": "/react-pdf-viewer/labels/", "capabilityId": "labels", "plan": "free" }
+        ]
+      },
+      {
+        "pathname": "/react-pdf-viewer/integrations-features-group",
+        "subheader": "Integrations",
+        "children": [
+          {
+            "pathname": "/react-pdf-viewer/pdfjs-configuration/",
+            "capabilityId": "pdfjs-configuration",
+            "plan": "free"
+          },
+          {
+            "pathname": "/react-pdf-viewer/authenticated-requests/",
+            "capabilityId": "authenticated-requests",
+            "plan": "free"
+          }
+        ]
+      },
+      {
+        "pathname": "/react-pdf-viewer/developer-tools-group",
+        "subheader": "Developer tools",
+        "children": [
+          {
+            "pathname": "/react-pdf-viewer/controlled-state/",
+            "capabilityId": "controlled-state",
+            "plan": "free"
+          },
+          {
+            "pathname": "/react-pdf-viewer/imperative-api/",
+            "capabilityId": "imperative-api",
+            "plan": "free"
+          },
+          { "pathname": "/react-pdf-viewer/events/", "capabilityId": "events", "plan": "free" },
+          {
+            "pathname": "/react-pdf-viewer/custom-toolbar/",
+            "capabilityId": "custom-toolbar",
+            "plan": "free"
+          }
+        ]
+      },
+      {
+        "pathname": "/react-pdf-viewer/advanced-features-group",
+        "subheader": "Advanced features",
+        "children": [
+          { "pathname": "/react-pdf-viewer/headless/", "capabilityId": "headless", "plan": "free" },
+          {
+            "pathname": "/react-pdf-viewer/rendering/",
+            "capabilityId": "rendering",
+            "plan": "free"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "pathname": "/react-pdf-viewer/demos-group",
+    "icon": "demos",
+    "children": [
+      { "pathname": "/react-pdf-viewer/demos/playground/" },
+      { "pathname": "/react-pdf-viewer/demos/document-viewer/" }
+    ]
+  },
+  {
+    "pathname": "/react-pdf-viewer/api-group",
+    "icon": "reference",
+    "children": [{ "pathname": "/react-pdf-viewer/api/" }]
+  },
+  {
+    "pathname": "/react-pdf-viewer/customization-group",
+    "icon": "customization",
+    "children": [
+      { "pathname": "/react-pdf-viewer/customization/" },
+      { "pathname": "/react-pdf-viewer/customization/theming/" },
+      { "pathname": "/react-pdf-viewer/customization/overriding-structure/" },
+      { "pathname": "/react-pdf-viewer/customization/recipes/" }
+    ]
+  },
+  {
+    "pathname": "/react-pdf-viewer/guides-group",
+    "icon": "guides",
+    "children": [
+      { "pathname": "/react-pdf-viewer/guides/best-practices/" },
+      { "pathname": "/react-pdf-viewer/guides/performance/" },
+      { "pathname": "/react-pdf-viewer/guides/testing/" },
+      { "pathname": "/react-pdf-viewer/guides/localization/" },
+      { "pathname": "/react-pdf-viewer/guides/accessibility/" },
+      { "pathname": "/react-pdf-viewer/guides/security/" }
+    ]
+  },
+  {
+    "pathname": "/react-pdf-viewer/integrations-group",
+    "icon": "integrations",
+    "children": [
+      { "pathname": "/react-pdf-viewer/integrations/vite/" },
+      { "pathname": "/react-pdf-viewer/integrations/nextjs/" },
+      { "pathname": "/react-pdf-viewer/integrations/webpack/" }
+    ]
+  },
+  {
+    "pathname": "/react-pdf-viewer/migration-group",
+    "icon": "migration",
+    "children": [{ "pathname": "/react-pdf-viewer/migration/" }]
+  },
+  {
+    "pathname": "/react-pdf-viewer/discover-more-group",
+    "icon": "discover-more",
+    "children": [
+      { "pathname": "/react-pdf-viewer/discover-more/showcase/" },
+      { "pathname": "/react-pdf-viewer/discover-more/roadmap/" },
+      { "pathname": "/react-pdf-viewer/discover-more/changelog/" }
+    ]
+  }
+]

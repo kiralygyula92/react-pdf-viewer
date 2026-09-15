@@ -1,0 +1,58 @@
+{
+  "$schema": "../../docs/ppds/plugin-site.schema.json",
+
+  "id": "react-pdf-viewer",
+  "name": "React PDF Viewer",
+  "tagline": "Accessible, themeable PDF viewer for React, built on PDF.js.",
+  "description": "React PDF Viewer is an accessible, themeable React component for displaying PDF documents with PDF.js: zoom, rotation, fullscreen, search, thumbnails, download and print, with keyboard support, SSR-safe rendering and no UI-kit dependency.",
+  "categoryId": null,
+  "urlPrefix": "",
+
+  "repo": "https://github.com/kiralygyula92/react-pdf-viewer",
+  "currentVersion": "0.1.0",
+  "versions": [
+    { "label": "v0.1", "href": "/react-pdf-viewer/", "current": true, "supported": true }
+  ],
+
+  "tiers": [{ "id": "free", "name": "Free", "badge": null }],
+
+  "links": {
+    "issues": "https://github.com/kiralygyula92/react-pdf-viewer/issues",
+    "support": "/react-pdf-viewer/getting-started/support/",
+    "marketplace": "https://www.npmjs.com/package/@kiralygyula92/react-pdf-viewer",
+    "changelog": "/react-pdf-viewer/discover-more/changelog/",
+    "roadmap": "/react-pdf-viewer/discover-more/roadmap/",
+    "security": "https://github.com/kiralygyula92/react-pdf-viewer/security/advisories/new",
+    "license": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/LICENSE"
+  },
+
+  "taxonomy": [
+    "Core features",
+    "Display & layout",
+    "Interaction",
+    "Content & data",
+    "Integrations",
+    "Developer tools",
+    "Advanced features"
+  ],
+
+  "sections": [
+    { "id": "getting-started" },
+    { "id": "features" },
+    { "id": "demos" },
+    { "id": "reference" },
+    { "id": "customization" },
+    { "id": "guides" },
+    { "id": "integrations" },
+    { "id": "resources", "enabled": false },
+    { "id": "migration" },
+    { "id": "discover-more" },
+    { "id": "design-resources", "enabled": false }
+  ],
+
+  "referenceSource": {
+    "kind": "typescript-declarations",
+    "entry": "packages/react-pdf-viewer/src/index.ts",
+    "command": "pnpm docs:reference"
+  }
+}

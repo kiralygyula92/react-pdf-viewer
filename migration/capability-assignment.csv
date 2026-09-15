@@ -1,0 +1,33 @@
+audit_id,capability_id,group,target_url,plan,lifecycle,rationale
+C01,document-sources,Core features,/react-pdf-viewer/document-sources/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C02,authenticated-requests,Integrations,/react-pdf-viewer/authenticated-requests/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C03,error-states,Core features,/react-pdf-viewer/error-states/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C04,loading-states,Display & layout,/react-pdf-viewer/loading-states/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C05,page-navigation,Core features,/react-pdf-viewer/page-navigation/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C06,zoom,Core features,/react-pdf-viewer/zoom/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C07,fit-modes,Display & layout,/react-pdf-viewer/fit-modes/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C08,rotation,Core features,/react-pdf-viewer/rotation/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C09,fullscreen,Display & layout,/react-pdf-viewer/fullscreen/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C10,toolbar,Display & layout,/react-pdf-viewer/toolbar/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C11,custom-toolbar,Developer tools,/react-pdf-viewer/custom-toolbar/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C12,download,Core features,/react-pdf-viewer/download/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C13,print,Core features,/react-pdf-viewer/print/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C14,controlled-state,Developer tools,/react-pdf-viewer/controlled-state/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C15,imperative-api,Developer tools,/react-pdf-viewer/imperative-api/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C16,keyboard-shortcuts,Interaction,/react-pdf-viewer/keyboard-shortcuts/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C17,,,/react-pdf-viewer/guides/accessibility/,,,Cross-cutting quality of every capability rather than a feature with its own symbols; PPDS §5 requires an Accessibility guide. Each capability page states its own accessibility behaviour. See GAPS G-39.
+C18,rendering,Advanced features,/react-pdf-viewer/rendering/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C19,continuous-layout,Display & layout,/react-pdf-viewer/continuous-layout/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C20,thumbnails,Display & layout,/react-pdf-viewer/thumbnails/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C21,text-layer,Content & data,/react-pdf-viewer/text-layer/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C22,links,Interaction,/react-pdf-viewer/links/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C23,search,Content & data,/react-pdf-viewer/search/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C24,page-number-input,Interaction,/react-pdf-viewer/page-number-input/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C25,password-protection,Content & data,/react-pdf-viewer/password-protection/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C26,labels,Content & data,/react-pdf-viewer/labels/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C27,,,/react-pdf-viewer/customization/theming/,,,"Theming is the Customization section itself (PPDS §5 row 5, Theming/Tokens); every capability page links to it from ## Customization. See GAPS G-39."
+C28,headless,Advanced features,/react-pdf-viewer/headless/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C29,pdfjs-configuration,Integrations,/react-pdf-viewer/pdfjs-configuration/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C30,,,/react-pdf-viewer/integrations/nextjs/,,,A property of the entry point exercised per named target; PPDS §5 row 7 requires one page per target. See GAPS G-39.
+C31,,,/react-pdf-viewer/guides/security/,,,Security defaults rather than a user-invoked capability; PPDS §5 row 6 requires a Security guide. See GAPS G-39.
+C32,events,Developer tools,/react-pdf-viewer/events/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).

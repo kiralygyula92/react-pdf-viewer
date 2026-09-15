@@ -18,12 +18,15 @@
     "smoke": "node scripts/consumer-smoke.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version && prettier --write \"packages/*/CHANGELOG.md\"",
-    "release": "pnpm --filter @kiralygyula92/react-pdf-viewer build && changeset publish"
+    "release": "pnpm --filter @kiralygyula92/react-pdf-viewer build && changeset publish",
+    "ppds:validate": "node scripts/ppds/validate-model.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.2",
     "@eslint/js": "^10.0.1",
     "@types/node": "^22.20.2",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
     "eslint": "^10.10.0",
     "eslint-plugin-jsx-a11y-x": "^0.2.0",
     "eslint-plugin-react-hooks": "^7.1.1",
