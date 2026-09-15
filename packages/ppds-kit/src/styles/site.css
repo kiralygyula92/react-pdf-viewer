@@ -245,6 +245,16 @@
     border-radius: var(--ppds-radius-sm);
   }
 
+  /* Theme toggle: the icon shows the current theme. Without JavaScript (no aria-pressed) it shows the moon. */
+  .ppds-theme-toggle__sun,
+  .ppds-theme-toggle[aria-pressed='false'] .ppds-theme-toggle__moon {
+    display: none;
+  }
+
+  .ppds-theme-toggle[aria-pressed='false'] .ppds-theme-toggle__sun {
+    display: block;
+  }
+
   .ppds-icon-button:hover {
     color: var(--ppds-text) !important;
     background: var(--ppds-bg-muted);

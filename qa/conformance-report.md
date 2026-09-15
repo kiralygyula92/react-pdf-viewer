@@ -69,4 +69,4 @@ PPDS v1.1 §11 conformance for `react-pdf-viewer` (React PDF Viewer 0.1.0), gene
 
 ## K1. Model validates (plugin-site.schema.json, url-map, capability assignment)
 
-- ℹ 1416 checks passed · 0 failed
+- ℹ 1408 checks passed · 0 failed
