@@ -19,18 +19,12 @@ Shortcuts work while focus is anywhere inside the viewer; click the page or <kbd
 
 <Demo id="features/keyboard-shortcuts/demo-basics" title="Try the shortcuts" />
 
-| Keys                                                         | Action                                                              |
-| ------------------------------------------------------------ | ------------------------------------------------------------------- |
-| <kbd>←</kbd> <kbd>PageUp</kbd>                               | Previous page (a zoomed page scrolls horizontally first)            |
-| <kbd>→</kbd> <kbd>PageDown</kbd>                             | Next page                                                           |
-| <kbd>Home</kbd> / <kbd>End</kbd>                             | First / last page                                                   |
-| <kbd>+</kbd> or <kbd>=</kbd> / <kbd>-</kbd> or <kbd>\_</kbd> | Zoom in / out                                                       |
-| <kbd>0</kbd>                                                 | Reset zoom                                                          |
-| <kbd>r</kbd> / <kbd>Shift</kbd> + <kbd>R</kbd>               | Rotate clockwise / counter-clockwise                                |
-| <kbd>f</kbd>                                                 | Toggle fullscreen                                                   |
-| <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>F</kbd>                  | Focus the search field (with [`search`](/react-pdf-viewer/search/)) |
-
-The table above is also generated, with the exact key names, in the [Keyboard shortcuts reference](/react-pdf-viewer/api/keyboard-shortcuts/), which is built from the same source the viewer uses.
+<ReferenceTable
+  symbol="Keyboard shortcuts"
+  format="keys"
+  nameHeading="Keys"
+  descriptionHeading="Action"
+/>
 
 Shortcuts never fire while typing in an input, select or text area, or with <kbd>Alt</kbd>, <kbd>Ctrl</kbd> or <kbd>⌘</kbd> held, so browser and app shortcuts keep working. <kbd>Shift</kbd> with arrows is left alone for text selection.
 

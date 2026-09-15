@@ -27,18 +27,9 @@ Every failure reaches `onError` as a `PdfViewerError` with a machine-readable `c
 
 <Demo id="features/error-states/demo-cases" title="Each failure and its onError payload" />
 
-| Code                                       | When                                                                                         |
-| ------------------------------------------ | -------------------------------------------------------------------------------------------- |
-| `NETWORK_ERROR`                            | `fetch` rejected: offline, blocked by CORS, DNS failure                                      |
-| `HTTP_ERROR`                               | The server answered with a non-2xx status                                                    |
-| `INVALID_PDF`                              | The bytes are not a PDF                                                                      |
-| `PASSWORD_REQUIRED` / `INCORRECT_PASSWORD` | The document is encrypted; see [Password protection](/react-pdf-viewer/password-protection/) |
-| `RENDER_FAILED`                            | A page failed to render; the error replaces that page only                                   |
-| `PDFJS_LOAD_FAILED`                        | The PDF.js module or worker could not load                                                   |
-| `DOWNLOAD_FAILED` / `PRINT_FAILED`         | Saving or printing failed                                                                    |
-| `UNKNOWN`                                  | Anything else                                                                                |
+<ReferenceTable symbol="PdfViewerErrorCode" nameHeading="Code" descriptionHeading="When" />
 
-The complete list with descriptions is generated in the [`PdfViewerErrorCode` reference](/react-pdf-viewer/api/pdf-viewer-error-code/).
+`RENDER_FAILED` replaces only the page that failed; the password codes are covered in [Password protection](/react-pdf-viewer/password-protection/).
 
 ## Reporting errors
 

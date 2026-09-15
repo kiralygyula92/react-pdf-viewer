@@ -663,6 +663,12 @@
     border-radius: 4px;
   }
 
+  .ppds-reference-source {
+    margin-top: -8px;
+    font-size: 0.875rem;
+    color: var(--ppds-text-muted);
+  }
+
   .ppds-table-scroll:focus-visible {
     outline: 2px solid var(--ppds-accent);
     outline-offset: 2px;

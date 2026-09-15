@@ -11,6 +11,7 @@ import Callout from 'ppds-kit/astro/Callout.astro';
 import CardGrid from 'ppds-kit/astro/CardGrid.astro';
 import ScrollTable from 'ppds-kit/astro/ScrollTable.astro';
 import Demo from '../../components/Demo.astro';
+import ReferenceTable from '../../components/ReferenceTable.astro';
 import Scenario from '../../components/Scenario.astro';
 import {
   CONTENT_PATH,
@@ -101,6 +102,6 @@ const meta = pageMeta(page, page.archetype === 'A' ? `${model.config.name} — O
     descriptions={descriptions}
     generated={generated}
   >
-    <Content components={{ Demo, Callout, Scenario, CardGrid, table: ScrollTable }} />
+    <Content components={{ Demo, Callout, Scenario, CardGrid, ReferenceTable, table: ScrollTable }} />
   </DocsArticle>
 </DocsLayout>
