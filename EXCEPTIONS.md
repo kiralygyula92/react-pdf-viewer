@@ -54,3 +54,11 @@ Every entry starts as **Proposed** and needs owner approval before Phase 3 build
 - **Scope:** the whole site. `content/portfolio.json` declares `"surfaces": ["docs"]`.
 - **Reason:** the site documents a single free product. A portfolio home with one product and a separate landing page added navigation depth and duplicated the Overview without adding information.
 - **Mitigation:** `/` is a noindex page that resolves legacy `#/…` links (E-01) and otherwise redirects to `/react-pdf-viewer/`, with a canonical link and a no-JavaScript refresh. `/products/react-pdf-viewer/` 301s to the docs root. The Overview keeps the positioning (Why React PDF Viewer) and the footer keeps the standard columns. Conformance still requires a docs-surface sitemap and reads the footer on the docs root; adding a marketing surface later only means removing `surfaces` and building the pages.
+
+## E-07 — llms.txt is not listed in the sidebar
+
+- **Status:** Accepted (owner decision, 2026-09-15)
+- **Rule deviated from:** §5 row 1 (Getting started includes `llms.txt`).
+- **Scope:** the sidebar of `/react-pdf-viewer/` (`nav.json`).
+- **Reason:** `llms.txt` is a machine surface for AI agents (§6, §7.7), not a page people read; a sidebar link to a plain-text file distracted from the documentation.
+- **Mitigation:** the file is still generated at `/react-pdf-viewer/llms.txt` with a Markdown twin for every page, conformance checks 16 and 17 still verify it, and the e2e flow F8 reads it.

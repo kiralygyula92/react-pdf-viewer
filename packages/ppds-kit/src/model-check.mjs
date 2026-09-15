@@ -301,8 +301,17 @@ for (const key of Object.keys(titles))
   check('N2 titles', seen.has(key), `titles.json has an entry for unknown pathname ${key}`);
 check(
   '§5 required pages',
-  pagePaths.has(P) && pagePaths.has(`${P}all-features/`) && pagePaths.has(`${P}llms.txt`),
-  'Overview, All features and llms.txt are required',
+  pagePaths.has(P) && pagePaths.has(`${P}all-features/`),
+  'Overview and All features are required',
+);
+// §5 lists llms.txt in Getting started; a site may keep it out of the sidebar by exception, since
+// the file is generated and checked either way (conformance 16).
+check(
+  '§5 llms.txt in nav',
+  pagePaths.has(`${P}llms.txt`) ||
+    (existsSync(resolve(root, 'EXCEPTIONS.md')) &&
+      /^## E-\d+ — .*llms\.txt/m.test(read('EXCEPTIONS.md'))),
+  'llms.txt must be in the Getting started nav, or an exception must be recorded in EXCEPTIONS.md',
 );
 for (const link of Object.values(config.links ?? {})) {
   if (link.startsWith('/'))

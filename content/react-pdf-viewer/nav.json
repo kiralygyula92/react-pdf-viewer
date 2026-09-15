@@ -9,8 +9,7 @@
       { "pathname": "/react-pdf-viewer/getting-started/requirements/" },
       { "pathname": "/react-pdf-viewer/getting-started/faq/" },
       { "pathname": "/react-pdf-viewer/getting-started/support/" },
-      { "pathname": "/react-pdf-viewer/getting-started/versions/" },
-      { "pathname": "/react-pdf-viewer/llms.txt" }
+      { "pathname": "/react-pdf-viewer/getting-started/versions/" }
     ]
   },
   {
