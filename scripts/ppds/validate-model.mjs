@@ -235,9 +235,63 @@ check(
   JSON.stringify(subheaders) === JSON.stringify(config.taxonomy),
   `Features subheaders ${JSON.stringify(subheaders)} must equal taxonomy ${JSON.stringify(config.taxonomy)} (same terms, sidebar order)`,
 );
+// The group vocabulary is read from the standard itself (§5 code block), so a term can only be
+// added or renamed centrally (PPDS §5, §12; D-06).
+const standard = read('docs/ppds/02-plugin-docs-standard.md');
+const vocabularyBlock =
+  /\*\*Feature grouping\.\*\*[\s\S]*?```\n([\s\S]*?)```/.exec(standard)?.[1] ?? '';
+const vocabulary = vocabularyBlock
+  .split(/·|\n/)
+  .map((term) => term.trim())
+  .filter(Boolean);
+check(
+  '§5 vocabulary',
+  vocabulary.length > 0,
+  'could not read the group vocabulary from the standard',
+);
+for (const term of config.taxonomy)
+  check(
+    '§5 vocabulary',
+    vocabulary.includes(term),
+    `taxonomy term "${term}" is not in the portfolio vocabulary (${vocabulary.join(', ')})`,
+  );
+check(
+  '§5 vocabulary',
+  !config.taxonomy.some((term) => nav.some((section) => titles[section.pathname] === term)),
+  'a taxonomy term duplicates a section name in the sidebar',
+);
+
 const pagePaths = new Set(
   nodes.filter((n) => !n.pathname.endsWith('-group')).map((n) => n.pathname),
 );
+
+/**
+ * The archetype a docs page must use, derived from its path (PPDS §6, v1.1 archetypes J–L).
+ * Returns null for machine surfaces (§7.7) and for paths outside the docs namespace.
+ */
+function archetypeOf(pathname) {
+  if (!pathname.startsWith(P)) return null;
+  const rest = pathname.slice(P.length);
+  if (rest === '') return 'A';
+  if (/\.[a-z]+$/.test(rest)) return null;
+  if (rest === 'all-features/') return 'C';
+  if (rest === 'features/') return 'D';
+  if (/^getting-started\/(installation|usage|requirements)\/$/.test(rest)) return 'F';
+  if (/^getting-started\/(faq|support|versions)\/$/.test(rest)) return 'J';
+  if (/^(api|migration|demos)\/$/.test(rest)) return 'K';
+  if (/^api\/[a-z0-9-]+\/$/.test(rest)) return 'E';
+  if (/^demos\/[a-z0-9-]+\/$/.test(rest)) return 'L';
+  if (/^(customization|guides|integrations|migration)\/([a-z0-9-]+\/)?$/.test(rest)) return 'J';
+  if (/^discover-more\/[a-z0-9-]+\/$/.test(rest)) return 'I';
+  if (nodes.some((n) => n.pathname === pathname && n.capabilityId)) return 'B';
+  return undefined;
+}
+const archetypeCounts = {};
+for (const page of pagePaths) {
+  const archetype = archetypeOf(page);
+  check('§11.1 archetype', archetype !== undefined, `${page} matches no archetype`);
+  if (archetype) archetypeCounts[archetype] = (archetypeCounts[archetype] ?? 0) + 1;
+}
 for (const key of Object.keys(titles))
   check('N2 titles', seen.has(key), `titles.json has an entry for unknown pathname ${key}`);
 check(
@@ -351,6 +405,12 @@ for (const row of urlMap) {
     resolves,
     `${row.legacy_url}: target ${row.target_url} does not resolve to a nav page, a generated API page or a documented exception`,
   );
+  const expected = archetypeOf(target);
+  check(
+    '§10 target archetype',
+    expected ? row.target_archetype === expected : row.target_archetype.startsWith('—'),
+    `${row.legacy_url}: target archetype "${row.target_archetype}" should be "${expected ?? '— (not a docs page)'}" for ${target}`,
+  );
   for (const ref of row.notes.matchAll(/\s(\/[a-z0-9/-]+\/)/g)) {
     const path = ref[1].startsWith(P) ? ref[1] : `${P}${ref[1].slice(1)}`;
     check(
@@ -431,6 +491,12 @@ for (const id of capabilityIds)
 console.log(`\n${passed} checks passed · ${errors.length} failed`);
 console.log(
   `nav: ${nodes.length} nodes, ${pagePaths.size} pages, ${capabilityIds.size} capability pages · url-map: ${urlMap.length} rows · generated API targets available: ${apiPages.size}`,
+);
+console.log(
+  `archetypes: ${Object.entries(archetypeCounts)
+    .sort()
+    .map(([key, count]) => `${key}=${count}`)
+    .join(' ')} (+ ${apiPages.size} generated E pages in Phase 4)`,
 );
 if (errors.length) {
   console.error(`\n${errors.map((e) => `✖ ${e}`).join('\n')}`);

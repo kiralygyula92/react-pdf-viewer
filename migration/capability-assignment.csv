@@ -1,6 +1,6 @@
 audit_id,capability_id,group,target_url,plan,lifecycle,rationale
 C01,document-sources,Core features,/react-pdf-viewer/document-sources/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
-C02,authenticated-requests,Integrations,/react-pdf-viewer/authenticated-requests/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C02,authenticated-requests,Connectivity,/react-pdf-viewer/authenticated-requests/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
 C03,error-states,Core features,/react-pdf-viewer/error-states/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
 C04,loading-states,Display & layout,/react-pdf-viewer/loading-states/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
 C05,page-navigation,Core features,/react-pdf-viewer/page-navigation/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
@@ -27,7 +27,7 @@ C25,password-protection,Content & data,/react-pdf-viewer/password-protection/,fr
 C26,labels,Content & data,/react-pdf-viewer/labels/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
 C27,,,/react-pdf-viewer/customization/theming/,,,"Theming is the Customization section itself (PPDS §5 row 5, Theming/Tokens); every capability page links to it from ## Customization. See GAPS G-39."
 C28,headless,Advanced features,/react-pdf-viewer/headless/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
-C29,pdfjs-configuration,Integrations,/react-pdf-viewer/pdfjs-configuration/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
+C29,pdfjs-configuration,Connectivity,/react-pdf-viewer/pdfjs-configuration/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).
 C30,,,/react-pdf-viewer/integrations/nextjs/,,,A property of the entry point exercised per named target; PPDS §5 row 7 requires one page per target. See GAPS G-39.
 C31,,,/react-pdf-viewer/guides/security/,,,Security defaults rather than a user-invoked capability; PPDS §5 row 6 requires a Security guide. See GAPS G-39.
 C32,events,Developer tools,/react-pdf-viewer/events/,free,,Capability page (archetype B). Lifecycle omitted until the first release (GAPS G-41).

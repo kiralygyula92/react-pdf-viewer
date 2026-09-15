@@ -111,8 +111,8 @@
         ]
       },
       {
-        "pathname": "/react-pdf-viewer/integrations-features-group",
-        "subheader": "Integrations",
+        "pathname": "/react-pdf-viewer/connectivity-group",
+        "subheader": "Connectivity",
         "children": [
           {
             "pathname": "/react-pdf-viewer/pdfjs-configuration/",

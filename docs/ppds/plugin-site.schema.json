@@ -1,0 +1,385 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/plugin-site.schema.json",
+  "title": "PPDS v1.1 plugin site content model",
+  "description": "Content model for a plugin presentation/documentation site conforming to the Plugin Presentation & Documentation Standard v1.1. A conforming plugin ships plugin.config.json (this root schema), plus nav.json ($defs/navTree), titles.json ($defs/titleMap) and, if tiered, pricing.json ($defs/pricing).",
+  "type": "object",
+  "required": ["id", "name", "tagline", "description", "repo", "currentVersion", "tiers", "taxonomy", "sections"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Stable plugin identifier. Becomes the docs namespace: /{id}/. Never changes."
+    },
+    "name": { "type": "string", "minLength": 1, "description": "Display name." },
+    "tagline": {
+      "type": "string",
+      "maxLength": 120,
+      "description": "One-line positioning. Reused in nav entries and product cards (P10)."
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 300,
+      "description": "The single description string. Reused verbatim as meta description, H1 subtitle and llms.txt line for the docs root (P10)."
+    },
+    "categoryId": {
+      "type": ["string", "null"],
+      "description": "Portfolio-level grouping, emitted as plugin:categoryId meta and used for search scoping."
+    },
+    "urlPrefix": {
+      "type": "string",
+      "default": "",
+      "pattern": "^[a-z0-9-]*$",
+      "description": "Optional prefix for capability page slugs, e.g. 'react-' in /material-ui/react-button/. Pick once, never change (R5)."
+    },
+    "repo": { "type": "string", "format": "uri" },
+    "currentVersion": { "type": "string", "description": "Semver of the documented version." },
+    "versions": {
+      "type": "array",
+      "description": "Version selector entries. Old versions are never removed (P12).",
+      "items": {
+        "type": "object",
+        "required": ["label", "href"],
+        "additionalProperties": false,
+        "properties": {
+          "label": { "type": "string" },
+          "href": { "type": "string" },
+          "current": { "type": "boolean", "default": false },
+          "supported": { "type": "boolean", "default": true }
+        }
+      }
+    },
+
+    "tiers": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Commercial tiers, cheapest first. A single-tier plugin declares one entry with id 'free'.",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "name": { "type": "string" },
+          "badge": {
+            "type": ["string", "null"],
+            "description": "Badge label rendered next to gated capabilities. null for the free tier."
+          },
+          "icon": { "type": "string" },
+          "color": { "type": "string" },
+          "explainerHref": {
+            "type": "string",
+            "description": "Page that explains what this tier means. Linked from every tier badge (PPDS §7.1)."
+          }
+        }
+      }
+    },
+
+    "links": {
+      "type": "object",
+      "description": "Canonical external destinations. Chip rows and footers are rendered from these, never hand-written.",
+      "additionalProperties": { "type": "string" },
+      "properties": {
+        "issues": { "type": "string" },
+        "discussions": { "type": "string" },
+        "support": { "type": "string" },
+        "store": { "type": "string" },
+        "marketplace": { "type": "string" },
+        "changelog": { "type": "string" },
+        "design": { "type": "string" },
+        "roadmap": { "type": "string" }
+      }
+    },
+
+    "taxonomy": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The subset of the portfolio-wide capability group vocabulary this plugin uses, in sidebar order. Extending the vocabulary is a portfolio-level decision (PPDS §5).",
+      "items": { "type": "string" }
+    },
+
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Which of the 11 canonical sections are enabled, in canonical order. Mandatory sections must be present.",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "enum": [
+              "getting-started", "features", "demos", "reference", "customization",
+              "guides", "integrations", "resources", "migration", "discover-more",
+              "design-resources"
+            ]
+          },
+          "title": { "type": "string", "description": "Override for the canonical section name. Discouraged — forbidden variation under PPDS §12." },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      }
+    },
+
+    "referenceSource": {
+      "type": "object",
+      "description": "How the generated reference section is produced (P5). Required before Phase 4 of the agent brief.",
+      "required": ["kind"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "enum": ["typescript-declarations", "jsdoc", "php-docblocks", "json-schema", "openapi", "cli-parser", "custom"] },
+        "entry": { "type": "string", "description": "Path or glob to the source of truth." },
+        "command": { "type": "string", "description": "Command that regenerates reference/*.schema.json." }
+      }
+    },
+
+    "branding": {
+      "type": "object",
+      "description": "The only permitted visual variation between plugin sites (PPDS §12).",
+      "additionalProperties": false,
+      "properties": {
+        "accentColor": { "type": "string" },
+        "logoLight": { "type": "string" },
+        "logoDark": { "type": "string" },
+        "ogImageTemplate": { "type": "string", "description": "Template or edge-function URL used to generate docs OG images (PPDS §7.6)." }
+      }
+    }
+  },
+
+  "$defs": {
+
+    "badge": {
+      "description": "The closed badge vocabulary (PPDS §7.1). No synonyms, no additions.",
+      "enum": ["new", "preview", "beta", "planned", "deprecated", "legacy"]
+    },
+
+    "navNode": {
+      "type": "object",
+      "required": ["pathname"],
+      "additionalProperties": false,
+      "properties": {
+        "pathname": {
+          "type": "string",
+          "description": "Route, or a virtual grouping path ending in '-group' for container-only nodes."
+        },
+        "title": {
+          "type": "string",
+          "description": "Omit where derivable from titles.json (N2)."
+        },
+        "subheader": {
+          "type": "string",
+          "description": "Renders as a non-clickable group label. Value must be a member of plugin.config.json#/taxonomy."
+        },
+        "icon": { "type": "string" },
+        "plan": {
+          "type": "string",
+          "description": "Tier id from plugin.config.json#/tiers. The ONLY source of tier badge state (N4/P7)."
+        },
+        "lifecycle": { "$ref": "#/$defs/badge" },
+        "capabilityId": { "type": "string", "description": "Set on capability pages; joins nav data to content and to pricing rows." },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/navNode" }
+        }
+      }
+    },
+
+    "navTree": {
+      "description": "Shape of nav.json. Ordered, editorial, max depth 3 (N1/N5).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/navNode" }
+    },
+
+    "titleMap": {
+      "description": "Shape of titles.json: pathname -> display title. Single source for renames (N2).",
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+
+    "capabilityFrontmatter": {
+      "description": "Frontmatter contract for a capability page (archetype B, PPDS §8.3).",
+      "type": "object",
+      "required": ["pluginId", "capabilityId", "title", "description", "group"],
+      "additionalProperties": false,
+      "properties": {
+        "pluginId": { "type": "string" },
+        "capabilityId": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+        "title": { "type": "string", "maxLength": 40, "description": "Short capability name, not a sentence." },
+        "description": { "type": "string", "maxLength": 200, "description": "The one-line description. Reused in nav, meta and llms.txt (P10)." },
+        "group": { "type": "string", "description": "Must be a member of plugin.config.json#/taxonomy." },
+        "plan": { "type": "string" },
+        "lifecycle": { "$ref": "#/$defs/badge" },
+        "symbols": {
+          "type": "array",
+          "description": "Public symbols documented by this page. Drives the page's ## API links AND the reverse usedBy list on each reference page. Never maintained by hand on either side.",
+          "items": { "type": "string" }
+        },
+        "links": {
+          "type": "object",
+          "description": "Drives the resource chip row under the H1.",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+
+    "referenceSchema": {
+      "description": "Shape of reference/{symbol}.schema.json. GENERATED — structure only, never prose, never hand-edited (P5/P6, conformance check 10).",
+      "type": "object",
+      "required": ["name", "kind", "filename"],
+      "properties": {
+        "name": { "type": "string" },
+        "kind": { "enum": ["component", "function", "hook", "type", "setting-group", "command", "event", "filter"] },
+        "imports": { "type": "array", "items": { "type": "string" } },
+        "options": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "description": { "type": "string", "description": "Type expression, e.g. a union. NOT human prose." }
+                }
+              },
+              "default": { "type": ["string", "number", "boolean", "null"] },
+              "required": { "type": "boolean", "default": false },
+              "deprecated": { "type": "boolean", "default": false }
+            }
+          }
+        },
+        "events": { "type": "object" },
+        "classes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["key"],
+            "properties": {
+              "key": { "type": "string" },
+              "className": { "type": "string" }
+            }
+          }
+        },
+        "inheritance": {
+          "type": ["object", "null"],
+          "properties": {
+            "symbol": { "type": "string" },
+            "pathname": { "type": "string" }
+          }
+        },
+        "usedBy": {
+          "type": "array",
+          "description": "Generated by inverting capability frontmatter 'symbols'.",
+          "items": { "type": "string" }
+        },
+        "filename": { "type": "string" },
+        "sourceUrl": { "type": "string" }
+      }
+    },
+
+    "referenceStrings": {
+      "description": "Shape of reference/{symbol}.strings.json. Human prose only. Regeneration may ADD keys but must never overwrite existing values (P6).",
+      "type": "object",
+      "properties": {
+        "symbolDescription": { "type": "string" },
+        "optionDescriptions": { "type": "object", "additionalProperties": { "type": "string" } },
+        "eventDescriptions": { "type": "object", "additionalProperties": { "type": "string" } },
+        "classDescriptions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": { "description": { "type": "string" } }
+          }
+        }
+      }
+    },
+
+    "pricing": {
+      "description": "Shape of pricing.json (PPDS §8.6). Every matrix row href must resolve to a capability page, and every gated capability must appear here (conformance checks 13-14).",
+      "type": "object",
+      "required": ["plans", "matrix"],
+      "properties": {
+        "billingModels": { "type": "array", "items": { "enum": ["annual", "perpetual", "monthly", "lifetime", "one-time"] } },
+        "plans": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "name", "bestFor", "cta"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "bestFor": { "type": "string", "maxLength": 140 },
+              "price": { "type": "object", "additionalProperties": { "type": ["number", "string"] } },
+              "priceNote": { "type": "string" },
+              "inheritsFrom": { "type": ["string", "null"] },
+              "highlights": { "type": "array", "minItems": 1, "maxItems": 6, "items": { "type": "string" } },
+              "licenseNote": { "type": "string" },
+              "cta": {
+                "type": "object",
+                "required": ["label", "href"],
+                "description": "CTA verb must differ per plan (conformance check 15).",
+                "properties": {
+                  "label": { "type": "string" },
+                  "href": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "matrix": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["group", "rows"],
+            "properties": {
+              "group": { "type": "string" },
+              "rows": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["label", "cells"],
+                  "properties": {
+                    "label": { "type": "string" },
+                    "href": { "type": "string", "description": "Link to the capability page. Required unless the row is a non-capability entitlement." },
+                    "capabilityId": { "type": "string" },
+                    "cells": {
+                      "type": "object",
+                      "description": "Keyed by tier id. true/false, a string value, or 'TBD' for planned features.",
+                      "additionalProperties": { "type": ["boolean", "string", "number", "null"] }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "support": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "cells"],
+            "properties": {
+              "label": { "type": "string" },
+              "cells": { "type": "object", "additionalProperties": { "type": ["boolean", "string", "number", "null"] } }
+            }
+          }
+        },
+        "faq": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["q", "a"],
+            "properties": {
+              "q": { "type": "string" },
+              "a": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

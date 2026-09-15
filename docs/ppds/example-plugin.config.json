@@ -1,0 +1,88 @@
+{
+  "$schema": "./plugin-site.schema.json",
+
+  "id": "acme-forms",
+  "name": "Acme Forms",
+  "tagline": "Conditional, validated forms without writing a line of glue code.",
+  "description": "Acme Forms is a drop-in form builder with conditional logic, server-side validation and 20+ delivery integrations. Works standalone or inside your existing design system.",
+  "categoryId": "content",
+  "urlPrefix": "",
+
+  "repo": "https://github.com/acme/forms",
+  "currentVersion": "3.2.0",
+  "versions": [
+    { "label": "v3", "href": "/acme-forms/", "current": true, "supported": true },
+    { "label": "v2", "href": "https://v2.acme-forms.com/", "supported": true },
+    { "label": "v1", "href": "https://v1.acme-forms.com/", "supported": false }
+  ],
+
+  "tiers": [
+    {
+      "id": "free",
+      "name": "Free",
+      "badge": null,
+      "explainerHref": "/acme-forms/getting-started/editions/"
+    },
+    {
+      "id": "pro",
+      "name": "Pro",
+      "badge": "Pro",
+      "icon": "cube-blue",
+      "color": "#3366FF",
+      "explainerHref": "/acme-forms/getting-started/editions/#pro"
+    },
+    {
+      "id": "premium",
+      "name": "Premium",
+      "badge": "Premium",
+      "icon": "cube-gold",
+      "color": "#B8860B",
+      "explainerHref": "/acme-forms/getting-started/editions/#premium"
+    }
+  ],
+
+  "links": {
+    "issues": "https://github.com/acme/forms/issues",
+    "discussions": "https://github.com/acme/forms/discussions",
+    "support": "/acme-forms/getting-started/support/",
+    "store": "https://acme.com/store/items/acme-forms-pro/",
+    "marketplace": "https://marketplace.example.com/acme-forms",
+    "changelog": "/acme-forms/discover-more/changelog/",
+    "design": "https://figma.com/community/file/000000/acme-forms",
+    "roadmap": "/acme-forms/discover-more/roadmap/"
+  },
+
+  "taxonomy": [
+    "Core features",
+    "Advanced features",
+    "Connectivity",
+    "Administration"
+  ],
+
+  "sections": [
+    { "id": "getting-started" },
+    { "id": "features" },
+    { "id": "demos" },
+    { "id": "reference" },
+    { "id": "customization" },
+    { "id": "guides" },
+    { "id": "integrations" },
+    { "id": "resources", "enabled": false },
+    { "id": "migration" },
+    { "id": "discover-more" },
+    { "id": "design-resources" }
+  ],
+
+  "referenceSource": {
+    "kind": "typescript-declarations",
+    "entry": "packages/forms/src/**/*.d.ts",
+    "command": "pnpm docs:reference"
+  },
+
+  "branding": {
+    "accentColor": "#3366FF",
+    "logoLight": "/static/branding/acme-forms-light.svg",
+    "logoDark": "/static/branding/acme-forms-dark.svg",
+    "ogImageTemplate": "/edge-functions/og-image?plugin=Acme Forms&title={title}&description={description}"
+  }
+}
