@@ -46,6 +46,7 @@ jobs:
       - name: Docs model and conformance (PPDS v1.1)
         run: |
           pnpm ppds:validate
+          pnpm ppds:reference --check
           pnpm ppds:conformance
 
       - name: Upload conformance report

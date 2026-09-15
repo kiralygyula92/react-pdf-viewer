@@ -1,0 +1,176 @@
+import { expect, test, type Page } from '@playwright/test';
+
+/**
+ * The required user flows (PPDS §9), clicked through as a visitor would. Each step clicks a real
+ * link on the page, so a broken or missing link fails the flow. F6 (Convert) does not apply: the
+ * plugin is free only (DECISIONS D-02). The recorded click paths are in qa/flow-walkthroughs.md.
+ */
+const DOCS = 'React PDF Viewer documentation';
+
+const article = (page: Page) => page.locator('article.ppds-article');
+const sidebar = (page: Page) => page.getByRole('navigation', { name: DOCS });
+
+/** Sidebar sections are collapsed unless they hold the current page; open one like a visitor. */
+async function sidebarSection(page: Page, title: string) {
+  const section = sidebar(page).locator('details', {
+    has: page.locator('summary', { hasText: title }),
+  });
+  if ((await section.getAttribute('open')) === null) await section.locator('summary').click();
+  return section;
+}
+
+async function follow(page: Page, link: ReturnType<Page['getByRole']>, pathname: string) {
+  await link.first().click();
+  await expect(page).toHaveURL(
+    (url) => url.pathname + url.hash === pathname || url.pathname === pathname,
+  );
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+}
+
+test.describe('required flows', () => {
+  test.skip(
+    ({ browserName }) => browserName !== 'chromium',
+    'Flows are structural, not browser-specific',
+  );
+
+  test('F1 Evaluate: home → landing → capability → overview → features index → install', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await follow(
+      page,
+      page.getByRole('link', { name: 'Explore React PDF Viewer' }),
+      '/products/react-pdf-viewer/',
+    );
+    const capabilities = page.getByRole('region', { name: 'Everything a document viewer needs' });
+    await follow(
+      page,
+      capabilities.getByRole('link', { name: 'Search' }),
+      '/react-pdf-viewer/search/',
+    );
+    await follow(
+      page,
+      page.getByRole('banner').getByRole('link', { name: 'React PDF Viewer', exact: true }),
+      '/react-pdf-viewer/',
+    );
+    await follow(
+      page,
+      (await sidebarSection(page, 'Features')).getByRole('link', { name: 'All features' }),
+      '/react-pdf-viewer/all-features/',
+    );
+    await follow(
+      page,
+      (await sidebarSection(page, 'Getting started')).getByRole('link', { name: 'Installation' }),
+      '/react-pdf-viewer/getting-started/installation/',
+    );
+  });
+
+  test('F2 Adopt: overview → installation → usage → first capability', async ({ page }) => {
+    await page.goto('/react-pdf-viewer/');
+    await follow(
+      page,
+      article(page).getByRole('link', { name: /Installation/ }),
+      '/react-pdf-viewer/getting-started/installation/',
+    );
+    await expect(article(page).getByRole('heading', { name: 'Minimal example' })).toBeVisible();
+    await follow(
+      page,
+      article(page).getByRole('link', { name: 'Usage' }),
+      '/react-pdf-viewer/getting-started/usage/',
+    );
+    await follow(
+      page,
+      article(page).getByRole('link', { name: 'Controlled state' }),
+      '/react-pdf-viewer/controlled-state/',
+    );
+  });
+
+  test('F3 Implement: search → capability → demo source → reference → back', async ({ page }) => {
+    await page.goto('/react-pdf-viewer/getting-started/usage/');
+    await page.getByRole('button', { name: /Search/ }).click();
+    const dialog = page.getByRole('dialog', { name: 'Search the documentation' });
+    await dialog.getByRole('textbox').fill('rotation');
+    await follow(
+      page,
+      dialog.locator('a.pagefind-ui__result-link', { hasText: 'Rotation' }),
+      '/react-pdf-viewer/rotation/',
+    );
+    const demo = page.getByRole('figure').first();
+    await demo.getByRole('button', { name: 'Show source' }).click();
+    await expect(demo.getByRole('region')).toContainText('PdfViewer');
+    await follow(
+      page,
+      article(page).getByRole('link', { name: 'PdfViewerProps' }),
+      '/react-pdf-viewer/api/pdf-viewer-props/',
+    );
+    await page.goBack();
+    await expect(page).toHaveURL(/\/react-pdf-viewer\/rotation\/$/);
+  });
+
+  test('F4 Customise: capability Customization → customization guide → theming → CSS variables', async ({
+    page,
+  }) => {
+    await page.goto('/react-pdf-viewer/zoom/');
+    await follow(
+      page,
+      article(page).getByRole('link', { name: 'customization guide' }),
+      '/react-pdf-viewer/customization/',
+    );
+    await follow(
+      page,
+      article(page).getByRole('link', { name: 'Theming', exact: true }),
+      '/react-pdf-viewer/customization/theming/',
+    );
+    await follow(
+      page,
+      article(page).getByRole('link', { name: 'CSS variables' }),
+      '/react-pdf-viewer/api/css-variables/',
+    );
+  });
+
+  test('F5 Upgrade: version selector → Versions → Migration → changelog', async ({ page }) => {
+    await page.goto('/react-pdf-viewer/zoom/');
+    await page
+      .getByRole('combobox', { name: 'Documentation version' })
+      .selectOption({ label: 'All versions…' });
+    await expect(page).toHaveURL(/\/react-pdf-viewer\/getting-started\/versions\/$/);
+    await follow(
+      page,
+      article(page).getByRole('link', { name: 'Migration' }),
+      '/react-pdf-viewer/migration/',
+    );
+    await follow(
+      page,
+      article(page).getByRole('link', { name: 'changelog' }),
+      '/react-pdf-viewer/discover-more/changelog/',
+    );
+    await expect(page.getByRole('heading', { name: /^0\.1\.0/ })).toBeVisible();
+  });
+
+  test('F7 Support: any docs page → Support → free channel', async ({ page }) => {
+    await page.goto('/react-pdf-viewer/zoom/');
+    await follow(
+      page,
+      (await sidebarSection(page, 'Getting started')).getByRole('link', { name: 'Support' }),
+      '/react-pdf-viewer/getting-started/support/',
+    );
+    await expect(article(page).getByRole('link', { name: 'issue' }).first()).toHaveAttribute(
+      'href',
+      'https://github.com/kiralygyula92/react-pdf-viewer/issues/new/choose',
+    );
+  });
+
+  test('F8 Agent: llms.txt → every Markdown twin', async ({ request, baseURL }) => {
+    const llms = await request.get('/react-pdf-viewer/llms.txt');
+    expect(llms.ok()).toBe(true);
+    const urls = [...(await llms.text()).matchAll(/\]\((https?:\/\/[^)]+\.md)\)/g)].map(
+      (match) => new URL(match[1] ?? '').pathname,
+    );
+    expect(urls.length).toBeGreaterThan(80);
+    for (const pathname of urls) {
+      const twin = await request.get(new URL(pathname, baseURL).toString());
+      expect(twin.ok(), pathname).toBe(true);
+      expect(await twin.text(), pathname).toMatch(/^# /);
+    }
+  });
+});

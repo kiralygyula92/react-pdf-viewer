@@ -12,7 +12,12 @@ Releases are automated with [Changesets](https://github.com/changesets/changeset
    (_Settings → Secrets and variables → Actions_). The workflow requests `id-token: write`, so
    packages are published with [provenance](https://docs.npmjs.com/generating-provenance-statements).
 3. **GitHub:** in _Settings → Actions → General_, allow GitHub Actions to create pull requests.
-   Enable GitHub Pages (_Settings → Pages → GitHub Actions_) for the demo site.
+4. **Documentation site (Cloudflare Pages):** create a Pages project named `react-pdf-viewer`, then
+   add the `CLOUDFLARE_API_TOKEN` (with _Cloudflare Pages: Edit_) and `CLOUDFLARE_ACCOUNT_ID`
+   repository secrets. Once a custom domain is attached, set the `SITE_ORIGIN` repository variable
+   (for example `https://docs.example.com`) so canonical URLs, the sitemap, `llms.txt` and social
+   images use it. Without the secrets, the `Deploy site` workflow still builds and checks the site
+   but skips the upload.
 
 The first publish can also be done locally instead:
 
@@ -31,10 +36,14 @@ git push --follow-tags
    the version and writes `CHANGELOG.md`.
 3. Merge it. The workflow builds, runs the package QA and publishes to npm, then pushes the
    `@kiralygyula92/react-pdf-viewer@x.y.z` tag and a GitHub release.
+4. Update the documentation site: copy the new `CHANGELOG.md` section into
+   `content/react-pdf-viewer/discover-more/changelog.mdx` (for the first release, replace
+   “unreleased” with the date), and bump `currentVersion` in
+   `content/react-pdf-viewer/plugin.config.json` for a new minor or major version.
 
 ## Before a release, check
 
-- CI is green on `main` (lint, types, unit, e2e, visual, React 18, consumer smoke).
+- CI is green on `main` (lint, types, unit, docs conformance, e2e, visual, React 18, consumer smoke).
 - `pnpm qa` passes (publint, are-the-types-wrong, size-limit).
 - `pnpm --filter @kiralygyula92/react-pdf-viewer pack --dry-run` lists only `dist/`, `README.md`,
   `CHANGELOG.md`, `LICENSE`, `NOTICE` and `package.json`.

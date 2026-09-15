@@ -30,6 +30,16 @@ const h = (type: string, style: Record<string, unknown>, children?: unknown): No
   props: { style, children },
 });
 
+/** Key symbols the bundled Latin font has no glyph for, spelled out so cards never show boxes. */
+const KEY_SYMBOLS: Record<string, string> = {
+  '⌘': 'Cmd',
+  '⌥': 'Option',
+  '⇧': 'Shift',
+  '⌃': 'Ctrl',
+};
+const plainGlyphs = (text: string) =>
+  text.replace(/[⌘⌥⇧⌃]/g, (symbol) => KEY_SYMBOLS[symbol] ?? '');
+
 /**
  * Social card (1200×630) generated from a page's title and description (PPDS §7.6): the same
  * template for every docs page, so no card is ever hand-made.
@@ -41,8 +51,8 @@ export async function renderOgImage(input: {
   accent?: string;
 }): Promise<Uint8Array> {
   const accent = input.accent ?? '#1d4ed8';
-  const description =
-    input.description.length > 180 ? `${input.description.slice(0, 177)}…` : input.description;
+  const text = plainGlyphs(input.description);
+  const description = text.length > 180 ? `${text.slice(0, 177)}…` : text;
   const tree = h(
     'div',
     {
@@ -76,7 +86,7 @@ export async function renderOgImage(input: {
             color: '#ffffff',
             letterSpacing: '-2px',
           },
-          input.title,
+          plainGlyphs(input.title),
         ),
         h('div', { fontSize: '32px', lineHeight: 1.35, color: '#a8b3c7' }, description),
       ]),

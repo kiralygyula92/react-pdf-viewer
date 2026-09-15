@@ -20,4 +20,4 @@ published with credit to the reporter unless you prefer to stay anonymous.
   in PDF.js itself should be reported to Mozilla; this package keeps its peer range on patched
   versions (CVE-2024-4367 is excluded) and passes `isEvalSupported: false`.
 - The viewer never injects `<script>` tags, never reads globals such as `window.pdfjsLib`, and
-  opens external document links with `rel="noopener noreferrer"`.
+  opens external document links with `rel="noopener noreferrer nofollow"`.

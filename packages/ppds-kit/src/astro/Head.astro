@@ -14,7 +14,9 @@ interface Props {
 }
 
 const { meta, siteName, themeColor = '#0b1220', twin, feed, noindex = false } = Astro.props;
-const fullTitle = meta.title === siteName ? siteName : `${meta.title} · ${siteName}`;
+// A title that already starts with the site name ("{name} — Overview") is not suffixed again.
+const fullTitle =
+  meta.title === siteName || meta.title.startsWith(`${siteName} `) ? meta.title : `${meta.title} · ${siteName}`;
 ---
 
 <meta charset="utf-8" />
