@@ -1,4 +1,4 @@
-import { PdfViewer, type Rotation } from '@your-scope/react-pdf-viewer';
+import { PdfViewer, type Rotation } from '@kiralygyula92/react-pdf-viewer';
 import { useState } from 'react';
 import { useRoute } from '../router';
 import { sampleUrl } from '../samples';
@@ -12,18 +12,19 @@ const serverError = () =>
         type: 'about:blank',
         title: 'Internal Server Error',
         status: 500,
-        detail: 'The report could not be generated.',
+        detail: 'The document could not be generated.',
       }),
       { status: 500, headers: { 'Content-Type': 'application/problem+json' } },
     ),
   );
 
 /**
- * Deterministic configurations mirroring the original's layout states, for Playwright.
+ * Deterministic viewer configurations (inline and fullscreen layouts, zoom, rotation and the
+ * loading / error / empty states) for the layout and visual Playwright suites.
  *
- * `#/parity?mode=inline|fullscreen&zoom=100|150|25&rotation=0|90&state=loading|error|empty`
+ * `#/harness?mode=inline|fullscreen&zoom=100|150|25&rotation=0|90&state=loading|error|empty`
  */
-export function Parity() {
+export function Harness() {
   const { params } = useRoute();
   const mode = params.get('mode') === 'fullscreen' ? 'fullscreen' : 'inline';
   const state = params.get('state');
@@ -38,7 +39,7 @@ export function Parity() {
     <PdfViewer
       source={state === 'empty' ? '' : sampleUrl('letter-3pages.pdf')}
       fetcher={state === 'loading' ? neverResolves : state === 'error' ? serverError : undefined}
-      fileName="parity.pdf"
+      fileName="harness.pdf"
       page={page}
       onPageChange={setPage}
       scale={scale}
@@ -50,17 +51,17 @@ export function Parity() {
     />
   );
 
-  // Like the host app: fullscreen is a parent-rendered full-viewport dialog (fullscreenMode is
-  // 'controlled' because `fullscreen` is passed); inline is a centered full-width column.
+  // Fullscreen is a parent-rendered full-viewport dialog (fullscreenMode is 'controlled' because
+  // `fullscreen` is passed); inline is a centered full-width column.
   return (
-    <main className={fullscreen ? 'parity parity--fullscreen' : 'parity'} data-testid="parity">
-      <h1 className="demo-sr-only">Parity harness</h1>
+    <main className={fullscreen ? 'harness harness--fullscreen' : 'harness'} data-testid="harness">
+      <h1 className="demo-sr-only">Test harness</h1>
       {fullscreen ? (
-        <div className="parity-dialog" role="dialog" aria-modal="true" aria-label="Report">
+        <div className="harness-dialog" role="dialog" aria-modal="true" aria-label="Document">
           {viewer}
         </div>
       ) : (
-        <div className="parity-inline">{viewer}</div>
+        <div className="harness-inline">{viewer}</div>
       )}
     </main>
   );

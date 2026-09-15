@@ -1,4 +1,4 @@
-import { configurePdfJs } from '@your-scope/react-pdf-viewer';
+import { configurePdfJs } from '@kiralygyula92/react-pdf-viewer';
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 // Self-hosted worker and assets, copied to /pdfjs by vite-plugin-static-copy (vite.config.ts).

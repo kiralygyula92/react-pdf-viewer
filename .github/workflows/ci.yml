@@ -73,13 +73,13 @@ jobs:
       - name: Install with React 18
         run: |
           pnpm install --frozen-lockfile
-          pnpm --filter @your-scope/react-pdf-viewer add -D react@^18.3.1 react-dom@^18.3.1 @types/react@^18.3.31 @types/react-dom@^18.3.7
+          pnpm --filter @kiralygyula92/react-pdf-viewer add -D react@^18.3.1 react-dom@^18.3.1 @types/react@^18.3.31 @types/react-dom@^18.3.7
 
       - name: Typecheck
-        run: pnpm --filter @your-scope/react-pdf-viewer typecheck
+        run: pnpm --filter @kiralygyula92/react-pdf-viewer typecheck
 
       - name: Unit tests
-        run: pnpm --filter @your-scope/react-pdf-viewer test
+        run: pnpm --filter @kiralygyula92/react-pdf-viewer test
 
   consumer-smoke:
     # Installs the packed tarball into fresh Vite and Next.js (App Router, SSR) apps.
@@ -98,7 +98,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build library
-        run: pnpm --filter @your-scope/react-pdf-viewer build
+        run: pnpm --filter @kiralygyula92/react-pdf-viewer build
 
       - name: Consumer smoke tests
         run: pnpm smoke
@@ -122,7 +122,7 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Visual parity
+      - name: Visual regression
         run: pnpm --filter demo exec playwright test --project=visual
 
       - name: Upload visual diffs

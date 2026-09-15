@@ -1,4 +1,4 @@
-import { PdfViewer, type Rotation } from '@your-scope/react-pdf-viewer';
+import { PdfViewer, type Rotation } from '@kiralygyula92/react-pdf-viewer';
 import { useState } from 'react';
 import { sampleUrl } from '../samples';
 

@@ -1,5 +1,5 @@
 /**
- * Computed-style parity with the original (01 §7–8, parity matrix L-rows) on the parity harness.
+ * Computed styles of the default layout (sizes, spacing, colors) on the test harness.
  */
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { button, DESKTOP, MOBILE, pageBox, pageSize, rendered, toolbar, viewport } from './helpers';
@@ -12,14 +12,14 @@ async function styles(locator: Locator, properties: string[]) {
 }
 
 async function open(page: Page, query: string) {
-  await page.goto(`/#/parity?${query}`);
+  await page.goto(`/#/harness?${query}`);
   await rendered(page);
 }
 
 test.describe('layout — desktop (1280×800)', () => {
   test.use({ viewport: DESKTOP });
 
-  test('L-01 / L-06: inline viewport', async ({ page }) => {
+  test('inline viewport', async ({ page }) => {
     await open(page, 'mode=inline');
     expect(
       await styles(viewport(page), [
@@ -38,7 +38,7 @@ test.describe('layout — desktop (1280×800)', () => {
     });
   });
 
-  test('L-05 / L-10: toolbar, buttons and labels', async ({ page }) => {
+  test('toolbar, buttons and labels', async ({ page }) => {
     await open(page, 'mode=inline');
     expect(
       await styles(toolbar(page), [
@@ -83,7 +83,7 @@ test.describe('layout — desktop (1280×800)', () => {
     });
   });
 
-  test('L-07 / L-08: page styling; 612 pt fits in 650 px at true size', async ({ page }) => {
+  test('page styling; 612 pt fits in 650 px at true size', async ({ page }) => {
     await open(page, 'mode=inline');
     expect(
       await styles(pageBox(page), [
@@ -112,7 +112,7 @@ test.describe('layout — desktop (1280×800)', () => {
     expect(Math.abs(box.x - container.x - (container.width - box.width) / 2)).toBeLessThan(1.5);
   });
 
-  test('U-02 / U-03 / U-01: control order and labels; toolbar below the page', async ({ page }) => {
+  test('control order and labels; toolbar below the page', async ({ page }) => {
     await open(page, 'mode=inline');
     const labels = await toolbar(page)
       .locator('button, .rpv-toolbar__label')
@@ -138,7 +138,7 @@ test.describe('layout — desktop (1280×800)', () => {
     expect(bar && page1 && bar.y > page1.y + page1.height).toBe(true);
   });
 
-  test('L-02: fullscreen viewport and root', async ({ page }) => {
+  test('fullscreen viewport and root', async ({ page }) => {
     await open(page, 'mode=fullscreen');
     expect(await styles(viewport(page), ['max-width', 'max-height', 'padding-top'])).toEqual({
       'max-width': '100%',
@@ -152,8 +152,8 @@ test.describe('layout — desktop (1280×800)', () => {
     });
   });
 
-  test('U-11: loading shows a 40px spinner and the text, with the toolbar', async ({ page }) => {
-    await page.goto('/#/parity?state=loading');
+  test('loading shows a 40px spinner and the text, with the toolbar', async ({ page }) => {
+    await page.goto('/#/harness?state=loading');
     const status = page.getByRole('status');
     await expect(status).toHaveText('Loading PDF...');
     // Layout size (the bounding box of a rotating element is larger).
@@ -170,8 +170,8 @@ test.describe('layout — desktop (1280×800)', () => {
     await expect(toolbar(page)).toBeVisible();
   });
 
-  test('U-12: the error alert keeps the original look in a 400px area', async ({ page }) => {
-    await page.goto('/#/parity?state=error');
+  test('the error alert fills a 400px area', async ({ page }) => {
+    await page.goto('/#/harness?state=error');
     const alert = page.getByRole('alert');
     await expect(alert).toBeVisible();
     expect(await styles(alert, ['background-color', 'color', 'border-top-left-radius'])).toEqual({
@@ -187,7 +187,7 @@ test.describe('layout — desktop (1280×800)', () => {
 test.describe('layout — compact (390×844)', () => {
   test.use({ viewport: MOBILE });
 
-  test('L-03 / L-10 / U-09: compact inline', async ({ page }) => {
+  test('compact inline', async ({ page }) => {
     await open(page, 'mode=inline');
     expect(await styles(viewport(page), ['padding-top', 'min-height'])).toEqual({
       'padding-top': '16px',
@@ -198,12 +198,12 @@ test.describe('layout — compact (390×844)', () => {
     });
     await expect(toolbar(page).getByRole('button', { name: 'Rotate PDF' })).toHaveCount(0);
     await expect(toolbar(page).getByRole('button', { name: 'Print PDF' })).toHaveCount(0);
-    // L-08: the page shrinks to the available width.
+    // the page shrinks to the available width.
     const available = await viewport(page).evaluate((element) => element.clientWidth - 32);
     await expect.poll(async () => (await pageSize(page)).width).toBeLessThanOrEqual(available);
   });
 
-  test('L-04 / U-09: compact fullscreen', async ({ page }) => {
+  test('compact fullscreen', async ({ page }) => {
     await open(page, 'mode=fullscreen');
     expect(await styles(viewport(page), ['padding-top'])).toEqual({ 'padding-top': '32px' });
     // Nine controls do not fit 390px on one row: the actions collapse into the "More" menu.
@@ -218,7 +218,7 @@ test.describe('layout — compact (390×844)', () => {
     expect(bar && bar.x >= 0 && bar.x + bar.width <= MOBILE.width).toBe(true);
   });
 
-  test('L-11: the compact breakpoint is 960px', async ({ page }) => {
+  test('the compact breakpoint is 960px', async ({ page }) => {
     await page.setViewportSize({ width: 959, height: 800 });
     await open(page, 'mode=inline');
     await expect(page.locator('.rpv-root')).toHaveAttribute('data-compact', '');

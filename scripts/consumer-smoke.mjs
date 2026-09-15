@@ -81,7 +81,7 @@ try {
     cpSync(sample, join(app, 'public', 'sample.pdf'));
     const manifestPath = join(app, 'package.json');
     const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-    manifest.dependencies['@your-scope/react-pdf-viewer'] = `file:${tarball}`;
+    manifest.dependencies['@kiralygyula92/react-pdf-viewer'] = `file:${tarball}`;
     writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
     run('npm install --no-audit --no-fund --loglevel=error', app);
     run('npm run build', app);

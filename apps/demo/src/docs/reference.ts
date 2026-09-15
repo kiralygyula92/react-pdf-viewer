@@ -24,12 +24,11 @@ import {
   type UseControllableStateOptions,
   type UsePdfDocumentOptions,
   type UsePdfDocumentResult,
-} from '@your-scope/react-pdf-viewer';
-import type * as Library from '@your-scope/react-pdf-viewer';
-import type { CustomPdfViewerCompatProps } from '@your-scope/react-pdf-viewer/compat';
+} from '@kiralygyula92/react-pdf-viewer';
+import type * as Library from '@kiralygyula92/react-pdf-viewer';
 
-/** The package name used in snippets (a placeholder until the owner publishes it). */
-export const PKG = '@your-scope/react-pdf-viewer';
+/** The package name used in snippets. */
+export const PKG = '@kiralygyula92/react-pdf-viewer';
 
 export type Tag = 'required' | 'controlled' | 'opt-in';
 
@@ -199,7 +198,7 @@ const viewerProps: { readonly [K in keyof PdfViewerProps]-?: MemberDoc & { group
       type: "'controlled' | 'native' | 'overlay'",
       default: "'controlled' with fullscreen, else 'native'",
       description:
-        '`controlled`: layout only, the parent presents fullscreen (original behaviour). `native`: the browser Fullscreen API on the viewer root, falling back to `overlay`. `overlay`: a fixed full-viewport layer with a focus trap; `Esc` closes it.',
+        '`controlled`: layout only, the parent presents fullscreen (e.g. in its own dialog). `native`: the browser Fullscreen API on the viewer root, falling back to `overlay`. `overlay`: a fixed full-viewport layer with a focus trap; `Esc` closes it.',
     },
 
     minScale: { group: 'zoom', type: 'number', default: '0.25', description: 'Zoom floor (25%).' },
@@ -221,7 +220,7 @@ const viewerProps: { readonly [K in keyof PdfViewerProps]-?: MemberDoc & { group
       group: 'zoom',
       type: 'boolean',
       default: 'true',
-      description: 'At the default scale, shrink the page to the available width (original).',
+      description: 'At the default scale, shrink the page to the available width.',
     },
     fitMode: {
       group: 'zoom',
@@ -252,7 +251,7 @@ const viewerProps: { readonly [K in keyof PdfViewerProps]-?: MemberDoc & { group
       type: "'single' | 'continuous'",
       default: "'single'",
       description:
-        'One page at a time (original) or vertical scrolling through all pages. Only the visible pages ±1 are rendered; the page indicator follows the scroll position.',
+        'One page at a time or vertical scrolling through all pages. Only the visible pages ±1 are rendered; the page indicator follows the scroll position.',
     },
     textLayer: {
       group: 'features',
@@ -327,7 +326,7 @@ const viewerProps: { readonly [K in keyof PdfViewerProps]-?: MemberDoc & { group
       type: "'render' | 'open-url'",
       default: "'render'",
       description:
-        '`render` prints through a hidden iframe, with progress and Cancel; `open-url` opens the PDF in a new tab (original).',
+        '`render` prints through a hidden iframe, with progress and Cancel; `open-url` opens the PDF in a new tab.',
     },
     maxCanvasPixels: {
       group: 'output',
@@ -437,7 +436,7 @@ const toolbarConfig: Members<ToolbarConfig> = {
   position: {
     type: "'bottom' | 'top'",
     default: "'bottom'",
-    description: 'Toolbar placement (original: below the page).',
+    description: 'Toolbar placement (below the page by default).',
   },
   actions: {
     type: 'readonly ToolbarAction[]',
@@ -447,7 +446,7 @@ const toolbarConfig: Members<ToolbarConfig> = {
   hiddenWhenCompact: {
     type: 'readonly ToolbarAction[]',
     default: "['rotate', 'print']",
-    description: 'Actions hidden in compact, non-fullscreen mode (original behaviour).',
+    description: 'Actions hidden in compact, non-fullscreen mode.',
   },
 };
 
@@ -889,35 +888,6 @@ const pageRenderInfo: Members<PageRenderInfo> = {
   durationMs: { type: 'number', description: 'Time from request to completion.' },
 };
 
-const compat: Members<CustomPdfViewerCompatProps> = {
-  pdfUrl: {
-    tag: 'required',
-    type: 'string',
-    description: "Document URL; `''` shows the empty state.",
-  },
-  documentName: { type: 'string', description: 'Download file name.' },
-  onError: { type: '(error: string) => void', description: 'Called with the error message.' },
-  isFullscreen: {
-    type: 'boolean',
-    description: 'Fullscreen layout; the parent presents fullscreen.',
-  },
-  onFullscreenChange: {
-    type: '(isFullscreen: boolean) => void',
-    description: 'Fullscreen toggled.',
-  },
-  currentPage: { type: 'number', description: '1-based page.' },
-  onPageChange: { type: '(page: number) => void', description: 'Page changed.' },
-  scale: { type: 'number', description: '`1` = 100%.' },
-  onScaleChange: { type: '(scale: number) => void', description: 'Scale changed.' },
-  rotation: { type: 'number', description: 'Degrees clockwise; normalised to 0 / 90 / 180 / 270.' },
-  onRotationChange: { type: '(rotation: number) => void', description: 'Rotation changed.' },
-  onUnauthorized: {
-    type: '() => void',
-    description:
-      'Called on HTTP 401 instead of showing an error. Replaces the original’s hard-coded sign-out and redirect.',
-  },
-};
-
 const valueExports: { readonly [K in keyof typeof Library]: MemberDoc } = {
   PdfViewer: { type: 'component', description: 'The viewer. Accepts a `ref` to `PdfViewerApi`.' },
   PdfToolbar: { type: 'component', description: 'The default toolbar, for `renderToolbar`.' },
@@ -1139,7 +1109,6 @@ export const TABLES = defineTables({
       description:
         '`PdfViewer`, `PdfToolbar`, `PdfPageCanvas`, `usePdfDocument`, `useControllableState`, `configurePdfJs`, `defaultLabels` and all types.',
     },
-    { name: `${PKG}/compat`, description: 'The drop-in `CustomPdfViewer` wrapper.' },
     { name: `${PKG}/styles.css`, description: 'The stylesheet. Import it once.' },
   ],
   pdfjsConfig: rows(pdfJsConfig),
@@ -1185,23 +1154,7 @@ export const TABLES = defineTables({
       type: 'type',
       description,
     })),
-    {
-      name: 'CustomPdfViewer',
-      type: 'component (/compat)',
-      description: 'Drop-in wrapper with the original props; also the default export.',
-    },
-    {
-      name: 'CustomPdfViewerProps',
-      type: 'type (/compat)',
-      description: 'The original component’s props.',
-    },
-    {
-      name: 'CustomPdfViewerCompatProps',
-      type: 'type (/compat)',
-      description: '`CustomPdfViewerProps` plus `onUnauthorized`.',
-    },
   ],
-  compat: rows(compat),
 });
 
 export type TableId = keyof typeof TABLES;

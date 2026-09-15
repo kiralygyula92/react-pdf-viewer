@@ -41,7 +41,7 @@ const toolbar = () => screen.getByRole('toolbar', { name: 'PDF controls' });
 const zoomText = () => toolbar().querySelector('.rpv-toolbar__zoom')?.textContent;
 
 describe('search core', () => {
-  it('KI-21: finds case-insensitive matches across items and maps them back to items', () => {
+  it('finds case-insensitive matches across items and maps them back to items', () => {
     const page = buildPageText([
       { str: 'Hello ' },
       { str: 'Wor', hasEOL: false },
@@ -61,7 +61,7 @@ describe('search core', () => {
     expect(findMatches(page, '   ')).toEqual([]);
   });
 
-  it('KI-21: the link service resolves destinations and named actions', async () => {
+  it('the link service resolves destinations and named actions', async () => {
     const { proxy, document } = createMockDocument({ numPages: 5 });
     const goToPage = vi.fn();
     const service = createLinkService(proxy, { goToPage, getPage: () => 2 });
@@ -80,8 +80,8 @@ describe('search core', () => {
   });
 });
 
-describe('opt-in features (M5)', () => {
-  it('KI-24: page-number input navigates on Enter', async () => {
+describe('opt-in features', () => {
+  it('page-number input navigates on Enter', async () => {
     const { user } = await renderViewer({ pageInput: true });
     const input = within(toolbar()).getByRole('textbox', { name: 'Page number' });
     expect(input).toHaveValue('1');
@@ -95,7 +95,7 @@ describe('opt-in features (M5)', () => {
     expect(input).toHaveValue('3');
   });
 
-  it('KI-17: zoom label button resets zoom; preset ladder steps between levels', async () => {
+  it('zoom label button resets zoom; preset ladder steps between levels', async () => {
     const { user } = await renderViewer({ zoomReset: true, zoomLevels: [0.5, 1, 2, 4] });
     await user.click(within(toolbar()).getByRole('button', { name: 'Zoom in' }));
     expect(zoomText()).toBe('200%');
@@ -105,7 +105,7 @@ describe('opt-in features (M5)', () => {
     expect(zoomText()).toBe('50%');
   });
 
-  it('KI-17: fitMode "width" fills the available width at the default scale', async () => {
+  it('fitMode "width" fills the available width at the default scale', async () => {
     stubResizeObserver(1224, 800);
     const onPageRender = vi.fn();
     await renderViewer({ fitMode: 'width', onPageRender });
@@ -114,7 +114,7 @@ describe('opt-in features (M5)', () => {
     );
   });
 
-  it('KI-17: Ctrl + wheel zooms (and a plain wheel does not)', async () => {
+  it('Ctrl + wheel zooms (and a plain wheel does not)', async () => {
     const onScaleChange = vi.fn();
     await renderViewer({ wheelZoom: true, onScaleChange });
     const viewport = screen.getByRole('group', { name: 'Document' });
@@ -125,7 +125,7 @@ describe('opt-in features (M5)', () => {
     expect(onScaleChange.mock.calls[0]?.[0]).toBeGreaterThan(1);
   });
 
-  it('KI-21: the text layer exposes page text to assistive technology', async () => {
+  it('the text layer exposes page text to assistive technology', async () => {
     await renderViewer({ textLayer: true }, TEXT_PAGES);
     const page = screen.getByRole('group', { name: 'Page 1 of 3' });
     await waitFor(() =>
@@ -133,7 +133,7 @@ describe('opt-in features (M5)', () => {
     );
   });
 
-  it('KI-21: search highlights matches and steps through pages', async () => {
+  it('search highlights matches and steps through pages', async () => {
     const { user } = await renderViewer({ search: true }, TEXT_PAGES);
     await user.type(screen.getByRole('searchbox', { name: 'Search in document' }), 'beta');
     await waitFor(() => expect(screen.getByText('1 of 2')).toBeInTheDocument());
@@ -150,7 +150,7 @@ describe('opt-in features (M5)', () => {
     await waitFor(() => expect(document.querySelector('.textLayer .highlight')).toBeNull());
   });
 
-  it('KI-21: link annotations open external links safely and navigate internal ones', async () => {
+  it('link annotations open external links safely and navigate internal ones', async () => {
     const pages: MockPageSpec[] = [
       {
         ...LETTER,
@@ -169,7 +169,7 @@ describe('opt-in features (M5)', () => {
     expect(await screen.findByRole('img', { name: 'Page 2 of 2' })).toBeInTheDocument();
   });
 
-  it('KI-23: password prompt asks again after a wrong password', async () => {
+  it('password prompt asks again after a wrong password', async () => {
     const mock = installMockPdfjs({ autoResolveRender: true });
     const user = userEvent.setup();
     render(<PdfViewer source={BYTES} passwordPrompt />);
@@ -191,7 +191,7 @@ describe('opt-in features (M5)', () => {
     expect(await screen.findByRole('img', { name: 'Page 1 of 3' })).toBeInTheDocument();
   });
 
-  it('KI-24: continuous layout reserves every page but renders only a few', async () => {
+  it('continuous layout reserves every page but renders only a few', async () => {
     const { user, container } = await renderViewer({ layout: 'continuous' }, [
       ...Array.from({ length: 10 }, () => ({ ...LETTER })),
     ]);
@@ -202,7 +202,7 @@ describe('opt-in features (M5)', () => {
     expect(await screen.findByRole('img', { name: 'Page 3 of 10' })).toBeInTheDocument();
   });
 
-  it('KI-24: thumbnails navigate and mark the current page', async () => {
+  it('thumbnails navigate and mark the current page', async () => {
     const { user } = await renderViewer({ thumbnails: true });
     const nav = screen.getByRole('navigation', { name: 'Pages' });
     const third = within(nav).getByRole('button', { name: 'Page 3 of 3' });
@@ -211,7 +211,7 @@ describe('opt-in features (M5)', () => {
     expect(await screen.findByRole('img', { name: 'Page 3 of 3' })).toBeInTheDocument();
   });
 
-  it('KI-22: Shift + arrows are left to text selection', async () => {
+  it('Shift + arrows are left to text selection', async () => {
     const { user } = await renderViewer({ textLayer: true }, TEXT_PAGES);
     screen.getByRole('group', { name: 'Document' }).focus();
     await user.keyboard('{Shift>}{ArrowRight}{/Shift}');

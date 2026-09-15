@@ -47,20 +47,20 @@ describe('PdfPageCanvas', () => {
     expect(container.querySelector('canvas')?.width).toBe(918);
   });
 
-  it('E-06: clamps the rendered page to the document', async () => {
+  it('clamps the rendered page to the document', async () => {
     const { proxy, document } = createMockDocument();
     render(<PdfPageCanvas document={proxy} page={99} />);
     await waitFor(() => expect(document.getPage).toHaveBeenCalledWith(3));
   });
 
-  it('E-08 / KI-03: adds the user rotation to the page’s intrinsic rotation', async () => {
+  it('adds the user rotation to the page’s intrinsic rotation', async () => {
     const { proxy, renderTasks } = createMockDocument({ pages: [{ ...LETTER, rotate: 90 }] });
     render(<PdfPageCanvas document={proxy} page={1} rotation={90} />);
     await waitFor(() => expect(renderTasks).toHaveLength(1));
     expect(viewportOf(renderTasks[0])).toMatchObject({ rotation: 180, width: 612, height: 792 });
   });
 
-  it('E-09 / KI-04: renders a HiDPI backing store with a matching transform', async () => {
+  it('renders a HiDPI backing store with a matching transform', async () => {
     setDevicePixelRatio(2);
     const { proxy, renderTasks } = createMockDocument();
     const { container } = render(<PdfPageCanvas document={proxy} page={1} />);
@@ -72,7 +72,7 @@ describe('PdfPageCanvas', () => {
     expect(container.querySelector<HTMLElement>('.rpv-page')?.style.width).toBe('612px');
   });
 
-  it('KI-04: re-renders when the device pixel ratio changes', async () => {
+  it('re-renders when the device pixel ratio changes', async () => {
     const listeners = new Set<() => void>();
     vi.stubGlobal(
       'matchMedia',
@@ -92,7 +92,7 @@ describe('PdfPageCanvas', () => {
     expect(renderTasks).toHaveLength(2);
   });
 
-  it('KI-26: caps the canvas at maxCanvasPixels while keeping the CSS size', async () => {
+  it('caps the canvas at maxCanvasPixels while keeping the CSS size', async () => {
     setDevicePixelRatio(2);
     const { proxy, renderTasks } = createMockDocument();
     const { container } = render(
@@ -105,7 +105,7 @@ describe('PdfPageCanvas', () => {
     expect(container.querySelector<HTMLElement>('.rpv-page')?.style.width).toBe('612px');
   });
 
-  it('KI-02: ten rapid zoom changes produce exactly one completed render and no errors', async () => {
+  it('ten rapid zoom changes produce exactly one completed render and no errors', async () => {
     const { proxy, renderTasks } = createMockDocument();
     const onRender = vi.fn();
     const onError = vi.fn();
@@ -155,7 +155,7 @@ describe('PdfPageCanvas', () => {
     expect(first?.width).toBe(0); // backing store released
   });
 
-  it('KI-07: cleans up the previously displayed page after navigating', async () => {
+  it('cleans up the previously displayed page after navigating', async () => {
     const { proxy, document } = createMockDocument({ autoResolveRender: true });
     const { rerender } = render(<PdfPageCanvas document={proxy} page={1} />);
     await waitFor(() => expect(document.pages[0]?.render).toHaveBeenCalled());
@@ -164,7 +164,7 @@ describe('PdfPageCanvas', () => {
     expect(document.pages[1]?.cleanup).not.toHaveBeenCalled();
   });
 
-  it('KI-15: fits the page into the available width without enlarging it', async () => {
+  it('fits the page into the available width without enlarging it', async () => {
     const { proxy, renderTasks } = createMockDocument({ autoResolveRender: true });
     const onRender = vi.fn();
     const { rerender } = render(
@@ -180,7 +180,7 @@ describe('PdfPageCanvas', () => {
     expect(viewportOf(renderTasks[0]).width).toBe(306);
   });
 
-  it('KI-09: shows a render failure in place of the page and can retry', async () => {
+  it('shows a render failure in place of the page and can retry', async () => {
     const { proxy, renderTasks } = createMockDocument();
     const onError = vi.fn();
     render(

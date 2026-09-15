@@ -18,7 +18,7 @@ import {
 import { ToolbarButton } from './ToolbarButton.js';
 import { ToolbarMenu, type ToolbarMenuItem } from './ToolbarMenu.js';
 
-/** Every toolbar action, in the original order. */
+/** Every toolbar action, in display order. */
 export const DEFAULT_TOOLBAR_ACTIONS: readonly ToolbarAction[] = [
   'zoomOut',
   'zoomLevel',
@@ -32,7 +32,7 @@ export const DEFAULT_TOOLBAR_ACTIONS: readonly ToolbarAction[] = [
   'print',
 ];
 
-/** Actions hidden in compact, non-fullscreen mode by default (original behavior). */
+/** Actions hidden in compact, non-fullscreen mode by default. */
 export const DEFAULT_HIDDEN_WHEN_COMPACT: readonly ToolbarAction[] = ['rotate', 'print'];
 
 const GROUPS: readonly (readonly ToolbarAction[])[] = [
@@ -76,7 +76,7 @@ function widthHost(toolbar: HTMLElement): HTMLElement | null {
 }
 
 /**
- * Width the toolbar may use. Like the original, it may overhang its container by its own side
+ * Width the toolbar may use. It may overhang its container by its own side
  * padding (it stays centred), but never the screen.
  */
 function availableWidth(toolbar: HTMLElement): number {

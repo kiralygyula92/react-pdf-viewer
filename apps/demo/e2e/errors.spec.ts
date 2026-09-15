@@ -4,7 +4,7 @@ import { toolbar } from './helpers';
 const BLOCKED = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
 
 test.describe('errors', () => {
-  test('U-12 / KI-09: a 404 shows the alert with Retry and keeps the toolbar', async ({ page }) => {
+  test('a 404 shows the alert with Retry and keeps the toolbar', async ({ page }) => {
     let requests = 0;
     page.on('request', (request) => {
       if (request.url().endsWith('/samples/missing.pdf')) requests += 1;
@@ -18,9 +18,9 @@ test.describe('errors', () => {
     await expect(page.getByRole('alert')).toBeVisible();
   });
 
-  test('E-02: a ProblemDetails 500 shows its detail', async ({ page }) => {
-    await page.goto('/#/parity?state=error');
-    await expect(page.getByRole('alert')).toHaveText('The report could not be generated.');
+  test('a ProblemDetails 500 shows its detail', async ({ page }) => {
+    await page.goto('/#/harness?state=error');
+    await expect(page.getByRole('alert')).toHaveText('The document could not be generated.');
   });
 
   test('a non-PDF response reports an invalid PDF', async ({ page }) => {
@@ -28,9 +28,7 @@ test.describe('errors', () => {
     await expect(page.getByRole('alert')).toContainText(/invalid pdf/i);
   });
 
-  test('KI-10: a CORS-blocked URL reports a network error with the CORS explainer', async ({
-    page,
-  }) => {
+  test('a CORS-blocked URL reports a network error with the CORS explainer', async ({ page }) => {
     // Playwright adds CORS headers to fulfilled mocks, so emulate the browser blocking the
     // request instead (fetch rejects exactly as for a CORS failure; works offline).
     await page.route(BLOCKED, (route) => route.abort('accessdenied'));

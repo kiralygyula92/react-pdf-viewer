@@ -3,7 +3,7 @@ import {
   type PdfViewerApi,
   type PdfViewerErrorCode,
   type Rotation,
-} from '@your-scope/react-pdf-viewer';
+} from '@kiralygyula92/react-pdf-viewer';
 import {
   useCallback,
   useEffect,
@@ -44,8 +44,8 @@ interface Options {
   containerWidth: number;
 }
 
-/** Library defaults: the original component's look and behavior. */
-const PARITY_DEFAULTS: Options = {
+/** The library defaults. */
+const LIBRARY_DEFAULTS: Options = {
   controlled: false,
   toolbarPosition: 'bottom',
   fullscreenMode: 'native',
@@ -98,7 +98,7 @@ export function Playground() {
     label: 'US Letter, 3 pages',
     url: INITIAL_SOURCE,
   });
-  const [options, setOptions] = useState(PARITY_DEFAULTS);
+  const [options, setOptions] = useState(LIBRARY_DEFAULTS);
   const [lastError, setLastError] = useState<PdfViewerErrorCode | undefined>();
   const { entries, log, clear } = useEventLog();
   const viewer = useRef<PdfViewerApi>(null);
@@ -226,7 +226,7 @@ export function Playground() {
                     set('toolbarPosition', event.target.value as Options['toolbarPosition'])
                   }
                 >
-                  <option value="bottom">Bottom (original)</option>
+                  <option value="bottom">Bottom (default)</option>
                   <option value="top">Top</option>
                 </select>
               )}
@@ -254,7 +254,7 @@ export function Playground() {
                   value={options.fitMode}
                   onChange={(event) => set('fitMode', event.target.value as Options['fitMode'])}
                 >
-                  <option value="none">None (shrink to width, original)</option>
+                  <option value="none">None (shrink to width, default)</option>
                   <option value="width">Fit width</option>
                   <option value="page">Fit page</option>
                 </select>
@@ -275,7 +275,7 @@ export function Playground() {
                   value={options.layout}
                   onChange={(event) => set('layout', event.target.value as Options['layout'])}
                 >
-                  <option value="single">Single page (original)</option>
+                  <option value="single">Single page (default)</option>
                   <option value="continuous">Continuous scroll</option>
                 </select>
               )}
@@ -320,13 +320,13 @@ export function Playground() {
                   onChange={(event) => set('printMode', event.target.value as Options['printMode'])}
                 >
                   <option value="render">Render (print dialog)</option>
-                  <option value="open-url">Open URL (original)</option>
+                  <option value="open-url">Open URL</option>
                 </select>
               )}
             </Field>
             <Field
               label={`Compact breakpoint: ${options.compactBreakpoint}px`}
-              hint="Compact mode follows the window width (original behavior). Raise the breakpoint above your window width to preview it."
+              hint="Compact mode follows the window width. Raise the breakpoint above your window width to preview it."
             >
               {(id) => (
                 <input
@@ -406,11 +406,11 @@ export function Playground() {
               type="button"
               className="demo-button"
               onClick={() => {
-                setOptions(PARITY_DEFAULTS);
+                setOptions(LIBRARY_DEFAULTS);
                 setFullscreen(false);
               }}
             >
-              Reset to parity defaults
+              Reset to library defaults
             </button>
           </div>
         </section>

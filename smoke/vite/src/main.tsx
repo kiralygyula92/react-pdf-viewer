@@ -3,9 +3,8 @@ import {
   PdfViewer,
   type PdfViewerApi,
   type PdfViewerError,
-} from '@your-scope/react-pdf-viewer';
-import { CustomPdfViewer } from '@your-scope/react-pdf-viewer/compat';
-import '@your-scope/react-pdf-viewer/styles.css';
+} from '@kiralygyula92/react-pdf-viewer';
+import '@kiralygyula92/react-pdf-viewer/styles.css';
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { StrictMode, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -23,7 +22,7 @@ function App() {
         fileName="sample.pdf"
         onError={(error: PdfViewerError) => console.error(error.code, error.message)}
       />
-      <CustomPdfViewer pdfUrl="" documentName="empty.pdf" />
+      <PdfViewer source="" aria-label="Empty viewer" />
     </>
   );
 }

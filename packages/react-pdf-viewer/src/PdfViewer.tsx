@@ -82,15 +82,15 @@ function revealWithin(scroller: HTMLElement, element: HTMLElement) {
 
 /**
  * A PDF viewer: one page at a time with a toolbar for zoom, navigation, fullscreen, rotation,
- * download and print. With default props it reproduces the original `CustomPdfViewer`; every
+ * download and print. Default props give a classic single-page layout; every
  * additional feature (text layer, links, continuous layout, thumbnails, search, …) is opt-in.
  *
  * @example
  * ```tsx
- * import { PdfViewer } from '@your-scope/react-pdf-viewer';
- * import '@your-scope/react-pdf-viewer/styles.css';
+ * import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+ * import '@kiralygyula92/react-pdf-viewer/styles.css';
  *
- * <PdfViewer source="/report.pdf" fileName="report.pdf" />
+ * <PdfViewer source="/files/document.pdf" fileName="document.pdf" />
  * ```
  */
 export const PdfViewer = forwardRef<PdfViewerApi, PdfViewerProps>(function PdfViewer(props, ref) {
@@ -231,7 +231,7 @@ export const PdfViewer = forwardRef<PdfViewerApi, PdfViewerProps>(function PdfVi
     onError: handleError,
   });
 
-  // A new source opens on `defaultPage`; an out-of-range page is clamped and reported (KI-08).
+  // A new source opens on `defaultPage`; an out-of-range page is clamped and reported.
   const isPageControlled = pageProp !== undefined;
   const handledDocument = useRef<{
     document: PDFDocumentProxy;

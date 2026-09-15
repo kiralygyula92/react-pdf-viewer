@@ -24,7 +24,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 /**
- * The original viewer's message logic: RFC 7807 `detail`, then `title`, then a JSON string body,
+ * The default message logic: RFC 7807 `detail`, then `title`, then a JSON string body,
  * then `Failed to fetch PDF: {status} {statusText}`.
  */
 export async function defaultHttpErrorMessage(response: Response): Promise<string> {

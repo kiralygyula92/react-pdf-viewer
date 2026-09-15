@@ -426,17 +426,6 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
   const { id } = await params;
   return <PdfViewer source={'/api/reports/' + id + '.pdf'} />;
 }`,
-  compat: `
-import { CustomPdfViewer } from '${PKG}/compat';
-import '${PKG}/styles.css';
-
-<CustomPdfViewer
-  {...pdfViewerProps}
-  onUnauthorized={() => {
-    useAuthStore.getState().purgeStoreData();
-    window.location.replace('/auth/sign-in');
-  }}
-/>`,
 };
 
 // ── Sections ────────────────────────────────────────────────────────────────
@@ -449,10 +438,10 @@ function Overview() {
   return (
     <>
       <p>
-        An accessible, themeable React PDF viewer built on PDF.js (<code>pdfjs-dist</code>). With
-        default props it reproduces the original <code>CustomPdfViewer</code> exactly: toolbar below
-        the page, one page at a time, 5% zoom steps between 25% and 500%. Everything beyond that is
-        opt-in and marked <span className="demo-pill">opt-in</span> in this reference.
+        An accessible, themeable React PDF viewer built on PDF.js (<code>pdfjs-dist</code>). Default
+        props give a classic, focused layout: toolbar below the page, one page at a time, 5% zoom
+        steps between 25% and 500%. Everything beyond that is opt-in and marked{' '}
+        <span className="demo-pill">opt-in</span> in this reference.
       </p>
       <ul className="demo-docs__cards">
         <li>
@@ -523,7 +512,7 @@ function QuickStart() {
         <SectionLink to="pdfjs">self-host them</SectionLink>.
       </p>
       <h3>Turning on the extras</h3>
-      <p>Each feature beyond the original viewer is a single prop:</p>
+      <p>Each feature beyond the default layout is a single prop:</p>
       <Code>{SAMPLE.extras}</Code>
     </>
   );
@@ -662,9 +651,9 @@ function ControlledState() {
       <h3>Fullscreen</h3>
       <p>
         Passing <code>fullscreen</code> selects <code>fullscreenMode=&quot;controlled&quot;</code>:
-        the viewer switches to its fullscreen layout and you present it (the original behaviour,
-        e.g. inside a dialog). Choose <code>native</code> (Fullscreen API) or <code>overlay</code>{' '}
-        (a fixed layer with a focus trap) to let the viewer present it.
+        the viewer switches to its fullscreen layout and you present it (for example inside your own
+        dialog). Choose <code>native</code> (Fullscreen API) or <code>overlay</code> (a fixed layer
+        with a focus trap) to let the viewer present it.
       </p>
       <Code>{SAMPLE.fullscreen}</Code>
     </>
@@ -858,7 +847,7 @@ function Ssr() {
   return (
     <>
       <p>
-        Both entry points start with <code>&apos;use client&apos;</code> and touch no browser
+        The entry point starts with <code>&apos;use client&apos;</code> and touches no browser
         globals at import time, so they can be imported from Server Component files and rendered on
         the server; the server output is the loading state. PDF.js itself loads lazily in the
         browser. Call <code>configurePdfJs</code> from a client module.
@@ -886,38 +875,6 @@ function Security() {
       </li>
       <li>Binary sources are read locally and never uploaded.</li>
     </ul>
-  );
-}
-
-function Compat({ query }: SectionProps) {
-  return (
-    <>
-      <p>
-        The <code>/compat</code> entry exports a drop-in <code>CustomPdfViewer</code> with the
-        original props. The one host coupling of the original, the hard-coded 401 redirect, becomes
-        the <code>onUnauthorized</code> callback.
-      </p>
-      <Code>{SAMPLE.compat}</Code>
-      <RefTable id="compat" query={query} title="CustomPdfViewer props" nameHeader="Prop" />
-      <h3>What changes (all fixes)</h3>
-      <ul className="demo-list">
-        <li>Renders are cancellable and sharp on HiDPI screens.</li>
-        <li>Pages with an intrinsic rotation display upright.</li>
-        <li>Errors keep the toolbar and offer Retry.</li>
-        <li>Download reuses the loaded bytes instead of fetching again.</li>
-        <li>Print opens the print dialog instead of a new tab.</li>
-        <li>The fullscreen icon reflects the state.</li>
-        <li>
-          Narrow toolbars collapse actions into a &quot;More actions&quot; menu instead of clipping
-          them.
-        </li>
-        <li>In fullscreen the document area shrinks so the toolbar is always on screen.</li>
-      </ul>
-      <p>
-        To match the host theme, set <code>--rpv-toolbar-bg</code> and <code>--rpv-accent</code> on
-        a wrapper element.
-      </p>
-    </>
   );
 }
 
@@ -1013,13 +970,6 @@ const SECTIONS: readonly SectionSpec[] = [
   { id: 'exports', title: 'All exports', group: 'Advanced', tables: ['exports'], Body: Exports },
   { id: 'ssr', title: 'SSR and Next.js', group: 'Advanced', tables: [], Body: Ssr },
   { id: 'security', title: 'Security', group: 'Advanced', tables: [], Body: Security },
-  {
-    id: 'compat',
-    title: 'Migrating from CustomPdfViewer',
-    group: 'Advanced',
-    tables: ['compat'],
-    Body: Compat,
-  },
 ];
 
 const NAV_GROUPS = ['Getting started', 'Reference', 'Advanced'] as const;
@@ -1139,8 +1089,7 @@ export function Docs() {
         <h1 className="demo-title">Documentation</h1>
         <p className="demo-docs__lead">
           How to install, configure and extend <code>{PKG}</code>: guides, every prop, the
-          imperative API, labels, CSS variables and the headless building blocks. The package name
-          is a placeholder until the owner publishes it.
+          imperative API, labels, CSS variables and the headless building blocks. MIT licensed.
         </p>
         {query && total === 0 && (
           <p className="demo-callout">Nothing in the reference matches “{filter.trim()}”.</p>

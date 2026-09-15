@@ -14,7 +14,7 @@
     "e2e:visual:update": "bash scripts/visual.sh --update-snapshots"
   },
   "dependencies": {
-    "@your-scope/react-pdf-viewer": "workspace:*",
+    "@kiralygyula92/react-pdf-viewer": "workspace:*",
     "pdfjs-dist": "^6.3.289",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"

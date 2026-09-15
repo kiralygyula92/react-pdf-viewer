@@ -27,7 +27,7 @@ describe('accessibility (axe-core)', () => {
     { name: 'compact fullscreen', compact: true, fullscreen: true },
   ];
 
-  it.each(modes)('KI-22: no violations — $name', async ({ compact, fullscreen }) => {
+  it.each(modes)('no violations — $name', async ({ compact, fullscreen }) => {
     installMockPdfjs({ autoResolveDocument: true, autoResolveRender: true });
     stubMatchMedia(compact);
     const { container } = render(<PdfViewer source={BYTES} fullscreen={fullscreen} />);
@@ -35,7 +35,7 @@ describe('accessibility (axe-core)', () => {
     expect(await violations(container)).toEqual([]);
   });
 
-  it('KI-22: no violations while loading, on error and when empty', async () => {
+  it('no violations while loading, on error and when empty', async () => {
     installMockPdfjs();
     const loading = render(<PdfViewer source={BYTES} />);
     expect(await violations(loading.container)).toEqual([]);

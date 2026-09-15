@@ -14,7 +14,6 @@ export default defineConfig({
     lib: {
       entry: {
         index: fromRoot('./src/index.ts'),
-        compat: fromRoot('./src/compat.ts'),
       },
       formats: ['es'],
       cssFileName: 'styles',

@@ -1,4 +1,4 @@
-import { PdfViewer, type PdfViewerError } from '@your-scope/react-pdf-viewer';
+import { PdfViewer, type PdfViewerError } from '@kiralygyula92/react-pdf-viewer';
 import { useId, useState } from 'react';
 import { REMOTE_PRESETS, sampleUrl } from '../samples';
 

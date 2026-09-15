@@ -7,7 +7,7 @@ const orientation = async (page: Page) => {
 };
 
 test.describe('rotation', () => {
-  test('U-07: rotate cycles 0 → 90 → 180 → 270 → 0', async ({ page }) => {
+  test('rotate cycles 0 → 90 → 180 → 270 → 0', async ({ page }) => {
     await openView(page, { src: '/samples/letter-3pages.pdf' });
     expect(await orientation(page)).toBe('portrait');
     const expected = ['landscape', 'portrait', 'landscape', 'portrait'];
@@ -18,7 +18,7 @@ test.describe('rotation', () => {
     }
   });
 
-  test('E-08 / KI-03: a page with /Rotate 90 displays in landscape', async ({ page }) => {
+  test('a page with /Rotate 90 displays in landscape', async ({ page }) => {
     await openView(page, { src: '/samples/intrinsic-rotation.pdf', page: '2' });
     await expect.poll(() => orientation(page)).toBe('landscape');
     // The user rotation is added to the intrinsic one.

@@ -7,8 +7,8 @@ export interface LabelContext {
 }
 
 /**
- * Every user-visible string and accessible name. Defaults are the original component's English
- * strings; override any subset through the `labels` prop.
+ * Every user-visible string and accessible name. Defaults are English; override any subset
+ * through the `labels` prop.
  */
 export interface PdfViewerLabels {
   /** Accessible name of the viewer region. */
@@ -60,7 +60,7 @@ export interface PdfViewerLabels {
   searchNoResults: string;
 }
 
-/** English defaults, identical to the original component's strings. */
+/** The English defaults. */
 export const defaultLabels: PdfViewerLabels = {
   viewer: 'PDF viewer',
   toolbar: 'PDF controls',

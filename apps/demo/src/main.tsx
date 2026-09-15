@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import '@your-scope/react-pdf-viewer/styles.css';
+import '@kiralygyula92/react-pdf-viewer/styles.css';
 import './pdfjs';
 import './styles.css';
 import { App } from './App';

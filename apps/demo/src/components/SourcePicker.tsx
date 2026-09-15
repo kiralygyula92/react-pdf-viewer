@@ -1,4 +1,4 @@
-import type { PdfSource, PdfViewerErrorCode } from '@your-scope/react-pdf-viewer';
+import type { PdfSource, PdfViewerErrorCode } from '@kiralygyula92/react-pdf-viewer';
 import { useId, useState, type FormEvent } from 'react';
 import { href } from '../router';
 import { REMOTE_PRESETS, sampleUrl, useSamples } from '../samples';

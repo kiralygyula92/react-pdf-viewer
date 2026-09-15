@@ -3,9 +3,7 @@ import { expect, test } from '@playwright/test';
 import { button, countRequests, openView } from './helpers';
 
 test.describe('download', () => {
-  test('U-10 / KI-11: saves the loaded bytes under the derived name, without refetching', async ({
-    page,
-  }) => {
+  test('saves the loaded bytes under the derived name, without refetching', async ({ page }) => {
     const requests = countRequests(page, 'letter-3pages.pdf');
     await openView(page, { src: '/samples/letter-3pages.pdf' });
     const downloading = page.waitForEvent('download');

@@ -1,6 +1,6 @@
 'use client';
 
-import { configurePdfJs, PdfViewer } from '@your-scope/react-pdf-viewer';
+import { configurePdfJs, PdfViewer } from '@kiralygyula92/react-pdf-viewer';
 
 // The README's webpack / Next.js recipe: the bundler emits the worker as an asset.
 configurePdfJs({

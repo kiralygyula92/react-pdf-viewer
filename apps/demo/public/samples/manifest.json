@@ -3,7 +3,7 @@
     "file": "letter-3pages.pdf",
     "title": "US Letter, 3 pages",
     "pages": 3,
-    "notes": "Large page numbers on a grid. Navigation and parity screenshots."
+    "notes": "Large page numbers on a grid. Navigation and visual regression screenshots."
   },
   {
     "file": "multipage.pdf",
@@ -21,7 +21,7 @@
     "file": "intrinsic-rotation.pdf",
     "title": "Intrinsic page rotation",
     "pages": 3,
-    "notes": "Pages with /Rotate 90 and 180. Verifies KI-03."
+    "notes": "Pages with /Rotate 90 and 180."
   },
   {
     "file": "links.pdf",
@@ -33,13 +33,13 @@
     "file": "non-embedded-fonts.pdf",
     "title": "Standard 14 fonts (not embedded)",
     "pages": 1,
-    "notes": "Uses the standard 14 fonts without embedding. Verifies KI-20."
+    "notes": "Uses the standard 14 fonts without embedding."
   },
   {
     "file": "password.pdf",
     "title": "Password protected (password: demo)",
     "pages": 1,
-    "notes": "Encrypted; user password \"demo\". Password prompt (KI-23)."
+    "notes": "Encrypted; user password \"demo\". Password prompt."
   },
   {
     "file": "not-a-pdf.pdf",

@@ -16,11 +16,9 @@ function sourceFiles(dir: string): string[] {
 describe('package source', () => {
   const files = sourceFiles(SRC).map((path) => ({ path, text: readFileSync(path, 'utf8') }));
 
-  it('KI-18 / KI-25: contains no host-app coupling, UI kits, globals or script injection', () => {
+  it('contains no app-specific coupling, UI kits, globals or script injection', () => {
     const forbidden = [
-      /treatment-report/,
       /\/auth\/sign-in/,
-      /useAuthStore|purgeStoreData/,
       /window\.pdfjsLib/,
       /from ['"]@mui\//,
       /from ['"]@emotion\//,
@@ -33,7 +31,7 @@ describe('package source', () => {
     expect(hits).toEqual([]);
   });
 
-  it('KI-19: pdfjs-dist is only loaded through the lazy loader', () => {
+  it('pdfjs-dist is only loaded through the lazy loader', () => {
     const importers = files
       .filter(({ text }) =>
         /^import (?!type\b)[^;]*?from ['"]pdfjs-dist['"]|import\(['"]pdfjs-dist['"]\)/m.test(text),
@@ -43,8 +41,14 @@ describe('package source', () => {
     expect(importers).toEqual(['core/pdfjs.ts']);
   });
 
+  it('ships the repository license', () => {
+    const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
+    expect(read('../LICENSE')).toBe(read('../../../LICENSE'));
+    expect(read('../LICENSE')).toMatch(/^MIT License/);
+  });
+
   it('entry points start with the "use client" directive', () => {
-    for (const entry of ['index.ts', 'compat.ts']) {
+    for (const entry of ['index.ts']) {
       expect(readFileSync(join(SRC, entry), 'utf8').startsWith("'use client';")).toBe(true);
     }
   });

@@ -16,9 +16,9 @@ const ROUTES: [name: string, path: string, waitForRender: boolean][] = [
   ['standalone viewer', '/#/view?src=/samples/letter-3pages.pdf', true],
   ['standalone open form', '/#/view', false],
   ['docs', '/#/docs', false],
-  ['parity loading', '/#/parity?state=loading', false],
-  ['parity error', '/#/parity?state=error', false],
-  ['parity empty', '/#/parity?state=empty', false],
+  ['harness loading', '/#/harness?state=loading', false],
+  ['harness error', '/#/harness?state=error', false],
+  ['harness empty', '/#/harness?state=empty', false],
 ];
 
 test.describe('accessibility', () => {
@@ -49,9 +49,9 @@ test.describe('accessibility', () => {
     ['mobile', MOBILE],
   ] as const) {
     for (const mode of ['inline', 'fullscreen']) {
-      test(`M3: no violations — default viewer, ${device} ${mode}`, async ({ page }) => {
+      test(`no violations — default viewer, ${device} ${mode}`, async ({ page }) => {
         await page.setViewportSize(size);
-        await page.goto(`/#/parity?mode=${mode}`);
+        await page.goto(`/#/harness?mode=${mode}`);
         await rendered(page);
         expect(await violations(page)).toEqual([]);
       });

@@ -38,7 +38,7 @@ afterEach(() => {
 });
 
 describe('responsive toolbar', () => {
-  it('keeps the original single row when everything fits', async () => {
+  it('keeps a single row of buttons when everything fits', async () => {
     stubLayout(1000);
     const { toolbar } = await renderViewer();
     expect(within(toolbar).queryByRole('button', { name: 'More actions' })).toBeNull();

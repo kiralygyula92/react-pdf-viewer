@@ -1,4 +1,4 @@
-import { PdfViewer } from '@your-scope/react-pdf-viewer';
+import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
 import { useEffect, useState } from 'react';
 import { sampleUrl } from '../samples';
 

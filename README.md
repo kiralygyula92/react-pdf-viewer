@@ -1,25 +1,47 @@
 # react-pdf-viewer
 
-A React PDF viewer built on [PDF.js](https://github.com/mozilla/pdf.js), with a demo site.
-It is a clean-room re-implementation of an in-house `CustomPdfViewer`: with default props it
-looks and behaves like the original, with the original's defects fixed; everything else is
-opt-in.
+[![npm](https://img.shields.io/npm/v/@kiralygyula92/react-pdf-viewer)](https://www.npmjs.com/package/@kiralygyula92/react-pdf-viewer)
+[![CI](https://github.com/kiralygyula92/react-pdf-viewer/actions/workflows/ci.yml/badge.svg)](https://github.com/kiralygyula92/react-pdf-viewer/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-| Path                                                     | What it is                                                                                                                                               |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`packages/react-pdf-viewer`](packages/react-pdf-viewer) | The publishable library (`@your-scope/react-pdf-viewer`, placeholder name). **Consumer docs live in its [README](packages/react-pdf-viewer/README.md).** |
-| [`apps/demo`](apps/demo)                                 | Static demo: playground, deep-linkable viewer, examples, parity harness and the e2e / visual test bed.                                                   |
-| [`smoke`](smoke)                                         | Minimal Vite and Next.js apps that install the packed tarball (consumer smoke tests).                                                                    |
-| [`docs/handoff`](docs/handoff)                           | The specification this implementation follows.                                                                                                           |
+An accessible, themeable React PDF viewer built on [PDF.js](https://github.com/mozilla/pdf.js),
+published as [`@kiralygyula92/react-pdf-viewer`](packages/react-pdf-viewer), plus a demo site
+with a playground, examples and the full API documentation.
+
+```sh
+npm install @kiralygyula92/react-pdf-viewer pdfjs-dist
+```
+
+```tsx
+import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import '@kiralygyula92/react-pdf-viewer/styles.css';
+
+export function Document() {
+  return <PdfViewer source="/files/document.pdf" />;
+}
+```
+
+**Usage docs live in the [package README](packages/react-pdf-viewer/README.md)** and on the
+[demo site](https://kiralygyula92.github.io/react-pdf-viewer/#/docs).
+
+## Repository layout
+
+| Path                                                     | What it is                                                                                    |
+| -------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| [`packages/react-pdf-viewer`](packages/react-pdf-viewer) | The published library.                                                                        |
+| [`apps/demo`](apps/demo)                                 | Static demo: playground, deep-linkable viewer, examples, docs, and the e2e / visual test bed. |
+| [`smoke`](smoke)                                         | Minimal Vite and Next.js apps that install the packed tarball (consumer smoke tests).         |
+| [`scripts`](scripts)                                     | Repository tooling (consumer smoke runner).                                                   |
 
 ## Development
 
-Requires Node 20+ and pnpm (the version is pinned in `package.json`).
+Requires Node 20+ and pnpm (the version is pinned in `package.json`; `corepack enable` picks it up).
 
 ```sh
 pnpm install
-pnpm --filter demo dev        # demo at http://localhost:5173 (uses the built library)
-pnpm --filter @your-scope/react-pdf-viewer build --watch   # rebuild the library on change
+pnpm build                                                     # library, then demo
+pnpm --filter demo dev                                         # demo at http://localhost:5173
+pnpm --filter @kiralygyula92/react-pdf-viewer build --watch    # rebuild the library on change
 ```
 
 | Command                                | Does                                                                        |
@@ -30,23 +52,27 @@ pnpm --filter @your-scope/react-pdf-viewer build --watch   # rebuild the library
 | `pnpm build`                           | Library (ESM + `.d.ts` + `styles.css`) and demo                             |
 | `pnpm qa`                              | `publint`, `@arethetypeswrong/cli` and `size-limit` on the packed library   |
 | `pnpm e2e`                             | Playwright suites against the built demo (Chromium, Firefox, WebKit)        |
-| `pnpm --filter demo e2e:visual`        | Visual parity screenshots, inside the Playwright Linux container (Docker)   |
+| `pnpm --filter demo e2e:visual`        | Visual regression screenshots, inside the Playwright Linux container        |
 | `pnpm --filter demo e2e:visual:update` | Regenerate the visual baselines (review the diff before committing)         |
 | `pnpm smoke`                           | Pack the library and build fresh Vite and Next.js apps against the tarball  |
-| `pnpm --filter demo generate-samples`  | Regenerate the bundled sample PDFs (deterministic)                          |
+| `pnpm --filter demo generate-samples`  | Regenerate the bundled sample PDFs (deterministic, generated from scratch)  |
 
-Visual baselines are only ever rendered and compared in `mcr.microsoft.com/playwright`, locally
-through `apps/demo/scripts/visual.sh` and in the CI `visual` job, so they never differ by OS.
+Visual baselines are only rendered and compared in `mcr.microsoft.com/playwright` (locally through
+Docker via `apps/demo/scripts/visual.sh`, and in the CI `visual` job), so they never differ by OS.
 
-## Continuous integration
+## Continuous integration and releases
 
 - **CI** (`.github/workflows/ci.yml`): lint → typecheck → unit → build → package QA → e2e, plus
-  the visual job (Playwright container), React 18 unit tests and the consumer smoke tests.
-- **Deploy demo** (`.github/workflows/pages.yml`): builds the demo for `/<repository>/` and
-  publishes it to GitHub Pages on pushes to `main` (enable Pages in the repository settings).
+  the visual job, React 18 unit tests and the consumer smoke tests.
+- **Release** (`.github/workflows/release.yml`): on `main`, [Changesets](https://github.com/changesets/changesets)
+  opens a "Version Packages" pull request; merging it publishes to npm with provenance.
+- **Deploy demo** (`.github/workflows/pages.yml`): publishes the demo to GitHub Pages on pushes to
+  `main`.
 
-## Releasing
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and [RELEASING.md](RELEASING.md) for the
+one-time npm setup.
 
-Changes to the library come with a changeset (`pnpm changeset`). `pnpm version-packages` applies
-them (version bump and `CHANGELOG.md`). Publishing is done by the owner, after choosing the final
-package name and license.
+## License
+
+[MIT](LICENSE) © kiralygyula92. The bundled sample PDFs are generated by
+`apps/demo/scripts/generate-samples.ts` and are covered by the same license.

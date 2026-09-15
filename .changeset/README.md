@@ -1,6 +1,8 @@
 # Changesets
 
-Run `pnpm changeset` to record a change to a publishable package. Every change to the public API
-of `packages/react-pdf-viewer` needs a changeset in the same change (see `CLAUDE.md`).
+Run `pnpm changeset` to record a change to the published package. Every user-facing change to
+`packages/react-pdf-viewer` (features, fixes, public API) needs a changeset in the same pull
+request; see [CONTRIBUTING.md](../CONTRIBUTING.md).
 
-The owner runs `pnpm version-packages` and publishes. Agents never publish.
+On `main`, the Release workflow opens a "Version Packages" pull request that applies pending
+changesets (version bump and `CHANGELOG.md`). Merging it publishes to npm.

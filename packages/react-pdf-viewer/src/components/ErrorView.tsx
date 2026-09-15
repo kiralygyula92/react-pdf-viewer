@@ -4,7 +4,7 @@ interface ErrorViewProps {
   message: string;
   retryLabel: string;
   onRetry?: (() => void) | undefined;
-  /** `document` fills a 400px area (original look); `page` sits inside the page box. */
+  /** `document` fills a 400px area; `page` sits inside the page box. */
   variant?: 'document' | 'page' | undefined;
 }
 

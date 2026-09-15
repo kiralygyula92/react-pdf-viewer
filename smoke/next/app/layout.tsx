@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import '@your-scope/react-pdf-viewer/styles.css';
+import '@kiralygyula92/react-pdf-viewer/styles.css';
 
 export const metadata = { title: 'Next.js consumer smoke test' };
 

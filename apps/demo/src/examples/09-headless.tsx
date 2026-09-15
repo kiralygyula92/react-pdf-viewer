@@ -1,4 +1,4 @@
-import { PdfPageCanvas, usePdfDocument } from '@your-scope/react-pdf-viewer';
+import { PdfPageCanvas, usePdfDocument } from '@kiralygyula92/react-pdf-viewer';
 import { useState } from 'react';
 import { sampleUrl } from '../samples';
 

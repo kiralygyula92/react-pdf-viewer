@@ -1,4 +1,4 @@
-/** Indeterminate circular spinner (MUI `CircularProgress` look). */
+/** Indeterminate circular spinner. */
 export function Spinner() {
   return (
     <span className="rpv-spinner" aria-hidden="true">

@@ -34,8 +34,8 @@ const button = (name: string | RegExp) => within(toolbar()).getByRole('button', 
 const pageLabel = () => toolbar().querySelector('.rpv-toolbar__pages')?.textContent;
 const zoomLabel = () => toolbar().querySelector('.rpv-toolbar__zoom')?.textContent;
 
-describe('PdfViewer — parity UI', () => {
-  it('U-01 / U-02 / U-03: the toolbar sits below the page with the original controls and labels', async () => {
+describe('PdfViewer — default UI', () => {
+  it('the toolbar sits below the page with the default controls and labels', async () => {
     await renderViewer();
     const viewport = screen.getByRole('group', { name: 'Document' });
     expect(
@@ -61,7 +61,7 @@ describe('PdfViewer — parity UI', () => {
     expect(groups).toHaveLength(3);
   });
 
-  it('U-04 / U-05 / KI-16: zoom steps by 5%, labels round, and buttons disable at the bounds', async () => {
+  it('zoom steps by 5%, labels round, and buttons disable at the bounds', async () => {
     const onScaleChange = vi.fn();
     const { user } = await renderViewer({ onScaleChange });
     for (let i = 0; i < 10; i++) await user.click(button('Zoom in'));
@@ -76,7 +76,7 @@ describe('PdfViewer — parity UI', () => {
     expect(second.getByRole('button', { name: 'Zoom out' })).toBeEnabled();
   });
 
-  it('U-06: page navigation is disabled at the ends', async () => {
+  it('page navigation is disabled at the ends', async () => {
     const onPageChange = vi.fn();
     const { user } = await renderViewer({ onPageChange });
     expect(button('Previous page')).toBeDisabled();
@@ -88,7 +88,7 @@ describe('PdfViewer — parity UI', () => {
     expect(screen.getByRole('img', { name: 'Page 3 of 3' })).toBeInTheDocument();
   });
 
-  it('E-04: an empty source shows 0 / 0 with navigation disabled and no spinner', () => {
+  it('an empty source shows 0 / 0 with navigation disabled and no spinner', () => {
     render(<PdfViewer source="" />);
     expect(pageLabel()).toBe('0 / 0');
     expect(button('Previous page')).toBeDisabled();
@@ -97,14 +97,14 @@ describe('PdfViewer — parity UI', () => {
     expect(screen.getByText('No document')).toHaveClass('rpv-sr-only');
   });
 
-  it('U-07: rotate cycles 0 → 90 → 180 → 270 → 0', async () => {
+  it('rotate cycles 0 → 90 → 180 → 270 → 0', async () => {
     const onRotationChange = vi.fn();
     const { user } = await renderViewer({ onRotationChange });
     for (let i = 0; i < 4; i++) await user.click(button('Rotate PDF'));
     expect(onRotationChange.mock.calls).toEqual([[90], [180], [270], [0]]);
   });
 
-  it('U-08 / KI-13: the fullscreen button toggles its label and icon', async () => {
+  it('the fullscreen button toggles its label and icon', async () => {
     const onFullscreenChange = vi.fn();
     const { user, container } = await renderViewer({
       fullscreenMode: 'controlled',
@@ -118,7 +118,7 @@ describe('PdfViewer — parity UI', () => {
     expect(container.querySelector('.rpv-root')).toHaveAttribute('data-fullscreen');
   });
 
-  it('U-09: rotate and print are hidden in compact mode unless fullscreen', async () => {
+  it('rotate and print are hidden in compact mode unless fullscreen', async () => {
     stubMatchMedia(true);
     const { rerender } = await renderViewer({ fullscreen: false });
     expect(within(toolbar()).queryByRole('button', { name: 'Rotate PDF' })).toBeNull();
@@ -129,7 +129,7 @@ describe('PdfViewer — parity UI', () => {
     expect(button('Print PDF')).toBeInTheDocument();
   });
 
-  it('U-11 / U-13: loading shows the spinner and text, keeps the toolbar, and zoom/rotate work', async () => {
+  it('loading shows the spinner and text, keeps the toolbar, and zoom/rotate work', async () => {
     mock = installMockPdfjs({ autoResolveRender: true });
     const onScaleChange = vi.fn();
     const onRotationChange = vi.fn();
@@ -151,7 +151,7 @@ describe('PdfViewer — parity UI', () => {
     expect(onRotationChange).toHaveBeenCalledWith(90);
   });
 
-  it('U-12 / KI-09: errors show the alert with Retry and keep the toolbar', async () => {
+  it('errors show the alert with Retry and keep the toolbar', async () => {
     const onError = vi.fn();
     const fetcher = vi.fn(() =>
       Promise.resolve(new Response(JSON.stringify({ detail: 'Report expired' }), { status: 410 })),
@@ -169,7 +169,7 @@ describe('PdfViewer — parity UI', () => {
     await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
   });
 
-  it('E-03: a handled 401 shows the empty state without an error', async () => {
+  it('a handled 401 shows the empty state without an error', async () => {
     const onError = vi.fn();
     const onHttpError = vi.fn((response: Response) => response.status === 401);
     render(
@@ -187,8 +187,8 @@ describe('PdfViewer — parity UI', () => {
   });
 });
 
-describe('PdfViewer — page state (KI-05 / KI-08 / E-10)', () => {
-  it('E-10 / KI-08: an out-of-range controlled page is clamped and reported once', async () => {
+describe('PdfViewer — page state', () => {
+  it('an out-of-range controlled page is clamped and reported once', async () => {
     const onPageChange = vi.fn();
     render(<PdfViewer source={BYTES} page={5} onPageChange={onPageChange} />);
     await screen.findByRole('img', { name: 'Page 3 of 3' });
@@ -196,14 +196,14 @@ describe('PdfViewer — page state (KI-05 / KI-08 / E-10)', () => {
     expect(onPageChange.mock.calls).toEqual([[3]]);
   });
 
-  it('E-10: a valid controlled page is kept and not re-reported', async () => {
+  it('a valid controlled page is kept and not re-reported', async () => {
     const onPageChange = vi.fn();
     render(<PdfViewer source={BYTES} page={2} onPageChange={onPageChange} />);
     await screen.findByRole('img', { name: 'Page 2 of 3' });
     expect(onPageChange).not.toHaveBeenCalled();
   });
 
-  it('KI-08: an uncontrolled viewer opens a new source on defaultPage', async () => {
+  it('an uncontrolled viewer opens a new source on defaultPage', async () => {
     const { user, rerender } = await renderViewer();
     await user.click(button('Next page'));
     await user.click(button('Next page'));
@@ -213,7 +213,7 @@ describe('PdfViewer — page state (KI-05 / KI-08 / E-10)', () => {
     expect(pageLabel()).toBe('1 / 3');
   });
 
-  it('KI-05: works without any state props', async () => {
+  it('works without any state props', async () => {
     const { user } = await renderViewer();
     await user.click(button('Next page'));
     await user.click(button('Zoom in'));
@@ -265,7 +265,7 @@ describe('PdfViewer — extension points', () => {
     ).toBeTruthy();
   });
 
-  it('KI-27: labels and locale are applied', async () => {
+  it('labels and locale are applied', async () => {
     await renderViewer(
       {
         labels: { zoomIn: 'Nagyítás', pageAriaLabel: (page, total) => `${page}. oldal / ${total}` },
@@ -290,7 +290,7 @@ describe('PdfViewer — extension points', () => {
 });
 
 describe('PdfViewer — default-on fixes', () => {
-  it('KI-15: at the default scale the page shrinks to the available width; zoomed it does not', async () => {
+  it('at the default scale the page shrinks to the available width; zoomed it does not', async () => {
     stubResizeObserver(306, 700);
     const onPageRender = vi.fn();
     const { user } = await renderViewer({ onPageRender });
@@ -304,7 +304,7 @@ describe('PdfViewer — default-on fixes', () => {
     );
   });
 
-  it('U-10 / KI-11: download saves the loaded bytes under the file name without refetching', async () => {
+  it('download saves the loaded bytes under the file name without refetching', async () => {
     const clicked = stubDownloads();
     const fetcher = vi.fn(() => Promise.resolve(new Response(BYTES)));
     const { user } = await renderViewer({ source: '/files/report.pdf', fetcher });
@@ -315,7 +315,7 @@ describe('PdfViewer — default-on fixes', () => {
     expect(mock.lastTask().handle.document.getData).toHaveBeenCalled();
   });
 
-  it('KI-11: fileName wins, onDownload can intercept, failures report DOWNLOAD_FAILED', async () => {
+  it('fileName wins, onDownload can intercept, failures report DOWNLOAD_FAILED', async () => {
     const clicked = stubDownloads();
     const onDownload = vi.fn(() => false as const);
     const onError = vi.fn();
@@ -337,7 +337,7 @@ describe('PdfViewer — default-on fixes', () => {
     );
   });
 
-  it('KI-12: prints every page through a hidden iframe', async () => {
+  it('prints every page through a hidden iframe', async () => {
     const { frameWindow, frameDocument } = stubPrintFrame();
     const onPrint = vi.fn();
     const { user } = await renderViewer({ onPrint });
@@ -351,7 +351,7 @@ describe('PdfViewer — default-on fixes', () => {
     await waitFor(() => expect(document.querySelector('iframe.rpv-print-frame')).toBeNull());
   });
 
-  it('KI-12: onPrint can cancel; printMode "open-url" opens the document instead', async () => {
+  it('onPrint can cancel; printMode "open-url" opens the document instead', async () => {
     const { frameWindow } = stubPrintFrame();
     const open = vi.spyOn(window, 'open').mockReturnValue(null);
     const { user, rerender } = await renderViewer({ onPrint: () => false });
@@ -365,7 +365,7 @@ describe('PdfViewer — default-on fixes', () => {
     );
   });
 
-  it('KI-13: native mode falls back to an overlay without reloading the document', async () => {
+  it('native mode falls back to an overlay without reloading the document', async () => {
     const onFullscreenChange = vi.fn();
     const { user } = await renderViewer({ onFullscreenChange });
     await user.click(button('Enter fullscreen'));
@@ -378,7 +378,7 @@ describe('PdfViewer — default-on fixes', () => {
     expect(mock.getDocument).toHaveBeenCalledTimes(1);
   });
 
-  it('KI-13: native mode uses the Fullscreen API and follows the browser leaving it', async () => {
+  it('native mode uses the Fullscreen API and follows the browser leaving it', async () => {
     // jsdom has no Fullscreen API; install a minimal one for this test.
     let fullscreenElement: Element | null = null;
     Object.defineProperty(document, 'fullscreenEnabled', { configurable: true, get: () => true });
@@ -415,7 +415,7 @@ describe('PdfViewer — default-on fixes', () => {
     expect(onFullscreenChange.mock.calls).toEqual([[true], [false]]);
   });
 
-  it('KI-22: keyboard shortcuts work while focus is inside the viewer', async () => {
+  it('keyboard shortcuts work while focus is inside the viewer', async () => {
     const onFullscreenChange = vi.fn();
     const onRotationChange = vi.fn();
     const { user } = await renderViewer({
@@ -444,14 +444,14 @@ describe('PdfViewer — default-on fixes', () => {
     expect(onFullscreenChange).toHaveBeenCalledWith(true);
   });
 
-  it('KI-22: shortcuts can be disabled and never fire from text fields', async () => {
+  it('shortcuts can be disabled and never fire from text fields', async () => {
     const { user } = await renderViewer({ keyboardShortcuts: false });
     screen.getByRole('group', { name: 'Document' }).focus();
     await user.keyboard('{ArrowRight}');
     expect(pageLabel()).toBe('1 / 3');
   });
 
-  it('KI-22: the toolbar is one tab stop with arrow-key navigation', async () => {
+  it('the toolbar is one tab stop with arrow-key navigation', async () => {
     const { user } = await renderViewer();
     const tabbable = within(toolbar())
       .getAllByRole('button')
@@ -469,7 +469,7 @@ describe('PdfViewer — default-on fixes', () => {
     expect(pageLabel()).toBe('1 / 3');
   });
 
-  it('KI-22: accessible structure', async () => {
+  it('accessible structure', async () => {
     await renderViewer();
     expect(screen.getByRole('region', { name: 'PDF viewer' })).toBeInTheDocument();
     expect(toolbar().querySelector('.rpv-toolbar__pages')).toHaveAttribute('aria-live', 'polite');

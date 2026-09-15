@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Runs the visual parity suite inside the Playwright Linux image, the same renderer CI uses, so
+# Runs the visual regression suite inside the Playwright Linux image, the same renderer CI uses, so
 # baselines never compare across operating systems.
 #
 #   pnpm --filter demo e2e:visual          # compare against the committed baselines

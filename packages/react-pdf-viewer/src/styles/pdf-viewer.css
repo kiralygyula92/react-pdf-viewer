@@ -1,10 +1,10 @@
 /*
- * @your-scope/react-pdf-viewer styles.
+ * @kiralygyula92/react-pdf-viewer styles.
  *
  * Everything lives in the `rpv` cascade layer, so any unlayered consumer rule wins without
  * specificity fights. Theme with the `--rpv-*` custom properties (see the README); they are read
  * with fallbacks rather than declared on `.rpv-root`, so values set on any ancestor apply.
- * Defaults reproduce the original component.
+ * Every value is a CSS custom property with a fallback, so applications can theme it.
  */
 @layer rpv {
   /* ── Root ─────────────────────────────────────────────────────────────── */

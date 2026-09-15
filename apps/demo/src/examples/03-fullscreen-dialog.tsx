@@ -1,11 +1,11 @@
-import { PdfViewer } from '@your-scope/react-pdf-viewer';
+import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
 import { useEffect, useState } from 'react';
 import { sampleUrl } from '../samples';
 
 export const meta = {
-  title: '3. Original-style fullscreen dialog',
+  title: '3. Fullscreen in your own dialog',
   description:
-    'fullscreenMode="controlled": the parent presents fullscreen as a fixed overlay, like the original host app. The viewer stays mounted, so the document is not reloaded.',
+    'fullscreenMode="controlled": the parent presents fullscreen as a fixed overlay. The viewer stays mounted, so the document is not reloaded.',
 };
 
 export default function FullscreenDialogExample() {
@@ -26,7 +26,7 @@ export default function FullscreenDialogExample() {
       className={fullscreen ? 'demo-dialog' : undefined}
       role={fullscreen ? 'dialog' : undefined}
       aria-modal={fullscreen || undefined}
-      aria-label={fullscreen ? 'Report' : undefined}
+      aria-label={fullscreen ? 'Document' : undefined}
     >
       <PdfViewer
         source={sampleUrl('letter-3pages.pdf')}

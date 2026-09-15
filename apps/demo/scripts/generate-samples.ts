@@ -164,7 +164,7 @@ async function letterThreePages() {
   await save(
     doc,
     'letter-3pages.pdf',
-    'Large page numbers on a grid. Navigation and parity screenshots.',
+    'Large page numbers on a grid. Navigation and visual regression screenshots.',
   );
 }
 
@@ -251,7 +251,7 @@ async function intrinsicRotation() {
   });
 
   // Stored portrait with its content drawn sideways, as scanners do; /Rotate 90 makes it
-  // upright in landscape. A viewer that ignores /Rotate shows sideways text (KI-03).
+  // upright in landscape. A viewer that ignores /Rotate shows sideways text.
   const rotated = doc.addPage(LETTER);
   rotated.setRotation(degrees(90));
   drawGrid(rotated);
@@ -283,7 +283,7 @@ async function intrinsicRotation() {
     color: INK,
     rotate: degrees(180),
   });
-  await save(doc, 'intrinsic-rotation.pdf', 'Pages with /Rotate 90 and 180. Verifies KI-03.');
+  await save(doc, 'intrinsic-rotation.pdf', 'Pages with /Rotate 90 and 180.');
 }
 
 function addLink(
@@ -376,11 +376,7 @@ async function nonEmbeddedFonts() {
     page.drawText(text, { x: 48, y, size: 16, font, color: INK });
     y -= 40;
   }
-  await save(
-    doc,
-    'non-embedded-fonts.pdf',
-    'Uses the standard 14 fonts without embedding. Verifies KI-20.',
-  );
+  await save(doc, 'non-embedded-fonts.pdf', 'Uses the standard 14 fonts without embedding.');
 }
 
 // ── Encryption (PDF standard security handler, RC4 128-bit, R3) ────────────
@@ -505,11 +501,8 @@ async function passwordProtected() {
     font,
     color: MUTED,
   });
-  await save(
-    doc,
-    'password.pdf',
-    'Encrypted; user password "demo". Password prompt (KI-23).',
-    (d) => encrypt(d, 'demo', 'react-pdf-viewer-owner'),
+  await save(doc, 'password.pdf', 'Encrypted; user password "demo". Password prompt.', (d) =>
+    encrypt(d, 'demo', 'react-pdf-viewer-owner'),
   );
 }
 

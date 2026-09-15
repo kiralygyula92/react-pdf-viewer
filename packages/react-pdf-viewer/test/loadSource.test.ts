@@ -12,7 +12,7 @@ const json = (body: unknown, status: number, statusText = 'Error') =>
   });
 
 describe('loadSource', () => {
-  it('E-01 / KI-10: fetches URL sources with requestInit and returns the bytes', async () => {
+  it('fetches URL sources with requestInit and returns the bytes', async () => {
     const fetcher = vi.fn(() => Promise.resolve(new Response(BYTES)));
     const result = await loadSource('https://x.test/a.pdf', signal(), {
       fetcher,
@@ -25,7 +25,7 @@ describe('loadSource', () => {
     );
   });
 
-  it('E-01: uses the global fetch by default and accepts URL objects', async () => {
+  it('uses the global fetch by default and accepts URL objects', async () => {
     const fetchMock = vi.fn(() => Promise.resolve(new Response(BYTES)));
     vi.stubGlobal('fetch', fetchMock);
     await loadSource(new URL('https://x.test/b.pdf'), signal());
@@ -33,7 +33,7 @@ describe('loadSource', () => {
     vi.unstubAllGlobals();
   });
 
-  it('E-01: reads Blob, ArrayBuffer and Uint8Array sources without detaching the original', async () => {
+  it('reads Blob, ArrayBuffer and Uint8Array sources without detaching the original', async () => {
     const buffer = BYTES.slice().buffer;
     const fromBuffer = await loadSource(buffer, signal());
     const fromView = await loadSource(BYTES, signal());
@@ -46,7 +46,7 @@ describe('loadSource', () => {
     expect(fromView.kind === 'bytes' && fromView.data).not.toBe(BYTES);
   });
 
-  it('E-02: builds the HTTP error message detail → title → string → status', async () => {
+  it('builds the HTTP error message detail → title → string → status', async () => {
     await expect(
       defaultHttpErrorMessage(json({ detail: 'Report expired', title: 'Gone' }, 410)),
     ).resolves.toBe('Report expired');
@@ -61,7 +61,7 @@ describe('loadSource', () => {
     ).resolves.toBe('Failed to fetch PDF: 500 Server Error');
   });
 
-  it('E-02: throws HTTP_ERROR with status, and the message is overridable', async () => {
+  it('throws HTTP_ERROR with status, and the message is overridable', async () => {
     const fetcher = () => Promise.resolve(json({ detail: 'Nope' }, 404));
     await expect(loadSource('/a.pdf', signal(), { fetcher })).rejects.toMatchObject({
       code: 'HTTP_ERROR',
@@ -76,7 +76,7 @@ describe('loadSource', () => {
     ).rejects.toMatchObject({ message: 'Custom 404' });
   });
 
-  it('E-03: onHttpError returning true marks the response as handled', async () => {
+  it('onHttpError returning true marks the response as handled', async () => {
     const onHttpError = vi.fn((response: Response) => response.status === 401);
     const fetcher = () => Promise.resolve(new Response(null, { status: 401 }));
     await expect(loadSource('/a.pdf', signal(), { fetcher, onHttpError })).resolves.toEqual({

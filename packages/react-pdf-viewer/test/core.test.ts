@@ -33,7 +33,7 @@ const zoom = {
 };
 
 describe('scale', () => {
-  it('KI-16: ten 5% steps from 100% land exactly on 150%', () => {
+  it('ten 5% steps from 100% land exactly on 150%', () => {
     let scale = 1;
     for (let i = 0; i < 10; i++) {
       scale = nextScale(scale, 1, zoom) ?? scale;
@@ -43,7 +43,7 @@ describe('scale', () => {
     expect(roundScale(1.5000000000000004)).toBe(1.5);
   });
 
-  it('U-04: steps by 5% and clamps to 25%–500%', () => {
+  it('steps by 5% and clamps to 25%–500%', () => {
     expect(nextScale(1, -1, zoom)).toBe(0.95);
     expect(nextScale(0.27, -1, zoom)).toBe(0.25);
     expect(nextScale(0.25, -1, zoom)).toBeNull();
@@ -71,21 +71,21 @@ describe('scale', () => {
 });
 
 describe('geometry', () => {
-  it('E-06: clamps pages to [1, numPages]', () => {
+  it('clamps pages to [1, numPages]', () => {
     expect(clampPage(5, 3)).toBe(3);
     expect(clampPage(0, 3)).toBe(1);
     expect(clampPage(Number.NaN, 3)).toBe(1);
     expect(clampPage(2, 0)).toBe(1);
   });
 
-  it('E-08 / KI-03: adds the user rotation to the intrinsic /Rotate', () => {
+  it('adds the user rotation to the intrinsic /Rotate', () => {
     expect(effectiveRotation(90, 0)).toBe(90);
     expect(effectiveRotation(90, 90)).toBe(180);
     expect(effectiveRotation(270, 180)).toBe(90);
     expect(normalizeRotation(-90)).toBe(270);
   });
 
-  it('KI-04 / KI-26: uses the device pixel ratio but caps the canvas area', () => {
+  it('uses the device pixel ratio but caps the canvas area', () => {
     expect(getOutputScale(612, 792, 2, 16_777_216)).toBe(2);
     const capped = getOutputScale(3060, 3960, 3, 16_777_216);
     expect(capped).toBeLessThan(3);
@@ -93,7 +93,7 @@ describe('geometry', () => {
     expect(getOutputScale(612, 792, 0, 16_777_216)).toBe(1);
   });
 
-  it('KI-15: fit shrinks but never enlarges unless upscale is set', () => {
+  it('fit shrinks but never enlarges unless upscale is set', () => {
     expect(fitScale(1, 612, 792, { width: 306 })).toBe(0.5);
     expect(fitScale(1, 612, 792, { width: 2000 })).toBe(1);
     expect(fitScale(1, 612, 792, { width: 1224, upscale: true })).toBe(2);
@@ -135,7 +135,7 @@ describe('errors', () => {
 });
 
 describe('fileName', () => {
-  it('KI-11: resolves prop → File name → URL segment → default', () => {
+  it('resolves prop → File name → URL segment → default', () => {
     expect(resolveFileName('report.pdf', 'https://x.test/a.pdf')).toBe('report.pdf');
     expect(resolveFileName(undefined, new File([], 'upload.pdf'))).toBe('upload.pdf');
     expect(resolveFileName(undefined, 'https://x.test/files/My%20Doc.pdf?x=1')).toBe('My Doc.pdf');

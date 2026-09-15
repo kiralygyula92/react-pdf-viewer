@@ -1,11 +1,11 @@
-import { PdfViewer } from '@your-scope/react-pdf-viewer';
+import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
 import { useCallback, useState } from 'react';
 import { sampleUrl } from '../samples';
 
 export const meta = {
   title: '7. Authenticated fetch',
   description:
-    'A fetcher adds an Authorization header; onHttpError handles 401 (the original redirected to sign-in). The endpoint here is mocked in the browser.',
+    'A fetcher adds an Authorization header; onHttpError handles 401 (for example by redirecting to sign-in). The endpoint here is mocked in the browser.',
 };
 
 const TOKEN = 'demo-token';
@@ -59,7 +59,7 @@ export default function AuthenticatedFetchExample() {
         fetcher={fetcher}
         onHttpError={(response) => {
           if (response.status === 401) {
-            setMessage('401 Unauthorized. Tick “Signed in” to load the report.');
+            setMessage('401 Unauthorized. Tick “Signed in” to load the document.');
             return true;
           }
           return false;

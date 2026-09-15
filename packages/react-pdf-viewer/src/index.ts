@@ -3,7 +3,7 @@
 /**
  * React PDF viewer built on `pdfjs-dist`.
  *
- * Styles ship separately: import `@your-scope/react-pdf-viewer/styles.css` once in your app.
+ * Styles ship separately: import `@kiralygyula92/react-pdf-viewer/styles.css` once in your app.
  *
  * @packageDocumentation
  */

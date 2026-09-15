@@ -1,8 +1,8 @@
-/** Original zoom floor (25%). */
+/** Default zoom floor (25%). */
 export const DEFAULT_MIN_SCALE = 0.25;
-/** Original zoom ceiling (500%). */
+/** Default zoom ceiling (500%). */
 export const DEFAULT_MAX_SCALE = 5;
-/** Original zoom increment (5%). */
+/** Default zoom increment (5%). */
 export const DEFAULT_SCALE_STEP = 0.05;
 /** 100%: one PDF point per CSS pixel. */
 export const DEFAULT_SCALE = 1;

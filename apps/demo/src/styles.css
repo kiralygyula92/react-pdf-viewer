@@ -596,8 +596,8 @@ fieldset {
   width: auto;
 }
 
-/* ── Parity harness (mirrors the host app) ──────────────────────────────── */
-.parity {
+/* ── Test harness ───────────────────────────────────────────────────────── */
+.harness {
   min-height: 100vh;
   padding: 24px;
   /* Explicit, cross-platform stack (Liberation Sans is metric-compatible with Arial and ships in
@@ -606,22 +606,22 @@ fieldset {
   background: #f4f5f7;
 }
 
-.parity--fullscreen {
+.harness--fullscreen {
   padding: 0;
 }
 
-.parity-inline {
+.harness-inline {
   display: flex;
   justify-content: center;
   width: 100%;
 }
 
-.parity-dialog {
+.harness-dialog {
   position: fixed;
   inset: 0;
   display: flex;
   flex-direction: column;
-  overflow-y: auto; /* like MUI DialogContent */
+  overflow-y: auto;
   background: #fff;
 }
 

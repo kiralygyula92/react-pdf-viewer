@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { button, openView, pageBox, pageSize, viewport, zoomLabel } from './helpers';
 
 test.describe('zoom', () => {
-  test('U-04 / U-05: 5% steps, rounded label, true size, and bounds', async ({ page }) => {
+  test('5% steps, rounded label, true size, and bounds', async ({ page }) => {
     await openView(page, { src: '/samples/letter-3pages.pdf' });
     await expect(zoomLabel(page)).toHaveText('100%');
     expect(await pageSize(page)).toEqual({ width: 612, height: 792 });
@@ -18,16 +18,14 @@ test.describe('zoom', () => {
     await expect(button(page, 'Zoom in')).toBeEnabled();
   });
 
-  test('U-04: the ceiling is 500%', async ({ page }) => {
+  test('the ceiling is 500%', async ({ page }) => {
     await openView(page, { src: '/samples/letter-3pages.pdf', zoom: '495' });
     await button(page, 'Zoom in').click();
     await expect(zoomLabel(page)).toHaveText('500%');
     await expect(button(page, 'Zoom in')).toBeDisabled();
   });
 
-  test('L-08 / L-09: fits the width at 100%, shows true size and scrolls when zoomed', async ({
-    page,
-  }) => {
+  test('fits the width at 100%, shows true size and scrolls when zoomed', async ({ page }) => {
     await page.setViewportSize({ width: 480, height: 800 });
     await openView(page, { src: '/samples/letter-3pages.pdf' });
     const available = await viewport(page).evaluate((element) => element.clientWidth - 32);
@@ -43,8 +41,8 @@ test.describe('zoom', () => {
     expect(scrolls).toBe(true);
   });
 
-  test('L-12 / KI-14: a zoomed page is never clipped on the left', async ({ page }) => {
-    await page.goto('/#/parity?mode=fullscreen&zoom=500');
+  test('a zoomed page is never clipped on the left', async ({ page }) => {
+    await page.goto('/#/harness?mode=fullscreen&zoom=500');
     await expect(page.locator('.rpv-page canvas')).toBeAttached();
     const [container, box] = await Promise.all([
       viewport(page).boundingBox(),

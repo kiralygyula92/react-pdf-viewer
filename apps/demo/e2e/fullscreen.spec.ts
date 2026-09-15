@@ -2,9 +2,7 @@ import { expect, test } from '@playwright/test';
 import { button, countRequests, rendered } from './helpers';
 
 test.describe('fullscreen', () => {
-  test('U-08 / KI-13: native fullscreen toggles without reloading the document', async ({
-    page,
-  }) => {
+  test('native fullscreen toggles without reloading the document', async ({ page }) => {
     const requests = countRequests(page, 'letter-3pages.pdf');
     await page.goto('/#/');
     await rendered(page);
@@ -31,7 +29,7 @@ test.describe('fullscreen', () => {
     expect(requests.count).toBe(1);
   });
 
-  test('KI-13: overlay mode traps focus and closes with Escape', async ({ page }) => {
+  test('overlay mode traps focus and closes with Escape', async ({ page }) => {
     await page.goto('/#/');
     await rendered(page);
     await page.getByLabel('Fullscreen mode').selectOption('overlay');
@@ -51,15 +49,13 @@ test.describe('fullscreen', () => {
       .catch(() => undefined);
   });
 
-  test('controlled mode (original): the parent presents fullscreen, layout adapts', async ({
-    page,
-  }) => {
-    await page.goto('/#/parity?mode=inline');
+  test('controlled mode: the parent presents fullscreen, layout adapts', async ({ page }) => {
+    await page.goto('/#/harness?mode=inline');
     await rendered(page);
     await button(page, 'Enter fullscreen').click();
-    await expect(page.locator('.parity-dialog')).toBeVisible();
+    await expect(page.locator('.harness-dialog')).toBeVisible();
     await expect(page.locator('.rpv-root')).toHaveAttribute('data-fullscreen', '');
     await button(page, 'Exit fullscreen').click();
-    await expect(page.locator('.parity-dialog')).toHaveCount(0);
+    await expect(page.locator('.harness-dialog')).toHaveCount(0);
   });
 });

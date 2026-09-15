@@ -6,7 +6,7 @@ interface PrintRecord {
 }
 
 test.describe('print', () => {
-  test('KI-12: renders every page into a hidden iframe and calls print()', async ({ page }) => {
+  test('renders every page into a hidden iframe and calls print()', async ({ page }) => {
     // Runs in every frame, including the print iframe: record the call instead of printing.
     await page.addInitScript(() => {
       window.print = () => {
@@ -23,9 +23,7 @@ test.describe('print', () => {
     await expect(page.locator('iframe.rpv-print-frame')).toHaveCount(0);
   });
 
-  test('printMode "open-url" opens the document in a new tab (original behavior)', async ({
-    page,
-  }) => {
+  test('printMode "open-url" opens the document in a new tab', async ({ page }) => {
     // Headless browsers download a PDF opened in a tab; record the call instead.
     await page.addInitScript(() => {
       window.open = (...args: unknown[]) => {

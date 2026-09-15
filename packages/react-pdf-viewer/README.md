@@ -1,6 +1,8 @@
-# @your-scope/react-pdf-viewer
+# @kiralygyula92/react-pdf-viewer
 
-> The package name is a placeholder; the owner chooses the final name before publishing.
+[![npm](https://img.shields.io/npm/v/@kiralygyula92/react-pdf-viewer)](https://www.npmjs.com/package/@kiralygyula92/react-pdf-viewer)
+[![CI](https://github.com/kiralygyula92/react-pdf-viewer/actions/workflows/ci.yml/badge.svg)](https://github.com/kiralygyula92/react-pdf-viewer/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 An accessible, themeable React PDF viewer built on [PDF.js](https://github.com/mozilla/pdf.js)
 (`pdfjs-dist`). One page at a time, with a toolbar for zoom, page navigation, fullscreen,
@@ -12,6 +14,8 @@ rotation, download and print. No UI-kit dependency, SSR-safe, fully typed.
 - **Sharp:** HiDPI rendering with a canvas-size cap; intrinsic page rotation respected.
 - **Accessible:** toolbar semantics, roving focus, keyboard shortcuts, live page announcements.
 - **Composable:** batteries-included `PdfViewer`, or build your own with `usePdfDocument` + `PdfPageCanvas`.
+
+**[Live demo, examples and full API documentation →](https://kiralygyula92.github.io/react-pdf-viewer/)**
 
 ## Contents
 
@@ -27,12 +31,12 @@ rotation, download and print. No UI-kit dependency, SSR-safe, fully typed.
 - [Keyboard and accessibility](#keyboard-and-accessibility)
 - [SSR and Next.js](#ssr-and-nextjs)
 - [Security](#security)
-- [Migrating from `CustomPdfViewer`](#migrating-from-custompdfviewer)
+- [License](#license)
 
 ## Install
 
 ```sh
-pnpm add @your-scope/react-pdf-viewer pdfjs-dist
+pnpm add @kiralygyula92/react-pdf-viewer pdfjs-dist
 ```
 
 Peer dependencies: `react` and `react-dom` ≥ 18, `pdfjs-dist` ^6.
@@ -45,17 +49,17 @@ with `pdfjs-dist/legacy/build/pdf.worker.min.mjs` as the worker.
 ## Quick start
 
 ```tsx
-import { PdfViewer } from '@your-scope/react-pdf-viewer';
-import '@your-scope/react-pdf-viewer/styles.css';
+import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import '@kiralygyula92/react-pdf-viewer/styles.css';
 
 export function Report() {
   return <PdfViewer source="/files/report.pdf" />;
 }
 ```
 
-With default props the viewer looks and behaves like the original component: toolbar below the
-page, single-page view, 5% zoom steps between 25% and 500%, and the page shrunk to the available
-width at 100%.
+With default props the viewer shows a focused, classic layout: toolbar below the page, one page
+at a time, 5% zoom steps between 25% and 500%, and the page shrunk to the available width at
+100%.
 
 ## PDF.js worker and assets
 
@@ -67,7 +71,7 @@ and call `configurePdfJs` once at startup:
 **Vite**
 
 ```ts
-import { configurePdfJs } from '@your-scope/react-pdf-viewer';
+import { configurePdfJs } from '@kiralygyula92/react-pdf-viewer';
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 configurePdfJs({
@@ -194,8 +198,8 @@ error view has a Retry button, and the toolbar stays usable (so fullscreen can a
 
 ## Opt-in features
 
-Everything beyond the original viewer is off by default, so default props keep the original look
-and behavior.
+These features are off by default, so upgrading never changes an existing viewer's look or
+behavior; turn each one on with a single prop.
 
 | Prop                  | Effect                                                                                                                                         |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -233,7 +237,7 @@ viewer.current?.goToPage(3);
 ## Headless usage
 
 ```tsx
-import { PdfPageCanvas, usePdfDocument } from '@your-scope/react-pdf-viewer';
+import { PdfPageCanvas, usePdfDocument } from '@kiralygyula92/react-pdf-viewer';
 
 function Thumbnails({ source }: { source: string }) {
   const { status, document, numPages } = usePdfDocument(source);
@@ -331,7 +335,7 @@ The overlay fullscreen mode traps focus and closes with `Esc`.
 
 ## SSR and Next.js
 
-The entry points start with `'use client'` and touch no browser globals at import time, so they
+The entry point starts with `'use client'` and touches no browser globals at import time, so it
 can be imported from Server Components files and rendered on the server (the server output is the
 loading state). PDF.js itself is loaded lazily in the browser.
 
@@ -341,31 +345,7 @@ loading state). PDF.js itself is loaded lazily in the browser.
 JavaScript execution through crafted fonts). `isEvalSupported: false` is passed as defense in
 depth. The viewer never injects `<script>` tags or reads globals.
 
-## Migrating from `CustomPdfViewer`
-
-The `/compat` entry exports a drop-in wrapper with the original props:
-
-```tsx
-import { CustomPdfViewer } from '@your-scope/react-pdf-viewer/compat';
-import '@your-scope/react-pdf-viewer/styles.css';
-
-<CustomPdfViewer
-  {...pdfViewerProps}
-  onUnauthorized={() => {
-    useAuthStore.getState().purgeStoreData();
-    window.location.replace('/auth/sign-in');
-  }}
-/>;
-```
-
-Differences from the original, all fixes: renders are cancellable and sharp on HiDPI screens,
-pages with an intrinsic rotation display upright, errors keep the toolbar and offer Retry,
-download reuses the loaded bytes, print opens the print dialog instead of a new tab, the
-fullscreen icon toggles, the toolbar collapses actions into a "More actions" menu instead of
-clipping them on narrow screens,
-and in fullscreen the document area shrinks so the toolbar is always on screen. To match the host
-theme, set `--rpv-toolbar-bg` and `--rpv-accent` on a wrapper element.
-
 ## License
 
-To be chosen by the owner. See `NOTICE` for third-party attributions.
+[MIT](./LICENSE) © kiralygyula92. Third-party attributions (Material Icons paths, PDF.js) are listed in
+[`NOTICE`](./NOTICE).

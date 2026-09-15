@@ -1,4 +1,4 @@
-import { PdfViewer, type PdfViewerErrorCode, type Rotation } from '@your-scope/react-pdf-viewer';
+import { PdfViewer, type PdfViewerErrorCode, type Rotation } from '@kiralygyula92/react-pdf-viewer';
 import { useId, useState, type FormEvent } from 'react';
 import { CorsExplainer } from '../components/SourcePicker';
 import { useFileDrop } from '../components/useFileDrop';

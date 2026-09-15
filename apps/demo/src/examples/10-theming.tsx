@@ -1,4 +1,4 @@
-import { PdfViewer } from '@your-scope/react-pdf-viewer';
+import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
 import type { CSSProperties } from 'react';
 import { sampleUrl } from '../samples';
 

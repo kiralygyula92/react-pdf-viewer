@@ -1,9 +1,8 @@
 /**
- * Visual parity: the original's layout states on the parity harness, at desktop and mobile sizes.
+ * Visual regression: the default layout states on the test harness, at desktop and mobile sizes.
  *
  * Baselines are rendered in the Playwright Linux container; run `pnpm --filter demo e2e:visual`
- * (compare) or `pnpm --filter demo e2e:visual:update` (regenerate). They were first reviewed by
- * a human against docs/handoff/reference/screenshots/.
+ * (compare) or `pnpm --filter demo e2e:visual:update` (regenerate).
  */
 import { expect, test } from '@playwright/test';
 import { DESKTOP, MOBILE } from './helpers';
@@ -31,7 +30,7 @@ for (const [device, viewport] of [
 
     for (const [name, query, rendersPage] of STATES) {
       test(`${device} ${name}`, async ({ page }) => {
-        await page.goto(`/#/parity?${query}`);
+        await page.goto(`/#/harness?${query}`);
         if (rendersPage) await expect(page.locator('.rpv-page canvas')).toBeAttached();
         else await page.waitForLoadState('networkidle');
         await expect(page).toHaveScreenshot(`${device}-${name}.png`, { fullPage: true });

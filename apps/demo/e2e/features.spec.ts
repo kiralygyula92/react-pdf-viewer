@@ -1,5 +1,5 @@
 /**
- * Opt-in features (M5), driven through the playground's controls.
+ * Opt-in features, driven through the playground's controls.
  */
 import { expect, test, type Page } from '@playwright/test';
 import { button, pageLabel, rendered, zoomLabel } from './helpers';
@@ -19,9 +19,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('opt-in features', () => {
-  test('KI-24 / M5 AC: continuous layout keeps at most the visible pages + 2 canvases', async ({
-    page,
-  }) => {
+  test('continuous layout keeps at most the visible pages + 2 canvases', async ({ page }) => {
     await openSample(page, /Long document, 40 pages/);
     await page.getByLabel('Layout').selectOption('continuous');
     await expect(page.locator('.rpv-page-slot')).toHaveCount(40);
@@ -54,7 +52,7 @@ test.describe('opt-in features', () => {
     await expect.poll(withinBudget).toBe(true);
   });
 
-  test('KI-21: search highlights matches and steps through them', async ({ page }) => {
+  test('search highlights matches and steps through them', async ({ page }) => {
     await openSample(page, /Long document, 40 pages/);
     await enable(page, 'Search');
     await page.getByRole('searchbox', { name: 'Search in document' }).fill('viewer');
@@ -64,14 +62,12 @@ test.describe('opt-in features', () => {
     await expect(page.locator('.rpv-search__status')).toHaveText(/^2 of \d+$/);
   });
 
-  test('KI-21: the text layer carries the page text', async ({ page }) => {
+  test('the text layer carries the page text', async ({ page }) => {
     await enable(page, 'Text layer');
     await expect(page.locator('.textLayer')).toContainText('Page 1 of 3');
   });
 
-  test('KI-21: links navigate internally and open externally in a safe new tab', async ({
-    page,
-  }) => {
+  test('links navigate internally and open externally in a safe new tab', async ({ page }) => {
     await enable(page, 'Links (annotation layer)');
     await openSample(page, /Internal and external links/);
     const external = page.locator('.annotationLayer a[href="https://mozilla.github.io/pdf.js/"]');
@@ -81,7 +77,7 @@ test.describe('opt-in features', () => {
     await expect(pageLabel(page)).toHaveText('2 / 2');
   });
 
-  test('KI-23: password prompt unlocks the encrypted sample', async ({ page }) => {
+  test('password prompt unlocks the encrypted sample', async ({ page }) => {
     await enable(page, 'Password prompt');
     await openSample(page, /Password protected/);
     const field = page.getByLabel('Password', { exact: true });
@@ -93,7 +89,7 @@ test.describe('opt-in features', () => {
     await expect(page.getByRole('img', { name: 'Page 1 of 1' })).toBeVisible();
   });
 
-  test('KI-24: thumbnails and page input navigate', async ({ page }) => {
+  test('thumbnails and page input navigate', async ({ page }) => {
     await enable(page, 'Thumbnails');
     await enable(page, 'Page number input');
     await page
@@ -106,7 +102,7 @@ test.describe('opt-in features', () => {
     await expect(page.getByRole('img', { name: 'Page 2 of 3' })).toBeVisible();
   });
 
-  test('KI-17: Ctrl + wheel zooms and the zoom label resets it', async ({ page }) => {
+  test('Ctrl + wheel zooms and the zoom label resets it', async ({ page }) => {
     await enable(page, 'Ctrl/⌘ + wheel zoom');
     await enable(page, 'Zoom reset button');
     // Playwright's mouse.wheel does not reliably carry held modifiers; dispatch Ctrl + wheel.

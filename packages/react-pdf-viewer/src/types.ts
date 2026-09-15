@@ -20,7 +20,7 @@ export type Rotation = 0 | 90 | 180 | 270;
 /**
  * How fullscreen is presented.
  *
- * - `'controlled'`: layout-only; the parent decides how to present fullscreen (original behavior).
+ * - `'controlled'`: layout-only; the parent decides how to present fullscreen.
  * - `'native'`: the browser Fullscreen API on the viewer root, falling back to `'overlay'`.
  * - `'overlay'`: a fixed, full-viewport layer with a focus trap; `Esc` closes it.
  */
@@ -112,11 +112,11 @@ export interface PdfRequestOptions {
 
 /** Toolbar customisation. */
 export interface ToolbarConfig {
-  /** Toolbar placement. Default `'bottom'` (original behavior). */
+  /** Toolbar placement. Default `'bottom'`. */
   position?: 'bottom' | 'top' | undefined;
-  /** Actions to show. Default: all, in the original order. */
+  /** Actions to show. Default: all, in display order. */
   actions?: readonly ToolbarAction[] | undefined;
-  /** Actions hidden in compact, non-fullscreen mode. Default `['rotate', 'print']` (original). */
+  /** Actions hidden in compact, non-fullscreen mode. Default `['rotate', 'print']`. */
   hiddenWhenCompact?: readonly ToolbarAction[] | undefined;
 }
 
@@ -187,7 +187,7 @@ export interface PdfViewerProps extends PdfRequestOptions {
   /** Initial fullscreen state when uncontrolled. Default `false`. */
   defaultFullscreen?: boolean | undefined;
   onFullscreenChange?: ((fullscreen: boolean) => void) | undefined;
-  /** Default: `'controlled'` when `fullscreen` is passed (original behavior), else `'native'`. */
+  /** Default: `'controlled'` when `fullscreen` is passed, else `'native'`. */
   fullscreenMode?: FullscreenMode | undefined;
 
   /** Zoom floor. Default `0.25`. */
@@ -198,7 +198,7 @@ export interface PdfViewerProps extends PdfRequestOptions {
   scaleStep?: number | undefined;
   /** Opt-in preset ladder; the zoom buttons step between presets instead of by `scaleStep`. */
   zoomLevels?: readonly number[] | undefined;
-  /** At the default scale, shrink the page to the available width (original behavior). Default `true`. */
+  /** At the default scale, shrink the page to the available width. Default `true`. */
   fitWidthAtDefaultScale?: boolean | undefined;
   /**
    * Opt-in: at the default scale, scale the page to fill the width (`'width'`) or to fit entirely
@@ -217,7 +217,7 @@ export interface PdfViewerProps extends PdfRequestOptions {
   compactBreakpoint?: number | undefined;
   /** Keyboard shortcuts while focus is inside the viewer. Default `true`. */
   keyboardShortcuts?: boolean | undefined;
-  /** `'render'` prints through a hidden iframe; `'open-url'` opens the PDF in a new tab (original). Default `'render'`. */
+  /** `'render'` prints through a hidden iframe; `'open-url'` opens the PDF in a new tab. Default `'render'`. */
   printMode?: 'render' | 'open-url' | undefined;
   /** Canvas pixel budget per page. Default `16_777_216`. */
   maxCanvasPixels?: number | undefined;
@@ -226,7 +226,7 @@ export interface PdfViewerProps extends PdfRequestOptions {
   /** Locale for number formatting, e.g. `'hu-HU'`. */
   locale?: string | undefined;
 
-  /** Page layout: `'single'` (original) or `'continuous'` vertical scrolling. Default `'single'`. */
+  /** Page layout: `'single'` or `'continuous'` vertical scrolling. Default `'single'`. */
   layout?: 'single' | 'continuous' | undefined;
   /** Selectable text layer (copy, find, assistive technology). Default `false`. */
   textLayer?: boolean | undefined;

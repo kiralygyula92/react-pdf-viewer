@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { button, openView, pageLabel, zoomLabel } from './helpers';
 
 test.describe('navigation', () => {
-  test('U-06: previous/next with disabled ends and a live page label', async ({ page }) => {
+  test('previous/next with disabled ends and a live page label', async ({ page }) => {
     await openView(page, { src: '/samples/letter-3pages.pdf' });
     await expect(pageLabel(page)).toHaveText('1 / 3');
     await expect(pageLabel(page)).toHaveAttribute('aria-live', 'polite');
@@ -30,13 +30,13 @@ test.describe('navigation', () => {
     await expect(zoomLabel(page)).toHaveText('155%');
   });
 
-  test('E-06 / KI-08: an out-of-range deep link is clamped and written back', async ({ page }) => {
+  test('an out-of-range deep link is clamped and written back', async ({ page }) => {
     await openView(page, { src: '/samples/letter-3pages.pdf', page: '9' });
     await expect(pageLabel(page)).toHaveText('3 / 3');
     await expect(page).toHaveURL(/page=3/);
   });
 
-  test('KI-22: keyboard shortcuts while the document area has focus', async ({ page }) => {
+  test('keyboard shortcuts while the document area has focus', async ({ page }) => {
     await openView(page, { src: '/samples/letter-3pages.pdf' });
     await page.getByRole('group', { name: 'Document' }).focus();
     await page.keyboard.press('PageDown');

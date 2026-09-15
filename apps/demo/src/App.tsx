@@ -1,6 +1,6 @@
 import { Docs } from './pages/Docs';
 import { Examples } from './pages/Examples';
-import { Parity } from './pages/Parity';
+import { Harness } from './pages/Harness';
 import { Playground } from './pages/Playground';
 import { StandaloneViewer } from './pages/StandaloneViewer';
 import { Link, useRoute } from './router';
@@ -15,9 +15,9 @@ const PAGES = [
 export function App() {
   const { path } = useRoute();
 
-  // The parity harness renders without demo chrome, for deterministic screenshots.
-  if (path === '/parity') {
-    return <Parity />;
+  // The test harness renders without demo chrome, for deterministic screenshots.
+  if (path === '/harness') {
+    return <Harness />;
   }
 
   const page = PAGES.find((candidate) => candidate.path === path);
@@ -47,7 +47,7 @@ export function App() {
               </li>
             ))}
             <li>
-              <Link to="/parity">Parity harness</Link>
+              <Link to="/harness">Test harness</Link>
             </li>
           </ul>
         </nav>

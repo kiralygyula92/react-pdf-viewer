@@ -1,35 +1,43 @@
 {
-  "name": "@your-scope/react-pdf-viewer",
-  "version": "0.1.0",
-  "description": "Accessible, themeable React PDF viewer built on pdfjs-dist.",
+  "name": "@kiralygyula92/react-pdf-viewer",
+  "version": "0.0.0",
+  "description": "Accessible, themeable React PDF viewer built on PDF.js: zoom, rotation, fullscreen, search, thumbnails, download and print, with no UI-kit dependency.",
   "keywords": [
     "react",
     "pdf",
     "pdf-viewer",
+    "react-pdf",
     "pdfjs",
     "pdf.js",
+    "pdfjs-dist",
     "viewer",
-    "accessible"
+    "document-viewer",
+    "accessible",
+    "a11y",
+    "ssr"
   ],
+  "license": "MIT",
+  "author": "kiralygyula92 (https://github.com/kiralygyula92)",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kiralygyula92/react-pdf-viewer.git",
     "directory": "packages/react-pdf-viewer"
   },
   "homepage": "https://github.com/kiralygyula92/react-pdf-viewer/tree/main/packages/react-pdf-viewer#readme",
-  "bugs": "https://github.com/kiralygyula92/react-pdf-viewer/issues",
+  "bugs": {
+    "url": "https://github.com/kiralygyula92/react-pdf-viewer/issues"
+  },
   "type": "module",
   "sideEffects": [
     "**/*.css"
   ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    },
-    "./compat": {
-      "types": "./dist/compat.d.ts",
-      "import": "./dist/compat.js"
     },
     "./styles.css": "./dist/styles.css",
     "./package.json": "./package.json"
@@ -37,14 +45,17 @@
   "files": [
     "dist",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE",
     "NOTICE"
   ],
   "scripts": {
     "build": "vite build",
+    "prepack": "vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "qa": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints ./styles.css && size-limit"
   },
   "peerDependencies": {
@@ -75,6 +86,10 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "size-limit": [
     {

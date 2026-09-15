@@ -43,7 +43,7 @@ async function text(doc: PDFDocumentProxy, pageNumber: number): Promise<string> 
 }
 
 describe('real pdfjs-dist with the demo samples', () => {
-  it('E-01: loads bytes and reports page counts and sizes', async () => {
+  it('loads bytes and reports page counts and sizes', async () => {
     const letter = await open('letter-3pages.pdf');
     expect(letter.numPages).toBe(3);
     expect((await letter.getPage(1)).view).toEqual([0, 0, 612, 792]);
@@ -57,7 +57,7 @@ describe('real pdfjs-dist with the demo samples', () => {
     expect(widths).toEqual([612, 595, 1191, 227]);
   });
 
-  it('E-08 / KI-03: reads the intrinsic /Rotate that the viewer adds to', async () => {
+  it('reads the intrinsic /Rotate that the viewer adds to', async () => {
     const doc = await open('intrinsic-rotation.pdf');
     const rotations = await Promise.all([1, 2, 3].map(async (n) => (await doc.getPage(n)).rotate));
     expect(rotations).toEqual([0, 90, 180]);
@@ -66,7 +66,7 @@ describe('real pdfjs-dist with the demo samples', () => {
     expect([viewport.width, viewport.height]).toEqual([792, 612]);
   });
 
-  it('KI-21 fixture: links.pdf has internal and external link annotations', async () => {
+  it('links.pdf has internal and external link annotations', async () => {
     const doc = await open('links.pdf');
     const annotations = await (await doc.getPage(1)).getAnnotations();
     const links = annotations.filter((annotation) => annotation.subtype === 'Link');
@@ -75,14 +75,14 @@ describe('real pdfjs-dist with the demo samples', () => {
     expect(links.some((link) => Array.isArray(link.dest))).toBe(true);
   });
 
-  it('KI-20 fixture: non-embedded standard fonts extract as text', async () => {
+  it('non-embedded standard fonts extract as text', async () => {
     const doc = await open('non-embedded-fonts.pdf');
     const content = await text(doc, 1);
     expect(content).toContain('Helvetica');
     expect(content).toContain('Courier-BoldOblique');
   });
 
-  it('KI-23: password.pdf requires "demo" and maps PDF.js password errors', async () => {
+  it('password.pdf requires "demo" and maps PDF.js password errors', async () => {
     await expect(open('password.pdf')).rejects.toSatisfy(
       (error) => toPdfViewerError(error, 'UNKNOWN').code === 'PASSWORD_REQUIRED',
     );

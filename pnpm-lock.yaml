@@ -41,7 +41,7 @@ importers:
 
   apps/demo:
     dependencies:
-      '@your-scope/react-pdf-viewer':
+      '@kiralygyula92/react-pdf-viewer':
         specifier: workspace:*
         version: link:../../packages/react-pdf-viewer
       pdfjs-dist:

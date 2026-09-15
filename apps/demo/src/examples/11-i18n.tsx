@@ -1,4 +1,4 @@
-import { PdfViewer } from '@your-scope/react-pdf-viewer';
+import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
 import { hungarianLabels } from '../i18n';
 import { sampleUrl } from '../samples';
 

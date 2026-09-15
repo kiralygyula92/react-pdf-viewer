@@ -32,7 +32,7 @@ afterEach(() => {
 });
 
 describe('usePdfDocument', () => {
-  it('E-01: fetches a URL source and passes the bytes to PDF.js', async () => {
+  it('fetches a URL source and passes the bytes to PDF.js', async () => {
     const mock = installMockPdfjs({ autoResolveDocument: true });
     const fetcher = okFetcher();
     const { result } = renderDocument('https://x.test/a.pdf', { fetcher });
@@ -44,7 +44,7 @@ describe('usePdfDocument', () => {
     expect(result.current.document).toBe(mock.lastTask().handle.document);
   });
 
-  it('E-01: loads Blob and ArrayBuffer sources without fetching', async () => {
+  it('loads Blob and ArrayBuffer sources without fetching', async () => {
     installMockPdfjs({ autoResolveDocument: true });
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
@@ -56,7 +56,7 @@ describe('usePdfDocument', () => {
     vi.unstubAllGlobals();
   });
 
-  it('E-04: an empty source is idle from the first render (no loading flash)', () => {
+  it('an empty source is idle from the first render (no loading flash)', () => {
     const mock = installMockPdfjs();
     for (const empty of ['', null, undefined]) {
       const { result } = renderDocument(empty);
@@ -65,7 +65,7 @@ describe('usePdfDocument', () => {
     expect(mock.getDocument).not.toHaveBeenCalled();
   });
 
-  it('E-07: getDocument receives asset URLs, isEvalSupported: false and per-instance options', async () => {
+  it('getDocument receives asset URLs, isEvalSupported: false and per-instance options', async () => {
     const mock = installMockPdfjs({ autoResolveDocument: true });
     const { result } = renderDocument(BYTES, { pdfjsOptions: { verbosity: 0 }, password: 'demo' });
     await waitFor(() => expect(result.current.status).toBe('ready'));
@@ -79,7 +79,7 @@ describe('usePdfDocument', () => {
     });
   });
 
-  it('E-03: an HTTP error handled by onHttpError leaves the viewer idle without onError', async () => {
+  it('an HTTP error handled by onHttpError leaves the viewer idle without onError', async () => {
     const mock = installMockPdfjs();
     const onError = vi.fn();
     const onHttpError = vi.fn(() => true);
@@ -91,7 +91,7 @@ describe('usePdfDocument', () => {
     expect(mock.getDocument).not.toHaveBeenCalled();
   });
 
-  it('KI-09: reports HTTP, parse and library failures through onError', async () => {
+  it('reports HTTP, parse and library failures through onError', async () => {
     const mock = installMockPdfjs();
     const onError = vi.fn<(error: PdfViewerError) => void>();
     const fetcher = () =>
@@ -119,7 +119,7 @@ describe('usePdfDocument', () => {
     ]);
   });
 
-  it('KI-07: a stale load can never overwrite a newer one', async () => {
+  it('a stale load can never overwrite a newer one', async () => {
     const mock = installMockPdfjs();
     const { result, rerender } = renderDocument(new Uint8Array([1]));
     await waitFor(() => expect(mock.loadingTasks).toHaveLength(1));
@@ -130,7 +130,7 @@ describe('usePdfDocument', () => {
 
     act(() => latest.resolve());
     await waitFor(() => expect(result.current.document).toBe(latest.handle.document));
-    // The stale load resolves last, exactly the race the original lost.
+    // The stale load resolves last: a naive implementation would show it.
     await act(async () => {
       stale.resolve();
       await stale.promise;
@@ -141,7 +141,7 @@ describe('usePdfDocument', () => {
     expect(latest.destroy).not.toHaveBeenCalled();
   });
 
-  it('E-05 / KI-07: a source change aborts the in-flight fetch; unmount destroys the document', async () => {
+  it('a source change aborts the in-flight fetch; unmount destroys the document', async () => {
     const mock = installMockPdfjs({ autoResolveDocument: true });
     const signals: AbortSignal[] = [];
     const fetcher = vi.fn((url: string, init: RequestInit) => {

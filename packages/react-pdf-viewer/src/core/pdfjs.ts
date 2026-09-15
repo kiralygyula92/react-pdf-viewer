@@ -64,7 +64,7 @@ function applyWorkerOptions(lib: PdfJsModule): void {
   } else if (config.workerSrc) {
     options.workerSrc = config.workerSrc;
   } else if (!options.workerSrc && !options.workerPort) {
-    // Respect a worker the host app configured itself; otherwise match the installed version.
+    // Respect a worker the application configured itself; otherwise match the installed version.
     options.workerSrc = `${cdnBase(lib.version)}build/pdf.worker.min.mjs`;
     showCdnNotice();
   }

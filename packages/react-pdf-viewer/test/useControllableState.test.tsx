@@ -6,8 +6,8 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe('useControllableState (KI-05)', () => {
-  it('KI-05: keeps internal state when uncontrolled and still reports changes', () => {
+describe('useControllableState', () => {
+  it('keeps internal state when uncontrolled and still reports changes', () => {
     const onChange = vi.fn();
     const { result } = renderHook(() =>
       useControllableState({ value: undefined, defaultValue: 1, onChange }),
@@ -20,7 +20,7 @@ describe('useControllableState (KI-05)', () => {
     expect(onChange.mock.calls).toEqual([[2], [3]]);
   });
 
-  it('KI-05: defers to the parent when controlled', () => {
+  it('defers to the parent when controlled', () => {
     const onChange = vi.fn();
     const { result, rerender } = renderHook(
       ({ value }) => useControllableState({ value, defaultValue: 1, onChange }),
