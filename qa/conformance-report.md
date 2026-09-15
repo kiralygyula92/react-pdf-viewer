@@ -57,7 +57,7 @@ PPDS v1.1 §11 conformance for `react-pdf-viewer` (React PDF Viewer 0.1.0), gene
 
 ## 19. Every page emits the full §7.6 meta set
 
-- ℹ search:version, plugin:id and plugin:categoryId are required on plugin-scoped pages (docs surface and product landing); the portfolio home has no plugin (EXCEPTIONS E-05).
+- ℹ search:version, plugin:id and plugin:categoryId are required on plugin-scoped pages (docs surface and product landings); pages outside a plugin, such as a portfolio home or the 404 page, have none.
 
 ## 22. Every legacy URL redirects
 
@@ -69,4 +69,4 @@ PPDS v1.1 §11 conformance for `react-pdf-viewer` (React PDF Viewer 0.1.0), gene
 
 ## K1. Model validates (plugin-site.schema.json, url-map, capability assignment)
 
-- ℹ 1426 checks passed · 0 failed
+- ℹ 1416 checks passed · 0 failed

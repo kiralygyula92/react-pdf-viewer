@@ -1,0 +1,37 @@
+---
+/**
+ * A page outside the docs content with the same minimal docs header and footer (e.g. the 404 page),
+ * for docs-only sites without a marketing surface (DECISIONS D-07, EXCEPTIONS E-06).
+ */
+import type { PageMeta } from '../surfaces.ts';
+import type { PluginConfig, PortfolioConfig } from '../types.ts';
+import DocsHeader from './DocsHeader.astro';
+import Head from './Head.astro';
+import SiteFooter from './SiteFooter.astro';
+import '../styles/site.css';
+
+interface Props {
+  meta: PageMeta;
+  config: PluginConfig;
+  portfolio: PortfolioConfig;
+  feeds?: { title: string; href: string }[];
+}
+
+const { meta, config, portfolio, feeds } = Astro.props;
+---
+
+<!doctype html>
+<html lang={meta.language}>
+  <head>
+    <Head meta={meta} siteName={config.name} />
+    <slot name="head" />
+  </head>
+  <body class="ppds ppds--marketing">
+    <a class="ppds-skip-link" href="#main">Skip to content</a>
+    <DocsHeader config={config} />
+    <main id="main" class="ppds-marketing" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter portfolio={portfolio} feeds={feeds ?? []} />
+  </body>
+</html>

@@ -33,19 +33,20 @@ test.describe('required flows', () => {
     'Flows are structural, not browser-specific',
   );
 
-  test('F1 Evaluate: home → landing → capability → overview → features index → install', async ({
+  test('F1 Evaluate: root → overview → features index → capability → back to docs → install', async ({
     page,
   }) => {
+    // Docs-only site (DECISIONS D-07): the root redirects to the overview; no pricing (D-02).
     await page.goto('/');
+    await expect(page).toHaveURL(/\/react-pdf-viewer\/$/);
     await follow(
       page,
-      page.getByRole('link', { name: 'Explore React PDF Viewer' }),
-      '/products/react-pdf-viewer/',
+      (await sidebarSection(page, 'Features')).getByRole('link', { name: 'All features' }),
+      '/react-pdf-viewer/all-features/',
     );
-    const capabilities = page.getByRole('region', { name: 'Everything a document viewer needs' });
     await follow(
       page,
-      capabilities.getByRole('link', { name: 'Search' }),
+      article(page).getByRole('link', { name: 'Search', exact: true }),
       '/react-pdf-viewer/search/',
     );
     await follow(
@@ -55,13 +56,26 @@ test.describe('required flows', () => {
     );
     await follow(
       page,
-      (await sidebarSection(page, 'Features')).getByRole('link', { name: 'All features' }),
-      '/react-pdf-viewer/all-features/',
-    );
-    await follow(
-      page,
       (await sidebarSection(page, 'Getting started')).getByRole('link', { name: 'Installation' }),
       '/react-pdf-viewer/getting-started/installation/',
+    );
+  });
+
+  test('narrow screens: the sidebar is a disclosure above the page, not a header menu', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/react-pdf-viewer/zoom/');
+    const banner = page.getByRole('banner');
+    await expect(banner.getByRole('button', { name: /navigation|menu/i })).toHaveCount(0);
+    const disclosure = page.locator('details.ppds-docs__sidebar');
+    await expect(disclosure).not.toHaveAttribute('open');
+    await expect(sidebar(page)).toBeHidden();
+    await disclosure.getByText('Browse documentation').click();
+    await follow(
+      page,
+      (await sidebarSection(page, 'Getting started')).getByRole('link', { name: 'Support' }),
+      '/react-pdf-viewer/getting-started/support/',
     );
   });
 

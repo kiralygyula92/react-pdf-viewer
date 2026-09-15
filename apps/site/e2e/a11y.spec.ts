@@ -13,15 +13,8 @@ async function violations(page: Page) {
 
 const ROUTES: [name: string, path: string, waitForRender: boolean][] = [
   ['playground', '/react-pdf-viewer/demos/playground/', true],
-  [
-    'standalone viewer',
-    '/react-pdf-viewer/demos/document-viewer/?src=/samples/letter-3pages.pdf',
-    true,
-  ],
-  ['standalone open form', '/react-pdf-viewer/demos/document-viewer/', false],
+  ['viewer fixture', '/_internal/viewer/?src=/samples/letter-3pages.pdf', true],
   ['docs overview', '/react-pdf-viewer/', false],
-  ['home', '/', false],
-  ['product landing', '/products/react-pdf-viewer/', false],
   ['harness loading', '/_internal/harness/?state=loading', false],
   ['harness error', '/_internal/harness/?state=error', false],
   ['harness empty', '/_internal/harness/?state=empty', false],
@@ -77,7 +70,7 @@ test.describe('accessibility', () => {
   }
 
   test('keyboard walkthrough: document area, then a single toolbar tab stop', async ({ page }) => {
-    await page.goto('/react-pdf-viewer/demos/document-viewer/?src=/samples/letter-3pages.pdf');
+    await page.goto('/_internal/viewer/?src=/samples/letter-3pages.pdf');
     await rendered(page);
     const documentArea = page.getByRole('group', { name: 'Document' });
     for (

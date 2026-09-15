@@ -78,8 +78,8 @@ function OpenForm({ onFile }: { onFile: (file: File) => void }) {
 }
 
 /**
- * `#/view?src=<url>&page=&zoom=&rotation=`: a full-page viewer whose state lives in the URL, so
- * the address bar is always a shareable deep link.
+ * `/_internal/viewer/?src=<url>&page=&zoom=&rotation=`: a full-page viewer whose state lives in the
+ * URL, used as a fixture by the functional e2e suites (EXCEPTIONS E-03).
  */
 export function StandaloneViewer() {
   const { params } = useRoute();

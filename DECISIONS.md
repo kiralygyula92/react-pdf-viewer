@@ -12,6 +12,7 @@ Decisions D-03 to D-06 were delegated by the owner (“decide what's best for ha
 | D-04 | Astro 7 site with a separate, plugin-agnostic `ppds-kit` package                                     | GAPS G-07                                          | 2026-09-15 |
 | D-05 | PPDS v1.1: archetypes J (Guide), K (Section index), L (Demo scenario)                                | GAPS G-38                                          | 2026-09-15 |
 | D-06 | PPDS v1.1: group term _Integrations_ → _Connectivity_                                                | GAPS G-45                                          | 2026-09-15 |
+| D-07 | Docs-only site: minimal header, root redirects to the docs, Playground replaces the Document viewer  | GAPS G-23, G-48; EXCEPTIONS E-06                   | 2026-09-15 |
 
 ---
 
@@ -110,3 +111,12 @@ Decisions D-03 to D-06 were delegated by the owner (“decide what's best for ha
   | Extensions / Add-ons | Implies optional installable modules, which §2.1 already uses for products                                                                                                |
 
 - **Consequences:** this plugin's `Connectivity` group holds `pdfjs-configuration` and `authenticated-requests`. The validator checks every taxonomy term against the vocabulary in the standard.
+
+## D-07 — Docs-only site for a single product
+
+- **Decision (owner, 2026-09-15):** the site is documentation-centric for one product.
+  - The header is minimal: product name (linking to `/react-pdf-viewer/`), version selector, search, GitHub and theme toggle. No portfolio logo, no marketing menus and no menu button; on narrow screens the sidebar becomes a “Browse documentation” disclosure above the page.
+  - `/` redirects to `/react-pdf-viewer/` (after resolving legacy `#/…` links). The portfolio home and the product landing page `/products/react-pdf-viewer/` are removed; the landing URL 301s to the docs root.
+  - The Document viewer demo is removed: the Playground already covers it. Its URL 301s to the Playground, legacy `#/view?src=…` links open the document in the Playground, and the URL-driven viewer the e2e suites use moves to `/_internal/viewer/` (E-03).
+- **Rationale:** a single product does not need a portfolio home or a separate marketing page, and one demo that covers every option is clearer than two overlapping ones.
+- **Consequences:** `content/portfolio.json` declares `"surfaces": ["docs"]`; conformance check 18 no longer requires a marketing-surface URL, check 25 reads the footer on the docs root, and noindex redirect pages are excluded from the sitemap and the page checks. The removed URLs were never publicly deployed, but both redirect anyway (R6).

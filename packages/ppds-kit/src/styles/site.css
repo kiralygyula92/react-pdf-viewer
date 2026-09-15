@@ -202,14 +202,12 @@
   }
 
   .ppds-header__plugin {
-    font-weight: 600;
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     color: var(--ppds-text) !important;
     text-decoration: none;
     white-space: nowrap;
-  }
-
-  .ppds-header__menu {
-    display: none;
   }
 
   .ppds-logo {
@@ -424,6 +422,11 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     border-right: 1px solid var(--ppds-border);
+  }
+
+  /* Only shown on narrow screens, where the sidebar becomes a disclosure above the page. */
+  .ppds-docs__sidebar-summary {
+    display: none;
   }
 
   /* Demo scenarios (archetype L) and generated reference tables use the full content width. */
@@ -1242,24 +1245,30 @@
       gap: 0;
     }
 
-    .ppds-header__menu {
-      display: inline-grid;
-    }
-
     .ppds-docs__sidebar {
-      position: fixed;
-      inset: var(--ppds-header-height) auto 0 0;
-      z-index: 25;
-      display: none;
-      width: min(320px, 86vw);
+      position: static;
       height: auto;
-      padding: 16px;
-      background: var(--ppds-bg);
-      box-shadow: 16px 0 40px rgb(0 0 0 / 0.2);
+      max-height: none;
+      padding: 0;
+      margin-top: 12px;
+      overflow: visible;
+      border: 1px solid var(--ppds-border);
+      border-radius: var(--ppds-radius);
     }
 
-    .ppds-docs__sidebar--open {
+    .ppds-docs__sidebar-summary {
       display: block;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .ppds-docs__sidebar[open] .ppds-docs__sidebar-summary {
+      border-bottom: 1px solid var(--ppds-border);
+    }
+
+    .ppds-docs__sidebar[open] > .ppds-sidebar {
+      padding: 8px;
     }
 
     .ppds-search-button {
@@ -1269,7 +1278,6 @@
     .ppds-search-button span,
     .ppds-search-button__key,
     .ppds-header__divider,
-    .ppds-version,
     .ppds-logo__text {
       display: none;
     }
@@ -1299,6 +1307,10 @@
     .ppds-header__inner {
       gap: 6px;
       padding-inline: 12px;
+    }
+
+    .ppds-version {
+      display: none;
     }
   }
 }

@@ -72,6 +72,11 @@ export interface PortfolioConfig {
   >;
   social?: { label: string; href: string }[];
   copyright: string;
+  /**
+   * Surfaces the site publishes. Default both; `["docs"]` is a docs-only site for a single
+   * product, whose root redirects to the docs (no marketing surface, PPDS §2.1 deviation).
+   */
+  surfaces?: ('marketing' | 'docs')[];
 }
 
 /** One sidebar entry after flattening `nav.json`, with everything templates need. */

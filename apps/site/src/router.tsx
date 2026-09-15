@@ -3,7 +3,8 @@ import { useMemo, useSyncExternalStore } from 'react';
 /** Logical demo routes and their permanent site paths (content/react-pdf-viewer/nav.json). */
 export const ROUTES = {
   playground: '/react-pdf-viewer/demos/playground/',
-  view: '/react-pdf-viewer/demos/document-viewer/',
+  /** URL-driven full-page viewer for the e2e suites (EXCEPTIONS E-03). */
+  view: '/_internal/viewer/',
   harness: '/_internal/harness/',
 } as const;
 

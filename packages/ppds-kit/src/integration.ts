@@ -145,7 +145,12 @@ export function ppds(options: PpdsOptions): AstroIntegration {
         logger.info(`llms.txt and ${twins} Markdown twins written`);
 
         // ── Sitemap (both surfaces) ───────────────────────────────────────
-        const htmlFiles = walk(dist).filter((file) => file.endsWith('.html'));
+        // Noindex pages (redirect pages such as a docs-only root) stay out of the sitemap.
+        const htmlFiles = walk(dist).filter(
+          (file) =>
+            file.endsWith('.html') &&
+            !/<meta name="robots" content="noindex/.test(readFileSync(file, 'utf8')),
+        );
         const pathnames = htmlFiles
           .map((file) => `/${relative(dist, file).replace(/\\/g, '/')}`.replace(/index\.html$/, ''))
           .filter((pathname) => !pathname.startsWith('/_internal/') && pathname !== '/404.html');

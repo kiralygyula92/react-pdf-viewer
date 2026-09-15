@@ -42,7 +42,6 @@
 
   "/react-pdf-viewer/demos-group": "Demos",
   "/react-pdf-viewer/demos/playground/": "Playground",
-  "/react-pdf-viewer/demos/document-viewer/": "Document viewer",
 
   "/react-pdf-viewer/api-group": "Reference",
   "/react-pdf-viewer/api/": "API reference",

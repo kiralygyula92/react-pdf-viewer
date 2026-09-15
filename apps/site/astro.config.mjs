@@ -32,6 +32,11 @@ export default defineConfig({
       contentRoot: `${repoRoot}content/react-pdf-viewer`,
       portfolio: `${repoRoot}content/portfolio.json`,
       urlMap: `${repoRoot}migration/url-map.csv`,
+      // Pages built before launch and folded into others (DECISIONS D-07); URLs are never dropped.
+      redirects: [
+        ['/products/react-pdf-viewer/', '/react-pdf-viewer/'],
+        ['/react-pdf-viewer/demos/document-viewer/', '/react-pdf-viewer/demos/playground/'],
+      ],
     }),
   ],
   markdown: {

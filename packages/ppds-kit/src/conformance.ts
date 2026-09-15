@@ -9,7 +9,7 @@ import { parseDoc, wordCount } from './markdown.ts';
 import { contentPages, loadPluginModel, twinPath } from './model.ts';
 import { loadReference } from './reference/render.ts';
 import { redirectTables } from './surfaces.ts';
-import type { NavNode, NavPage, PluginModel } from './types.ts';
+import type { NavNode, NavPage, PluginModel, PortfolioConfig } from './types.ts';
 
 export interface ConformanceOptions {
   contentRoot: string;
@@ -175,9 +175,17 @@ export function runConformance(options: ConformanceOptions): number {
     (entry) => `${prefix}api/${entry.slug}/`,
   );
   const allHtml = walk(dist).filter((file) => file.endsWith('.html'));
+  // Public pages: not internal fixtures, and not noindex redirect pages such as a docs-only root.
   const publicHtml = allHtml.filter(
-    (file) => !relative(dist, file).replace(/\\/g, '/').startsWith('_internal/'),
+    (file) =>
+      !relative(dist, file).replace(/\\/g, '/').startsWith('_internal/') &&
+      !/<meta name="robots" content="noindex/.test(readFileSync(file, 'utf8')),
   );
+  const portfolioPath = join(contentRoot, '..', 'portfolio.json');
+  const surfaces = (existsSync(portfolioPath)
+    ? (JSON.parse(readFileSync(portfolioPath, 'utf8')) as PortfolioConfig).surfaces
+    : undefined) ?? ['marketing', 'docs'];
+  const docsOnly = !surfaces.includes('marketing');
   const pathOf = (file: string) =>
     `/${relative(dist, file).replace(/\\/g, '/')}`.replace(/index\.html$/, '');
   const schema = JSON.parse(
@@ -612,7 +620,7 @@ export function runConformance(options: ConformanceOptions): number {
       if (pathname === '/404.html') continue;
       if (!locs.has(pathname)) fail(`sitemap.xml is missing ${pathname}`);
     }
-    if (![...locs].some((loc) => !loc.startsWith(prefix)))
+    if (!docsOnly && ![...locs].some((loc) => !loc.startsWith(prefix)))
       fail('sitemap.xml has no marketing-surface URL');
     if (![...locs].some((loc) => loc.startsWith(prefix)))
       fail('sitemap.xml has no docs-surface URL');
@@ -650,7 +658,7 @@ export function runConformance(options: ConformanceOptions): number {
         fail(`${pathname}: og:image ${image} was not generated`);
     }
     note(
-      'search:version, plugin:id and plugin:categoryId are required on plugin-scoped pages (docs surface and product landing); the portfolio home has no plugin (EXCEPTIONS E-05).',
+      'search:version, plugin:id and plugin:categoryId are required on plugin-scoped pages (docs surface and product landings); pages outside a plugin, such as a portfolio home or the 404 page, have none.',
     );
   });
 
@@ -807,7 +815,8 @@ export function runConformance(options: ConformanceOptions): number {
           fail(`taxonomy term "${term}" is not in the standard's vocabulary`);
       for (const section of config.sections)
         if (section.title) fail(`section ${section.id} overrides its canonical name`);
-      const home = htmlFor(dist, '/') ?? '';
+      // A docs-only site has no marketing home; its footer is checked on the docs root.
+      const home = htmlFor(dist, docsOnly ? prefix : '/') ?? '';
       const columns = [
         ...between(home, /<footer class="ppds-site-footer"[^>]*>/, '</footer>').matchAll(
           /<h2[^>]*class="ppds-site-footer__heading"[^>]*>([^<]+)<\/h2>/g,

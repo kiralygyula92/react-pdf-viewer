@@ -165,10 +165,7 @@
   {
     "pathname": "/react-pdf-viewer/demos-group",
     "icon": "demos",
-    "children": [
-      { "pathname": "/react-pdf-viewer/demos/playground/" },
-      { "pathname": "/react-pdf-viewer/demos/document-viewer/" }
-    ]
+    "children": [{ "pathname": "/react-pdf-viewer/demos/playground/" }]
   },
   {
     "pathname": "/react-pdf-viewer/api-group",

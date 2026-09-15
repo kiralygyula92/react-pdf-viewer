@@ -24,8 +24,6 @@ By default the document area has a minimum and maximum height. To make the viewe
 }
 ```
 
-The [Document viewer demo](/react-pdf-viewer/demos/document-viewer/) uses this recipe.
-
 ## Keep host styles out of the viewer
 
 The viewer's CSS is in a cascade layer, so unlayered rules in your app always win, including rules that target bare elements such as `button { … }` or `input[type='text'] { width: 100% }`. Scope those rules so they skip the viewer:

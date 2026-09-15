@@ -4,20 +4,17 @@ import { useState } from 'react';
 import '../pdfjs';
 import '../styles/demos.css';
 import { Playground } from './Playground';
-import { StandaloneViewer } from './StandaloneViewer';
 
 /** Mounts a Demos scenario with the PPDS demo toolbar (no sandbox: it uses site-only components). */
 export default function ScenarioFrame({
-  name,
   title,
   source,
 }: {
-  name: 'playground' | 'document-viewer';
+  name: 'playground';
   title: string;
   source: string;
 }) {
   const [generation, setGeneration] = useState(0);
-  const Scenario = name === 'playground' ? Playground : StandaloneViewer;
   return (
     <DemoToolbar
       title={title}
@@ -25,7 +22,7 @@ export default function ScenarioFrame({
       language="tsx"
       onReset={() => setGeneration((value) => value + 1)}
     >
-      <Scenario key={generation} />
+      <Playground key={generation} />
     </DemoToolbar>
   );
 }

@@ -16,11 +16,9 @@ export async function rendered(page: Page) {
   await expect(page.locator('.rpv-page canvas').first()).toBeAttached();
 }
 
-/** Opens the standalone viewer with query parameters and waits for the first render. */
+/** Opens the internal full-page viewer with query parameters and waits for the first render. */
 export async function openView(page: Page, params: Record<string, string>) {
-  await page.goto(
-    `/react-pdf-viewer/demos/document-viewer/?${new URLSearchParams(params).toString()}`,
-  );
+  await page.goto(`/_internal/viewer/?${new URLSearchParams(params).toString()}`);
   await rendered(page);
 }
 

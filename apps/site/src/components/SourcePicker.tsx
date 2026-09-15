@@ -1,6 +1,5 @@
 import type { PdfSource, PdfViewerErrorCode } from '@kiralygyula92/react-pdf-viewer';
 import { useId, useState, type FormEvent } from 'react';
-import { href } from '../router';
 import { REMOTE_PRESETS, sampleUrl, useSamples } from '../samples';
 import { Tabs } from './Tabs';
 
@@ -98,7 +97,6 @@ function UrlForm({
           </button>
         ))}
       </fieldset>
-      {valid && <a href={href('view', { src: valid })}>Open in standalone viewer</a>}
       {errorCode === 'NETWORK_ERROR' && <CorsExplainer />}
     </form>
   );

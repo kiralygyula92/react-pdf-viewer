@@ -27,7 +27,7 @@ Every entry starts as **Proposed** and needs owner approval before Phase 3 build
 
 - **Status:** Accepted (D-03)
 - **Rule deviated from:** §6 (“Every page … MUST be an instance of exactly one [archetype]”) and §3 namespacing.
-- **Scope:** `/#/harness` and its query variants → `/_internal/harness/`.
+- **Scope:** `/#/harness` and its query variants → `/_internal/harness/`, and the URL-driven viewer fixture `/_internal/viewer/` used by the functional e2e suites (D-07).
 - **Reason:** the harness renders the viewer without chrome, for deterministic e2e and visual-regression tests (18 committed baselines). It is a test fixture, not documentation, and forcing it into an archetype would add chrome and break the baselines.
 - **Mitigation:** served with `noindex`; excluded from `nav.json`, the sitemap and `llms.txt`; removed from the site header. Only the test suites link to it.
 
@@ -43,6 +43,14 @@ Every entry starts as **Proposed** and needs owner approval before Phase 3 build
 
 - **Status:** Accepted (D-03, D-04)
 - **Rule deviated from:** §7.6 (“Every page MUST emit … `search:version` · `plugin:id` · `plugin:categoryId`”).
-- **Scope:** the portfolio home `/` and the `404.html` page.
+- **Scope:** the `404.html` page (the portfolio home was removed by D-07; `/` is now a noindex redirect).
 - **Reason:** these pages belong to the portfolio, not to a plugin or a version. Emitting a plugin id or version there would scope search and analytics to the wrong product.
-- **Mitigation:** every docs page and every product landing page emits the full set; the conformance check (19) enforces it there and requires the rest of the set everywhere else. `plugin:categoryId` is emitted as `none` while the category is undecided (GAPS G-50).
+- **Mitigation:** every docs page emits the full set; the conformance check (19) enforces it there and requires the rest of the set everywhere else. `plugin:categoryId` is emitted as `none` while the category is undecided (GAPS G-50).
+
+## E-06 — Docs-only site without a marketing surface
+
+- **Status:** Accepted (D-07, owner decision)
+- **Rule deviated from:** §2.1 (marketing surface: portfolio home, product landing, marketing header) and conformance check 18 (“sitemap.xml covers both surfaces”).
+- **Scope:** the whole site. `content/portfolio.json` declares `"surfaces": ["docs"]`.
+- **Reason:** the site documents a single free product. A portfolio home with one product and a separate landing page added navigation depth and duplicated the Overview without adding information.
+- **Mitigation:** `/` is a noindex page that resolves legacy `#/…` links (E-01) and otherwise redirects to `/react-pdf-viewer/`, with a canonical link and a no-JavaScript refresh. `/products/react-pdf-viewer/` 301s to the docs root. The Overview keeps the positioning (Why React PDF Viewer) and the footer keeps the standard columns. Conformance still requires a docs-surface sitemap and reads the footer on the docs root; adding a marketing surface later only means removing `surfaces` and building the pages.

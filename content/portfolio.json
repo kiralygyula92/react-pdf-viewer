@@ -4,28 +4,69 @@
   "description": "Open-source plugins and components by kiralygyula92, each documented to the same structure: runnable examples first, generated API reference, and a Markdown twin of every page.",
   "products": ["react-pdf-viewer"],
   "footer": {
-    "Products": [{ "title": "React PDF Viewer", "href": "/products/react-pdf-viewer/" }],
+    "Products": [
+      {
+        "title": "React PDF Viewer",
+        "href": "/react-pdf-viewer/"
+      }
+    ],
     "Resources": [
-      { "title": "Requirements", "href": "/react-pdf-viewer/getting-started/requirements/" },
-      { "title": "Customization", "href": "/react-pdf-viewer/customization/" },
-      { "title": "Integrations", "href": "/react-pdf-viewer/integrations/vite/" }
+      {
+        "title": "Requirements",
+        "href": "/react-pdf-viewer/getting-started/requirements/"
+      },
+      {
+        "title": "Customization",
+        "href": "/react-pdf-viewer/customization/"
+      },
+      {
+        "title": "Integrations",
+        "href": "/react-pdf-viewer/integrations/vite/"
+      }
     ],
     "Explore": [
-      { "title": "Documentation", "href": "/react-pdf-viewer/" },
-      { "title": "npm", "href": "https://www.npmjs.com/package/@kiralygyula92/react-pdf-viewer" },
-      { "title": "Showcase", "href": "/react-pdf-viewer/discover-more/showcase/" },
-      { "title": "Roadmap", "href": "/react-pdf-viewer/discover-more/roadmap/" }
+      {
+        "title": "Documentation",
+        "href": "/react-pdf-viewer/"
+      },
+      {
+        "title": "npm",
+        "href": "https://www.npmjs.com/package/@kiralygyula92/react-pdf-viewer"
+      },
+      {
+        "title": "Showcase",
+        "href": "/react-pdf-viewer/discover-more/showcase/"
+      },
+      {
+        "title": "Roadmap",
+        "href": "/react-pdf-viewer/discover-more/roadmap/"
+      }
     ],
     "Company": [
-      { "title": "Support", "href": "/react-pdf-viewer/getting-started/support/" },
-      { "title": "Security", "href": "/react-pdf-viewer/guides/security/" },
+      {
+        "title": "Support",
+        "href": "/react-pdf-viewer/getting-started/support/"
+      },
+      {
+        "title": "Security",
+        "href": "/react-pdf-viewer/guides/security/"
+      },
       {
         "title": "License",
         "href": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/LICENSE"
       },
-      { "title": "Changelog", "href": "/react-pdf-viewer/discover-more/changelog/" }
+      {
+        "title": "Changelog",
+        "href": "/react-pdf-viewer/discover-more/changelog/"
+      }
     ]
   },
-  "social": [{ "label": "GitHub", "href": "https://github.com/kiralygyula92" }],
-  "copyright": "© 2026 kiralygyula92. Code released under the MIT License."
+  "social": [
+    {
+      "label": "GitHub",
+      "href": "https://github.com/kiralygyula92"
+    }
+  ],
+  "copyright": "© 2026 kiralygyula92. Code released under the MIT License.",
+  "surfaces": ["docs"]
 }

@@ -93,10 +93,12 @@ function Field({
 }
 
 export function Playground() {
-  const [selection, setSelection] = useState<SelectedSource>({
-    source: INITIAL_SOURCE,
-    label: 'US Letter, 3 pages',
-    url: INITIAL_SOURCE,
+  // `?src=` opens a document directly, so links such as the legacy `#/view?src=…` keep working.
+  const [selection, setSelection] = useState<SelectedSource>(() => {
+    const src = new URLSearchParams(window.location.search).get('src');
+    return src
+      ? { source: src, label: src, url: src }
+      : { source: INITIAL_SOURCE, label: 'US Letter, 3 pages', url: INITIAL_SOURCE };
   });
   const [options, setOptions] = useState(LIBRARY_DEFAULTS);
   const [lastError, setLastError] = useState<PdfViewerErrorCode | undefined>();

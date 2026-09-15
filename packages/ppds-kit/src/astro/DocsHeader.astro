@@ -1,18 +1,17 @@
 ---
 /**
- * Docs header (PPDS §2.2): logo back to the marketing surface, plugin name, version selector,
- * search, repository link. Never the marketing mega-menus.
+ * Docs header (PPDS §2.2), minimal: plugin name back to the docs root, version selector, search,
+ * repository link and theme toggle. No marketing menus and no menu button (DECISIONS D-07).
  */
-import type { PluginConfig, PortfolioConfig } from '../types.ts';
+import type { PluginConfig } from '../types.ts';
 import Search from './Search.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
 interface Props {
-  portfolio: PortfolioConfig;
   config: PluginConfig;
 }
 
-const { portfolio, config } = Astro.props;
+const { config } = Astro.props;
 const versions = config.versions ?? [
   { label: `v${config.currentVersion}`, href: `/${config.id}/`, current: true },
 ];
@@ -20,21 +19,6 @@ const versions = config.versions ?? [
 
 <header class="ppds-header ppds-header--docs">
   <div class="ppds-header__inner">
-    <button
-      type="button"
-      class="ppds-icon-button ppds-header__menu"
-      data-sidebar-toggle
-      aria-controls="ppds-sidebar-panel"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
-    </button>
-    <a class="ppds-logo" href="/" aria-label={`${portfolio.name} home`}>
-      <span class="ppds-logo__mark" aria-hidden="true"></span>
-      <span class="ppds-logo__text">{portfolio.name}</span>
-    </a>
-    <span class="ppds-header__divider" aria-hidden="true">/</span>
     <a class="ppds-header__plugin" href={`/${config.id}/`}>{config.name}</a>
     <label class="ppds-version">
       <span class="ppds-visually-hidden">Documentation version</span>

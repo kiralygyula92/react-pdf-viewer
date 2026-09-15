@@ -61,11 +61,12 @@ const { previous, next } = neighbours(model, page.pathname);
         </div>
       )
     }
-    <DocsHeader portfolio={portfolio} config={model.config} />
+    <DocsHeader config={model.config} />
     <div class="ppds-docs">
-      <div class="ppds-docs__sidebar" id="ppds-sidebar-panel" data-sidebar>
+      <details class="ppds-docs__sidebar" id="ppds-sidebar-panel" data-sidebar open>
+        <summary class="ppds-docs__sidebar-summary">Browse documentation</summary>
         <Sidebar model={model} current={page.pathname} descriptions={descriptions} injected={injectedNav} />
-      </div>
+      </details>
       <main
         id="main"
         class="ppds-docs__main"
@@ -101,14 +102,15 @@ const { previous, next } = neighbours(model, page.pathname);
     </div>
     <SiteFooter portfolio={portfolio} feeds={feeds ?? []} />
     <script>
-      const toggle = document.querySelector<HTMLButtonElement>('[data-sidebar-toggle]');
-      const panel = document.querySelector<HTMLElement>('[data-sidebar]');
-      toggle?.addEventListener('click', () => {
-        const open = toggle.getAttribute('aria-expanded') !== 'true';
-        toggle.setAttribute('aria-expanded', String(open));
-        // The name stays constant; aria-expanded conveys the state.
-        panel?.classList.toggle('ppds-docs__sidebar--open', open);
-      });
+      const panel = document.querySelector<HTMLDetailsElement>('[data-sidebar]');
+      // Wide screens always show the sidebar; narrow screens collapse it into a disclosure above the
+      // page (no menu button in the header). Without JavaScript it simply stays open.
+      const narrow = window.matchMedia('(max-width: 900px)');
+      const sync = () => {
+        if (panel) panel.open = !narrow.matches;
+      };
+      sync();
+      narrow.addEventListener('change', sync);
       // Keep the current page visible inside the sidebar without scrolling the document.
       const current = panel?.querySelector<HTMLElement>('[aria-current="page"]');
       if (current && panel) {

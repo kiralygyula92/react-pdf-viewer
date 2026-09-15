@@ -9,7 +9,7 @@ test.describe('errors', () => {
     page.on('request', (request) => {
       if (new URL(request.url()).pathname === '/samples/missing.pdf') requests += 1;
     });
-    await page.goto('/react-pdf-viewer/demos/document-viewer/?src=/samples/missing.pdf');
+    await page.goto('/_internal/viewer/?src=/samples/missing.pdf');
     await expect(page.getByRole('alert')).toContainText('Failed to fetch PDF: 404');
     await expect(toolbar(page)).toBeVisible();
     await expect(toolbar(page).getByRole('button', { name: 'Enter fullscreen' })).toBeEnabled();
@@ -24,7 +24,7 @@ test.describe('errors', () => {
   });
 
   test('a non-PDF response reports an invalid PDF', async ({ page }) => {
-    await page.goto('/react-pdf-viewer/demos/document-viewer/?src=/samples/not-a-pdf.pdf');
+    await page.goto('/_internal/viewer/?src=/samples/not-a-pdf.pdf');
     await expect(page.getByRole('alert')).toContainText(/invalid pdf/i);
   });
 

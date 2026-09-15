@@ -71,4 +71,13 @@ test.describe('legacy redirects', () => {
     expect(rows.filter((row) => row[5] === 'fail')).toEqual([]);
     expect(rows.length).toBeGreaterThan(0);
   });
+
+  test('a legacy viewer link opens its document in the playground (DECISIONS D-07)', async ({
+    page,
+  }) => {
+    await page.goto('/#/view?src=%2Fsamples%2Fmultipage.pdf&page=2&zoom=150');
+    await expect(page).toHaveURL(/\/react-pdf-viewer\/demos\/playground\/\?src=/);
+    const toolbar = page.getByRole('toolbar', { name: 'PDF controls' });
+    await expect(toolbar.locator('.rpv-toolbar__pages')).toContainText('/ 40');
+  });
 });

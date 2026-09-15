@@ -81,36 +81,6 @@ export function pageMeta(
 
 export const twin = twinPath;
 
-/** Marketing header menus (PPDS §2.1): every entry carries its own positioning. */
-export function marketingMenus() {
-  const config = getModel().config;
-  return [
-    {
-      label: 'Products',
-      entries: [
-        { title: config.name, description: config.tagline, href: `/products/${config.id}/` },
-      ],
-    },
-    {
-      label: 'Docs',
-      entries: [
-        {
-          title: `${config.name} docs`,
-          description: 'Installation, features, guides and API reference.',
-          href: `/${config.id}/`,
-        },
-      ],
-    },
-  ];
-}
-
-export function marketingLinks() {
-  return [
-    { title: 'Support', href: `/${PLUGIN_ID}/getting-started/support/` },
-    { title: 'Changelog', href: `/${PLUGIN_ID}/discover-more/changelog/` },
-  ];
-}
-
 export const feeds = [
   { title: 'Changelog RSS', href: `/${PLUGIN_ID}/discover-more/changelog/rss.xml` },
 ];
