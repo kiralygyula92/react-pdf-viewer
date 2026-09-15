@@ -26,13 +26,13 @@ export class InvalidPDFException extends Error {
   override name = 'InvalidPDFException';
 }
 
-export interface Deferred<T> {
+interface Deferred<T> {
   promise: Promise<T>;
   resolve: (value: T) => void;
   reject: (reason: unknown) => void;
 }
 
-export function deferred<T>(): Deferred<T> {
+function deferred<T>(): Deferred<T> {
   let resolve: (value: T) => void = () => undefined;
   let reject: (reason: unknown) => void = () => undefined;
   const promise = new Promise<T>((res, rej) => {
@@ -71,7 +71,7 @@ interface MockTextLayerParams {
 }
 
 /** Stand-in for PDF.js `TextLayer`: one span per text item, like the real one. */
-export class MockTextLayer {
+class MockTextLayer {
   readonly textDivs: HTMLElement[] = [];
   readonly textContentItemsStr: string[] = [];
   readonly cancel = vi.fn();
@@ -97,7 +97,7 @@ interface MockLinkService {
 }
 
 /** Stand-in for PDF.js `AnnotationLayer`: renders link sections through the link service. */
-export class MockAnnotationLayer {
+class MockAnnotationLayer {
   render({
     annotations,
     linkService,
@@ -144,7 +144,7 @@ export interface MockViewport {
   rotation: number;
 }
 
-export interface MockPage {
+interface MockPage {
   pageNumber: number;
   rotate: number;
   userUnit: number;
@@ -156,7 +156,7 @@ export interface MockPage {
   cleanup: Mock<() => boolean>;
 }
 
-export interface MockDocument {
+interface MockDocument {
   numPages: number;
   fingerprints: string[];
   pages: MockPage[];
@@ -168,13 +168,13 @@ export interface MockDocument {
   annotationStorage: object;
 }
 
-export interface MockDocumentOptions {
+interface MockDocumentOptions {
   pages?: MockPageSpec[] | undefined;
   numPages?: number | undefined;
   autoResolveRender?: boolean | undefined;
 }
 
-export interface MockDocumentHandle {
+interface MockDocumentHandle {
   document: MockDocument;
   renderTasks: MockRenderTask[];
   /** The mock typed as the real proxy, for passing to components under test. */
@@ -281,7 +281,7 @@ export interface MockLoadingTask {
   reject: (error: unknown) => void;
 }
 
-export interface MockPdfjsOptions extends MockDocumentOptions {
+interface MockPdfjsOptions extends MockDocumentOptions {
   autoResolveDocument?: boolean | undefined;
 }
 

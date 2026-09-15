@@ -2,13 +2,10 @@
 /**
  * PPDS kit command line.
  *
- *   node packages/ppds-kit/src/cli.ts scaffold    <contentRoot>
- *   node packages/ppds-kit/src/cli.ts conformance <contentRoot> <distDir> [--report qa/conformance-report.md]
+ *   node packages/ppds-kit/src/cli.ts conformance <contentRoot> <distDir> [--report <file>]
  *   node packages/ppds-kit/src/cli.ts reference   <contentRoot> <packageEntry> [--check]
  */
 import { resolve } from 'node:path';
-import { loadPluginModel } from './model.ts';
-import { scaffold } from './scaffold.ts';
 
 const [command, ...args] = process.argv.slice(2);
 const option = (name: string) => {
@@ -21,16 +18,6 @@ const positional = args.filter(
 
 async function main() {
   switch (command) {
-    case 'scaffold': {
-      const model = loadPluginModel(resolve(positional[0] ?? '.'));
-      const created = scaffold(model);
-      console.log(
-        created.length
-          ? `Created ${created.length} stubs:\n${created.map((f) => `  ${f}`).join('\n')}`
-          : 'All pages already exist.',
-      );
-      return 0;
-    }
     case 'conformance': {
       const { runConformance } = await import('./conformance.ts');
       return runConformance({
@@ -58,7 +45,7 @@ async function main() {
       });
     }
     default:
-      console.error('Usage: ppds <scaffold|conformance|reference> …');
+      console.error('Usage: ppds <conformance|reference> …');
       return 2;
   }
 }

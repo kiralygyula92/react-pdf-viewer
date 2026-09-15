@@ -24,7 +24,7 @@ interface SearchState {
 const DEBOUNCE_MS = 200;
 
 /** Loads (and caches) the searchable text of one page. */
-export async function loadPageText(
+async function loadPageText(
   pdf: PDFDocumentProxy,
   pageNumber: number,
   cache: Map<number, Promise<PageText>>,

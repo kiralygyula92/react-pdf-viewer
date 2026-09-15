@@ -11,7 +11,7 @@ import { loadReference } from './reference/render.ts';
 import { redirectTables } from './surfaces.ts';
 import type { NavNode, NavPage, PluginModel, PortfolioConfig } from './types.ts';
 
-export interface ConformanceOptions {
+interface ConformanceOptions {
   contentRoot: string;
   distDir: string;
   repoRoot: string;
@@ -123,7 +123,7 @@ function navDepth(nodes: NavNode[], depth = 1): number {
 }
 
 /** SHA-256 of every generated reference schema file (conformance check 10). */
-export function referenceChecksums(contentRoot: string): Record<string, string> {
+function referenceChecksums(contentRoot: string): Record<string, string> {
   const dir = join(contentRoot, 'reference');
   if (!existsSync(dir)) return {};
   return Object.fromEntries(
@@ -732,7 +732,7 @@ export function runConformance(options: ConformanceOptions): number {
         fail(`${name}: legacy fragment redirect script missing`);
     }
     note(
-      `${Object.keys(fragments).length} legacy fragment URLs redirect client-side (EXCEPTIONS E-01); ${paths.length} path URLs via _redirects. Browser verification: qa/redirect-check.csv.`,
+      `${Object.keys(fragments).length} legacy fragment URLs redirect client-side (EXCEPTIONS E-01); ${paths.length} path URLs via _redirects. Checked in a browser by the site e2e suite.`,
     );
   });
 
@@ -799,9 +799,7 @@ export function runConformance(options: ConformanceOptions): number {
         fail(`version ${version.label}: ${version.href} not built`);
     }
     if ((config.versions ?? []).length <= 1)
-      note(
-        'Only one version exists (GAPS G-10); older versions will be archived under their own URLs.',
-      );
+      note('Only one version exists; older versions will be archived under their own URLs.');
   });
 
   // ── Portfolio consistency ─────────────────────────────────────────────────
@@ -880,7 +878,7 @@ export function runConformance(options: ConformanceOptions): number {
   check(
     'K1',
     'Kit gates',
-    'Model validates (plugin-site.schema.json, url-map, capability assignment)',
+    'Model validates (plugin-site.schema.json, nav, titles, url-map)',
     (fail, note) => {
       const run = spawnSync(
         process.execPath,

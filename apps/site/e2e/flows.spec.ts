@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 /**
  * The required user flows (PPDS §9), clicked through as a visitor would. Each step clicks a real
  * link on the page, so a broken or missing link fails the flow. F6 (Convert) does not apply: the
- * plugin is free only (DECISIONS D-02). The recorded click paths are in qa/flow-walkthroughs.md.
+ * plugin is free only (DECISIONS D-02).
  */
 const DOCS = 'React PDF Viewer documentation';
 

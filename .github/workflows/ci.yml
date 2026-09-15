@@ -47,14 +47,14 @@ jobs:
         run: |
           pnpm ppds:validate
           pnpm ppds:reference --check
-          pnpm ppds:conformance
+          pnpm ppds:conformance --report conformance-report.md
 
       - name: Upload conformance report
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: conformance-report
-          path: qa/conformance-report.md
+          path: conformance-report.md
           retention-days: 30
 
       - name: Install Playwright browsers

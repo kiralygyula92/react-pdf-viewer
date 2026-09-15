@@ -1,5 +1,5 @@
 /**
- * Reference generator (PPDS §8.4–8.5, brief Phase 4). Sources of truth, all read from the plugin:
+ * Reference generator (PPDS §8.4–8.5). Sources of truth, all read from the plugin:
  *
  * 1. TypeScript declarations and TSDoc of every public export of the entry (TypeDoc).
  *    Components get their `…Props` interface as options (`on…` callbacks as events), hooks and

@@ -24,7 +24,7 @@ function validateUrl(value: string): string | null {
   }
 }
 
-export function CorsExplainer() {
+function CorsExplainer() {
   return (
     <div className="demo-callout" role="note">
       <strong>The request was blocked or failed.</strong> Browsers only let a page read a

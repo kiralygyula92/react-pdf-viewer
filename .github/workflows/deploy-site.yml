@@ -2,7 +2,7 @@ name: Deploy site
 
 # Static site on Cloudflare Pages (DECISIONS D-03): production from main, a preview per pull request.
 # Needs the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID repository secrets, and the SITE_ORIGIN
-# repository variable once a custom domain exists (GAPS G-49). Without the secrets the site is still
+# repository variable once a custom domain exists. Without the secrets the site is still
 # built and conformance-checked, and the deploy step is skipped.
 
 on:
@@ -55,4 +55,4 @@ jobs:
 
       - name: Skip notice
         if: env.HAS_CLOUDFLARE != 'true'
-        run: echo "::notice title=Deploy skipped::Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets to deploy (GAPS G-49)."
+        run: echo "::notice title=Deploy skipped::Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets to deploy."

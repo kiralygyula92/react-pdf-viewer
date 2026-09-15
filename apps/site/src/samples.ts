@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 /** An entry of public/samples/manifest.json (written by scripts/generate-samples.ts). */
-export interface Sample {
+interface Sample {
   file: string;
   title: string;
   pages: number;

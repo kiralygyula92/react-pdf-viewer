@@ -1,6 +1,5 @@
 node_modules/
 dist/
-coverage/
 *.tsbuildinfo
 *.tgz
 .vite/
@@ -20,3 +19,6 @@ Thumbs.db
 
 # Astro
 .astro/
+
+# PPDS conformance report written in CI
+conformance-report.md

@@ -1,7 +1,7 @@
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 
 /** 150 DPI: print resolution relative to PDF points (72 per inch). */
-export const PRINT_SCALE = 150 / 72;
+const PRINT_SCALE = 150 / 72;
 
 // Browsers without a blocking print() and without `afterprint` would otherwise keep the frame.
 const PRINT_TIMEOUT_MS = 60_000;

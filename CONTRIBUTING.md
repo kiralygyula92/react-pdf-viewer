@@ -57,8 +57,7 @@ The site follows the documentation standard in [`docs/ppds`](docs/ppds). Its con
 - **URLs never break.** When a page moves, add a row to `migration/url-map.csv` so it redirects.
 - **No invented facts.** Compatibility, metrics and version claims must be backed by tests or data.
 
-After a docs change, run `pnpm build` and `pnpm ppds:conformance` (28 checks, report in
-`qa/conformance-report.md`).
+After a docs change, run `pnpm build` and `pnpm ppds:conformance` (28 checks).
 
 ## Design principles
 

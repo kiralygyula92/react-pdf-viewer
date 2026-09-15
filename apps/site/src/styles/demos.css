@@ -195,10 +195,6 @@
   border-radius: 999px;
 }
 
-.demo-list {
-  padding-left: 20px;
-}
-
 /* ── Tabs ───────────────────────────────────────────────────────────────── */
 .demo-tabs__list {
   display: flex;
@@ -385,105 +381,6 @@
   flex: 1;
   height: 100%;
   min-height: 0;
-}
-
-.demo-open-form {
-  max-width: 640px;
-  margin: 0 auto;
-}
-
-/* ── Examples ───────────────────────────────────────────────────────────── */
-.demo-examples {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.demo-toc {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 4px 16px;
-  padding-left: 20px;
-  margin: 12px 0 24px;
-}
-
-.demo-example__live {
-  min-height: 200px;
-}
-
-.demo-source pre {
-  max-height: 420px;
-  padding: 12px;
-  overflow: auto;
-  color: #e5e7eb;
-  background: #0f172a;
-  border-radius: 8px;
-}
-
-.demo-payload {
-  padding: 12px;
-  margin: 0;
-  overflow: auto;
-  background: var(--ppds-bg-muted, #f1f5f9);
-  border-radius: 8px;
-}
-
-.demo-radios {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-}
-
-.demo-dialog {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  background: #fff;
-}
-
-.demo-dark-surface {
-  padding: 12px;
-  color: #eceff1;
-  background: #121212;
-  border-radius: 12px;
-}
-
-.demo-headless {
-  display: grid;
-  grid-template-columns: 140px minmax(0, 1fr);
-  gap: 16px;
-  align-items: start;
-}
-
-.demo-thumbs {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 640px;
-  padding: 4px;
-  margin: 0;
-  overflow: auto;
-  list-style: none;
-}
-
-.demo-thumb {
-  /* Reserve the thumbnail's size (Letter at 15% + border) before its canvas renders, so the
-     button is never smaller than the 24px target size (WCAG 2.5.8) and the list does not jump. */
-  display: grid;
-  place-items: center;
-  min-width: 106px;
-  min-height: 133px;
-  padding: 4px;
-  cursor: pointer;
-  background: none;
-  border: 2px solid transparent;
-  border-radius: 6px;
-}
-
-.demo-thumb[aria-current='page'] {
-  border-color: var(--demo-accent);
 }
 
 .custom-toolbar {

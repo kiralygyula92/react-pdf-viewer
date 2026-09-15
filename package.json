@@ -20,7 +20,7 @@
     "version-packages": "changeset version && prettier --write \"packages/*/CHANGELOG.md\"",
     "release": "pnpm --filter @kiralygyula92/react-pdf-viewer build && changeset publish",
     "ppds:validate": "node packages/ppds-kit/src/model-check.mjs react-pdf-viewer",
-    "ppds:conformance": "node packages/ppds-kit/src/cli.ts conformance content/react-pdf-viewer apps/site/dist --report qa/conformance-report.md",
+    "ppds:conformance": "node packages/ppds-kit/src/cli.ts conformance content/react-pdf-viewer apps/site/dist",
     "ppds:reference": "node packages/ppds-kit/src/cli.ts reference content/react-pdf-viewer packages/react-pdf-viewer/src/index.ts",
     "docs:reference": "pnpm ppds:reference"
   },
@@ -28,8 +28,6 @@
     "@changesets/cli": "^3.0.2",
     "@eslint/js": "^10.0.1",
     "@types/node": "^22.20.2",
-    "ajv": "^8.20.0",
-    "ajv-formats": "^3.0.1",
     "eslint": "^10.10.0",
     "eslint-plugin-jsx-a11y-x": "^0.2.0",
     "eslint-plugin-react-hooks": "^7.1.1",

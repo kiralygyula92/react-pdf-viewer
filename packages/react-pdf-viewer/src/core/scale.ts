@@ -19,7 +19,7 @@ export function scalesEqual(a: number, b: number): boolean {
   return Math.abs(a - b) < EPSILON;
 }
 
-export function clampScale(scale: number, min: number, max: number): number {
+function clampScale(scale: number, min: number, max: number): number {
   return Math.min(Math.max(scale, min), max);
 }
 

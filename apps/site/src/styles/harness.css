@@ -87,21 +87,6 @@ fieldset {
   border: 0;
 }
 
-.demo-skip-link {
-  position: absolute;
-  top: -100px;
-  left: 16px;
-  z-index: 2000;
-  padding: 8px 12px;
-  color: #fff;
-  background: var(--demo-accent);
-  border-radius: 6px;
-}
-
-.demo-skip-link:focus {
-  top: 8px;
-}
-
 /* ── Test harness ───────────────────────────────────────────────────────── */
 .harness {
   min-height: 100vh;

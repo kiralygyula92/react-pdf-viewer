@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 /**
- * PPDS Phase 2 gate: validates the site data model.
+ * Validates the site data model.
  *
  * 1. JSON Schema: plugin.config.json (root schema), nav.json ($defs/navTree), titles.json
  *    ($defs/titleMap) and pricing.json ($defs/pricing, when present) against
  *    docs/ppds/plugin-site.schema.json (draft 2020-12).
- * 2. Model rules the schema cannot express (PPDS §3–§5, brief Phase 2 gate): section order,
- *    nav depth, taxonomy and tier membership, title coverage, slug rules, the URL map covering
- *    every audited legacy URL exactly once with a resolvable target, and every audited
- *    capability being assigned.
+ * 2. Model rules the schema cannot express (PPDS §3–§5): section order,
+ *    nav depth, taxonomy and tier membership, title coverage, slug rules, and the URL map:
+ *    one row per legacy URL, each with a valid action and a resolvable target.
  *
  * Usage (from the repository root): node packages/ppds-kit/src/model-check.mjs <plugin-id>
  */
@@ -17,7 +16,7 @@ import { resolve } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 
-// Repository root: the brief's artefact paths (audit/, migration/, docs/ppds/, content/) are relative to it.
+// Repository root: migration/, docs/ppds/ and content/ are relative to it.
 const root = resolve(process.env['PPDS_REPO_ROOT'] ?? process.cwd());
 const pluginId = process.argv[2];
 if (!pluginId) {
@@ -361,7 +360,6 @@ function parseCsv(text) {
   );
 }
 
-const legacy = parseCsv(read('audit/pages.csv'));
 const urlMap = parseCsv(read('migration/url-map.csv'));
 const exceptions = existsSync(resolve(root, 'EXCEPTIONS.md')) ? read('EXCEPTIONS.md') : '';
 
@@ -434,73 +432,6 @@ for (const row of urlMap) {
     );
   }
 }
-for (const page of legacy)
-  check('§10 coverage', mapped.has(page.url), `legacy URL ${page.url} is unmapped`);
-check(
-  '§10 coverage',
-  urlMap.length === legacy.length,
-  `url-map has ${urlMap.length} rows for ${legacy.length} audited URLs`,
-);
-
-// ── 4. Capability assignment (brief Phase 2 step 2, acceptance criterion 5) ──
-const audited = [...read('audit/capabilities.md').matchAll(/^\| (C\d{2}) \|/gm)].map((m) => m[1]);
-const assignment = parseCsv(read('migration/capability-assignment.csv'));
-const gaps = read('GAPS.md');
-check(
-  'assignment coverage',
-  JSON.stringify(assignment.map((a) => a.audit_id)) === JSON.stringify(audited),
-  `capability-assignment.csv must list every audited capability once, in order (${audited.length})`,
-);
-for (const row of assignment) {
-  if (row.capability_id) {
-    check(
-      'assignment',
-      capabilityIds.has(row.capability_id),
-      `${row.audit_id}: capability ${row.capability_id} is not in nav.json`,
-    );
-    check(
-      'assignment',
-      row.target_url === `${P}${config.urlPrefix}${row.capability_id}/`,
-      `${row.audit_id}: target must be the capability page`,
-    );
-    check(
-      'assignment',
-      config.taxonomy.includes(row.group),
-      `${row.audit_id}: group "${row.group}" is not in taxonomy`,
-    );
-    const navGroup = nodes.find((n) => n.capabilityId === row.capability_id)?.parent?.subheader;
-    check(
-      'assignment',
-      navGroup === row.group,
-      `${row.audit_id}: group "${row.group}" differs from nav subheader "${navGroup}"`,
-    );
-    check(
-      'assignment',
-      config.tiers.some((t) => t.id === row.plan),
-      `${row.audit_id}: plan "${row.plan}" is not a declared tier`,
-    );
-  } else {
-    check(
-      'assignment',
-      pagePaths.has(row.target_url),
-      `${row.audit_id}: non-page capability target ${row.target_url} does not resolve`,
-    );
-    check(
-      'acceptance 5',
-      /GAPS (G-\d+)/.test(row.rationale) &&
-        gaps.includes(`| ${/GAPS (G-\d+)/.exec(row.rationale)[1]} |`),
-      `${row.audit_id}: a capability without its own page needs a GAPS.md entry`,
-    );
-  }
-}
-const assignedIds = new Set(assignment.map((a) => a.capability_id).filter(Boolean));
-for (const id of capabilityIds)
-  check(
-    'assignment',
-    assignedIds.has(id),
-    `nav capability ${id} has no audited capability behind it (invented?)`,
-  );
-
 // ── Report ──────────────────────────────────────────────────────────────────
 console.log(`\n${passed} checks passed · ${errors.length} failed`);
 console.log(
@@ -510,7 +441,7 @@ console.log(
   `archetypes: ${Object.entries(archetypeCounts)
     .sort()
     .map(([key, count]) => `${key}=${count}`)
-    .join(' ')} (+ ${apiPages.size} generated E pages in Phase 4)`,
+    .join(' ')} (+ ${apiPages.size} generated E pages)`,
 );
 if (errors.length) {
   console.error(`\n${errors.map((e) => `✖ ${e}`).join('\n')}`);

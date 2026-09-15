@@ -36,8 +36,8 @@ export function Document() {
 | [`smoke`](smoke)                                         | Minimal Vite, Next.js and webpack apps that install the packed tarball (consumer smoke tests).                                    |
 | [`scripts`](scripts)                                     | Repository tooling (consumer smoke runner).                                                                                       |
 
-Restructure records: [`audit/`](audit), [`migration/`](migration), [`qa/`](qa),
-[`DECISIONS.md`](DECISIONS.md), [`EXCEPTIONS.md`](EXCEPTIONS.md) and [`GAPS.md`](GAPS.md).
+Site decisions and deliberate deviations from the standard: [`DECISIONS.md`](DECISIONS.md) and
+[`EXCEPTIONS.md`](EXCEPTIONS.md). Legacy URL redirects: [`migration/url-map.csv`](migration/url-map.csv).
 
 ## Development
 
@@ -65,7 +65,7 @@ pnpm --filter @kiralygyula92/react-pdf-viewer build --watch    # rebuild the lib
 | `pnpm --filter site generate-samples`  | Regenerate the bundled sample PDFs (deterministic, generated from scratch)                    |
 | `pnpm ppds:reference`                  | Regenerate the API reference from the package's TypeScript and TSDoc                          |
 | `pnpm ppds:validate`                   | Validate the site model against `docs/ppds/plugin-site.schema.json`                           |
-| `pnpm ppds:conformance`                | Run the PPDS conformance checks against the built site (writes `qa/conformance-report.md`)    |
+| `pnpm ppds:conformance`                | Run the PPDS conformance checks against the built site                                        |
 
 Visual baselines are only rendered and compared in `mcr.microsoft.com/playwright` (locally through
 Docker via `apps/site/scripts/visual.sh`, and in the CI `visual` job), so they never differ by OS.

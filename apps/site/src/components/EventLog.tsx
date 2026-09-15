@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-export interface LogEntry {
+interface LogEntry {
   id: number;
   time: string;
   name: string;

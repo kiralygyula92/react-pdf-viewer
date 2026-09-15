@@ -10,7 +10,7 @@ const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
 
 /**
  * Canonical origin for canonicals, OG images, the sitemap and llms.txt (DECISIONS D-03).
- * Defaults to the Cloudflare Pages project URL until a custom domain exists (GAPS G-49).
+ * Defaults to the Cloudflare Pages project URL until a custom domain exists.
  */
 const site = process.env['SITE_ORIGIN'] ?? 'https://react-pdf-viewer.pages.dev';
 

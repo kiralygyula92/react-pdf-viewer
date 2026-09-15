@@ -1,8 +1,5 @@
 {
   "name": "kiralygyula92",
-  "tagline": "Open-source components for the web, documented to one standard.",
-  "description": "Open-source plugins and components by kiralygyula92, each documented to the same structure: runnable examples first, generated API reference, and a Markdown twin of every page.",
-  "products": ["react-pdf-viewer"],
   "footer": {
     "Products": [
       {

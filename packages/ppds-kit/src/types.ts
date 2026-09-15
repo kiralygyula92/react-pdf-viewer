@@ -63,9 +63,6 @@ export interface NavNode {
 /** Portfolio-level data shared by every plugin site (marketing header and footer, PPDS §2). */
 export interface PortfolioConfig {
   name: string;
-  tagline: string;
-  description: string;
-  products: string[];
   footer: Record<
     'Products' | 'Resources' | 'Explore' | 'Company',
     { title: string; href: string }[]
