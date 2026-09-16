@@ -187,7 +187,6 @@
     display: flex;
     gap: 12px;
     align-items: center;
-    max-width: 1440px;
     height: var(--ppds-header-height);
     padding-inline: 20px;
     margin: 0 auto;
@@ -306,7 +305,6 @@
     display: grid;
     grid-template-columns: 280px minmax(0, 1fr) 240px;
     gap: 40px;
-    max-width: 1440px;
     padding-inline: 20px;
     margin: 0 auto;
   }
@@ -445,7 +443,6 @@
 
   /* ── Article ─────────────────────────────────────────────────────────── */
   .ppds-article {
-    max-width: 800px;
   }
 
   .ppds-article__title {
@@ -774,7 +771,6 @@
 
   /* ── Page footer ─────────────────────────────────────────────────────── */
   .ppds-page-footer {
-    max-width: 800px;
     padding-top: 24px;
     margin-top: 64px;
     border-top: 1px solid var(--ppds-border);
@@ -848,7 +844,6 @@
   }
 
   .ppds-site-footer__inner {
-    max-width: 1200px;
     padding: 48px 20px 32px;
     margin: 0 auto;
   }
@@ -917,7 +912,6 @@
   }
 
   .ppds-section {
-    max-width: 1200px;
     padding: 72px 20px;
     margin: 0 auto;
   }
