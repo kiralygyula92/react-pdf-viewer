@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "astro",
+  "framework": null,
   "buildCommand": "pnpm --filter @kiralygyula92/react-pdf-viewer build && pnpm run build",
   "outputDirectory": "dist",
   "trailingSlash": true,

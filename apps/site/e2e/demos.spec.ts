@@ -38,6 +38,8 @@ test.describe('demo viewer size', () => {
     for (const pathname of pages) {
       await page.goto(pathname);
       const figures = page.locator('figure.ppds-demo');
+      // Demos mount in the browser: wait for the first one before counting.
+      await figures.first().waitFor({ state: 'attached', timeout: 10_000 });
       const count = await figures.count();
       for (let index = 0; index < count; index++) {
         const figure = figures.nth(index);

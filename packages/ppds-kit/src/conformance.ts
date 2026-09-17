@@ -672,8 +672,9 @@ export function runConformance(options: ConformanceOptions): number {
         if (!html) continue;
         const metaDescription = decode(meta(html, 'description') ?? '');
         const subtitle = textOf(
-          /<p class="ppds-article__subtitle" data-description>([\s\S]*?)<\/p>/.exec(html)?.[1] ??
-            '',
+          /<p class="ppds-article__subtitle" data-description(?:="[^"]*")?>([\s\S]*?)<\/p>/.exec(
+            html,
+          )?.[1] ?? '',
         );
         const entry = llmsEntries.find((e) => new URL(e.url).pathname === twinPath(page.pathname));
         if (metaDescription !== subtitle) fail(`${page.pathname}: meta description ≠ H1 subtitle`);
@@ -853,7 +854,7 @@ export function runConformance(options: ConformanceOptions): number {
             .replace(/\\/g, '/')
             .split('/')
             .pop()
-            ?.replace(/\.(astro|tsx?|jsx?)$/, '') ?? '';
+            ?.replace(/\.(tsx?|jsx?)$/, '') ?? '';
         if (shared.includes(name))
           fail(`${relative(repoRoot, file)}: forks the shared component ${name}`);
       }

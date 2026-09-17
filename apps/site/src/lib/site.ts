@@ -1,4 +1,3 @@
-import { getCollection } from 'astro:content';
 import {
   absoluteUrl,
   loadPluginModel,
@@ -13,8 +12,9 @@ import {
   type PortfolioConfig,
 } from 'ppds-kit';
 import { resolve } from 'node:path';
+import { docs } from '../content.ts';
 
-/** Astro runs from apps/site (dev, build and preview); bundled pages cannot use import.meta.url. */
+/** The site is built from apps/site (dev, build and preview). */
 export const REPO_ROOT = `${resolve(process.cwd(), '../..').replace(/\\/g, '/')}/`;
 export const CONTENT_ROOT = `${REPO_ROOT}content/react-pdf-viewer`;
 export const CONTENT_PATH = 'content/react-pdf-viewer';
@@ -38,16 +38,16 @@ export function getPortfolio(): PortfolioConfig {
 }
 
 export function origin(): string {
-  return import.meta.env.SITE ?? 'https://react-pdf-viewer.pages.dev';
+  return process.env['SITE_ORIGIN'] ?? 'https://react-pdf-viewer.pages.dev';
 }
 
 /** One-line descriptions of every docs page, keyed by pathname (P10: written once, in frontmatter). */
-export async function getDescriptions(): Promise<Map<string, string>> {
-  const entries = await getCollection('docs');
-  const bySource = new Map(entries.map((entry) => [entry.id, entry.data.description]));
+export function getDescriptions(): Map<string, string> {
   const descriptions = new Map<string, string>();
   for (const page of getModel().pages) {
-    const description = page.sourceFile ? bySource.get(page.sourceFile) : undefined;
+    const description = page.sourceFile
+      ? docs.get(page.sourceFile)?.frontmatter.description
+      : undefined;
     if (description) descriptions.set(page.pathname, description);
   }
   descriptions.set(

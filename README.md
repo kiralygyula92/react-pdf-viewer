@@ -30,7 +30,7 @@ export function Document() {
 | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | [`packages/react-pdf-viewer`](packages/react-pdf-viewer) | The published library.                                                                                                            |
 | [`content/react-pdf-viewer`](content/react-pdf-viewer)   | Documentation content: the site model (`plugin.config.json`, `nav.json`), MDX pages, colocated demos and the generated reference. |
-| [`apps/site`](apps/site)                                 | The static documentation site (Astro), which doubles as the Playwright e2e and visual test bed.                                   |
+| [`apps/site`](apps/site)                                 | The static documentation site (React + Vite), which doubles as the Playwright e2e and visual test bed.                            |
 | [`packages/ppds-kit`](packages/ppds-kit)                 | Plugin-agnostic site kit: layouts, demo toolbar, reference generator, conformance checks and the machine surface.                 |
 | [`docs/ppds`](docs/ppds)                                 | The documentation standard (PPDS v1.1) the site is built and checked against.                                                     |
 | [`smoke`](smoke)                                         | Minimal Vite, Next.js and webpack apps that install the packed tarball (consumer smoke tests).                                    |

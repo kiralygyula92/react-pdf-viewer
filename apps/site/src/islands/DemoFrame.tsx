@@ -1,6 +1,6 @@
 import '@kiralygyula92/react-pdf-viewer/styles.css';
 import sdk from '@stackblitz/sdk';
-import { DemoToolbar } from 'ppds-kit/react/DemoToolbar.tsx';
+import { DemoToolbar } from 'ppds-kit/client/DemoToolbar';
 import {
   Component,
   lazy,

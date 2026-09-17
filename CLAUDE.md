@@ -8,7 +8,7 @@ A pnpm monorepo:
 
 - `packages/react-pdf-viewer`: the published library `@kiralygyula92/react-pdf-viewer`, an accessible, themeable React PDF viewer built on `pdfjs-dist`.
 - `content/react-pdf-viewer`: documentation content (site model, MDX pages, colocated demos, generated reference).
-- `apps/site`: the static documentation site (Astro) that doubles as the Playwright e2e and visual test bed.
+- `apps/site`: the static documentation site (React, rendered to static HTML by Vite at build time) that doubles as the Playwright e2e and visual test bed.
 - `packages/ppds-kit`: the plugin-agnostic site kit (layouts, reference generator, conformance checks); the standard is in `docs/ppds`.
 - `smoke/`: minimal Vite, Next.js and webpack apps that install the packed tarball.
 

@@ -17,8 +17,6 @@ Thumbs.db
 .idea/
 *.log
 
-# Astro
-.astro/
 
 # PPDS conformance report written in CI
 conformance-report.md

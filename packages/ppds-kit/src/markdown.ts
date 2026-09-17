@@ -19,7 +19,7 @@ export interface Heading {
   slug: string;
 }
 
-/** GitHub-style heading slug, matching the ids Astro's Markdown pipeline generates. */
+/** GitHub-style heading slug, matching the ids the Markdown pipeline generates. */
 export function slugify(text: string): string {
   return text
     .toLowerCase()

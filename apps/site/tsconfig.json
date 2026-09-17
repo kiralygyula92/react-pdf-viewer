@@ -1,17 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "types": ["node", "astro/client"],
+    "types": ["node", "vite/client"],
     "allowImportingTsExtensions": true,
-    "plugins": [{ "name": "@astrojs/ts-plugin" }]
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "module": "esnext"
   },
-  "include": [
-    ".astro/types.d.ts",
-    "src",
-    "e2e",
-    "scripts",
-    "astro.config.mjs",
-    "playwright.config.ts"
-  ],
-  "exclude": ["dist", "src/legacy"]
+  "include": ["src", "e2e", "scripts", "vite.config.ts", "playwright.config.ts"],
+  "exclude": ["dist"]
 }
