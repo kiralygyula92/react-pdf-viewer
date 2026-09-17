@@ -78,7 +78,9 @@ Docker via `apps/site/scripts/visual.sh`, and in the CI `visual` job), so they n
 - **Release** (`.github/workflows/release.yml`): on `main`, [Changesets](https://github.com/changesets/changesets)
   opens a "Version Packages" pull request; merging it publishes to npm with provenance.
 - **Deploy site** (`.github/workflows/deploy-site.yml`): builds the site and deploys it to
-  Cloudflare Pages, production from `main` and a preview per pull request.
+  Cloudflare Pages, production from `main` and a preview per pull request. `apps/site/vercel.json`
+  configures the same build on Vercel, where the site also reports Web Analytics and Speed
+  Insights (see [RELEASING.md](RELEASING.md)).
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and [RELEASING.md](RELEASING.md) for the
 one-time npm and hosting setup.

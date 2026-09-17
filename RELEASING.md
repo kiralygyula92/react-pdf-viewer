@@ -12,7 +12,11 @@ Releases are automated with [Changesets](https://github.com/changesets/changeset
    (_Settings → Secrets and variables → Actions_). The workflow requests `id-token: write`, so
    packages are published with [provenance](https://docs.npmjs.com/generating-provenance-statements).
 3. **GitHub:** in _Settings → Actions → General_, allow GitHub Actions to create pull requests.
-4. **Documentation site (Cloudflare Pages):** create a Pages project named `react-pdf-viewer`, then
+4. **Site analytics (Vercel only):** in the Vercel project, turn on **Web Analytics** and **Speed
+   Insights** (Project → Analytics / Speed Insights → Enable). The site loads their scripts only
+   when the build runs on Vercel, and both are cookieless, so no consent banner is needed. To
+   check the wiring locally, build with `ANALYTICS=1` and look for the two `/_vercel/…` scripts.
+5. **Documentation site (Cloudflare Pages):** create a Pages project named `react-pdf-viewer`, then
    add the `CLOUDFLARE_API_TOKEN` (with _Cloudflare Pages: Edit_) and `CLOUDFLARE_ACCOUNT_ID`
    repository secrets. Once a custom domain is attached, set the `SITE_ORIGIN` repository variable
    (for example `https://docs.example.com`) so canonical URLs, the sitemap, `llms.txt` and social

@@ -3,6 +3,7 @@
  * contents) and the demo islands, which mount where the server left a placeholder.
  */
 import { initShell } from 'ppds-kit/client/shell';
+import { initAnalytics } from './analytics.ts';
 import { createRoot } from 'react-dom/client';
 import { createElement, lazy, Suspense, type ComponentType } from 'react';
 import 'ppds-kit/styles/site.css';
@@ -27,3 +28,4 @@ function mountIslands() {
 
 initShell();
 mountIslands();
+initAnalytics();

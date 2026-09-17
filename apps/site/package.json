@@ -17,6 +17,8 @@
   "dependencies": {
     "@kiralygyula92/react-pdf-viewer": "workspace:*",
     "@stackblitz/sdk": "^1.11.1",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "pdfjs-dist": "^6.3.289",
     "ppds-kit": "workspace:*",
     "react": "^19.3.0",

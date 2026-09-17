@@ -14,10 +14,15 @@ import { shikiOptions } from './src/mdx/shiki.ts';
 
 const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
 
+// Vercel Analytics and Speed Insights only work behind Vercel's edge, which serves their scripts
+// under /_vercel/. Compile them in only for builds that run there (or with ANALYTICS=1 to test).
+const analytics = Boolean(process.env['VERCEL'] ?? process.env['ANALYTICS']);
+
 // PDF.js assets are self-hosted: the recommended production setup (see src/pdfjs.ts).
 const PDFJS_ASSET_DIRS = ['cmaps', 'standard_fonts', 'wasm', 'iccs'];
 
 export default defineConfig({
+  define: { __VERCEL_ANALYTICS__: JSON.stringify(analytics) },
   // The docs content lives outside the app, and demos import the workspace package.
   server: { port: 4321, fs: { allow: [repoRoot] } },
   plugins: [
