@@ -18,7 +18,7 @@ The print button renders every page at 150 DPI into a hidden frame, then opens t
 
 <Demo id="features/print/demo-basics" title="Print a 40-page document" />
 
-While pages are prepared, a status message shows the progress with a Cancel button, so long documents never look frozen. Failures reach `onError` as `PRINT_FAILED`.
+While pages are prepared, a status message shows the progress with a Cancel button, so long documents never look frozen. Failures reach `onError` as `PRINT_FAILED`. Each page prints on a sheet of its own size, so a document that mixes page sizes prints correctly.
 
 ### Opening the PDF instead
 
@@ -57,4 +57,6 @@ See the [customization guide](/react-pdf-viewer/customization/).
 - **The print dialog itself cannot be cancelled by the app.** Cancel stops page preparation; once the browser's dialog is open, it belongs to the browser.
 - **Printing is rasterised.** Pages are rendered to images for printing, so text is not selectable in a printed-to-PDF copy. Workaround: `printMode="open-url"` prints through the browser's viewer, which keeps vector text.
 - **Hidden in compact layouts.** Below `compactBreakpoint` the print button is hidden outside fullscreen by default. Workaround: `toolbar={{ hiddenWhenCompact: [] }}`.
+- **Prepared pages are held in memory.** Every page is kept as an image until the dialog closes, so printing a very long document needs a lot of memory. Workaround: `printMode="open-url"`, which hands the document to the browser.
+- **Sheet sizes need named-page support.** Browsers without CSS named pages print every sheet at the first page's size (pages are scaled to fit, never cut).
 - **`open-url` needs a URL.** With binary sources, `open-url` opens a temporary object URL, which some pop-up blockers block. Workaround: use the default `render` mode.

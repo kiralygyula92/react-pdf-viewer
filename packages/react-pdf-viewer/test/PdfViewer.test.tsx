@@ -351,6 +351,27 @@ describe('PdfViewer — default-on fixes', () => {
     await waitFor(() => expect(document.querySelector('iframe.rpv-print-frame')).toBeNull());
   });
 
+  it('gives every page size its own sheet, so mixed-size documents print correctly', async () => {
+    const { frameWindow, frameDocument } = stubPrintFrame();
+    mock = installMockPdfjs({
+      autoResolveDocument: true,
+      autoResolveRender: true,
+      pages: [
+        { width: 612, height: 792 },
+        { width: 842, height: 1191 },
+        { width: 612, height: 792 },
+      ],
+    });
+    const { user } = await renderViewer();
+    await user.click(button('Print PDF'));
+    await waitFor(() => expect(frameWindow.print).toHaveBeenCalledOnce());
+    const styles = frameDocument.head.textContent ?? '';
+    expect(styles).toContain('@page rpv-sheet-0 { size: 612pt 792pt; margin: 0; }');
+    expect(styles).toContain('@page rpv-sheet-1 { size: 842pt 1191pt; margin: 0; }');
+    const sheets = [...frameDocument.body.children].map((sheet) => sheet.className);
+    expect(sheets).toEqual(['page rpv-sheet-0', 'page rpv-sheet-1', 'page rpv-sheet-0']);
+  });
+
   it('onPrint can cancel; printMode "open-url" opens the document instead', async () => {
     const { frameWindow } = stubPrintFrame();
     const open = vi.spyOn(window, 'open').mockReturnValue(null);

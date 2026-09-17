@@ -102,6 +102,30 @@ describe('loadSource', () => {
     ).rejects.toHaveProperty('name', 'AbortError');
   });
 
+  it('honours the caller’s abort signal without AbortSignal.any (older Safari)', async () => {
+    const original = AbortSignal.any;
+    Reflect.deleteProperty(AbortSignal, 'any');
+    try {
+      const caller = new AbortController();
+      let received: AbortSignal | undefined;
+      const fetcher = vi.fn((_url: string, init: RequestInit) => {
+        received = init.signal ?? undefined;
+        return new Promise<Response>(() => undefined);
+      });
+      void loadSource('/a.pdf', signal(), { fetcher, requestInit: { signal: caller.signal } });
+      await vi.waitFor(() => expect(received).toBeDefined());
+      expect(received?.aborted).toBe(false);
+      caller.abort();
+      expect(received?.aborted).toBe(true);
+    } finally {
+      Object.defineProperty(AbortSignal, 'any', {
+        value: original,
+        configurable: true,
+        writable: true,
+      });
+    }
+  });
+
   it('treats null, undefined and empty strings as empty', () => {
     expect(isEmptySource('')).toBe(true);
     expect(isEmptySource(null)).toBe(true);

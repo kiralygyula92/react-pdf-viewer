@@ -48,4 +48,5 @@ For layouts the viewer does not offer, such as two pages side by side, render pa
 
 - **No spreads.** Pages are always shown one per row. Workaround: a [headless](/react-pdf-viewer/headless/) layout that places two `PdfPageCanvas` elements per row.
 - **Scrolling fast shows blank pages briefly.** Pages outside the rendered window paint when they come into view. Workaround: none needed for most documents; very slow devices benefit from a lower `maxCanvasPixels`.
+- **Page sizes are read when the document opens.** Every page's size is measured so the scrollbar is accurate, which takes a moment on documents with thousands of pages; pages render as usual meanwhile.
 - **Search and links render per visible page.** Highlights and link areas appear as pages render, which is expected.

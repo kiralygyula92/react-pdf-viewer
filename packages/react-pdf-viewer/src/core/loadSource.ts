@@ -48,8 +48,20 @@ function combineSignals(own: AbortSignal, external: AbortSignal | null | undefin
   if (!external) {
     return own;
   }
-  // AbortSignal.any is missing before Safari 17.4; there the caller's signal is not honoured.
-  return typeof AbortSignal.any === 'function' ? AbortSignal.any([own, external]) : own;
+  if (typeof AbortSignal.any === 'function') {
+    return AbortSignal.any([own, external]);
+  }
+  // Older browsers (Safari before 17.4) have no AbortSignal.any: link the two by hand.
+  const controller = new AbortController();
+  const abort = (source: AbortSignal) => () => controller.abort(source.reason);
+  for (const signal of [own, external]) {
+    if (signal.aborted) {
+      controller.abort(signal.reason);
+      return controller.signal;
+    }
+    signal.addEventListener('abort', abort(signal), { once: true });
+  }
+  return controller.signal;
 }
 
 async function fetchSource(

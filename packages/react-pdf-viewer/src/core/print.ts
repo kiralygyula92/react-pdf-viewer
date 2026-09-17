@@ -75,9 +75,25 @@ export async function printDocument(
     frameDocument.head.append(style);
     onProgress?.(0, total);
 
+    // One named page per distinct page size, so a document of mixed sizes prints each page on a
+    // sheet of its own size. Browsers without named-page support fall back to the `@page` size.
+    const sheetNames = new Map<string, string>();
+    const sheetNameFor = (width: number, height: number): string => {
+      const key = `${Math.round(width)}x${Math.round(height)}`;
+      let name = sheetNames.get(key);
+      if (!name) {
+        name = `rpv-sheet-${sheetNames.size}`;
+        sheetNames.set(key, name);
+        style.textContent += `@page ${name} { size: ${width}pt ${height}pt; margin: 0; }.${name} { page: ${name}; }`;
+      }
+      return name;
+    };
+
     for (let pageNumber = 1; pageNumber <= total; pageNumber++) {
       signal?.throwIfAborted();
       const page = await pdf.getPage(pageNumber);
+      const pageSize = page.getViewport({ scale: 1 });
+      const sheetName = sheetNameFor(pageSize.width, pageSize.height);
       const viewport = page.getViewport({ scale });
       const canvas = hostDocument.createElement('canvas');
       canvas.width = Math.floor(viewport.width);
@@ -91,7 +107,7 @@ export async function printDocument(
       const url = URL.createObjectURL(blob);
       objectUrls.push(url);
       const sheet = frameDocument.createElement('div');
-      sheet.className = 'page';
+      sheet.className = `page ${sheetName}`;
       const image = frameDocument.createElement('img');
       image.alt = '';
       image.src = url;

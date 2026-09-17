@@ -38,4 +38,5 @@ For a thumbnail strip in your own layout (for example horizontally under the pag
 ## Limitations
 
 - **Hidden in compact layouts.** Below `compactBreakpoint` the sidebar is hidden outside fullscreen, because it would take too much of a narrow screen. Workaround: lower `compactBreakpoint`, or build a horizontal strip with [`PdfPageCanvas`](/react-pdf-viewer/headless/).
+- **Thumbnails stay rendered.** A thumbnail is kept once it has been shown, so memory grows with the number of pages scrolled past. Workaround: a [headless](/react-pdf-viewer/headless/) strip that renders only what is on screen.
 - **The sidebar is on the left.** Its position is fixed. Workaround: a [headless](/react-pdf-viewer/headless/) layout.
