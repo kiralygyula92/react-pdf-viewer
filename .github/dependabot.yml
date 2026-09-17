@@ -8,6 +8,17 @@ updates:
       dev-dependencies:
         dependency-type: development
     open-pull-requests-limit: 5
+    ignore:
+      # The library emits its .d.ts files with unplugin-dts, which needs the TypeScript JavaScript
+      # compiler API that TypeScript 7 (the native port) no longer ships. Moving to 7 means adding
+      # @typescript/typescript6 and re-checking typescript-eslint and the dts emit, so majors are
+      # adopted deliberately rather than by an automated pull request (DECISIONS D-09).
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
+      # Node type definitions track the Node version the repo runs (22.18+), so that code cannot
+      # use APIs the runtime does not have.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: /
     schedule:
