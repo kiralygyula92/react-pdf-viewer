@@ -8,11 +8,12 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { build, createServer, type Manifest } from 'vite';
 import type { EntryName, PageAssets, Route } from '../src/entry-server.tsx';
+import { SITE_ORIGIN as origin } from '../src/origin.ts';
+import { machineOptions } from './machine.ts';
 
 const root = resolve(import.meta.dirname, '..');
 const repoRoot = resolve(root, '../..');
 const dist = join(root, 'dist');
-const origin = process.env['SITE_ORIGIN'] ?? 'https://react-pdf-viewer.pages.dev';
 
 const started = Date.now();
 rmSync(dist, { recursive: true, force: true });
@@ -96,9 +97,9 @@ try {
 
 // ── 3. Machine surface and hosting artefacts ────────────────────────────────
 await buildSiteArtifacts({
+  ...machineOptions,
   dist,
   origin,
-  contentRoot: join(repoRoot, 'content/react-pdf-viewer'),
   portfolio: join(repoRoot, 'content/portfolio.json'),
   urlMap: join(repoRoot, 'migration/url-map.csv'),
   // Pages built before launch and folded into others (DECISIONS D-07); URLs are never dropped.

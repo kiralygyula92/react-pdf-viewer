@@ -11,6 +11,7 @@ import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { rehypeHeadings } from './src/mdx/headings.ts';
 import { shikiOptions } from './src/mdx/shiki.ts';
+import { SITE_ORIGIN } from './src/origin.ts';
 
 const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
 
@@ -26,6 +27,13 @@ export default defineConfig({
   // The docs content lives outside the app, and demos import the workspace package.
   server: { port: 4321, fs: { allow: [repoRoot] } },
   plugins: [
+    {
+      // `%SITE_ORIGIN%` in a page becomes the origin, as it does in the kit's Markdown twins.
+      name: 'site-origin',
+      enforce: 'pre',
+      transform: (code, id) =>
+        id.endsWith('.mdx') ? code.replaceAll('%SITE_ORIGIN%', SITE_ORIGIN) : undefined,
+    },
     {
       enforce: 'pre',
       ...mdx({

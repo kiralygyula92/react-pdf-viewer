@@ -61,40 +61,107 @@ export function wordCount(body: string): number {
   return prose.split(/\s+/).filter((word) => /\p{L}/u.test(word)).length;
 }
 
+/**
+ * `%SITE_ORIGIN%` in a page becomes the site origin, for the few places prose needs an absolute
+ * URL (a `curl` command, say). Not `{origin}`: braces are JSX in MDX and in every code sample.
+ */
+export const SITE_ORIGIN_TOKEN = '%SITE_ORIGIN%';
+
+/** A demo inlined into Markdown: its id, the title the page gives it, and its source. */
+export interface TwinDemo {
+  id: string;
+  title: string | undefined;
+  code: string;
+  lang: string;
+}
+
 export interface TwinOptions {
   /** Resolves `<Demo id="…" />` to its source code and language. */
   demoSource: (id: string) => { code: string; lang: string } | undefined;
   /** Absolute URL for site-relative links. */
   absolute: (href: string) => string;
+  /** Renders an inlined demo; by default its title in bold, then its fenced source. */
+  renderDemo?: ((demo: TwinDemo) => string) | undefined;
 }
+
+/** A fenced code block whose fence is longer than any backtick run in the code. */
+export function codeFence(lang: string, code: string): string {
+  const longest = Math.max(0, ...[...code.matchAll(/`+/g)].map((match) => match[0].length));
+  const ticks = '`'.repeat(Math.max(3, longest + 1));
+  return `${ticks}${lang}\n${code}\n${ticks}`;
+}
+
+const defaultDemo = ({ title, code, lang }: TwinDemo) =>
+  `${title ? `**Demo: ${title}**\n\n` : ''}${codeFence(lang, code)}`;
 
 /**
  * Converts an authored MDX page body to plain Markdown for its `.md` twin (PPDS §7.7): imports
  * are dropped, demos become fenced source, callouts become blockquotes, other components are
- * unwrapped, and site-relative links become absolute.
+ * unwrapped, and site-relative links become absolute. Code is never touched: fenced blocks and
+ * inline code are set aside while the prose is converted, then put back as they were.
  */
 export function toMarkdownTwin(body: string, options: TwinOptions): string {
-  let out = body.replace(/^import\s.+?;?\s*$/gm, '');
+  const kept: string[] = [];
+  const keepBlock = (text: string) => `\uE000B${kept.push(text) - 1}\uE000`;
+  const keepInline = (text: string) => `\uE000I${kept.push(text) - 1}\uE000`;
+
+  const lines: string[] = [];
+  let fence: string | null = null;
+  let block: string[] = [];
+  for (const line of body.split('\n')) {
+    const marker = /^(```+|~~~+)/.exec(line.trim())?.[1];
+    if (fence === null) {
+      if (marker) {
+        fence = marker;
+        block = [line];
+      } else lines.push(line);
+      continue;
+    }
+    block.push(line);
+    if (
+      marker !== undefined &&
+      marker[0] === fence[0] &&
+      marker.length >= fence.length &&
+      line.trim() === marker
+    ) {
+      lines.push(keepBlock(block.join('\n')));
+      fence = null;
+    }
+  }
+  if (fence !== null) lines.push(...block);
+
+  let out = lines.join('\n').replace(/``[^\n]+?``|`[^`\n]+`/g, keepInline);
+  out = out.replace(/^import\s.+?;?\s*$/gm, '');
+  const renderDemo = options.renderDemo ?? defaultDemo;
   out = out.replace(/<Demo\b([^>]*?)\/>/g, (_all, attrs: string) => {
     const id = /id="([^"]+)"/.exec(attrs)?.[1];
     const title = /title="([^"]+)"/.exec(attrs)?.[1];
     const demo = id ? options.demoSource(id) : undefined;
-    if (!demo) return '';
-    return `${title ? `**Demo: ${title}**\n\n` : ''}\`\`\`${demo.lang}\n${demo.code.trimEnd()}\n\`\`\``;
+    if (!id || !demo) return '';
+    return keepBlock(renderDemo({ id, title, code: demo.code.trimEnd(), lang: demo.lang }));
   });
   out = out.replace(
-    /<Callout\b[^>]*type="(info|warning)"[^>]*>([\s\S]*?)<\/Callout>/g,
-    (_all, type: string, inner: string) =>
-      inner
-        .trim()
-        .split('\n')
-        .map(
-          (line, index) =>
-            `> ${index === 0 ? `**${type === 'warning' ? 'Warning' : 'Note'}:** ` : ''}${line}`,
-        )
-        .join('\n'),
+    /<Callout\b([^>]*)>([\s\S]*?)<\/Callout>/g,
+    (_all, attrs: string, inner: string) => {
+      const label = /type="warning"/.test(attrs) ? 'Warning' : 'Note';
+      const title = /title="([^"]+)"/.exec(attrs)?.[1];
+      const content = inner.trim().split('\n');
+      const quoted = title
+        ? [`**${label}: ${title}**`, '', ...content]
+        : [`**${label}:** ${content[0] ?? ''}`, ...content.slice(1)];
+      return quoted.map((line) => (line ? `> ${line}` : '>')).join('\n');
+    },
   );
   out = out.replace(/<\/?[A-Z][A-Za-z]*\b[^>]*>/g, '');
   out = out.replace(/\]\((\/[^)\s]*)\)/g, (_all, href: string) => `](${options.absolute(href)})`);
-  return `${out.replace(/\n{3,}/g, '\n\n').trim()}\n`;
+  out = out.replace(/\n{3,}/g, '\n\n');
+
+  // Blocks inside a blockquote (a callout) keep the quote marker on every line.
+  out = out.replace(/^(.*?)\uE000B(\d+)\uE000/gm, (_all, before: string, index: string) => {
+    const text = kept[Number(index)] ?? '';
+    const quote = /^(?:> ?)+$/.exec(before)?.[0];
+    return before + (quote ? text.split('\n').join(`\n${quote}`) : text);
+  });
+  out = out.replace(/\uE000[BI](\d+)\uE000/g, (_all, index: string) => kept[Number(index)] ?? '');
+  return `${out.trim()}\n`;
 }

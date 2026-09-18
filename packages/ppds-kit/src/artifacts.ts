@@ -1,12 +1,11 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
-import { parseDoc, slugify, toMarkdownTwin } from './markdown.ts';
-import { contentPages, loadPluginModel, loadPortfolio, twinPath } from './model.ts';
+import { LLMS_FULL_FILES, machineSurface, type MachineSurfaceOptions } from './machine.ts';
+import { parseDoc, slugify } from './markdown.ts';
+import { loadPluginModel, loadPortfolio } from './model.ts';
 import { renderOgImage } from './og.ts';
-import { referenceIndexMarkdown, referenceMarkdown, loadReference } from './reference/render.ts';
 import {
   absoluteUrl,
-  llmsTxt,
   redirectTables,
   redirectsFile,
   rssXml,
@@ -24,6 +23,10 @@ export interface SiteArtifactOptions {
   urlMap: string;
   /** Extra `_redirects` rules, e.g. bare section paths → their first page. */
   redirects?: [from: string, to: string, status?: number][];
+  /** The documented package, named in the header of `llms-full.md`. */
+  package?: MachineSurfaceOptions['package'];
+  /** Paragraphs for the header of `llms-full.md`. */
+  notes?: MachineSurfaceOptions['notes'];
   /** Progress reporter; silent by default. */
   log?: (message: string) => void;
 }
@@ -55,8 +58,8 @@ const decode = (text: string) =>
 
 /**
  * Build-time machine surface and hosting artefacts (PPDS §7.6, §7.7, D-03): `llms.txt`, `.md`
- * twins, `sitemap.xml`, the changelog RSS feed, generated OG images, `_redirects` and the static
- * search index.
+ * twins, `llms-full.md`, `sitemap.xml`, the changelog RSS feed, generated OG images, `_redirects`
+ * and the static search index.
  */
 export async function buildSiteArtifacts(options: SiteArtifactOptions): Promise<void> {
   const { dist, origin } = options;
@@ -66,75 +69,17 @@ export async function buildSiteArtifacts(options: SiteArtifactOptions): Promise<
   const { config } = model;
   const prefix = `/${config.id}/`;
 
-  // ── Descriptions and twins ────────────────────────────────────────
-  const descriptions = new Map<string, string>();
-  const reference = loadReference(options.contentRoot);
-  const demoSource = (id: string) => {
-    for (const ext of ['tsx', 'ts', 'jsx', 'css']) {
-      const path = join(options.contentRoot, `${id}.${ext}`);
-      if (existsSync(path)) return { code: readFileSync(path, 'utf8'), lang: ext };
-    }
-    return undefined;
-  };
-  let twins = 0;
-  for (const page of contentPages(model)) {
-    if (page.pathname === `${prefix}api/`) {
-      descriptions.set(
-        page.pathname,
-        'Generated reference for every public component, hook, function and type.',
-      );
-      write(join(dist, twinPath(page.pathname)), referenceIndexMarkdown(model, reference, origin));
-      twins++;
-      continue;
-    }
-    if (!page.sourceFile) continue;
-    const { frontmatter, body } = parseDoc(
-      readFileSync(join(options.contentRoot, page.sourceFile), 'utf8'),
-    );
-    const description = String(frontmatter['description'] ?? '');
-    descriptions.set(page.pathname, description);
-    const heading = page.archetype === 'A' ? `${config.name} — Overview` : page.title;
-    let markdown = `# ${heading}\n\n${description}\n\n${toMarkdownTwin(body, {
-      demoSource,
-      absolute: (href) => absoluteUrl(origin, href),
-    })}`;
-    const symbols = Array.isArray(frontmatter['symbols'])
-      ? (frontmatter['symbols'] as string[])
-      : [];
-    if (page.archetype === 'B') {
-      markdown += `\n## API\n\n${
-        symbols.length
-          ? symbols
-              .map(
-                (symbol) =>
-                  `- [${symbol}](${absoluteUrl(origin, twinPath(`${prefix}api/${reference.slugOf(symbol)}/`))})`,
-              )
-              .join('\n')
-          : 'This capability has no public symbols of its own.'
-      }\n`;
-      for (const symbol of symbols) {
-        const entry = reference.symbols.get(symbol);
-        if (entry) markdown += `\n---\n\n${referenceMarkdown(entry, reference, model, origin, 2)}`;
-      }
-    }
-    write(join(dist, twinPath(page.pathname)), markdown);
-    twins++;
-  }
-  const apiEntries = [...reference.symbols.values()].map((entry) => ({
-    title: `${entry.schema.name} reference`,
-    pathname: `${prefix}api/${reference.slugOf(entry.schema.name)}/`,
-    description: entry.strings.symbolDescription ?? '',
-    section: 'API reference',
-  }));
-  for (const entry of reference.symbols.values()) {
-    write(
-      join(dist, twinPath(`${prefix}api/${reference.slugOf(entry.schema.name)}/`)),
-      referenceMarkdown(entry, reference, model, origin, 1),
-    );
-    twins++;
-  }
-  write(join(dist, config.id, 'llms.txt'), llmsTxt(model, origin, descriptions, apiEntries));
-  logger.info(`llms.txt and ${twins} Markdown twins written`);
+  // ── Twins, llms.txt and llms-full ────────────────────────────────
+  const machine = machineSurface({
+    contentRoot: options.contentRoot,
+    origin,
+    package: options.package,
+    notes: options.notes,
+  });
+  for (const [pathname, content] of machine) write(join(dist, pathname), content);
+  logger.info(
+    `llms.txt, ${LLMS_FULL_FILES.join(', ')} and ${machine.size - 1 - LLMS_FULL_FILES.length} Markdown twins written`,
+  );
 
   // ── Sitemap (both surfaces) ───────────────────────────────────────
   // Noindex pages (redirect pages such as a docs-only root) stay out of the sitemap.

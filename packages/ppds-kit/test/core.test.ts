@@ -1,8 +1,19 @@
 import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join } from 'node:path';
+import { after, describe, it } from 'node:test';
 import { archetypeFor, sourceFileFor } from '../src/archetypes.ts';
 import { parseCsv, toCsv } from '../src/csv.ts';
-import { headingsOf, parseDoc, slugify, toMarkdownTwin, wordCount } from '../src/markdown.ts';
+import { machineSurface } from '../src/machine.ts';
+import {
+  codeFence,
+  headingsOf,
+  parseDoc,
+  slugify,
+  toMarkdownTwin,
+  wordCount,
+} from '../src/markdown.ts';
 import { twinPath } from '../src/model.ts';
 import { symbolSlug } from '../src/reference/render.ts';
 import { llmsTxt, redirectTables, redirectsFile, sitemapXml } from '../src/surfaces.ts';
@@ -13,6 +24,7 @@ describe('archetypes (PPDS v1.1 §6)', () => {
     assert.equal(archetypeFor('', false), 'A');
     assert.equal(archetypeFor('all-features/', false), 'C');
     assert.equal(archetypeFor('getting-started/installation/', false), 'F');
+    assert.equal(archetypeFor('getting-started/ai-context/', false), 'F');
     assert.equal(archetypeFor('getting-started/faq/', false), 'J');
     assert.equal(archetypeFor('api/', false), 'K');
     assert.equal(archetypeFor('api/some-symbol/', false), 'E');
@@ -78,6 +90,27 @@ describe('markdown', () => {
     assert.doesNotMatch(markdown, /import X/);
   });
 
+  it('leaves code in a twin as it was written', () => {
+    const markdown = toMarkdownTwin(
+      'Use `<Viewer>` here.\n\n```tsx\nimport { Viewer } from \'p\';\n<Viewer source={url} />\n```\n\n<Demo id="d" />\n\n<Callout type="warning" title="Careful">\n\n```tsx\n<Viewer source={new Blob()} />\n```\n\n</Callout>\n',
+      {
+        demoSource: () => ({ code: 'export default () => <Viewer scale={2} />;\n', lang: 'tsx' }),
+        absolute: (href) => href,
+      },
+    );
+    assert.match(markdown, /^Use `<Viewer>` here\./);
+    assert.match(
+      markdown,
+      /```tsx\nimport \{ Viewer \} from 'p';\n<Viewer source=\{url\} \/>\n```/,
+    );
+    assert.match(markdown, /```tsx\nexport default \(\) => <Viewer scale=\{2\} \/>;\n```/);
+    assert.match(
+      markdown,
+      /> \*\*Warning: Careful\*\*\n>\n> ```tsx\n> <Viewer source=\{new Blob\(\)\} \/>\n> ```\n$/,
+    );
+    assert.equal(codeFence('md', 'a ``` b'), '````md\na ``` b\n````');
+  });
+
   it('names twins and reference slugs', () => {
     assert.equal(twinPath('/p/zoom/'), '/p/zoom.md');
     assert.equal(twinPath('/p/'), '/p.md');
@@ -125,5 +158,150 @@ describe('machine surface', () => {
     assert.deepEqual(fragments, { '#/docs': '/p/' });
     assert.deepEqual(paths, [['/old/', '/p/guides/x/']]);
     assert.equal(redirectsFile([['/old/', '/new/']]), '/old/ /new/ 301\n');
+  });
+});
+
+describe('llms-full', () => {
+  const root = mkdtempSync(join(tmpdir(), 'ppds-kit-'));
+  after(() => rmSync(root, { recursive: true, force: true }));
+  const files: Record<string, unknown> = {
+    'plugin.config.json': {
+      id: 'p',
+      name: 'Plugin',
+      tagline: 'Tag.',
+      description: 'Desc.',
+      repo: 'https://code.test/p',
+      currentVersion: '1.0.0',
+      tiers: [],
+      taxonomy: [],
+      sections: [],
+    },
+    'nav.json': [
+      {
+        pathname: '/p/getting-started-group',
+        children: [{ pathname: '/p/' }, { pathname: '/p/getting-started/ai-context/' }],
+      },
+      {
+        pathname: '/p/features-group',
+        children: [{ pathname: '/p/zoom/', capabilityId: 'zoom', plan: 'free' }],
+      },
+      { pathname: '/p/api-group', children: [{ pathname: '/p/api/' }] },
+    ],
+    'titles.json': {
+      '/p/getting-started-group': 'Getting started',
+      '/p/': 'Overview',
+      '/p/getting-started/ai-context/': 'AI context',
+      '/p/features-group': 'Features',
+      '/p/zoom/': 'Zoom',
+      '/p/api-group': 'Reference',
+      '/p/api/': 'API reference',
+    },
+    'getting-started/overview.mdx':
+      '---\ntitle: Overview\ndescription: The overview.\n---\n## Introduction\n\nHello.\n',
+    'getting-started/ai-context.mdx':
+      '---\ntitle: AI context\ndescription: All of it.\n---\n## Installation\n\n```bash\ncurl -o x.md %SITE_ORIGIN%/p/llms-full.md\n```\n',
+    'features/zoom/index.mdx':
+      '---\ntitle: Zoom\ndescription: Zoom in and out.\nsymbols: [Viewer]\n---\n## Basics\n\n<Demo id="features/zoom/demo-basic" title="Basic zoom" />\n\nAgain:\n\n<Demo id="features/zoom/demo-basic" title="Basic zoom" />\n',
+    'features/zoom/demo-basic.tsx': 'export default function Demo() {\n  return <Viewer />;\n}\n',
+    'features/zoom/demo-unused.tsx': 'export default function Unused() {}\n',
+    'reference/viewer.schema.json': {
+      name: 'Viewer',
+      kind: 'component',
+      imports: ["import { Viewer } from 'p';"],
+      filename: 'src/Viewer.tsx',
+      usedBy: ['/p/zoom/'],
+      options: { scale: { type: { name: 'number' }, default: 1 } },
+    },
+    'reference/viewer.strings.json': {
+      symbolDescription: 'The viewer.',
+      optionDescriptions: { scale: 'Zoom level.' },
+    },
+  };
+  for (const [path, content] of Object.entries(files)) {
+    mkdirSync(dirname(join(root, path)), { recursive: true });
+    writeFileSync(
+      join(root, path),
+      typeof content === 'string' ? content : JSON.stringify(content),
+    );
+  }
+  const surface = machineSurface({
+    contentRoot: root,
+    origin: 'https://site.test',
+    package: { name: 'p-pkg', peerDependencies: { react: '>=18' } },
+    notes: ['The examples load samples from the site.'],
+  });
+  const full = surface.get('/p/llms-full.md') ?? '';
+
+  it('writes one file under both names, with a header describing it', () => {
+    assert.equal(surface.get('/p/llms-full.txt'), full);
+    assert.match(
+      full,
+      /^# Plugin — the complete documentation\n\n> Tag\.\n\nDesc\.\n\nEvery page of the documentation at https:\/\/site\.test\/p\/, in reading order,/,
+    );
+    assert.match(
+      full,
+      /- Package: `p-pkg`, documented at version 1\.0\.0\. Peer dependencies: `react` >=18, and nothing else\.\n- Page index: https:\/\/site\.test\/p\/llms\.txt — .*\n- 5 pages, 2 examples\.\n\nThe examples load samples from the site\.\n\n---\n/,
+    );
+  });
+
+  it('holds every page in reading order, the API reference included', () => {
+    const order = [
+      '# Overview',
+      '# AI context',
+      '# Zoom',
+      '# API reference',
+      '# Viewer reference',
+      '# Examples not shown on any page',
+    ].map((heading) => full.indexOf(`\n${heading}\n`));
+    assert.ok(order.every((index, i) => index > 0 && (i === 0 || index > (order[i - 1] ?? 0))));
+    assert.match(
+      full,
+      /# Zoom\n\n> Zoom in and out\.\n\nFeatures · https:\/\/site\.test\/p\/zoom\/\n\n## Basics\n/,
+    );
+    assert.match(full, /## API\n\n- \[Viewer\]\(https:\/\/site\.test\/p\/api\/viewer\/\)/);
+    assert.match(
+      full,
+      /# Viewer reference\n\n> The viewer\.\n\nReference · https:\/\/site\.test\/p\/api\/viewer\/\n\n## Used by\n/,
+    );
+    assert.match(full, /curl -o x\.md https:\/\/site\.test\/p\/llms-full\.md/);
+    for (const content of surface.values()) assert.doesNotMatch(content, /%SITE_ORIGIN%/);
+  });
+
+  it('inlines each example once, with its code intact', () => {
+    assert.match(
+      full,
+      /\*Example: Basic zoom\* — the source of the live demo on this page\.\n\n```tsx\nexport default function Demo\(\) \{\n {2}return <Viewer \/>;\n\}\n```\n\nAgain:\n\n\*Example: Basic zoom\* — the same source as under "Zoom"\./,
+    );
+    assert.match(
+      full,
+      /## features\/zoom\/demo-unused\n\n```tsx\nexport default function Unused\(\) \{\}\n```/,
+    );
+    // The page twin keeps the demo and the concatenated reference (§7.7).
+    const twin = surface.get('/p/zoom.md') ?? '';
+    assert.match(twin, /\*\*Demo: Basic zoom\*\*\n\n```tsx\n[\s\S]*return <Viewer \/>;/);
+    assert.match(twin, /\n## Viewer reference\n/);
+  });
+
+  it('mentions the full file in llms.txt ahead of the page lists', () => {
+    const llms = surface.get('/p/llms.txt') ?? '';
+    assert.match(
+      llms,
+      /\nThe whole documentation in one file, with the source of every example: \[llms-full\.md\]\(https:\/\/site\.test\/p\/llms-full\.md\)\.\n\n## Getting started\n/,
+    );
+    assert.match(
+      llms,
+      /- \[AI context\]\(https:\/\/site\.test\/p\/getting-started\/ai-context\.md\): All of it\./,
+    );
+    assert.doesNotMatch(llms, /^- \[[^\]]*\]\([^)]*llms-full/m);
+    assert.deepEqual([...surface.keys()].sort(), [
+      '/p.md',
+      '/p/api.md',
+      '/p/api/viewer.md',
+      '/p/getting-started/ai-context.md',
+      '/p/llms-full.md',
+      '/p/llms-full.txt',
+      '/p/llms.txt',
+      '/p/zoom.md',
+    ]);
   });
 });

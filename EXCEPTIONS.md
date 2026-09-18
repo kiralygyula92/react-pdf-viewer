@@ -49,4 +49,4 @@ Deliberate deviations from the documentation standard (`docs/ppds/02-plugin-docs
 - **Rule:** §5 row 1 (Getting started includes `llms.txt`).
 - **Scope:** `content/react-pdf-viewer/nav.json`.
 - **Why:** it is a file for AI agents, not a page people read.
-- **Instead:** it is still generated at `/react-pdf-viewer/llms.txt` with a Markdown twin per page, and checks 16–17 verify it.
+- **Instead:** it is still generated at `/react-pdf-viewer/llms.txt` with a Markdown twin per page, and checks 16–17 verify it. The AI context page (D-10) is in the sidebar instead: it explains `llms.txt`, `llms-full.md` and the twins, and when to use which.

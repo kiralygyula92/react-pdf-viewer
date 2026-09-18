@@ -1,0 +1,60 @@
+---
+title: AI context
+description: The whole documentation and the source of every example in one Markdown file, for AI coding agents.
+---
+
+## Prerequisites
+
+- An AI coding agent that can read a file in your repository or fetch a URL: Claude Code, Cursor, Copilot, or anything else that takes documentation as context.
+
+## Installation
+
+Download [llms-full.md](/react-pdf-viewer/llms-full.md) into your repository, somewhere your agent reads. A `docs/` folder is the usual place:
+
+```bash
+curl -o docs/react-pdf-viewer.md %SITE_ORIGIN%/react-pdf-viewer/llms-full.md
+```
+
+Then tell the agent it is there. For Claude Code, add a line to `CLAUDE.md`; most other agents read `AGENTS.md`:
+
+```md
+React PDF Viewer documentation, with the source of every example: docs/react-pdf-viewer.md
+```
+
+A tool that indexes documentation by URL can take the URL instead of the file.
+
+## What is in the file
+
+Every page of this documentation in reading order (the guides, every capability page and the whole API reference) with the source of each live example inlined where its page shows it. On the site those examples are running viewers; in the file each one is the code behind it, which is the part an agent can use.
+
+It is generated from the same Markdown as the site, in the same build, so it cannot say anything the site does not. Download it again when you upgrade the package.
+
+## Which file to use
+
+| File                                             | What it holds                                          | Use it when                               |
+| ------------------------------------------------ | ------------------------------------------------------ | ----------------------------------------- |
+| [llms-full.md](/react-pdf-viewer/llms-full.md)   | Every page and the source of every example             | the agent should know the whole library   |
+| [llms-full.txt](/react-pdf-viewer/llms-full.txt) | The same file, under the name tools look for           | a tool asks for a documentation URL       |
+| [llms.txt](/react-pdf-viewer/llms.txt)           | An index: one line per page, each linking its Markdown | the agent should fetch only what it needs |
+| A page's URL with `.md`                          | That one page as Markdown                              | you are working on a single feature       |
+
+The full file is large, but it fits whole in the context window of a current frontier model. If your tool's window is smaller, give it `llms.txt` and let it fetch the pages it needs.
+
+## Minimal example
+
+With the file in `docs/`, a request like this has everything it needs to be answered from the documentation rather than from guesswork:
+
+```text
+Using docs/react-pdf-viewer.md, add a viewer for the invoice PDFs on the order page: fit the
+page width, show thumbnails, and send the session token with every request.
+```
+
+## Verify
+
+Ask the agent something only the documentation answers: for example, what the viewer reports for an encrypted document when there is no password prompt. An agent reading the file answers `PASSWORD_REQUIRED` and can name the page it came from; one that is not reading it guesses.
+
+## Next steps
+
+- [Installation](/react-pdf-viewer/getting-started/installation/): the package, `pdfjs-dist` and the stylesheet.
+- [Usage](/react-pdf-viewer/getting-started/usage/): a working viewer and the common props.
+- [API reference](/react-pdf-viewer/api/): generated from the TypeScript declarations.

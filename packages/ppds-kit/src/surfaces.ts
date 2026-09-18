@@ -33,16 +33,19 @@ export function ogImagePath(pathname: string): string {
 
 /**
  * `llms.txt` for one plugin (PPDS §7.7): `# {Plugin}`, a two-line description, then one group
- * per section listing every page's `.md` twin with its one-line description.
+ * per section listing every page's `.md` twin with its one-line description. Each `intro`
+ * paragraph goes between the description and the lists, so every list line stays one page.
  */
 export function llmsTxt(
   model: PluginModel,
   origin: string,
   descriptions: Map<string, string>,
   extra: { title: string; pathname: string; description: string; section: string }[] = [],
+  intro: string[] = [],
 ): string {
   const { config } = model;
   const lines = [`# ${config.name}`, '', `> ${config.tagline}`, '', config.description, ''];
+  for (const paragraph of intro) lines.push(paragraph, '');
   const sections = new Map<string, { title: string; pathname: string; description: string }[]>();
   const add = (
     section: string,

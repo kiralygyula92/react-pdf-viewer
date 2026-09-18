@@ -64,6 +64,11 @@ export function optionsHeading(kind: ReferenceSchema['kind']): string {
   return 'Options';
 }
 
+/** A symbol's one-line description as plain Markdown. */
+export function symbolDescription(entry: ReferenceEntry): string {
+  return stripHtml(entry.strings.symbolDescription ?? '');
+}
+
 /** Markdown for one reference page (archetype E), used by `.md` twins and llms consumers. */
 export function referenceMarkdown(
   entry: ReferenceEntry,
@@ -72,15 +77,25 @@ export function referenceMarkdown(
   origin: string,
   level: 1 | 2,
 ): string {
-  const { schema, strings } = entry;
-  const h1 = '#'.repeat(level);
-  const h2 = '#'.repeat(level + 1);
-  const lines = [
-    `${h1} ${schema.name} reference`,
+  const heading = [
+    `${'#'.repeat(level)} ${entry.schema.name} reference`,
     '',
-    stripHtml(strings.symbolDescription ?? ''),
+    symbolDescription(entry),
     '',
   ];
+  return `${heading.join('\n')}\n${referenceBody(entry, model, origin, level === 1 ? 2 : 3)}`;
+}
+
+/** The sections of a reference page below its title and description, from `Used by` to `Source`. */
+export function referenceBody(
+  entry: ReferenceEntry,
+  model: PluginModel,
+  origin: string,
+  level: 2 | 3,
+): string {
+  const { schema, strings } = entry;
+  const h2 = '#'.repeat(level);
+  const lines: string[] = [];
   lines.push(`${h2} Used by`, '');
   const usedBy = schema.usedBy ?? [];
   lines.push(
@@ -149,12 +164,18 @@ export function referenceIndexMarkdown(
   set: ReferenceSet,
   origin: string,
 ): string {
-  const lines = [
+  const heading = [
     `# API reference`,
     '',
     'Generated reference for every public component, hook, function and type.',
     '',
   ];
+  return `${heading.join('\n')}\n${referenceIndexBody(model, set, origin)}`;
+}
+
+/** The API index below its title: one group per kind, one line per symbol. */
+export function referenceIndexBody(model: PluginModel, set: ReferenceSet, origin: string): string {
+  const lines: string[] = [];
   const byKind = new Map<string, ReferenceEntry[]>();
   for (const entry of set.symbols.values()) {
     const list = byKind.get(entry.schema.kind) ?? [];

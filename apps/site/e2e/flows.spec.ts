@@ -187,4 +187,47 @@ test.describe('required flows', () => {
       expect(await twin.text(), pathname).toMatch(/^# /);
     }
   });
+
+  test('F8 Agent: sidebar → AI context → the whole documentation in one file', async ({
+    page,
+    request,
+  }) => {
+    await page.goto('/react-pdf-viewer/zoom/');
+    await follow(
+      page,
+      (await sidebarSection(page, 'Getting started')).getByRole('link', { name: 'AI context' }),
+      '/react-pdf-viewer/getting-started/ai-context/',
+    );
+    await expect(article(page).locator('pre').first()).toContainText(
+      /curl -o docs\/react-pdf-viewer\.md https?:\/\/\S+\/react-pdf-viewer\/llms-full\.md/,
+    );
+    const href = await article(page)
+      .getByRole('link', { name: 'llms-full.md' })
+      .first()
+      .getAttribute('href');
+    expect(href).toBe('/react-pdf-viewer/llms-full.md');
+
+    // Markdown, not the application shell, and the same bytes under the name tools look for.
+    const response = await request.get(href ?? '');
+    expect(response.ok()).toBe(true);
+    expect(response.headers()['content-type']).toContain('text/markdown');
+    const full = await response.text();
+    expect(full).toMatch(/^# React PDF Viewer — the complete documentation\n/);
+    expect(await (await request.get('/react-pdf-viewer/llms-full.txt')).text()).toBe(full);
+
+    // Every page llms.txt lists, the API reference included.
+    const llms = await (await request.get('/react-pdf-viewer/llms.txt')).text();
+    const pages = [...llms.matchAll(/^- \[[^\]]+\]\((https?:\/\/[^)]+)\.md\):/gm)].map(
+      (match) => `${match[1] ?? ''}/`,
+    );
+    expect(pages.length).toBeGreaterThan(80);
+    for (const url of pages) expect(full, url).toContain(` · ${url}\n`);
+
+    // Every example as its code, none left as a bare name or with its JSX stripped.
+    expect(full).toContain(
+      '*Example: Default zoom controls* — the source of the live demo on this page.\n\n```tsx\n',
+    );
+    expect(full).toContain('return <PdfViewer source="/samples/letter-3pages.pdf" />;');
+    expect(full).not.toMatch(/<Demo\b|return ;/);
+  });
 });

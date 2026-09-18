@@ -1,8 +1,10 @@
 /** Development server: Vite for assets and hot reload, React for the pages. */
 import { createServer as createHttpServer } from 'node:http';
 import { resolve } from 'node:path';
+import { machineSurface } from 'ppds-kit';
 import { createServer } from 'vite';
 import type { PageAssets, Route } from '../src/entry-server.tsx';
+import { machineOptions } from './machine.ts';
 
 const root = resolve(import.meta.dirname, '..');
 const port = Number(process.argv.find((arg) => arg.startsWith('--port='))?.slice(7) ?? 4321);
@@ -19,6 +21,15 @@ const server = createHttpServer((request, response) => {
   vite.middlewares(request, response, async () => {
     const url = new URL(request.url ?? '/', `http://localhost:${port}`);
     try {
+      // llms.txt, llms-full and the Markdown twins, generated from the current content.
+      if (/\.(md|txt)$/.test(url.pathname)) {
+        const file = machineSurface({ ...machineOptions, origin: url.origin }).get(url.pathname);
+        if (file !== undefined) {
+          const type = url.pathname.endsWith('.md') ? 'text/markdown' : 'text/plain';
+          response.writeHead(200, { 'Content-Type': `${type}; charset=utf-8` }).end(file);
+          return;
+        }
+      }
       const { getRoutes, renderRoute } = (await vite.ssrLoadModule('/src/entry-server.tsx')) as {
         getRoutes: () => Route[];
         renderRoute: (route: Route, assets: PageAssets) => string;

@@ -13,6 +13,7 @@ import {
 } from 'ppds-kit';
 import { resolve } from 'node:path';
 import { docs } from '../content.ts';
+import { SITE_ORIGIN } from '../origin.ts';
 
 /** The site is built from apps/site (dev, build and preview). */
 export const REPO_ROOT = `${resolve(process.cwd(), '../..').replace(/\\/g, '/')}/`;
@@ -38,7 +39,7 @@ export function getPortfolio(): PortfolioConfig {
 }
 
 export function origin(): string {
-  return process.env['SITE_ORIGIN'] ?? 'https://react-pdf-viewer.pages.dev';
+  return SITE_ORIGIN;
 }
 
 /** One-line descriptions of every docs page, keyed by pathname (P10: written once, in frontmatter). */

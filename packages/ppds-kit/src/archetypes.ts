@@ -80,7 +80,7 @@ export function archetypeFor(relativePath: string, isCapability: boolean): Arche
   if (/\.[a-z]+$/.test(rest)) return null;
   if (rest === 'all-features/') return 'C';
   if (rest === 'features/') return 'D';
-  if (/^getting-started\/(installation|usage|requirements)\/$/.test(rest)) return 'F';
+  if (/^getting-started\/(installation|usage|ai-context|requirements)\/$/.test(rest)) return 'F';
   if (/^getting-started\/(faq|support|versions)\/$/.test(rest)) return 'J';
   if (SECTION_INDEX.test(rest)) return 'K';
   if (/^api\/[a-z0-9-]+\/$/.test(rest)) return 'E';
