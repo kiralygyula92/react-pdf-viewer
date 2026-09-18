@@ -233,6 +233,8 @@ describe('PdfViewer — extension points', () => {
     expect(ref.current?.rotation).toBe(270);
     act(() => ref.current?.setScale(9));
     expect(ref.current?.scale).toBe(5);
+    act(() => ref.current?.setScale(Number.NaN));
+    expect(ref.current?.scale).toBe(5);
     act(() => ref.current?.resetZoom());
     expect(ref.current).toMatchObject({ scale: 1, numPages: 3, status: 'ready' });
   });
@@ -383,6 +385,43 @@ describe('PdfViewer — default-on fixes', () => {
     await user.click(button('Print PDF'));
     await waitFor(() =>
       expect(open).toHaveBeenCalledWith('blob:page', '_blank', 'noopener,noreferrer'),
+    );
+  });
+
+  it('printMode "open-url" opens only plain web URLs as is', async () => {
+    stubDownloads();
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.resolve(new Response(BYTES))),
+    );
+    const open = vi.spyOn(window, 'open').mockReturnValue(null);
+    const fetcher = vi.fn(() => Promise.resolve(new Response(BYTES)));
+    const { user, rerender } = await renderViewer({
+      source: '/files/a.pdf',
+      requestInit: {},
+      printMode: 'open-url',
+    });
+    // A new tab would not send the request's headers: open the loaded bytes instead.
+    await user.click(button('Print PDF'));
+    await waitFor(() =>
+      expect(open).toHaveBeenLastCalledWith('blob:mock', '_blank', 'noopener,noreferrer'),
+    );
+
+    rerender(<PdfViewer source="javascript:alert(1)" fetcher={fetcher} printMode="open-url" />);
+    await screen.findByRole('img', { name: /^Page 1 of/ });
+    await user.click(button('Print PDF'));
+    await waitFor(() => expect(open).toHaveBeenCalledTimes(2));
+    expect(open).toHaveBeenLastCalledWith('blob:mock', '_blank', 'noopener,noreferrer');
+
+    rerender(<PdfViewer source="/files/a.pdf" printMode="open-url" />);
+    await screen.findByRole('img', { name: /^Page 1 of/ });
+    await user.click(button('Print PDF'));
+    await waitFor(() =>
+      expect(open).toHaveBeenLastCalledWith(
+        `${window.location.origin}/files/a.pdf`,
+        '_blank',
+        'noopener,noreferrer',
+      ),
     );
   });
 

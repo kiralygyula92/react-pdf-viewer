@@ -14,7 +14,7 @@ import {
   type ReactNode,
 } from 'react';
 import { EventLog, useEventLog } from '../components/EventLog';
-import { SourcePicker, type SelectedSource } from '../components/SourcePicker';
+import { SourcePicker, validateUrl, type SelectedSource } from '../components/SourcePicker';
 import { useFileDrop } from '../components/useFileDrop';
 import { hungarianLabels } from '../i18n';
 import { sampleUrl } from '../samples';
@@ -94,9 +94,10 @@ function Field({
 
 export function Playground() {
   // `?src=` opens a document directly, so links such as the legacy `#/view?src=…` keep working.
+  // Like the URL tab, it accepts http(s) addresses only.
   const [selection, setSelection] = useState<SelectedSource>(() => {
     const src = new URLSearchParams(window.location.search).get('src');
-    return src
+    return src && validateUrl(src)
       ? { source: src, label: src, url: src }
       : { source: INITIAL_SOURCE, label: 'US Letter, 3 pages', url: INITIAL_SOURCE };
   });

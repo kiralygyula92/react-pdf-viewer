@@ -1,11 +1,21 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
+import type { PageRenderInfo } from '../hooks/usePageRenderer.js';
 import type { LabelContext, PdfViewerLabels } from '../labels.js';
 import type { Rotation } from '../types.js';
 import { PdfPageCanvas } from './PdfPageCanvas.js';
 
 const THUMBNAIL_WIDTH = 112;
 const INITIALLY_MOUNTED = 8;
+/** How far beyond the visible part of the list thumbnails stay rendered. */
+const MOUNT_MARGIN = '400px 0px';
+
+interface Size {
+  width: number;
+  height: number;
+}
+
+const NO_SIZES: ReadonlyMap<number, Size> = new Map();
 
 interface ThumbnailsProps {
   document: PDFDocumentProxy;
@@ -31,23 +41,59 @@ function ThumbnailsImpl({
   const [mounted, setMounted] = useState<ReadonlySet<number>>(
     () => new Set(Array.from({ length: Math.min(numPages, INITIALLY_MOUNTED) }, (_, i) => i + 1)),
   );
+  // Size of every rendered thumbnail, so a placeholder takes the space its thumbnail takes: its
+  // own size once it has rendered, the latest rendered size before that. Sizes belong to one
+  // document at one rotation.
+  const [measured, setMeasured] = useState<{
+    document: PDFDocumentProxy;
+    rotation: Rotation;
+    sizes: ReadonlyMap<number, Size>;
+    latest: Size | undefined;
+  }>(() => ({ document, rotation, sizes: new Map(), latest: undefined }));
+  const current = measured.document === document && measured.rotation === rotation;
+  const sizes = current ? measured.sizes : NO_SIZES;
+  const latestSize = current ? measured.latest : undefined;
 
-  // Render thumbnails lazily as they scroll into view (and keep them once rendered).
+  const recordSize = useCallback(
+    (info: PageRenderInfo) => {
+      const rendered = items.current.get(info.page)?.querySelector<HTMLElement>('.rpv-page');
+      if (!rendered || rendered.offsetWidth === 0 || rendered.offsetHeight === 0) return;
+      const size = { width: rendered.offsetWidth, height: rendered.offsetHeight };
+      setMeasured((state) => {
+        const same = state.document === document && state.rotation === rotation;
+        const known = same ? state.sizes.get(info.page) : undefined;
+        if (known?.width === size.width && known.height === size.height) return state;
+        return {
+          document,
+          rotation,
+          sizes: new Map([...(same ? state.sizes : []), [info.page, size]]),
+          latest: size,
+        };
+      });
+    },
+    [document, rotation],
+  );
+
+  // Only thumbnails near the visible part of the list are rendered: a long document holds a
+  // handful of canvases, not one per page.
   useEffect(() => {
     const root = navRef.current;
     if (!root || typeof IntersectionObserver === 'undefined') return;
+    const near = new Set<number>();
     const observer = new IntersectionObserver(
       (entries) => {
-        const shown = entries
-          .filter((entry) => entry.isIntersecting)
-          .map((entry) => Number((entry.target as HTMLElement).dataset['page']));
-        if (shown.length === 0) return;
-        setMounted((current) => {
-          if (shown.every((n) => current.has(n))) return current;
-          return new Set([...current, ...shown]);
-        });
+        for (const entry of entries) {
+          const pageNumber = Number((entry.target as HTMLElement).dataset['page']);
+          if (entry.isIntersecting) near.add(pageNumber);
+          else near.delete(pageNumber);
+        }
+        setMounted((mountedNow) =>
+          mountedNow.size === near.size && [...near].every((n) => mountedNow.has(n))
+            ? mountedNow
+            : new Set(near),
+        );
       },
-      { root, rootMargin: '200px 0px' },
+      { root, rootMargin: MOUNT_MARGIN },
     );
     for (const item of items.current.values()) observer.observe(item);
     return () => observer.disconnect();
@@ -92,9 +138,13 @@ function ThumbnailsImpl({
                     rotation={rotation}
                     fit={{ width: THUMBNAIL_WIDTH + 2, upscale: true }}
                     maxCanvasPixels={1_000_000}
+                    onRender={recordSize}
                   />
                 ) : (
-                  <span className="rpv-thumbnail__placeholder" />
+                  <span
+                    className="rpv-thumbnail__placeholder"
+                    style={sizes.get(pageNumber) ?? latestSize}
+                  />
                 )}
                 <span className="rpv-thumbnail__number" aria-hidden="true">
                   {context.formatNumber(pageNumber)}
@@ -108,5 +158,5 @@ function ThumbnailsImpl({
   );
 }
 
-/** Page thumbnails sidebar; thumbnails render lazily as they scroll into view. */
+/** Page thumbnails sidebar; thumbnails render only while they are near the visible area. */
 export const Thumbnails = memo(ThumbnailsImpl);

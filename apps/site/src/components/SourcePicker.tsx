@@ -15,7 +15,8 @@ export function isPdfFile(file: File): boolean {
   return file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
 }
 
-function validateUrl(value: string): string | null {
+/** The absolute http(s) URL `value` names, or `null` for anything else. */
+export function validateUrl(value: string): string | null {
   try {
     const url = new URL(value, window.location.href);
     return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : null;

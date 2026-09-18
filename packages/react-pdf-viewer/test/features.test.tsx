@@ -77,6 +77,16 @@ describe('search core', () => {
     service.executeNamedAction('LastPage');
     expect(goToPage.mock.calls.slice(-2)).toEqual([[3], [5]]);
 
+    // An unresolvable destination is ignored, without an unhandled rejection.
+    const unhandled = vi.fn();
+    process.on('unhandledRejection', unhandled);
+    document.getDestination.mockRejectedValueOnce(new Error('Document destroyed'));
+    service.goToDestination('gone');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    process.off('unhandledRejection', unhandled);
+    expect(unhandled).not.toHaveBeenCalled();
+    expect(goToPage).toHaveBeenCalledTimes(4);
+
     const link = window.document.createElement('a');
     service.addLinkAttributes(link, 'https://example.com/');
     expect([link.target, link.rel]).toEqual(['_blank', 'noopener noreferrer nofollow']);
@@ -215,6 +225,59 @@ describe('opt-in features', () => {
     await user.click(third);
     expect(third).toHaveAttribute('aria-current', 'page');
     expect(await screen.findByRole('img', { name: 'Page 3 of 3' })).toBeInTheDocument();
+  });
+
+  it('thumbnails far from view are unmounted, and their placeholders keep the size', async () => {
+    const observers: MockIntersectionObserver[] = [];
+    class MockIntersectionObserver {
+      targets: Element[] = [];
+      constructor(readonly callback: IntersectionObserverCallback) {
+        observers.push(this);
+      }
+      observe(target: Element) {
+        this.targets.push(target);
+      }
+      unobserve() {}
+      disconnect() {}
+      takeRecords() {
+        return [];
+      }
+    }
+    vi.stubGlobal('IntersectionObserver', MockIntersectionObserver);
+    // jsdom has no layout: give rendered pages a size to measure.
+    const pageSize = (value: number) =>
+      function (this: HTMLElement) {
+        return this.classList.contains('rpv-page') ? value : 0;
+      };
+    vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(pageSize(114));
+    vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockImplementation(pageSize(149));
+    await renderViewer(
+      { thumbnails: true },
+      Array.from({ length: 10 }, () => ({ ...LETTER })),
+    );
+    const nav = screen.getByRole('navigation', { name: 'Pages' });
+    expect(nav.querySelectorAll('.rpv-page')).toHaveLength(8);
+    await waitFor(() => expect(nav.querySelectorAll('canvas')).toHaveLength(8));
+    const observer = observers.find((candidate) =>
+      candidate.targets.some((target) => nav.contains(target)),
+    );
+    const entries = (observer?.targets ?? []).map(
+      (target) =>
+        ({
+          target,
+          isIntersecting: Number((target as HTMLElement).dataset['page']) <= 3,
+        }) as IntersectionObserverEntry,
+    );
+    act(() => observer?.callback(entries, observer as unknown as IntersectionObserver));
+
+    expect(nav.querySelectorAll('.rpv-page')).toHaveLength(3);
+    // A released thumbnail keeps its size; one never rendered takes the latest rendered size.
+    for (const pageNumber of [5, 10]) {
+      const placeholder = nav.querySelector<HTMLElement>(
+        `[data-page="${pageNumber}"] .rpv-thumbnail__placeholder`,
+      );
+      expect([placeholder?.style.width, placeholder?.style.height]).toEqual(['114px', '149px']);
+    }
   });
 
   it('Shift + arrows are left to text selection', async () => {

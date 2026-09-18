@@ -449,7 +449,8 @@ export function usePageRenderer({
     if (selected) latest.current.onHighlight?.(selected);
   }, [highlightQuery, highlightSelected, layerVersion]);
 
-  // Release the canvas and layers when the document changes or the component unmounts.
+  // Release the canvas, the layers and the page's cached resources when the document changes or
+  // the component unmounts; otherwise every page scrolled past in a long document keeps its own.
   useEffect(() => {
     const host = canvasHostRef.current;
     const layersHost = layersRef.current;
@@ -457,6 +458,7 @@ export function usePageRenderer({
       releaseCanvas(host?.firstElementChild);
       host?.replaceChildren();
       layersHost?.replaceChildren();
+      displayedPageRef.current?.cleanup();
       displayedPageRef.current = null;
       textStateRef.current = null;
     };

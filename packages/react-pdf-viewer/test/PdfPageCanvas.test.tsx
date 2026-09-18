@@ -164,6 +164,16 @@ describe('PdfPageCanvas', () => {
     expect(document.pages[1]?.cleanup).not.toHaveBeenCalled();
   });
 
+  it('cleans up the displayed page when it unmounts', async () => {
+    const onRender = vi.fn();
+    const { proxy, document } = createMockDocument({ autoResolveRender: true });
+    const { unmount } = render(<PdfPageCanvas document={proxy} page={2} onRender={onRender} />);
+    await waitFor(() => expect(onRender).toHaveBeenCalled());
+    expect(document.pages[1]?.cleanup).not.toHaveBeenCalled();
+    unmount();
+    expect(document.pages[1]?.cleanup).toHaveBeenCalledTimes(1);
+  });
+
   it('fits the page into the available width without enlarging it', async () => {
     const { proxy, renderTasks } = createMockDocument({ autoResolveRender: true });
     const onRender = vi.fn();

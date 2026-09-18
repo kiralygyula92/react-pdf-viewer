@@ -58,9 +58,30 @@ interface ZoomAnchor {
   clientY: number;
 }
 
-async function openInNewTab(pdf: PDFDocumentProxy, source: PdfSource | null | undefined) {
-  if (typeof source === 'string' || source instanceof URL) {
-    window.open(source.toString(), '_blank', 'noopener,noreferrer');
+/** The source as an absolute http(s) URL, or `null` for anything a new tab should not open. */
+function webUrl(source: PdfSource | null | undefined): string | null {
+  if (typeof source !== 'string' && !(source instanceof URL)) return null;
+  try {
+    const url = new URL(source.toString(), window.location.href);
+    return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Opens the document in a new tab. A plain web address opens as is; anything else, including a
+ * URL loaded through a custom `fetcher` or with `requestInit` (a new tab would not send its
+ * headers), opens the bytes already loaded.
+ */
+async function openInNewTab(
+  pdf: PDFDocumentProxy,
+  source: PdfSource | null | undefined,
+  direct: boolean,
+) {
+  const address = direct ? webUrl(source) : null;
+  if (address) {
+    window.open(address, '_blank', 'noopener,noreferrer');
     return;
   }
   const url = URL.createObjectURL(toPdfBlob(await pdf.getData()));
@@ -328,7 +349,10 @@ export const PdfViewer = forwardRef<PdfViewerApi, PdfViewerProps>(function PdfVi
     [zoom, setScaleState],
   );
   const setScale = useCallback(
-    (value: number) => setScaleState(normalizeScale(value, zoom)),
+    (value: number) => {
+      // NaN or Infinity would reach the renderer and fail the page.
+      if (Number.isFinite(value)) setScaleState(normalizeScale(value, zoom));
+    },
     [zoom, setScaleState],
   );
   const resetZoom = useCallback(() => setScaleState(defaultScale), [defaultScale, setScaleState]);
@@ -366,7 +390,7 @@ export const PdfViewer = forwardRef<PdfViewerApi, PdfViewerProps>(function PdfVi
     }
     try {
       if (printMode === 'open-url') {
-        await openInNewTab(pdfDocument, source);
+        await openInNewTab(pdfDocument, source, !fetcher && !requestInit);
         return;
       }
       const controller = new AbortController();
@@ -384,7 +408,7 @@ export const PdfViewer = forwardRef<PdfViewerApi, PdfViewerProps>(function PdfVi
       printController.current = null;
       setPrintProgress(null);
     }
-  }, [pdfDocument, printMode, source]);
+  }, [pdfDocument, printMode, source, fetcher, requestInit]);
   const cancelPrint = useCallback(() => printController.current?.abort(), []);
   useEffect(() => () => printController.current?.abort(), []);
 

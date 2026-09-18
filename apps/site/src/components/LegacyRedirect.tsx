@@ -8,8 +8,10 @@ import { CONTENT_ROOT, PLUGIN_ID } from '../lib/site.ts';
 
 export function LegacyRedirect() {
   const { fragments } = redirectTables(loadRedirects(CONTENT_ROOT));
+  // `<` escaped, so no URL in the map can close the script element.
+  const map = JSON.stringify(fragments).replace(/</g, '\\u003c');
   const script = `(function () {
-  var fragments = ${JSON.stringify(fragments)};
+  var fragments = ${map};
   var hash = window.location.hash;
   if (!hash || hash.indexOf('#/') !== 0) return;
   var target = fragments[hash];

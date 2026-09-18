@@ -44,9 +44,13 @@ export function createLinkService(pdf: PDFDocumentProxy, navigation: LinkNavigat
     getDestinationHash: () => '#',
     getAnchorUrl: () => '#',
     goToDestination(destination: unknown) {
-      void resolvePage(destination).then((page) => {
-        if (page !== null) navigation.goToPage(page);
-      });
+      // A destination that cannot be resolved (malformed, or the document is gone) does nothing.
+      resolvePage(destination).then(
+        (page) => {
+          if (page !== null) navigation.goToPage(page);
+        },
+        () => undefined,
+      );
     },
     goToPage(page: number) {
       navigation.goToPage(page);
