@@ -61,22 +61,44 @@ test.describe('required flows', () => {
     );
   });
 
-  test('narrow screens: the sidebar is a disclosure above the page, not a header menu', async ({
-    page,
-  }) => {
+  test('narrow screens: the header menu button opens the sidebar', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/react-pdf-viewer/zoom/');
-    const banner = page.getByRole('banner');
-    await expect(banner.getByRole('button', { name: /navigation|menu/i })).toHaveCount(0);
-    const disclosure = page.locator('details.ppds-docs__sidebar');
-    await expect(disclosure).not.toHaveAttribute('open');
+    const menu = page.getByRole('banner').getByRole('button', { name: 'Documentation menu' });
+    await expect(menu).toHaveAttribute('aria-expanded', 'false');
     await expect(sidebar(page)).toBeHidden();
-    await disclosure.getByText('Browse documentation').click();
+
+    // Opens over the page, which can then be neither scrolled nor reached with Tab.
+    await menu.click();
+    await expect(menu).toHaveAttribute('aria-expanded', 'true');
+    await expect(sidebar(page)).toBeVisible();
+    await expect(sidebar(page).getByRole('link', { name: 'Zoom' })).toBeInViewport();
+    expect(await page.locator('main').evaluate((main: HTMLElement) => main.inert)).toBe(true);
+
+    // Esc closes it and returns focus to the button.
+    await page.keyboard.press('Escape');
+    await expect(sidebar(page)).toBeHidden();
+    await expect(menu).toBeFocused();
+    expect(await page.locator('main').evaluate((main: HTMLElement) => main.inert)).toBe(false);
+
+    await menu.click();
     await follow(
       page,
       (await sidebarSection(page, 'Getting started')).getByRole('link', { name: 'Support' }),
       '/react-pdf-viewer/getting-started/support/',
     );
+    await expect(menu).toHaveAttribute('aria-expanded', 'false');
+
+    // The header fits the smallest phones without scrolling sideways.
+    await page.setViewportSize({ width: 360, height: 740 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+
+    // Wide screens show the sidebar beside the page, and no menu button.
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await expect(menu).toBeHidden();
+    await expect(sidebar(page)).toBeVisible();
   });
 
   test('F2 Adopt: overview → installation → usage → first capability', async ({ page }) => {

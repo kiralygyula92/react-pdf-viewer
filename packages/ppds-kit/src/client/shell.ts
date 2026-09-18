@@ -40,22 +40,57 @@ function versionSelect() {
 }
 
 function sidebar() {
-  const panel = document.querySelector<HTMLDetailsElement>('[data-sidebar]');
+  const panel = document.querySelector<HTMLElement>('[data-sidebar]');
   if (!panel) return;
-  // Wide screens always show the sidebar; narrow screens collapse it into a disclosure above the
-  // page (no menu button in the header). Without JavaScript it simply stays open.
-  const narrow = window.matchMedia('(max-width: 900px)');
-  const sync = () => {
-    panel.open = !narrow.matches;
-  };
-  sync();
-  narrow.addEventListener('change', sync);
   // Keep the current page visible inside the sidebar without scrolling the document.
-  const current = panel.querySelector<HTMLElement>('[aria-current="page"]');
-  if (current) {
+  const revealCurrent = () => {
+    const current = panel.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!current) return;
     const offset = current.getBoundingClientRect().top - panel.getBoundingClientRect().top;
-    panel.scrollTop = Math.max(0, offset - panel.clientHeight / 3);
-  }
+    panel.scrollTop = Math.max(0, panel.scrollTop + offset - panel.clientHeight / 3);
+  };
+  revealCurrent();
+
+  // Wide screens show the sidebar beside the page. On narrow screens the header's menu button
+  // opens it as a panel below the header; without JavaScript it stays in the page, above the
+  // content.
+  const toggle = document.querySelector<HTMLButtonElement>('[data-sidebar-toggle]');
+  if (!toggle) return;
+  const body = document.body;
+  const header = toggle.closest<HTMLElement>('header');
+  const behind = [
+    ...document.querySelectorAll<HTMLElement>('.ppds-docs__main, .ppds-docs__rail, footer'),
+  ];
+  const isOpen = () => body.dataset['nav'] === 'open';
+  const setOpen = (open: boolean) => {
+    body.dataset['nav'] = open ? 'open' : 'closed';
+    toggle.setAttribute('aria-expanded', String(open));
+    // The page behind the panel can be neither scrolled nor reached with Tab.
+    for (const element of behind) element.inert = open;
+    if (open) {
+      panel.style.setProperty('--ppds-nav-top', `${header?.getBoundingClientRect().bottom ?? 0}px`);
+      revealCurrent();
+    }
+  };
+  setOpen(false);
+  toggle.addEventListener('click', () => setOpen(!isOpen()));
+  document.addEventListener('keydown', (event) => {
+    // Esc belongs to the search dialog while it is open.
+    if (event.key !== 'Escape' || !isOpen() || document.querySelector('dialog[open]')) return;
+    setOpen(false);
+    toggle.focus();
+  });
+  panel.addEventListener('click', (event) => {
+    if (event.target instanceof Element && event.target.closest('a')) setOpen(false);
+  });
+  const narrow = window.matchMedia('(max-width: 900px)');
+  narrow.addEventListener('change', () => {
+    if (!narrow.matches) setOpen(false);
+  });
+  // A page restored from the back-forward cache opens with the panel closed.
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) setOpen(false);
+  });
 }
 
 function toc() {

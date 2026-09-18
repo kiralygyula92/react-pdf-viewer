@@ -64,17 +64,16 @@ export function DocsLayout({
             <a href={announcement.href}>{announcement.text}</a>
           </div>
         )}
-        <DocsHeader config={model.config} />
+        <DocsHeader config={model.config} sidebarId="ppds-sidebar-panel" />
         <div className="ppds-docs">
-          <details className="ppds-docs__sidebar" id="ppds-sidebar-panel" data-sidebar open>
-            <summary className="ppds-docs__sidebar-summary">Browse documentation</summary>
+          <div className="ppds-docs__sidebar" id="ppds-sidebar-panel" data-sidebar>
             <Sidebar
               model={model}
               current={page.pathname}
               descriptions={descriptions}
               injected={injectedNav}
             />
-          </details>
+          </div>
           <main
             id="main"
             className="ppds-docs__main"

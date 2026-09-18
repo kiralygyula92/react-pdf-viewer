@@ -69,6 +69,14 @@ test.describe('accessibility', () => {
     }
   }
 
+  test('no violations — docs page on a phone, with the menu open', async ({ page }) => {
+    await page.setViewportSize(MOBILE);
+    await page.goto('/react-pdf-viewer/zoom/');
+    await page.getByRole('button', { name: 'Documentation menu' }).click();
+    await expect(page.getByRole('navigation', { name: /documentation$/ })).toBeVisible();
+    expect(await violations(page)).toEqual([]);
+  });
+
   test('keyboard walkthrough: document area, then a single toolbar tab stop', async ({ page }) => {
     await page.goto('/_internal/viewer/?src=/samples/letter-3pages.pdf');
     await rendered(page);

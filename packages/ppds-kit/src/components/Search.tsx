@@ -7,7 +7,14 @@ export interface SearchProps {
 export function Search({ pluginId, version }: SearchProps) {
   return (
     <>
-      <button type="button" className="ppds-search-button" data-search-open aria-haspopup="dialog">
+      {/* Named explicitly: narrow screens hide the visible text and show only the icon. */}
+      <button
+        type="button"
+        className="ppds-search-button"
+        data-search-open
+        aria-haspopup="dialog"
+        aria-label="Search documentation"
+      >
         <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
           <path
             fill="currentColor"

@@ -1,18 +1,39 @@
 /**
  * Docs header, minimal: plugin name back to the docs root, version selector, search,
- * repository link and theme toggle. No marketing menus and no menu button.
+ * repository link and theme toggle. No marketing menus. On narrow screens a menu button before
+ * the name opens the sidebar.
  */
 import type { PluginConfig } from '../types.ts';
 import { Search } from './Search.tsx';
 import { ThemeToggle } from './ThemeToggle.tsx';
 
-export function DocsHeader({ config }: { config: PluginConfig }) {
+export interface DocsHeaderProps {
+  config: PluginConfig;
+  /** Id of the sidebar the menu button opens on narrow screens; no menu button without one. */
+  sidebarId?: string | undefined;
+}
+
+export function DocsHeader({ config, sidebarId }: DocsHeaderProps) {
   const versions = config.versions ?? [
     { label: `v${config.currentVersion}`, href: `/${config.id}/`, current: true },
   ];
   return (
     <header className="ppds-header ppds-header--docs">
       <div className="ppds-header__inner">
+        {sidebarId && (
+          <button
+            type="button"
+            className="ppds-icon-button ppds-header__menu"
+            data-sidebar-toggle
+            aria-controls={sidebarId}
+            aria-expanded="false"
+            aria-label="Documentation menu"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+              <path fill="currentColor" d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" />
+            </svg>
+          </button>
+        )}
         <a className="ppds-header__plugin" href={`/${config.id}/`}>
           {config.name}
         </a>

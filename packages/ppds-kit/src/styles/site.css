@@ -197,12 +197,21 @@
   }
 
   .ppds-header__plugin {
+    min-width: 0;
+    overflow: hidden;
     font-size: 1.125rem;
     font-weight: 700;
     letter-spacing: -0.01em;
     color: var(--ppds-text) !important;
+    text-overflow: ellipsis;
     text-decoration: none;
     white-space: nowrap;
+  }
+
+  /* Buttons keep their size on narrow screens; only the name may give way. */
+  .ppds-header__inner > .ppds-icon-button,
+  .ppds-header__inner > .ppds-search-button {
+    flex: none;
   }
 
   .ppds-icon-button {
@@ -319,9 +328,10 @@
     border-right: 1px solid var(--ppds-border);
   }
 
-  /* Only shown on narrow screens, where the sidebar becomes a disclosure above the page. */
-  .ppds-docs__sidebar-summary {
+  /* Only shown on narrow screens, where it opens the sidebar. */
+  .ppds-header__menu {
     display: none;
+    color: var(--ppds-text) !important;
   }
 
   /* Demo scenarios (archetype L) and generated reference tables use the full content width. */
@@ -986,34 +996,50 @@
       gap: 0;
     }
 
+    /* Without JavaScript the sidebar stays in the page, above the content. */
     .ppds-docs__sidebar {
       position: static;
       height: auto;
       max-height: none;
-      padding: 0;
+      padding: 8px;
       margin-top: 12px;
       overflow: visible;
       border: 1px solid var(--ppds-border);
       border-radius: var(--ppds-radius);
     }
 
-    .ppds-docs__sidebar-summary {
+    /* With JavaScript the header's menu button opens it as a panel below the header. */
+    .ppds[data-nav] .ppds-header__menu {
+      display: inline-grid;
+    }
+
+    .ppds[data-nav] .ppds-docs__sidebar {
+      display: none;
+    }
+
+    .ppds[data-nav='open'] {
+      overflow: hidden;
+    }
+
+    .ppds[data-nav='open'] .ppds-docs__sidebar {
+      position: fixed;
+      inset: var(--ppds-nav-top, var(--ppds-header-height)) 0 0;
+      z-index: 29;
       display: block;
-      padding: 10px 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .ppds-docs__sidebar[open] .ppds-docs__sidebar-summary {
-      border-bottom: 1px solid var(--ppds-border);
-    }
-
-    .ppds-docs__sidebar[open] > .ppds-sidebar {
-      padding: 8px;
+      padding: 16px 20px 40px;
+      margin: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      background: var(--ppds-bg);
+      border: 0;
+      border-radius: 0;
     }
 
     .ppds-search-button {
+      justify-content: center;
+      width: 36px;
       min-width: 0;
+      padding: 0;
     }
 
     .ppds-search-button span,
@@ -1037,6 +1063,30 @@
       padding-inline: 12px;
     }
 
+    /* A select is as wide as its longest option ("All versions…"); the current one is short. */
+    .ppds-version select {
+      width: 4.75em;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .ppds-header__inner {
+      gap: 4px;
+    }
+
+    .ppds-header__plugin {
+      font-size: 1rem;
+    }
+
+    .ppds-header__inner > .ppds-icon-button,
+    .ppds-header__inner > .ppds-search-button {
+      width: 34px;
+      height: 34px;
+    }
+  }
+
+  /* Smaller phones keep the full name rather than the version selector. */
+  @media (max-width: 389px) {
     .ppds-version {
       display: none;
     }
