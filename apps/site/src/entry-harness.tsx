@@ -1,4 +1,4 @@
-/** Browser entry for the internal test harness page (EXCEPTIONS E-03). */
+/** Browser entry for the internal test harness page. */
 import '@kiralygyula92/react-pdf-viewer/styles.css';
 import { createRoot } from 'react-dom/client';
 import { Harness } from './islands/Harness.tsx';

@@ -3,6 +3,5 @@ pnpm-lock.yaml
 playwright-report/
 test-results/
 .changeset/*.md
-docs/ppds/
 content/*/reference/
 conformance-report.md

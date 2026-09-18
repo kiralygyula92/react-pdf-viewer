@@ -1,4 +1,4 @@
-/** Browser entry for the internal viewer fixture page (EXCEPTIONS E-03). */
+/** Browser entry for the internal viewer fixture page. */
 import { createRoot } from 'react-dom/client';
 import ViewerFixture from './islands/ViewerFixture.tsx';
 

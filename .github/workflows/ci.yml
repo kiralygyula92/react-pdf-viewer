@@ -43,7 +43,7 @@ jobs:
       - name: Package QA
         run: pnpm qa
 
-      - name: Docs model and conformance (PPDS v1.1)
+      - name: Docs model and conformance
         run: |
           pnpm ppds:validate
           pnpm ppds:reference --check

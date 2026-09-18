@@ -1,7 +1,6 @@
 /**
- * URL-driven full-page viewer (`?src=&page=&zoom=&rotation=`) for the functional Playwright suites
- * (EXCEPTIONS E-03): no site chrome, noindex, not in nav, sitemap or llms.txt. The public demo is
- * the Playground (DECISIONS D-07).
+ * URL-driven full-page viewer (`?src=&page=&zoom=&rotation=`) for the functional Playwright suites:
+ * no site chrome, noindex, not in nav, sitemap or llms.txt. The public demo is the Playground.
  */
 import type { ReactNode } from 'react';
 

@@ -41,8 +41,7 @@ The [root README](README.md#development) lists every command.
 
 ## Documentation
 
-The site follows the documentation standard in [`docs/ppds`](docs/ppds). Its content lives in
-[`content/react-pdf-viewer`](content/react-pdf-viewer):
+The site's content lives in [`content/react-pdf-viewer`](content/react-pdf-viewer):
 
 - **Reference tables are generated, never written by hand.** Document every export with TSDoc in
   the package source (including `@defaultValue`, and `@shortcut`, `@cssClass` or `@cssAttribute`
@@ -54,7 +53,7 @@ The site follows the documentation standard in [`docs/ppds`](docs/ppds). Its con
   `## API` list is added from the `symbols` frontmatter.
 - **Navigation, badges and page titles come from data** (`nav.json`, `titles.json`,
   `plugin.config.json`), not from page content. Run `pnpm ppds:validate` after changing them.
-- **URLs never break.** When a page moves, add a row to `migration/url-map.csv` so it redirects.
+- **URLs never break.** When a page moves, add its old URL to `redirects.json` so it redirects.
 - **No invented facts.** Compatibility, metrics and version claims must be backed by tests or data.
 
 After a docs change, run `pnpm build` and `pnpm ppds:conformance` (28 checks).

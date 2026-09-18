@@ -1,5 +1,5 @@
 /**
- * Badge (PPDS §7.1). Rendered only from a nav node's `plan` / `lifecycle` (N4): callers pass the
+ * Badge. Rendered only from a nav node's `plan` / `lifecycle`: callers pass the
  * node, never a label.
  */
 import type { Lifecycle, NavPage, Tier } from '../types.ts';

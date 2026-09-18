@@ -3,7 +3,7 @@ import type { Project } from '@stackblitz/sdk';
 const PACKAGE = '@kiralygyula92/react-pdf-viewer';
 
 /**
- * A runnable Vite + React project for a demo (PPDS §7.2 “open in a live sandbox”). Bundled
+ * A runnable Vite + React project for a demo. Bundled
  * sample paths are rewritten to absolute URLs on the docs origin so the sandbox can load them.
  */
 export function stackblitzProject(title: string, source: string, origin: string): Project {

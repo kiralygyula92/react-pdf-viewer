@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Documentation site (PPDS v1.1) for React PDF Viewer: a static React site built with Vite.",
+  "description": "Documentation site for React PDF Viewer: a static React site built with Vite.",
   "scripts": {
     "dev": "node scripts/dev.ts",
     "build": "node scripts/build.ts",

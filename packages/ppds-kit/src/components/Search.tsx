@@ -1,4 +1,4 @@
-/** Static search (Pagefind) in a modal dialog, scoped to one plugin and version (PPDS §7.5). */
+/** Static search (Pagefind) in a modal dialog, scoped to one plugin and version. */
 export interface SearchProps {
   pluginId?: string | undefined;
   version?: string | undefined;

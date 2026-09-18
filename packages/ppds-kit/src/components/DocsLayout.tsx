@@ -1,5 +1,5 @@
 /**
- * Docs surface shell (PPDS §2.2): announcement → docs header → sidebar · content · right rail →
+ * Docs surface shell: announcement → docs header → sidebar · content · right rail →
  * page footer actions → global footer.
  */
 import type { ReactNode } from 'react';
@@ -25,7 +25,7 @@ export interface DocsLayoutProps {
   twin?: string | undefined;
   feeds?: { title: string; href: string }[];
   announcement?: { text: string; href: string } | undefined;
-  /** Generated sidebar nodes, keyed by section group pathname (N3). */
+  /** Generated sidebar nodes, keyed by section group pathname. */
   injectedNav?: Record<string, NavNode[]> | undefined;
   /** Stylesheet and script tags for the page, supplied by the renderer. */
   assets?: ReactNode;

@@ -16,7 +16,7 @@ function toRotation(value: string | null): Rotation {
 
 /**
  * `/_internal/viewer/?src=<url>&page=&zoom=&rotation=`: a full-page viewer whose state lives in the
- * URL, used by the functional e2e suites (EXCEPTIONS E-03).
+ * URL, used by the functional e2e suites.
  */
 export default function ViewerFixture() {
   const { params } = useRoute();

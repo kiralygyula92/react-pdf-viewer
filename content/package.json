@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "PPDS content model, pages and colocated demos for every plugin site.",
+  "description": "Documentation content: the site model, the pages and their colocated demos.",
   "scripts": {
     "typecheck": "tsc --noEmit"
   },

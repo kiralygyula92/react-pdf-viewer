@@ -1,4 +1,4 @@
-/** “Edit this page” and “Was this page helpful?” (PPDS §7.3): layout, not content. */
+/** “Edit this page” and “Was this page helpful?”: layout, not content. */
 export interface PageFooterActionsProps {
   repo: string;
   /** Source file path relative to the repository root; omitted for generated pages. */

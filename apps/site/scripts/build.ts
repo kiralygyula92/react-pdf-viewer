@@ -101,12 +101,6 @@ await buildSiteArtifacts({
   dist,
   origin,
   portfolio: join(repoRoot, 'content/portfolio.json'),
-  urlMap: join(repoRoot, 'migration/url-map.csv'),
-  // Pages built before launch and folded into others (DECISIONS D-07); URLs are never dropped.
-  redirects: [
-    ['/products/react-pdf-viewer/', '/react-pdf-viewer/'],
-    ['/react-pdf-viewer/demos/document-viewer/', '/react-pdf-viewer/demos/playground/'],
-  ],
   log: (message) => console.log(message),
 });
 

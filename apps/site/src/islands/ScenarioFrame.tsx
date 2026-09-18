@@ -5,7 +5,7 @@ import '../pdfjs';
 import '../styles/demos.css';
 import { Playground } from './Playground';
 
-/** Mounts a Demos scenario with the PPDS demo toolbar (no sandbox: it uses site-only components). */
+/** Mounts a Demos scenario with the demo toolbar (no sandbox: it uses site-only components). */
 export default function ScenarioFrame({ title, source }: { title: string; source: string }) {
   const [generation, setGeneration] = useState(0);
   return (

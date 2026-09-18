@@ -1,5 +1,5 @@
 /**
- * Reference generator (PPDS §8.4–8.5). Sources of truth, all read from the plugin:
+ * Reference generator. Sources of truth, all read from the plugin:
  *
  * 1. TypeScript declarations and TSDoc of every public export of the entry (TypeDoc).
  *    Components get their `…Props` interface as options (`on…` callbacks as events), hooks and
@@ -11,7 +11,7 @@
  * 3. The stylesheets the entry imports: every `--custom-property` with its fallback value, and
  *    theme presets (class rules that only set custom properties).
  *
- * `.schema.json` files are always overwritten; `.strings.json` files only ever gain keys (P6).
+ * `.schema.json` files are always overwritten; `.strings.json` files only ever gain keys.
  * `--check` regenerates in memory and fails when a schema file differs (conformance check 10).
  */
 import { createHash } from 'node:crypto';
@@ -661,7 +661,7 @@ export async function generateReference(
     }
   }
 
-  // ── usedBy: invert capability frontmatter `symbols` (§8.3) ───────────────
+  // ── usedBy: invert capability frontmatter `symbols` ───────────────
   for (const page of model.pages.filter((p) => p.sourceFile)) {
     const path = join(options.contentRoot, page.sourceFile ?? '');
     if (!existsSync(path)) continue;
@@ -674,7 +674,7 @@ export async function generateReference(
 
 const checksum = (text: string) => createHash('sha256').update(text).digest('hex');
 
-/** Merges prose: existing values always win; only missing keys are added (P6). */
+/** Merges prose: existing values always win; only missing keys are added. */
 function mergeStrings(
   existing: ReferenceStrings & Record<string, unknown>,
   fresh: ReferenceStrings,

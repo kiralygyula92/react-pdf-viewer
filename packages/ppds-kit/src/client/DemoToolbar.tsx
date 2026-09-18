@@ -20,8 +20,8 @@ export interface DemoToolbarProps {
 }
 
 /**
- * Demo block with the standard toolbar (PPDS §7.2): copy · show/hide source · open in a live
- * sandbox · reset. The source panel is keyboard-reachable (§7.8).
+ * Demo block with the standard toolbar: copy · show/hide source · open in a live
+ * sandbox · reset. The source panel is keyboard-reachable.
  */
 export function DemoToolbar({
   title,

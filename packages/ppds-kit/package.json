@@ -2,7 +2,7 @@
   "name": "ppds-kit",
   "version": "0.0.0",
   "private": true,
-  "description": "Plugin-agnostic site kit for the Plugin Presentation & Documentation Standard (PPDS v1.1): layouts, archetype templates, navigation, metadata, generators, reference extraction and the conformance checker.",
+  "description": "Plugin-agnostic documentation site kit: layouts, page templates, navigation, metadata, generators, reference extraction and the conformance checker.",
   "license": "MIT",
   "type": "module",
   "exports": {

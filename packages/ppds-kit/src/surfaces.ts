@@ -1,4 +1,3 @@
-import { parseCsv } from './csv.ts';
 import { contentPages, twinPath } from './model.ts';
 import type { NavPage, PluginModel } from './types.ts';
 
@@ -25,14 +24,14 @@ export function absoluteUrl(origin: string, pathname: string): string {
   return new URL(pathname, origin.endsWith('/') ? origin : `${origin}/`).toString();
 }
 
-/** OG image path for a page: `/og/{pathname}index.png` (generated at build, §7.6). */
+/** OG image path for a page: `/og/{pathname}index.png` (generated at build). */
 export function ogImagePath(pathname: string): string {
   const clean = pathname.replace(/^\//, '').replace(/\/$/, '');
   return `/og/${clean === '' ? 'index' : clean}.png`;
 }
 
 /**
- * `llms.txt` for one plugin (PPDS §7.7): `# {Plugin}`, a two-line description, then one group
+ * `llms.txt` for one plugin: `# {Plugin}`, a two-line description, then one group
  * per section listing every page's `.md` twin with its one-line description. Each `intro`
  * paragraph goes between the description and the lists, so every list line stays one page.
  */
@@ -75,7 +74,7 @@ export function llmsTxt(
   return `${lines.join('\n').trimEnd()}\n`;
 }
 
-/** `sitemap.xml` covering both surfaces (PPDS §7.7, check 18). */
+/** `sitemap.xml` covering both surfaces. */
 export function sitemapXml(origin: string, pathnames: string[]): string {
   const urls = [...new Set(pathnames)]
     .sort()
@@ -106,26 +105,18 @@ export function rssXml(
   return `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n  <channel>\n    <title>${escapeXml(channel.title)}</title>\n    <link>${escapeXml(channel.link)}</link>\n    <description>${escapeXml(channel.description)}</description>\n${body}\n  </channel>\n</rss>\n`;
 }
 
-export interface RedirectRow {
-  legacy_url: string;
-  target_url: string;
-  action: string;
-  redirect: string;
-}
-
 /**
- * Redirect tables from `migration/url-map.csv` (PPDS §10):
- * - `fragments`: legacy `/#/…` URLs → target, applied in the browser (EXCEPTIONS E-01);
- * - `paths`: legacy path URLs → target, emitted as HTTP 301 rules in `_redirects`.
+ * Splits the redirect map (old URL → new URL, `redirects.json`) in two:
+ * - `fragments`: old `/#/…` URLs. Browsers never send the fragment to the server, so the site root
+ *   and the 404 page apply these in the browser;
+ * - `paths`: every other old URL, written to `_redirects` as an HTTP 301.
  */
-export function redirectTables(urlMapCsv: string) {
-  const rows = parseCsv(urlMapCsv) as unknown as RedirectRow[];
+export function redirectTables(redirects: Record<string, string>) {
   const fragments: Record<string, string> = {};
   const paths: [from: string, to: string][] = [];
-  for (const row of rows) {
-    if (row.legacy_url.startsWith('/#')) fragments[row.legacy_url.slice(1)] = row.target_url;
-    else if (row.legacy_url.startsWith('/') && row.redirect.startsWith('301'))
-      paths.push([row.legacy_url, row.target_url]);
+  for (const [from, to] of Object.entries(redirects)) {
+    if (from.startsWith('/#')) fragments[from.slice(1)] = to;
+    else paths.push([from, to]);
   }
   return { fragments, paths };
 }
@@ -135,7 +126,7 @@ export function redirectsFile(rules: [from: string, to: string, status?: number]
   return `${rules.map(([from, to, status = 301]) => `${from} ${to} ${status}`).join('\n')}\n`;
 }
 
-/** Search facets emitted on every docs page (PPDS §7.5 `docsearch:version`, §7.6). */
+/** Search facets emitted on every docs page. */
 export function pageFacets(model: PluginModel, page: NavPage) {
   return {
     plugin: model.config.id,

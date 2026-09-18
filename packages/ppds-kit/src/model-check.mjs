@@ -4,10 +4,9 @@
  *
  * 1. JSON Schema: plugin.config.json (root schema), nav.json ($defs/navTree), titles.json
  *    ($defs/titleMap) and pricing.json ($defs/pricing, when present) against
- *    docs/ppds/plugin-site.schema.json (draft 2020-12).
- * 2. Model rules the schema cannot express (PPDS §3–§5): section order,
- *    nav depth, taxonomy and tier membership, title coverage, slug rules, and the URL map:
- *    one row per legacy URL, each with a valid action and a resolvable target.
+ *    packages/ppds-kit/schema/plugin-site.schema.json (draft 2020-12).
+ * 2. Model rules the schema cannot express: section order, nav depth, taxonomy and tier
+ *    membership, title coverage, slug rules, and redirects.json: every old URL leads to a page.
  *
  * Usage (from the repository root): node packages/ppds-kit/src/model-check.mjs <plugin-id>
  */
@@ -16,8 +15,8 @@ import { resolve } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 
-// Repository root: migration/, docs/ppds/ and content/ are relative to it.
-const root = resolve(process.env['PPDS_REPO_ROOT'] ?? process.cwd());
+// Repository root: content/ and the package entry are relative to it.
+const root = process.cwd();
 const pluginId = process.argv[2];
 if (!pluginId) {
   console.error('Usage: node packages/ppds-kit/src/model-check.mjs <plugin-id>');
@@ -33,7 +32,9 @@ let passed = 0;
 const check = (rule, ok, message) => (ok ? passed++ : fail(rule, message));
 
 // ── 1. JSON Schema ──────────────────────────────────────────────────────────
-const schema = readJson('docs/ppds/plugin-site.schema.json');
+const schema = JSON.parse(
+  readFileSync(new URL('../schema/plugin-site.schema.json', import.meta.url), 'utf8'),
+);
 const ajv = new Ajv2020({ allErrors: true, strict: false });
 addFormats(ajv);
 ajv.addSchema(schema, 'ppds');
@@ -60,11 +61,7 @@ const pricingPath = resolve(contentDir, 'pricing.json');
 if (existsSync(pricingPath))
   validate('pricing.json', 'ppds#/$defs/pricing', JSON.parse(readFileSync(pricingPath, 'utf8')));
 check('pricing', !tiered || existsSync(pricingPath), 'tiered plugin without pricing.json');
-console.log(
-  tiered
-    ? ''
-    : '· pricing.json not required: single free tier (PPDS §5, archetypes D/H conditional)',
-);
+console.log(tiered ? '' : '· pricing.json not required: single free tier');
 
 // ── 2. Model rules ──────────────────────────────────────────────────────────
 const P = `/${config.id}/`;
@@ -84,26 +81,26 @@ const SECTIONS = [
 const CONDITIONAL = new Set(['demos', 'resources', 'design-resources']);
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
-// Sections: all 11, canonical order, mandatory ones enabled (§5).
+// Sections: all 11, canonical order, mandatory ones enabled.
 check(
-  '§5 sections',
+  'sections',
   JSON.stringify(config.sections.map((s) => s.id)) === JSON.stringify(SECTIONS),
   'sections must list all 11 canonical ids in canonical order',
 );
 for (const section of config.sections) {
   check(
-    '§5 sections',
+    'sections',
     section.enabled !== false || CONDITIONAL.has(section.id),
     `mandatory section "${section.id}" is disabled`,
   );
   check(
-    '§12 sections',
+    'sections',
     section.title === undefined,
     `section "${section.id}" overrides its canonical title`,
   );
 }
 check(
-  'R5 urlPrefix',
+  'urlPrefix',
   config.urlPrefix === '' || KEBAB.test(config.urlPrefix.replace(/-$/, '')),
   'invalid urlPrefix',
 );
@@ -132,7 +129,7 @@ const sectionOfGroup = {
 };
 const enabled = config.sections.filter((s) => s.enabled !== false).map((s) => s.id);
 check(
-  '§11.5 sidebar order',
+  'sidebar order',
   JSON.stringify(nav.map((n) => sectionOfGroup[n.pathname])) === JSON.stringify(enabled),
   `top-level nav must be the enabled sections in canonical order, got ${JSON.stringify(nav.map((n) => n.pathname))}`,
 );
@@ -142,37 +139,37 @@ const capabilityIds = new Set();
 const subheaders = [];
 for (const node of nodes) {
   const virtual = node.pathname.endsWith('-group');
-  check('N5 depth', node.depth <= 3, `${node.pathname} is at depth ${node.depth}`);
-  check('P2 unique', !seen.has(node.pathname), `duplicate pathname ${node.pathname}`);
+  check('depth', node.depth <= 3, `${node.pathname} is at depth ${node.depth}`);
+  check('unique', !seen.has(node.pathname), `duplicate pathname ${node.pathname}`);
   seen.add(node.pathname);
-  check('§3 namespace', node.pathname.startsWith(P), `${node.pathname} is outside ${P}`);
+  check('namespace', node.pathname.startsWith(P), `${node.pathname} is outside ${P}`);
   if (virtual) {
     check(
-      '§11.8 virtual groups',
+      'virtual groups',
       Array.isArray(node.children) && node.children.length > 0,
       `virtual group ${node.pathname} has no children`,
     );
   } else {
     const isFile = /\.[a-z]+$/.test(node.pathname);
     check(
-      'R4 trailing slash',
+      'trailing slash',
       isFile || node.pathname.endsWith('/'),
       `${node.pathname} lacks a trailing slash`,
     );
     const segments = node.pathname.slice(P.length).split('/').filter(Boolean);
     for (const segment of segments)
       check(
-        'R3 slugs',
+        'slugs',
         isFile && segment === segments.at(-1) ? /^[a-z0-9.-]+$/.test(segment) : KEBAB.test(segment),
         `${node.pathname}: segment "${segment}" is not kebab-case`,
       );
     check(
-      'R3 slugs',
+      'slugs',
       !/(^|[-/])v?\d+(\.\d+)+|\d{4}-\d{2}/.test(node.pathname.slice(P.length)),
       `${node.pathname} contains a version or date`,
     );
     check(
-      'N2 titles',
+      'titles',
       typeof titles[node.pathname] === 'string' || node.title,
       `${node.pathname} has no title in titles.json`,
     );
@@ -180,47 +177,47 @@ for (const node of nodes) {
   if (node.subheader) {
     subheaders.push(node.subheader);
     check(
-      'N4 taxonomy',
+      'taxonomy',
       config.taxonomy.includes(node.subheader),
       `subheader "${node.subheader}" is not in plugin.config.json taxonomy`,
     );
     check(
-      'N5 structure',
+      'structure',
       node.depth === 2,
       `subheader group ${node.pathname} must sit directly under a section`,
     );
   } else if (virtual) {
     check(
-      'N2 titles',
+      'titles',
       typeof titles[node.pathname] === 'string',
       `section group ${node.pathname} has no title in titles.json`,
     );
   }
   if (node.plan !== undefined)
     check(
-      'N4 plans',
+      'plans',
       config.tiers.some((tier) => tier.id === node.plan),
       `${node.pathname}: plan "${node.plan}" is not a declared tier`,
     );
   if (node.capabilityId !== undefined) {
     check(
-      '§8.3 capabilityId',
+      'capabilityId',
       KEBAB.test(node.capabilityId),
       `${node.pathname}: capabilityId "${node.capabilityId}" is not kebab-case`,
     );
     check(
-      '§8.3 capabilityId',
+      'capabilityId',
       !capabilityIds.has(node.capabilityId),
       `duplicate capabilityId ${node.capabilityId}`,
     );
     capabilityIds.add(node.capabilityId);
     check(
-      'R1 flat capability URLs',
+      'flat capability URLs',
       node.pathname === `${P}${config.urlPrefix}${node.capabilityId}/`,
       `${node.pathname} must be ${P}${config.urlPrefix}${node.capabilityId}/`,
     );
     check(
-      '§4 capability placement',
+      'capability placement',
       node.parent?.subheader !== undefined &&
         sectionOfGroup[nodes.find((n) => n.children?.includes(node.parent))?.pathname] ===
           'features',
@@ -228,39 +225,19 @@ for (const node of nodes) {
     );
     const title = titles[node.pathname] ?? '';
     check(
-      '§8.3 title',
+      'title',
       title.length > 0 && title.length <= 40 && !/[.!?]$/.test(title),
       `${node.pathname}: capability title "${title}" must be 1–40 chars and not a sentence`,
     );
   }
 }
 check(
-  '§5 taxonomy order',
+  'taxonomy order',
   JSON.stringify(subheaders) === JSON.stringify(config.taxonomy),
   `Features subheaders ${JSON.stringify(subheaders)} must equal taxonomy ${JSON.stringify(config.taxonomy)} (same terms, sidebar order)`,
 );
-// The group vocabulary is read from the standard itself (§5 code block), so a term can only be
-// added or renamed centrally (PPDS §5, §12; D-06).
-const standard = read('docs/ppds/02-plugin-docs-standard.md');
-const vocabularyBlock =
-  /\*\*Feature grouping\.\*\*[\s\S]*?```\n([\s\S]*?)```/.exec(standard)?.[1] ?? '';
-const vocabulary = vocabularyBlock
-  .split(/·|\n/)
-  .map((term) => term.trim())
-  .filter(Boolean);
 check(
-  '§5 vocabulary',
-  vocabulary.length > 0,
-  'could not read the group vocabulary from the standard',
-);
-for (const term of config.taxonomy)
-  check(
-    '§5 vocabulary',
-    vocabulary.includes(term),
-    `taxonomy term "${term}" is not in the portfolio vocabulary (${vocabulary.join(', ')})`,
-  );
-check(
-  '§5 vocabulary',
+  'vocabulary',
   !config.taxonomy.some((term) => nav.some((section) => titles[section.pathname] === term)),
   'a taxonomy term duplicates a section name in the sidebar',
 );
@@ -270,8 +247,8 @@ const pagePaths = new Set(
 );
 
 /**
- * The archetype a docs page must use, derived from its path (PPDS §6, v1.1 archetypes J–L).
- * Returns null for machine surfaces (§7.7) and for paths outside the docs namespace.
+ * The archetype a docs page must use, derived from its path.
+ * Returns null for machine surfaces and for paths outside the docs namespace.
  */
 function archetypeOf(pathname) {
   if (!pathname.startsWith(P)) return null;
@@ -293,24 +270,15 @@ function archetypeOf(pathname) {
 const archetypeCounts = {};
 for (const page of pagePaths) {
   const archetype = archetypeOf(page);
-  check('§11.1 archetype', archetype !== undefined, `${page} matches no archetype`);
+  check('archetype', archetype !== undefined, `${page} matches no archetype`);
   if (archetype) archetypeCounts[archetype] = (archetypeCounts[archetype] ?? 0) + 1;
 }
 for (const key of Object.keys(titles))
-  check('N2 titles', seen.has(key), `titles.json has an entry for unknown pathname ${key}`);
+  check('titles', seen.has(key), `titles.json has an entry for unknown pathname ${key}`);
 check(
-  '§5 required pages',
+  'required pages',
   pagePaths.has(P) && pagePaths.has(`${P}all-features/`),
   'Overview and All features are required',
-);
-// §5 lists llms.txt in Getting started; a site may keep it out of the sidebar by exception, since
-// the file is generated and checked either way (conformance 16).
-check(
-  '§5 llms.txt in nav',
-  pagePaths.has(`${P}llms.txt`) ||
-    (existsSync(resolve(root, 'EXCEPTIONS.md')) &&
-      /^## E-\d+ — .*llms\.txt/m.test(read('EXCEPTIONS.md'))),
-  'llms.txt must be in the Getting started nav, or an exception must be recorded in EXCEPTIONS.md',
 );
 for (const link of Object.values(config.links ?? {})) {
   if (link.startsWith('/'))
@@ -322,47 +290,10 @@ for (const link of Object.values(config.links ?? {})) {
 }
 for (const version of config.versions ?? []) {
   if (version.href.startsWith('/'))
-    check(
-      '§7.5 versions',
-      pagePaths.has(version.href),
-      `version href ${version.href} does not resolve`,
-    );
+    check('versions', pagePaths.has(version.href), `version href ${version.href} does not resolve`);
 }
 
-// ── 3. URL map (PPDS §10) ───────────────────────────────────────────────────
-function parseCsv(text) {
-  const rows = [];
-  let row = [],
-    cell = '',
-    quoted = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (quoted) {
-      if (c === '"' && text[i + 1] === '"') {
-        cell += '"';
-        i++;
-      } else if (c === '"') quoted = false;
-      else cell += c;
-    } else if (c === '"') quoted = true;
-    else if (c === ',') {
-      row.push(cell);
-      cell = '';
-    } else if (c === '\n') {
-      row.push(cell);
-      rows.push(row);
-      row = [];
-      cell = '';
-    } else if (c !== '\r') cell += c;
-  }
-  const [header, ...body] = rows;
-  return body.map((values) =>
-    Object.fromEntries(header.map((key, index) => [key, values[index] ?? ''])),
-  );
-}
-
-const urlMap = parseCsv(read('migration/url-map.csv'));
-const exceptions = existsSync(resolve(root, 'EXCEPTIONS.md')) ? read('EXCEPTIONS.md') : '';
-
+// ── 3. Redirects ────────────────────────────────────────────────────────────
 // Generated reference pages: /{id}/api/{kebab(export)}/ for every public export.
 const kebab = (name) =>
   name
@@ -380,62 +311,29 @@ const exported = new Set(
 );
 const apiPages = new Set([...exported].map((name) => `${P}api/${kebab(name)}/`));
 
-const ACTIONS = new Set(['port', 'split', 'merge', 'generate', 'rewrite', 'retire']);
-const mapped = new Map();
-for (const row of urlMap) {
+// Old URL → new URL. Besides docs pages, a target may be one of the site's internal pages.
+const redirectsPath = resolve(contentDir, 'redirects.json');
+const redirects = existsSync(redirectsPath) ? JSON.parse(readFileSync(redirectsPath, 'utf8')) : {};
+const INTERNAL = new Set(['/_internal/harness/', '/404.html']);
+for (const [from, to] of Object.entries(redirects)) {
+  check('redirects', from.startsWith('/'), `${from}: an old URL must start with /`);
   check(
-    '§10 unique rows',
-    !mapped.has(row.legacy_url),
-    `legacy URL ${row.legacy_url} appears more than once`,
+    'redirects',
+    !pagePaths.has(from) && !apiPages.has(from),
+    `${from} is a live page, so it cannot redirect`,
   );
-  mapped.set(row.legacy_url, row);
+  const target = to.split('?')[0];
   check(
-    '§10 action',
-    ACTIONS.has(row.action),
-    `${row.legacy_url}: action "${row.action}" is not one of ${[...ACTIONS].join(', ')}`,
+    'redirects',
+    pagePaths.has(target) || apiPages.has(target) || INTERNAL.has(target),
+    `${from}: target ${to} is not a nav page, a generated API page or an internal page`,
   );
-  check(
-    '§10 retire',
-    row.action !== 'retire',
-    `${row.legacy_url}: retire is forbidden while a home exists`,
-  );
-  check('§10 redirect', row.redirect.trim() !== '', `${row.legacy_url}: missing redirect`);
-  const exception = /EXCEPTIONS (E-\d+)/.exec(row.redirect)?.[1];
-  if (exception)
-    check(
-      '§0.1 exceptions',
-      exceptions.includes(`## ${exception}`),
-      `${row.legacy_url}: cites ${exception}, which is not recorded in EXCEPTIONS.md`,
-    );
-  const target = row.target_url.split('?')[0];
-  const resolves =
-    pagePaths.has(target) ||
-    apiPages.has(target) ||
-    (exception !== undefined && !target.startsWith(P));
-  check(
-    '§10 target',
-    resolves,
-    `${row.legacy_url}: target ${row.target_url} does not resolve to a nav page, a generated API page or a documented exception`,
-  );
-  const expected = archetypeOf(target);
-  check(
-    '§10 target archetype',
-    expected ? row.target_archetype === expected : row.target_archetype.startsWith('—'),
-    `${row.legacy_url}: target archetype "${row.target_archetype}" should be "${expected ?? '— (not a docs page)'}" for ${target}`,
-  );
-  for (const ref of row.notes.matchAll(/\s(\/[a-z0-9/-]+\/)/g)) {
-    const path = ref[1].startsWith(P) ? ref[1] : `${P}${ref[1].slice(1)}`;
-    check(
-      '§10 split targets',
-      pagePaths.has(path) || apiPages.has(path),
-      `${row.legacy_url}: note references ${ref[1]}, which is neither a nav page nor a generated API page`,
-    );
-  }
 }
+
 // ── Report ──────────────────────────────────────────────────────────────────
 console.log(`\n${passed} checks passed · ${errors.length} failed`);
 console.log(
-  `nav: ${nodes.length} nodes, ${pagePaths.size} pages, ${capabilityIds.size} capability pages · url-map: ${urlMap.length} rows · generated API targets available: ${apiPages.size}`,
+  `nav: ${nodes.length} nodes, ${pagePaths.size} pages, ${capabilityIds.size} capability pages · redirects: ${Object.keys(redirects).length} · generated API targets available: ${apiPages.size}`,
 );
 console.log(
   `archetypes: ${Object.entries(archetypeCounts)

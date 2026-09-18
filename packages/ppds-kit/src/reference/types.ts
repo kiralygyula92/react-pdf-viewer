@@ -1,4 +1,4 @@
-/** Generated reference structure (PPDS §8.4). Never hand-edited (conformance check 10). */
+/** Generated reference structure. Never hand-edited (conformance check 10). */
 export interface ReferenceOption {
   type: { name: string; description?: string };
   default?: string | number | boolean | null;
@@ -23,7 +23,7 @@ export interface ReferenceSchema {
   sourceUrl?: string;
 }
 
-/** Human prose for a symbol (PPDS §8.5). Regeneration only ever adds keys. */
+/** Human prose for a symbol. Regeneration only ever adds keys. */
 export interface ReferenceStrings {
   symbolDescription?: string;
   optionDescriptions?: Record<string, string>;

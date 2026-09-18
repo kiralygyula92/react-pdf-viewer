@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * PPDS kit command line.
+ * Site kit command line.
  *
  *   node packages/ppds-kit/src/cli.ts conformance <contentRoot> <distDir> [--report <file>]
  *   node packages/ppds-kit/src/cli.ts reference   <contentRoot> <packageEntry> [--check]

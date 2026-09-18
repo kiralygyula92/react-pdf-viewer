@@ -1,4 +1,4 @@
-/** Real 404 for unknown paths (EXCEPTIONS E-04). Legacy `#/…` links are redirected first. */
+/** Real 404 for unknown paths. Legacy `#/…` links are redirected first. */
 import type { ReactNode } from 'react';
 import { PlainLayout } from 'ppds-kit/components';
 import { LegacyRedirect } from '../components/LegacyRedirect.tsx';

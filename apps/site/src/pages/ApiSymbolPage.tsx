@@ -1,4 +1,4 @@
-/** Generated reference page (archetype E), one per public symbol (PPDS §6 E, §8.4–8.5). */
+/** Generated reference page (archetype E), one per public symbol. */
 import type { ReactNode } from 'react';
 import { loadReference, optionsHeading, type NavPage, type ReferenceEntry } from 'ppds-kit';
 import { DocsLayout } from 'ppds-kit/components';

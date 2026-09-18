@@ -1,17 +1,17 @@
 import { expect, test } from '@playwright/test';
-import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { redirectTables } from 'ppds-kit';
+import { loadRedirects, redirectTables } from 'ppds-kit';
 
 /**
- * Live check of every legacy URL in migration/url-map.csv (check 22). Legacy URLs are hash
- * fragments, which only the browser sees, so they redirect client-side (EXCEPTIONS E-01).
+ * Live check of every old hash URL in `redirects.json` (conformance check 22). Only the browser
+ * sees a fragment, so these redirect client-side.
  */
-const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
-const { fragments } = redirectTables(
-  readFileSync(resolve(repoRoot, 'migration/url-map.csv'), 'utf8'),
+const contentRoot = resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  '../../../content/react-pdf-viewer',
 );
+const { fragments } = redirectTables(loadRedirects(contentRoot));
 
 test.describe('legacy redirects', () => {
   test.skip(({ browserName }) => browserName !== 'chromium', 'Redirect data is browser-agnostic');
@@ -37,9 +37,7 @@ test.describe('legacy redirects', () => {
     expect(failures).toEqual([]);
   });
 
-  test('a legacy viewer link opens its document in the playground (DECISIONS D-07)', async ({
-    page,
-  }) => {
+  test('a legacy viewer link opens its document in the playground', async ({ page }) => {
     await page.goto('/#/view?src=%2Fsamples%2Fmultipage.pdf&page=2&zoom=150');
     await expect(page).toHaveURL(/\/react-pdf-viewer\/demos\/playground\/\?src=/);
     const toolbar = page.getByRole('toolbar', { name: 'PDF controls' });

@@ -4,9 +4,8 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { GUIDE_VARIANTS, REQUIRED_BLOCKS, type BlockSpec } from './archetypes.ts';
-import { parseCsv } from './csv.ts';
 import { parseDoc, wordCount } from './markdown.ts';
-import { contentPages, loadPluginModel, twinPath } from './model.ts';
+import { contentPages, loadPluginModel, loadRedirects, twinPath } from './model.ts';
 import { loadReference } from './reference/render.ts';
 import { redirectTables } from './surfaces.ts';
 import type { NavNode, NavPage, PluginModel, PortfolioConfig } from './types.ts';
@@ -139,7 +138,7 @@ function referenceChecksums(contentRoot: string): Record<string, string> {
   );
 }
 
-/** Runs the 26 PPDS §11 checks plus the kit's extra gates and writes a Markdown report. */
+/** Runs the 26 site checks plus the kit's extra gates and writes a Markdown report. */
 export function runConformance(options: ConformanceOptions): number {
   const { contentRoot, distDir: dist, repoRoot } = options;
   const model: PluginModel = loadPluginModel(contentRoot);
@@ -189,17 +188,10 @@ export function runConformance(options: ConformanceOptions): number {
   const pathOf = (file: string) =>
     `/${relative(dist, file).replace(/\\/g, '/')}`.replace(/index\.html$/, '');
   const schema = JSON.parse(
-    readFileSync(join(repoRoot, 'docs/ppds/plugin-site.schema.json'), 'utf8'),
+    readFileSync(new URL('../schema/plugin-site.schema.json', import.meta.url), 'utf8'),
   ) as object;
   const ajv = new Ajv2020({ allErrors: true, strict: false });
   ajv.addSchema(schema, 'ppds');
-  const standard = readFileSync(join(repoRoot, 'docs/ppds/02-plugin-docs-standard.md'), 'utf8');
-  const vocabulary = (
-    /\*\*Feature grouping\.\*\*[\s\S]*?```\n([\s\S]*?)```/.exec(standard)?.[1] ?? ''
-  )
-    .split(/·|\n/)
-    .map((term) => term.trim())
-    .filter(Boolean);
 
   // ── Structure ─────────────────────────────────────────────────────────────
   check(
@@ -255,9 +247,9 @@ export function runConformance(options: ConformanceOptions): number {
               `${page.pathname}: frontmatter group "${String(data['group'])}" ≠ nav subheader "${page.group}"`,
             );
           if ((data['plan'] ?? undefined) !== page.plan)
-            fail(`${page.pathname}: frontmatter plan ≠ nav plan (N4)`);
+            fail(`${page.pathname}: frontmatter plan ≠ nav plan`);
           if ((data['lifecycle'] ?? undefined) !== page.lifecycle)
-            fail(`${page.pathname}: frontmatter lifecycle ≠ nav lifecycle (N4)`);
+            fail(`${page.pathname}: frontmatter lifecycle ≠ nav lifecycle`);
           if (!/<ul class="ppds-chips"/.test(article))
             fail(`${page.pathname}: missing resource chip row`);
         }
@@ -326,7 +318,7 @@ export function runConformance(options: ConformanceOptions): number {
         ) {
           fail(`${page.pathname}: order is ${h2s.join(' → ')}`);
         }
-        // Basics: a demo before any prose beyond one sentence (PPDS §6 B).
+        // Basics: a demo before any prose beyond one sentence.
         const basics = /<h2[^>]*>Basics<\/h2>([\s\S]*?)(?:<h[23]\b|$)/.exec(article)?.[1] ?? '';
         const beforeDemo = basics.split(/<div class="demo-root|data-scenario=/)[0] ?? '';
         if (!/data-demo=|data-scenario=/.test(basics))
@@ -360,7 +352,7 @@ export function runConformance(options: ConformanceOptions): number {
     },
   );
 
-  check('5', 'Structure', 'Section order in the sidebar matches §5', (fail) => {
+  check('5', 'Structure', 'Section order in the sidebar is the canonical order', (fail) => {
     const order = SECTION_NAMES.map((name) => name.toLowerCase().replace(/ /g, '-'));
     const ids = model.nav.map(
       (node) =>
@@ -418,7 +410,7 @@ export function runConformance(options: ConformanceOptions): number {
         );
       if (config.tiers.some((tier) => tier.id !== 'free'))
         fail('tiered plugin: feature matrix check not implemented');
-      else note('Feature matrix (archetype D) not applicable: single free tier (DECISIONS D-02).');
+      else note('Feature matrix (archetype D) not applicable: single free tier.');
     },
   );
 
@@ -492,7 +484,7 @@ export function runConformance(options: ConformanceOptions): number {
       const path = join(contentRoot, 'reference', '.checksums.json');
       if (!existsSync(path)) {
         if (reference.symbols.size) fail('reference/.checksums.json missing: run the generator');
-        else fail('reference not generated yet (Phase 4)');
+        else fail('reference not generated yet (run pnpm ppds:reference)');
         return;
       }
       const recorded = JSON.parse(readFileSync(path, 'utf8')) as Record<string, string>;
@@ -559,7 +551,7 @@ export function runConformance(options: ConformanceOptions): number {
         fail('tiered plugin: pricing checks require pricing.json support');
         return;
       }
-      note('Not applicable: single free tier, no pricing.json (DECISIONS D-02).');
+      note('Not applicable: single free tier, no pricing.json.');
       if (model.pages.some((page) => page.plan && page.plan !== 'free'))
         fail('a capability has a non-free plan but no pricing matrix exists');
       return false;
@@ -627,7 +619,7 @@ export function runConformance(options: ConformanceOptions): number {
   });
 
   // ── Metadata ──────────────────────────────────────────────────────────────
-  check('19', 'Metadata', 'Every page emits the full §7.6 meta set', (fail, note) => {
+  check('19', 'Metadata', 'Every page emits the full meta set', (fail, note) => {
     for (const file of publicHtml) {
       const html = readFileSync(file, 'utf8');
       const pathname = pathOf(file);
@@ -699,29 +691,16 @@ export function runConformance(options: ConformanceOptions): number {
 
   // ── Migration ─────────────────────────────────────────────────────────────
   check('22', 'Migration', 'Every legacy URL redirects', (fail, note) => {
-    const urlMap = readFileSync(join(repoRoot, 'migration/url-map.csv'), 'utf8');
-    const { fragments, paths } = redirectTables(urlMap);
-    const rows = parseCsv(urlMap);
+    const { fragments, paths } = redirectTables(loadRedirects(contentRoot));
     const redirects = existsSync(join(dist, '_redirects'))
       ? readFileSync(join(dist, '_redirects'), 'utf8')
       : '';
-    for (const row of rows) {
-      const legacy = row['legacy_url'] ?? '';
-      const target = (row['target_url'] ?? '').split('?')[0] ?? '';
-      if (legacy.startsWith('/#')) {
-        if (!fragments[legacy.slice(1)]) fail(`${legacy}: not in the client-side redirect map`);
-      } else if (legacy.startsWith('/') && !redirects.includes(`${legacy} `)) {
-        fail(`${legacy}: no _redirects rule`);
-      }
-      if (
-        !legacy.startsWith('repo:') &&
-        target &&
-        !target.endsWith('.html') &&
-        !htmlFor(dist, target) &&
-        !existsSync(join(dist, target))
-      ) {
-        fail(`${legacy}: redirect target ${target} is not built`);
-      }
+    for (const [from] of paths)
+      if (!redirects.includes(`${from} `)) fail(`${from}: no _redirects rule`);
+    for (const [from, to] of [...Object.entries(fragments), ...paths]) {
+      const target = to.split('?')[0] ?? '';
+      if (!target.endsWith('.html') && !htmlFor(dist, target) && !existsSync(join(dist, target)))
+        fail(`${from}: redirect target ${target} is not built`);
     }
     const home = htmlFor(dist, '/') ?? '';
     const notFound = htmlFor(dist, '/404.html') ?? '';
@@ -733,7 +712,7 @@ export function runConformance(options: ConformanceOptions): number {
         fail(`${name}: legacy fragment redirect script missing`);
     }
     note(
-      `${Object.keys(fragments).length} legacy fragment URLs redirect client-side (EXCEPTIONS E-01); ${paths.length} path URLs via _redirects. Checked in a browser by the site e2e suite.`,
+      `${Object.keys(fragments).length} legacy fragment URLs redirect client-side; ${paths.length} path URLs via _redirects. Checked in a browser by the site e2e suite.`,
     );
   });
 
@@ -804,27 +783,19 @@ export function runConformance(options: ConformanceOptions): number {
   });
 
   // ── Portfolio consistency ─────────────────────────────────────────────────
-  check(
-    '25',
-    'Portfolio consistency',
-    'Same section names, badge vocabulary, footer columns and taxonomy terms',
-    (fail) => {
-      for (const term of config.taxonomy)
-        if (!vocabulary.includes(term))
-          fail(`taxonomy term "${term}" is not in the standard's vocabulary`);
-      for (const section of config.sections)
-        if (section.title) fail(`section ${section.id} overrides its canonical name`);
-      // A docs-only site has no marketing home; its footer is checked on the docs root.
-      const home = htmlFor(dist, docsOnly ? prefix : '/') ?? '';
-      const columns = [
-        ...between(home, /<footer class="ppds-site-footer"[^>]*>/, '</footer>').matchAll(
-          /<h2[^>]*class="ppds-site-footer__heading"[^>]*>([^<]+)<\/h2>/g,
-        ),
-      ].map((m) => textOf(m[1] ?? ''));
-      if (columns.join('|') !== FOOTER_COLUMNS.join('|'))
-        fail(`footer columns [${columns.join(', ')}] ≠ [${FOOTER_COLUMNS.join(', ')}]`);
-    },
-  );
+  check('25', 'Portfolio consistency', 'Same section names and footer columns', (fail) => {
+    for (const section of config.sections)
+      if (section.title) fail(`section ${section.id} overrides its canonical name`);
+    // A docs-only site has no marketing home; its footer is checked on the docs root.
+    const home = htmlFor(dist, docsOnly ? prefix : '/') ?? '';
+    const columns = [
+      ...between(home, /<footer class="ppds-site-footer"[^>]*>/, '</footer>').matchAll(
+        /<h2[^>]*class="ppds-site-footer__heading"[^>]*>([^<]+)<\/h2>/g,
+      ),
+    ].map((m) => textOf(m[1] ?? ''));
+    if (columns.join('|') !== FOOTER_COLUMNS.join('|'))
+      fail(`footer columns [${columns.join(', ')}] ≠ [${FOOTER_COLUMNS.join(', ')}]`);
+  });
 
   check(
     '26',
@@ -868,9 +839,7 @@ export function runConformance(options: ConformanceOptions): number {
         const text = readFileSync(file, 'utf8');
         for (const word of forbidden)
           if (word && text.includes(word))
-            fail(
-              `${relative(repoRoot, file)}: plugin-specific string "${word}" in the shared kit (DECISIONS D-04)`,
-            );
+            fail(`${relative(repoRoot, file)}: plugin-specific string "${word}" in the shared kit`);
       }
     },
   );
@@ -879,7 +848,7 @@ export function runConformance(options: ConformanceOptions): number {
   check(
     'K1',
     'Kit gates',
-    'Model validates (plugin-site.schema.json, nav, titles, url-map)',
+    'Model validates (plugin-site.schema.json, nav, titles, redirects)',
     (fail, note) => {
       const run = spawnSync(
         process.execPath,
@@ -901,14 +870,14 @@ export function runConformance(options: ConformanceOptions): number {
   check(
     'K2',
     'Kit gates',
-    'Content complete: no TODO placeholders; Overview description is the plugin description (Phase 5 gate)',
+    'Content complete: no TODO placeholders; Overview description is the plugin description',
     (fail) => {
       for (const [pathname, doc] of docs) {
         if (/TODO:/.test(doc.body) || /TODO:/.test(String(doc.frontmatter['description'] ?? '')))
           fail(`${pathname}: contains TODO placeholders`);
       }
       if (docs.get(prefix)?.frontmatter['description'] !== config.description)
-        fail('Overview description ≠ plugin.config.json description (P10)');
+        fail('Overview description ≠ plugin.config.json description');
     },
   );
 
@@ -917,7 +886,7 @@ export function runConformance(options: ConformanceOptions): number {
   const lines = [
     '# Conformance report',
     '',
-    `PPDS v1.1 §11 conformance for \`${config.id}\` (${config.name} ${config.currentVersion}), generated by \`ppds-kit\` from \`${relative(repoRoot, dist).replace(/\\/g, '/')}\`.`,
+    `Documentation conformance for \`${config.id}\` (${config.name} ${config.currentVersion}), generated by \`ppds-kit\` from \`${relative(repoRoot, dist).replace(/\\/g, '/')}\`.`,
     '',
     `**${results.length - failed.length} of ${results.length} checks pass.** ${failed.length ? `Failing: ${failed.map((r) => r.id).join(', ')}.` : 'All checks pass.'}`,
     '',

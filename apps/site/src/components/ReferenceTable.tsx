@@ -1,7 +1,7 @@
 /**
  * A compact table of one generated reference symbol's members, for use inside a capability page:
  * `<ReferenceTable symbol="Keyboard shortcuts" format="keys" />`. The rows come from
- * `content/react-pdf-viewer/reference/`, so the page can never drift from the source (PPDS P5).
+ * `content/react-pdf-viewer/reference/`, so the page can never drift from the source.
  */
 import { Fragment } from 'react';
 import { loadReference } from 'ppds-kit';

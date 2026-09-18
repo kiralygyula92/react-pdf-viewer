@@ -1,5 +1,5 @@
 /*
- * PPDS kit design system: tokens and layout shells shared by every plugin site (PPDS §12).
+ * Site kit design system: tokens and layout shells shared by every plugin site.
  * Plugins may override only the branding tokens (--ppds-accent*), never structure.
  */
 
@@ -1069,7 +1069,7 @@
     }
   }
 
-  /* ── Demo block (§7.2) ───────────────────────────────────────────────── */
+  /* ── Demo block ───────────────────────────────────────────────── */
   .ppds-demo {
     margin: 20px 0 28px;
     overflow: hidden;

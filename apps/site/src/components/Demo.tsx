@@ -1,7 +1,7 @@
 /**
- * A live demo colocated with its page (PPDS §7.2): `<Demo id="features/zoom/demo-basics" title="…" />`
+ * A live demo colocated with its page: `<Demo id="features/zoom/demo-basics" title="…" />`
  * renders `content/react-pdf-viewer/features/zoom/demo-basics.tsx` with the standard toolbar.
- * Without JavaScript the source is shown instead (§7.8).
+ * Without JavaScript the source is shown instead.
  */
 import { demoSource } from '../content.ts';
 import { Island } from './Island.tsx';

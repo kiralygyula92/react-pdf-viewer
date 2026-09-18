@@ -62,7 +62,7 @@ function useNearViewport<T extends Element>() {
   return [ref, near] as const;
 }
 
-/** Mounts a colocated demo with the PPDS demo toolbar; Reset remounts it. */
+/** Mounts a colocated demo with the demo toolbar; Reset remounts it. */
 export default function DemoFrame({
   id,
   title,

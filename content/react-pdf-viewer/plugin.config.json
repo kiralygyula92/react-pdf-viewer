@@ -1,5 +1,5 @@
 {
-  "$schema": "../../docs/ppds/plugin-site.schema.json",
+  "$schema": "../../packages/ppds-kit/schema/plugin-site.schema.json",
   "id": "react-pdf-viewer",
   "name": "React PDF Viewer",
   "tagline": "Accessible, themeable PDF viewer for React, built on PDF.js.",

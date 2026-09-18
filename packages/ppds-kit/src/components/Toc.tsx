@@ -1,4 +1,4 @@
-/** Right-rail table of contents from H2/H3 with active-section highlighting (PPDS §7.4). */
+/** Right-rail table of contents from H2/H3 with active-section highlighting. */
 export interface Heading {
   depth: number;
   slug: string;

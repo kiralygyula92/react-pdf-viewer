@@ -95,7 +95,7 @@ const defaultDemo = ({ title, code, lang }: TwinDemo) =>
   `${title ? `**Demo: ${title}**\n\n` : ''}${codeFence(lang, code)}`;
 
 /**
- * Converts an authored MDX page body to plain Markdown for its `.md` twin (PPDS §7.7): imports
+ * Converts an authored MDX page body to plain Markdown for its `.md` twin: imports
  * are dropped, demos become fenced source, callouts become blockquotes, other components are
  * unwrapped, and site-relative links become absolute. Code is never touched: fenced blocks and
  * inline code are set aside while the prose is converted, then put back as they were.

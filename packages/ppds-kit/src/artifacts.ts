@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSy
 import { dirname, join, relative } from 'node:path';
 import { LLMS_FULL_FILES, machineSurface, type MachineSurfaceOptions } from './machine.ts';
 import { parseDoc, slugify } from './markdown.ts';
-import { loadPluginModel, loadPortfolio } from './model.ts';
+import { loadPluginModel, loadPortfolio, loadRedirects } from './model.ts';
 import { renderOgImage } from './og.ts';
 import {
   absoluteUrl,
@@ -20,9 +20,6 @@ export interface SiteArtifactOptions {
   origin: string;
   contentRoot: string;
   portfolio: string;
-  urlMap: string;
-  /** Extra `_redirects` rules, e.g. bare section paths → their first page. */
-  redirects?: [from: string, to: string, status?: number][];
   /** The documented package, named in the header of `llms-full.md`. */
   package?: MachineSurfaceOptions['package'];
   /** Paragraphs for the header of `llms-full.md`. */
@@ -57,9 +54,9 @@ const decode = (text: string) =>
     .replace(/&#39;/g, "'");
 
 /**
- * Build-time machine surface and hosting artefacts (PPDS §7.6, §7.7, D-03): `llms.txt`, `.md`
- * twins, `llms-full.md`, `sitemap.xml`, the changelog RSS feed, generated OG images, `_redirects`
- * and the static search index.
+ * Build-time machine surface and hosting artefacts: `llms.txt`, `.md` twins, `llms-full.md`,
+ * `sitemap.xml`, the changelog RSS feed, generated OG images, `_redirects` and the static search
+ * index.
  */
 export async function buildSiteArtifacts(options: SiteArtifactOptions): Promise<void> {
   const { dist, origin } = options;
@@ -130,10 +127,10 @@ export async function buildSiteArtifacts(options: SiteArtifactOptions): Promise<
   }
 
   // ── Redirects ─────────────────────────────────────────────────────
-  const { paths } = redirectTables(readFileSync(options.urlMap, 'utf8'));
-  write(join(dist, '_redirects'), redirectsFile([...paths, ...(options.redirects ?? [])]));
+  const { paths } = redirectTables(loadRedirects(options.contentRoot));
+  write(join(dist, '_redirects'), redirectsFile(paths));
 
-  // ── OG images (generated from title + description, §7.6) ─────────
+  // ── OG images (generated from title + description) ────────────────
   let images = 0;
   for (const file of htmlFiles) {
     const html = readFileSync(file, 'utf8');

@@ -1,4 +1,4 @@
-/** Global footer shared by both surfaces (PPDS §2.3): four fixed columns. */
+/** Global footer shared by both surfaces: four fixed columns. */
 import type { PortfolioConfig } from '../types.ts';
 
 const COLUMNS = ['Products', 'Resources', 'Explore', 'Company'] as const;

@@ -1,6 +1,6 @@
 /**
- * Docs header (PPDS §2.2), minimal: plugin name back to the docs root, version selector, search,
- * repository link and theme toggle. No marketing menus and no menu button (DECISIONS D-07).
+ * Docs header, minimal: plugin name back to the docs root, version selector, search,
+ * repository link and theme toggle. No marketing menus and no menu button.
  */
 import type { PluginConfig } from '../types.ts';
 import { Search } from './Search.tsx';

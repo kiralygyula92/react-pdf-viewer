@@ -42,7 +42,7 @@ export function origin(): string {
   return SITE_ORIGIN;
 }
 
-/** One-line descriptions of every docs page, keyed by pathname (P10: written once, in frontmatter). */
+/** One-line descriptions of every docs page, keyed by pathname (written once, in frontmatter). */
 export function getDescriptions(): Map<string, string> {
   const descriptions = new Map<string, string>();
   for (const page of getModel().pages) {
@@ -86,7 +86,7 @@ export const feeds = [
   { title: 'Changelog RSS', href: `/${PLUGIN_ID}/discover-more/changelog/rss.xml` },
 ];
 
-/** Generated API pages injected under the Reference section of the sidebar (PPDS N3). */
+/** Generated API pages injected under the Reference section of the sidebar. */
 export function injectedNav(): Record<string, NavNode[]> {
   const reference = loadReference(CONTENT_ROOT);
   return {

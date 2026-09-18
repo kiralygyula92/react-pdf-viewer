@@ -1,6 +1,6 @@
 /**
  * A page outside the docs content with the same minimal docs header and footer (e.g. the 404 page),
- * for docs-only sites without a marketing surface (DECISIONS D-07, EXCEPTIONS E-06).
+ * for docs-only sites without a marketing surface.
  */
 import type { ReactNode } from 'react';
 import type { PageMeta } from '../surfaces.ts';

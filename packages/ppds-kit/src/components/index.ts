@@ -1,4 +1,4 @@
-/** Server-rendered layout and page components shared by every plugin site (PPDS §12). */
+/** Server-rendered layout and page components shared by every plugin site. */
 export { Badge } from './Badge.tsx';
 export { Callout } from './Callout.tsx';
 export { CardGrid, type CardGridItem } from './CardGrid.tsx';

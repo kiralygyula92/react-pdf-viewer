@@ -56,7 +56,7 @@ function demoIds(contentRoot: string): string[] {
 }
 
 /**
- * The machine surface (PPDS §7.7), keyed by site pathname: a Markdown twin for every docs page and
+ * The machine surface, keyed by site pathname: a Markdown twin for every docs page and
  * reference entry, `llms.txt`, and the full documentation (`llms-full.md` and `llms-full.txt`):
  * every page in reading order, the API reference included, with the source of each live example
  * inlined where its page shows it. It comes from the same content in the same pass as the twins,

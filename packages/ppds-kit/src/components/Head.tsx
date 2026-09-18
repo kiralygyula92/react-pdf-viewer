@@ -1,5 +1,5 @@
 /**
- * Metadata contract (PPDS §7.6): every tag derives from one title and one description.
+ * Metadata contract: every tag derives from one title and one description.
  */
 import type { PageMeta } from '../surfaces.ts';
 

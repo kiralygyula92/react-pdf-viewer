@@ -4,7 +4,6 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { after, describe, it } from 'node:test';
 import { archetypeFor, sourceFileFor } from '../src/archetypes.ts';
-import { parseCsv, toCsv } from '../src/csv.ts';
 import { machineSurface } from '../src/machine.ts';
 import {
   codeFence,
@@ -19,7 +18,7 @@ import { symbolSlug } from '../src/reference/render.ts';
 import { llmsTxt, redirectTables, redirectsFile, sitemapXml } from '../src/surfaces.ts';
 import type { PluginModel } from '../src/types.ts';
 
-describe('archetypes (PPDS v1.1 §6)', () => {
+describe('archetypes', () => {
   it('derives the archetype from the path', () => {
     assert.equal(archetypeFor('', false), 'A');
     assert.equal(archetypeFor('all-features/', false), 'C');
@@ -37,7 +36,7 @@ describe('archetypes (PPDS v1.1 §6)', () => {
     assert.throws(() => archetypeFor('mystery/', false));
   });
 
-  it('maps pages to content files (§8.1)', () => {
+  it('maps pages to content files', () => {
     assert.equal(sourceFileFor('', false), 'getting-started/overview.mdx');
     assert.equal(sourceFileFor('conditional-logic/', true), 'features/conditional-logic/index.mdx');
     assert.equal(sourceFileFor('all-features/', false), 'features/index.mdx');
@@ -46,16 +45,6 @@ describe('archetypes (PPDS v1.1 §6)', () => {
     assert.equal(sourceFileFor('demos/playground/', false), 'demos/playground/index.mdx');
     assert.equal(sourceFileFor('api/', false), null);
     assert.equal(sourceFileFor('llms.txt', false), null);
-  });
-});
-
-describe('csv', () => {
-  it('round-trips quoted fields', () => {
-    const csv = toCsv([
-      ['a', 'b'],
-      ['x, y', 'say "hi"'],
-    ]);
-    assert.deepEqual(parseCsv(csv), [{ a: 'x, y', b: 'say "hi"' }]);
   });
 });
 
@@ -135,7 +124,7 @@ describe('machine surface', () => {
     ],
   } as unknown as PluginModel;
 
-  it('writes llms.txt in the §7.7 format', () => {
+  it('writes llms.txt: title, description, then one list per section', () => {
     const text = llmsTxt(model, 'https://site.test', new Map([['/p/zoom/', 'Zoom in and out.']]));
     assert.match(
       text,
@@ -152,9 +141,7 @@ describe('machine surface', () => {
     const sitemap = sitemapXml('https://site.test', ['/b/', '/a/', '/a/']);
     assert.equal(sitemap.match(/<url>/g)?.length, 2);
     assert.ok(sitemap.indexOf('/a/</loc>') < sitemap.indexOf('/b/</loc>'));
-    const { fragments, paths } = redirectTables(
-      'legacy_url,content_type_found,target_archetype,target_url,action,redirect,notes\n/#/docs,reference,A,/p/,split,client-side,\n/old/,how-to,J,/p/guides/x/,port,301,\n',
-    );
+    const { fragments, paths } = redirectTables({ '/#/docs': '/p/', '/old/': '/p/guides/x/' });
     assert.deepEqual(fragments, { '#/docs': '/p/' });
     assert.deepEqual(paths, [['/old/', '/p/guides/x/']]);
     assert.equal(redirectsFile([['/old/', '/new/']]), '/old/ /new/ 301\n');
@@ -276,7 +263,7 @@ describe('llms-full', () => {
       full,
       /## features\/zoom\/demo-unused\n\n```tsx\nexport default function Unused\(\) \{\}\n```/,
     );
-    // The page twin keeps the demo and the concatenated reference (§7.7).
+    // The page twin keeps the demo and the concatenated reference.
     const twin = surface.get('/p/zoom.md') ?? '';
     assert.match(twin, /\*\*Demo: Basic zoom\*\*\n\n```tsx\n[\s\S]*return <Viewer \/>;/);
     assert.match(twin, /\n## Viewer reference\n/);

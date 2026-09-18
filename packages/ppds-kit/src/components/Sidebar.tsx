@@ -1,4 +1,4 @@
-/** Docs sidebar rendered from nav data only (PPDS §4, P2, N1). */
+/** Docs sidebar rendered from nav data only. */
 import type { NavNode, PluginModel } from '../types.ts';
 import { Badge } from './Badge.tsx';
 

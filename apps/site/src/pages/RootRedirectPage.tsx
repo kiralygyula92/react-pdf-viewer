@@ -1,6 +1,6 @@
 /**
- * The site root redirects to the documentation (DECISIONS D-07: a docs-only site for one product).
- * Legacy `/#/…` links are resolved first (EXCEPTIONS E-01); everything else goes to the docs root.
+ * The site root redirects to the documentation: this is a docs-only site for one product.
+ * Legacy `/#/…` links are resolved first; everything else goes to the docs root.
  * A static page rather than an HTTP redirect, because the fragment of a legacy link never reaches
  * the server.
  */

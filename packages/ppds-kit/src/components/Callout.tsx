@@ -1,4 +1,4 @@
-/** `:::info` / `:::warning` callout (PPDS §6 B, J). Anti-patterns pass `wrong` code in the slot. */
+/** `:::info` / `:::warning` callout. Anti-patterns pass `wrong` code in the slot. */
 import type { ReactNode } from 'react';
 
 export interface CalloutProps {

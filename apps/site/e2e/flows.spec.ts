@@ -1,9 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
 
 /**
- * The required user flows (PPDS §9), clicked through as a visitor would. Each step clicks a real
+ * The required user flows, clicked through as a visitor would. Each step clicks a real
  * link on the page, so a broken or missing link fails the flow. F6 (Convert) does not apply: the
- * plugin is free only (DECISIONS D-02).
+ * plugin is free only.
  */
 const DOCS = 'React PDF Viewer documentation';
 
@@ -36,7 +36,7 @@ test.describe('required flows', () => {
   test('F1 Evaluate: root → overview → features index → capability → back to docs → install', async ({
     page,
   }) => {
-    // Docs-only site (DECISIONS D-07): the root redirects to the overview; no pricing (D-02).
+    // Docs-only site: the root redirects to the overview; no pricing.
     await page.goto('/');
     await expect(page).toHaveURL(/\/react-pdf-viewer\/$/);
     await follow(

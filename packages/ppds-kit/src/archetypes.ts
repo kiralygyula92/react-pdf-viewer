@@ -1,7 +1,7 @@
 import type { Archetype } from './types.ts';
 
 /**
- * Required blocks per archetype (PPDS v1.1 §6), expressed as the Markdown headings a page body must
+ * Required blocks per archetype, expressed as the Markdown headings a page body must
  * contain, in order. Blocks rendered by templates (H1, subtitle, chips, card grids, footer
  * actions, generated API links) are not listed: the templates always emit them.
  *
@@ -37,7 +37,7 @@ export const REQUIRED_BLOCKS: Record<Archetype, BlockSpec[]> = {
   L: [h2('What this shows'), h2('Source')],
 };
 
-/** Extra required blocks for archetype J variants, keyed by path pattern (§6 J). */
+/** Extra required blocks for archetype J variants, keyed by path pattern. */
 export const GUIDE_VARIANTS: { pattern: RegExp; name: string; blocks: BlockSpec[] }[] = [
   {
     pattern: /\/integrations\/[a-z0-9-]+\/$/,
@@ -72,7 +72,7 @@ const SECTION_INDEX = /^(api|migration|demos)\/$/;
 /**
  * The archetype a docs page must use, derived from its path relative to the plugin namespace.
  * `isCapability` marks capability nodes (they carry a `capabilityId` in nav data).
- * Returns null for machine surfaces (§7.7).
+ * Returns null for machine surfaces.
  */
 export function archetypeFor(relativePath: string, isCapability: boolean): Archetype | null {
   const rest = relativePath;
@@ -93,7 +93,7 @@ export function archetypeFor(relativePath: string, isCapability: boolean): Arche
 }
 
 /**
- * Content file for a docs page, relative to the plugin content root (PPDS §8.1), or null when the
+ * Content file for a docs page, relative to the plugin content root, or null when the
  * page is generated (the API index and machine surfaces).
  */
 export function sourceFileFor(relativePath: string, isCapability: boolean): string | null {

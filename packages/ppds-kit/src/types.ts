@@ -1,4 +1,4 @@
-/** Types for the PPDS v1.1 content model (docs/ppds/plugin-site.schema.json). */
+/** Types for the site content model (schema/plugin-site.schema.json). */
 
 export type Archetype = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L';
 
@@ -60,7 +60,7 @@ export interface NavNode {
   children?: NavNode[];
 }
 
-/** Portfolio-level data shared by every plugin site (marketing header and footer, PPDS §2). */
+/** Portfolio-level data shared by every plugin site (marketing header and footer). */
 export interface PortfolioConfig {
   name: string;
   footer: Record<
@@ -71,7 +71,7 @@ export interface PortfolioConfig {
   copyright: string;
   /**
    * Surfaces the site publishes. Default both; `["docs"]` is a docs-only site for a single
-   * product, whose root redirects to the docs (no marketing surface, PPDS §2.1 deviation).
+   * product, whose root redirects to the docs (no marketing surface).
    */
   surfaces?: ('marketing' | 'docs')[];
 }

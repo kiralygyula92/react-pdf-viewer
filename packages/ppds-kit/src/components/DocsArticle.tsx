@@ -1,5 +1,5 @@
 /**
- * Archetype template (PPDS v1.1 §6). Emits the blocks that are layout or generated from data
+ * Archetype template. Emits the blocks that are layout or generated from data
  * (H1, one-line description, badges, resource chips, card grids, `## API` links); the authored
  * body is `children`.
  */

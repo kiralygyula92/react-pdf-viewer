@@ -1,13 +1,13 @@
 # Docs & site structure
 
-This project's presentation/documentation site follows the standard in
-`docs/ppds/02-plugin-docs-standard.md`. Read it before editing any page,
-template, route or nav data.
+The documentation site is built from `content/react-pdf-viewer` (site model, MDX pages and
+colocated demos) with the kit in `packages/ppds-kit`. See `CLAUDE.md` for the project rules and
+`CONTRIBUTING.md` for the documentation workflow.
 
 Hard rules:
 
-- Never hand-write reference/settings/API tables — they are generated.
-- Never delete a URL. Retire by 301 redirect only.
+- Never hand-write reference/settings/API tables — they are generated (`pnpm ppds:reference`).
+- Never delete a URL. When a page moves, add its old URL to `redirects.json`.
 - Never invent metrics, testimonials, prices or compatibility claims.
   Emit `TODO:` instead; conformance fails until it is resolved.
 - Badges (New/Preview/Beta/Planned/Deprecated/tier names) are declared on
@@ -15,3 +15,4 @@ Hard rules:
 - Capability pages keep the section order:
   Basics → variations → recipes → Customization → escape hatch →
   Limitations → API.
+- After a docs change, `pnpm build` and `pnpm ppds:conformance` must pass.

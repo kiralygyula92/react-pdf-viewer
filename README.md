@@ -26,18 +26,14 @@ export function Document() {
 
 ## Repository layout
 
-| Path                                                     | What it is                                                                                                                        |
-| -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| [`packages/react-pdf-viewer`](packages/react-pdf-viewer) | The published library.                                                                                                            |
-| [`content/react-pdf-viewer`](content/react-pdf-viewer)   | Documentation content: the site model (`plugin.config.json`, `nav.json`), MDX pages, colocated demos and the generated reference. |
-| [`apps/site`](apps/site)                                 | The static documentation site (React + Vite), which doubles as the Playwright e2e and visual test bed.                            |
-| [`packages/ppds-kit`](packages/ppds-kit)                 | Plugin-agnostic site kit: layouts, demo toolbar, reference generator, conformance checks and the machine surface.                 |
-| [`docs/ppds`](docs/ppds)                                 | The documentation standard (PPDS v1.1) the site is built and checked against.                                                     |
-| [`smoke`](smoke)                                         | Minimal Vite, Next.js and webpack apps that install the packed tarball (consumer smoke tests).                                    |
-| [`scripts`](scripts)                                     | Repository tooling (consumer smoke runner).                                                                                       |
-
-Site decisions and deliberate deviations from the standard: [`DECISIONS.md`](DECISIONS.md) and
-[`EXCEPTIONS.md`](EXCEPTIONS.md). Legacy URL redirects: [`migration/url-map.csv`](migration/url-map.csv).
+| Path                                                     | What it is                                                                                                                                                         |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`packages/react-pdf-viewer`](packages/react-pdf-viewer) | The published library.                                                                                                                                             |
+| [`content/react-pdf-viewer`](content/react-pdf-viewer)   | Documentation content: the site model (`plugin.config.json`, `nav.json`, `titles.json`, `redirects.json`), MDX pages, colocated demos and the generated reference. |
+| [`apps/site`](apps/site)                                 | The static documentation site (React + Vite), which doubles as the Playwright e2e and visual test bed.                                                             |
+| [`packages/ppds-kit`](packages/ppds-kit)                 | Plugin-agnostic site kit: layouts, demo toolbar, reference generator, conformance checks and the machine surface.                                                  |
+| [`smoke`](smoke)                                         | Minimal Vite, Next.js and webpack apps that install the packed tarball (consumer smoke tests).                                                                     |
+| [`scripts`](scripts)                                     | Repository tooling (consumer smoke runner).                                                                                                                        |
 
 ## Development
 
@@ -64,8 +60,8 @@ pnpm --filter @kiralygyula92/react-pdf-viewer build --watch    # rebuild the lib
 | `pnpm smoke`                           | Pack the library and build fresh Vite, Next.js and webpack apps against the tarball           |
 | `pnpm --filter site generate-samples`  | Regenerate the bundled sample PDFs (deterministic, generated from scratch)                    |
 | `pnpm ppds:reference`                  | Regenerate the API reference from the package's TypeScript and TSDoc                          |
-| `pnpm ppds:validate`                   | Validate the site model against `docs/ppds/plugin-site.schema.json`                           |
-| `pnpm ppds:conformance`                | Run the PPDS conformance checks against the built site                                        |
+| `pnpm ppds:validate`                   | Validate the site model: config, nav, titles and redirects                                    |
+| `pnpm ppds:conformance`                | Run the conformance checks against the built site                                             |
 
 Visual baselines are only rendered and compared in `mcr.microsoft.com/playwright` (locally through
 Docker via `apps/site/scripts/visual.sh`, and in the CI `visual` job), so they never differ by OS.

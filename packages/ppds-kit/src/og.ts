@@ -41,7 +41,7 @@ const plainGlyphs = (text: string) =>
   text.replace(/[⌘⌥⇧⌃]/g, (symbol) => KEY_SYMBOLS[symbol] ?? '');
 
 /**
- * Social card (1200×630) generated from a page's title and description (PPDS §7.6): the same
+ * Social card (1200×630) generated from a page's title and description: the same
  * template for every docs page, so no card is ever hand-made.
  */
 export async function renderOgImage(input: {

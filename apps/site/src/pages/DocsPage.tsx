@@ -1,5 +1,5 @@
 /**
- * Every authored docs page in nav.json (PPDS §3). The archetype template, sidebar, ToC, badges,
+ * Every authored docs page in nav.json. The archetype template, sidebar, ToC, badges,
  * metadata and footer actions all come from ppds-kit; this page only joins nav data to content.
  */
 import type { ReactNode } from 'react';

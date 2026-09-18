@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { archetypeFor, sourceFileFor } from './archetypes.ts';
 import type {
@@ -12,7 +12,7 @@ import type {
 
 const SECTION_GROUP = /^\/[a-z0-9-]+\/([a-z0-9-]+)-group$/;
 
-/** Maps a top-level virtual group (`/{id}/api-group`) to its canonical section id (PPDS §5). */
+/** Maps a top-level virtual group (`/{id}/api-group`) to its canonical section id. */
 function sectionOf(groupPathname: string): SectionId {
   const slug = SECTION_GROUP.exec(groupPathname)?.[1];
   if (slug === 'api') return 'reference';
@@ -91,6 +91,15 @@ export function loadPortfolio(path: string): PortfolioConfig {
   return readJson<PortfolioConfig>(path);
 }
 
+/**
+ * Old URL → new URL, from `redirects.json` in the content root (empty without one). A page that
+ * moves gets an entry here, so its old address keeps working.
+ */
+export function loadRedirects(contentRoot: string): Record<string, string> {
+  const path = join(contentRoot, 'redirects.json');
+  return existsSync(path) ? readJson<Record<string, string>>(path) : {};
+}
+
 /** Pages in sidebar order, excluding machine surfaces. */
 export function contentPages(model: PluginModel): NavPage[] {
   return model.pages.filter((page) => page.archetype !== null);
@@ -103,7 +112,7 @@ export function neighbours(model: PluginModel, pathname: string) {
   return { previous: index > 0 ? list[index - 1] : undefined, next: list[index + 1] };
 }
 
-/** The `.md` twin URL of a docs page (PPDS §7.7): `/{id}/zoom/` → `/{id}/zoom.md`. */
+/** The `.md` twin URL of a docs page: `/{id}/zoom/` → `/{id}/zoom.md`. */
 export function twinPath(pathname: string): string {
   return `${pathname.replace(/\/$/, '')}.md`;
 }

@@ -17,7 +17,7 @@ import { CONTENT_ROOT, getModel, PLUGIN_ID } from './lib/site.ts';
 export type EntryName = 'site' | 'harness' | 'viewer';
 
 export interface Route {
-  /** URL as it is served, with a trailing slash (R4). */
+  /** URL as it is served, with a trailing slash. */
   pathname: string;
   /** File written under the output directory. */
   file: string;

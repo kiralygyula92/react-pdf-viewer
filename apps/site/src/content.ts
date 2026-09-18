@@ -1,5 +1,5 @@
 /**
- * Docs pages of the plugin (PPDS §8.1), compiled from MDX at build time. Keys are the file paths
+ * Docs pages of the plugin, compiled from MDX at build time. Keys are the file paths
  * relative to the content root, which is how nav pages refer to them (`sourceFile`).
  */
 import type { ComponentType } from 'react';
@@ -44,7 +44,7 @@ export function getDoc(sourceFile: string): DocModule {
   return module;
 }
 
-/** Sources of the colocated demo files (PPDS §7.2), keyed the same way. */
+/** Sources of the colocated demo files, keyed the same way. */
 const demoSources = import.meta.glob<string>('../../../content/react-pdf-viewer/**/demo-*.tsx', {
   query: '?raw',
   import: 'default',

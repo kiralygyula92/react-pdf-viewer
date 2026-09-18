@@ -1,6 +1,6 @@
 /**
- * Deterministic viewer configurations for the layout and visual Playwright suites
- * (EXCEPTIONS E-03): no site chrome, noindex, not in nav, sitemap or llms.txt.
+ * Deterministic viewer configurations for the layout and visual Playwright suites: no site
+ * chrome, noindex, not in nav, sitemap or llms.txt.
  */
 import type { ReactNode } from 'react';
 

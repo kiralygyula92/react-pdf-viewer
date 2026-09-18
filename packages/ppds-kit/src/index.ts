@@ -1,5 +1,4 @@
 export * from './archetypes.ts';
-export * from './csv.ts';
 export * from './machine.ts';
 export * from './markdown.ts';
 export * from './model.ts';

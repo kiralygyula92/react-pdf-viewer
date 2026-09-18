@@ -20,7 +20,7 @@ export function symbolSlug(name: string): string {
     .toLowerCase();
 }
 
-/** Reads `reference/*.schema.json` + `*.strings.json` (empty set before Phase 4 runs). */
+/** Reads `reference/*.schema.json` + `*.strings.json` (empty before the reference is generated). */
 export function loadReference(contentRoot: string): ReferenceSet {
   const dir = join(contentRoot, 'reference');
   const symbols = new Map<string, ReferenceEntry>();
