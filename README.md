@@ -21,7 +21,7 @@ export function Document() {
 }
 ```
 
-**Documentation:** [react-pdf-viewer.pages.dev/react-pdf-viewer/](https://react-pdf-viewer.pages.dev/react-pdf-viewer/)
+**Documentation:** [react-pdf-viewer-chi.vercel.app/react-pdf-viewer/](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/)
 (sources in [`content/react-pdf-viewer`](content/react-pdf-viewer)).
 
 ## Repository layout
@@ -72,11 +72,12 @@ Docker via `apps/site/scripts/visual.sh`, and in the CI `visual` job), so they n
   reference drift and conformance checks → e2e, plus the visual job, React 18 unit tests and the
   consumer smoke tests.
 - **Release** (`.github/workflows/release.yml`): on `main`, [Changesets](https://github.com/changesets/changesets)
-  opens a "Version Packages" pull request; merging it publishes to npm with provenance.
-- **Deploy site** (`.github/workflows/deploy-site.yml`): builds the site and deploys it to
-  Cloudflare Pages, production from `main` and a preview per pull request. `apps/site/vercel.json`
-  configures the same build on Vercel, where the site also reports Web Analytics and Speed
-  Insights (see [RELEASING.md](RELEASING.md)).
+  opens a "Version Packages" pull request that also brings the docs to the new version; merging
+  it publishes to npm with provenance.
+- **Site:** hosted on Vercel, built from `apps/site` with `apps/site/vercel.json`, where it also
+  reports Web Analytics and Speed Insights. The optional **Deploy site** workflow
+  (`.github/workflows/deploy-site.yml`) builds and checks it on every push and pull request, and
+  publishes it to Cloudflare Pages once its secrets are set (see [RELEASING.md](RELEASING.md)).
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and [RELEASING.md](RELEASING.md) for the
 one-time npm and hosting setup.

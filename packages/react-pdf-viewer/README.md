@@ -16,7 +16,7 @@ dependency, SSR-safe and fully typed.
 - **Production loading:** URLs with custom requests, `File`, `Blob` and bytes, typed errors with retry.
 - **Composable:** replace the toolbar, or build your own viewer with `usePdfDocument` and `PdfPageCanvas`.
 
-**[Documentation, live demos and API reference →](https://react-pdf-viewer.pages.dev/react-pdf-viewer/)**
+**[Documentation, live demos and API reference →](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/)**
 
 ## Install
 
@@ -25,7 +25,7 @@ npm install @kiralygyula92/react-pdf-viewer pdfjs-dist
 ```
 
 Peer dependencies: `react` and `react-dom` 18 or 19, and `pdfjs-dist` 6. See
-[Requirements](https://react-pdf-viewer.pages.dev/react-pdf-viewer/getting-started/requirements/)
+[Requirements](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/getting-started/requirements/)
 for the tested versions and browsers.
 
 ## Quick start
@@ -49,18 +49,18 @@ import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 configurePdfJs({ workerSrc });
 ```
 
-Setup guides: [Vite](https://react-pdf-viewer.pages.dev/react-pdf-viewer/integrations/vite/),
-[Next.js](https://react-pdf-viewer.pages.dev/react-pdf-viewer/integrations/nextjs/),
-[webpack](https://react-pdf-viewer.pages.dev/react-pdf-viewer/integrations/webpack/).
+Setup guides: [Vite](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/integrations/vite/),
+[Next.js](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/integrations/nextjs/),
+[webpack](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/integrations/webpack/).
 
 ## Documentation
 
-- [Usage](https://react-pdf-viewer.pages.dev/react-pdf-viewer/getting-started/usage/): the common props and features.
-- [All features](https://react-pdf-viewer.pages.dev/react-pdf-viewer/all-features/): one page per capability, each with live demos.
-- [Customization](https://react-pdf-viewer.pages.dev/react-pdf-viewer/customization/): theming, labels, custom views.
-- [API reference](https://react-pdf-viewer.pages.dev/react-pdf-viewer/api/): every prop, type, CSS variable and shortcut, generated from the source.
-- [Security](https://react-pdf-viewer.pages.dev/react-pdf-viewer/guides/security/) and [Accessibility](https://react-pdf-viewer.pages.dev/react-pdf-viewer/guides/accessibility/) guides.
-- [Changelog](https://react-pdf-viewer.pages.dev/react-pdf-viewer/discover-more/changelog/).
+- [Usage](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/getting-started/usage/): the common props and features.
+- [All features](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/all-features/): one page per capability, each with live demos.
+- [Customization](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/customization/): theming, labels, custom views.
+- [API reference](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/api/): every prop, type, CSS variable and shortcut, generated from the source.
+- [Security](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/guides/security/) and [Accessibility](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/guides/accessibility/) guides.
+- [Changelog](https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/discover-more/changelog/).
 
 ## License
 

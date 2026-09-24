@@ -4,6 +4,7 @@
  *
  *   node packages/ppds-kit/src/cli.ts conformance <contentRoot> <distDir> [--report <file>]
  *   node packages/ppds-kit/src/cli.ts reference   <contentRoot> <packageEntry> [--check]
+ *   node packages/ppds-kit/src/cli.ts version     <contentRoot> <packageDir> [--date YYYY-MM-DD]
  */
 import { resolve } from 'node:path';
 
@@ -44,8 +45,16 @@ async function main() {
         check: args.includes('--check'),
       });
     }
+    case 'version': {
+      const { runVersion } = await import('./release.ts');
+      return runVersion({
+        contentRoot: resolve(positional[0] ?? '.'),
+        packageDir: resolve(positional[1] ?? '.'),
+        date: option('--date'),
+      });
+    }
     default:
-      console.error('Usage: ppds <conformance|reference> …');
+      console.error('Usage: ppds <conformance|reference|version> …');
       return 2;
   }
 }

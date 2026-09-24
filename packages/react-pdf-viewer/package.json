@@ -22,7 +22,7 @@
     "url": "git+https://github.com/kiralygyula92/react-pdf-viewer.git",
     "directory": "packages/react-pdf-viewer"
   },
-  "homepage": "https://github.com/kiralygyula92/react-pdf-viewer/tree/main/packages/react-pdf-viewer#readme",
+  "homepage": "https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/",
   "bugs": {
     "url": "https://github.com/kiralygyula92/react-pdf-viewer/issues"
   },

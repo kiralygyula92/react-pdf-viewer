@@ -14,9 +14,10 @@ import {
   wordCount,
 } from '../src/markdown.ts';
 import { twinPath } from '../src/model.ts';
+import { releaseChangelogPage, releaseConfig, versionLabel } from '../src/release.ts';
 import { symbolSlug } from '../src/reference/render.ts';
 import { llmsTxt, redirectTables, redirectsFile, sitemapXml } from '../src/surfaces.ts';
-import type { PluginModel } from '../src/types.ts';
+import type { PluginConfig, PluginModel } from '../src/types.ts';
 
 describe('archetypes', () => {
   it('derives the archetype from the path', () => {
@@ -290,5 +291,75 @@ describe('llms-full', () => {
       '/p/llms.txt',
       '/p/zoom.md',
     ]);
+  });
+});
+
+describe('release', () => {
+  const page = [
+    '---',
+    'title: Changelog',
+    "date: '2026-09-15'",
+    '---',
+    '',
+    'Intro.',
+    '',
+    '## 1.0.0 (unreleased)',
+    '',
+    '- First.',
+    '',
+    '## Related',
+    '',
+  ].join('\n');
+  const packageChangelog = [
+    '# @scope/p',
+    '',
+    '## 1.1.0',
+    '',
+    '### Minor Changes',
+    '',
+    '- 1a2b3c4: Adds zoom presets.',
+    '',
+    '## 1.0.0',
+    '',
+    '### Major Changes',
+    '',
+    '- 5d6e7f8: First.',
+    '',
+  ].join('\n');
+
+  it('moves the site model to the released version', () => {
+    const config = {
+      currentVersion: '0.1.0',
+      versions: [
+        { label: 'v0.1', href: '/p/', current: true },
+        { label: 'v0.0', href: '/p/v0/' },
+      ],
+    } as unknown as PluginConfig;
+    const released = releaseConfig(config, '1.0.0');
+    assert.equal(released.currentVersion, '1.0.0');
+    assert.deepEqual(
+      released.versions?.map((entry) => entry.label),
+      ['v1.0', 'v0.0'],
+    );
+    assert.equal(versionLabel('12.3.4'), 'v12.3');
+  });
+
+  it('dates a prepared entry, and the page', () => {
+    const dated = releaseChangelogPage(page, packageChangelog, '1.0.0', '2026-10-01');
+    assert.match(dated, /^## 1\.0\.0 \(2026-10-01\)$/m);
+    assert.match(dated, /^date: '2026-10-01'$/m);
+    assert.doesNotMatch(dated, /unreleased/);
+    // Running it again changes nothing.
+    assert.equal(releaseChangelogPage(dated, packageChangelog, '1.0.0', '2026-10-02'), dated);
+  });
+
+  it('adds the package changelog entry above the previous release', () => {
+    const dated = releaseChangelogPage(page, packageChangelog, '1.0.0', '2026-10-01');
+    const next = releaseChangelogPage(dated, packageChangelog, '1.1.0', '2026-11-01');
+    assert.match(
+      next,
+      /Intro\.\n\n## 1\.1\.0 \(2026-11-01\)\n\n### Minor Changes\n\n- Adds zoom presets\.\n\n## 1\.0\.0 \(2026-10-01\)/,
+    );
+    assert.throws(() => releaseChangelogPage(page, packageChangelog, '2.0.0', '2027-01-01'));
   });
 });

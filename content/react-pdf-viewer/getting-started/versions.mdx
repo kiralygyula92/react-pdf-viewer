@@ -5,25 +5,25 @@ description: Which versions are supported, how versions are numbered, and where 
 
 ## Supported versions
 
-| Version | Status                    | Documentation |
-| ------- | ------------------------- | ------------- |
-| 0.1.x   | Current (initial release) | This site     |
+| Version | Status                         | Documentation |
+| ------- | ------------------------------ | ------------- |
+| 1.x     | Current (first stable release) | This site     |
 
 Security fixes are released for the latest minor version. Documentation for the current version is always at `/react-pdf-viewer/`.
 
 ## Versioning policy
 
-The package follows [Semantic Versioning](https://semver.org/). Every user-facing change is recorded with a [changeset](https://github.com/changesets/changesets) and appears in the [changelog](/react-pdf-viewer/discover-more/changelog/).
+The package follows [Semantic Versioning](https://semver.org/). Every user-facing change is recorded with a [changeset](https://github.com/changesets/changesets) and appears in the [changelog](/react-pdf-viewer/discover-more/changelog/). The versioned API is everything the [API reference](/react-pdf-viewer/api/) documents: the package's exports, props, `PdfViewerApi`, labels, the documented CSS classes, data attributes and CSS variables.
 
-- **Patch** (`0.1.x`): bug fixes that do not change the API.
-- **Minor** (`0.x.0`): new, backwards-compatible features. While the major version is `0`, a minor release may also contain breaking changes; each one is called out in the changelog with a migration note.
-- **Major** (`x.0.0`, from 1.0 on): breaking changes, each with a guide in [Migration](/react-pdf-viewer/migration/).
+- **Patch** (`1.0.x`): bug fixes that do not change the API.
+- **Minor** (`1.x.0`): new, backwards-compatible features.
+- **Major** (`x.0.0`): breaking changes, each with a guide in [Migration](/react-pdf-viewer/migration/).
 
-New behaviour is added behind opt-in props, so upgrading keeps existing viewers looking and working the same unless a release says otherwise. The `pdfjs-dist` peer range only moves forward in a minor or major release.
+New behaviour is added behind opt-in props, so upgrading keeps existing viewers looking and working the same unless a release says otherwise. Support for a new `pdfjs-dist` major version arrives in a minor release; support for an old one is only dropped in a major release.
 
 ## Older versions
 
-There are no older versions yet. When a new major version is released, the documentation for the previous one moves to a permanent versioned address (for example `/react-pdf-viewer/v0/`), and this table links to it. Existing URLs never break.
+There are no older versions yet. When a new major version is released, the documentation for the previous one moves to a permanent versioned address (for example `/react-pdf-viewer/v1/`), and this table links to it. Existing URLs never break.
 
 ## Related
 

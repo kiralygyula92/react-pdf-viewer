@@ -17,7 +17,7 @@
     "qa": "pnpm --filter @kiralygyula92/react-pdf-viewer qa",
     "smoke": "node scripts/consumer-smoke.mjs",
     "changeset": "changeset",
-    "version-packages": "changeset version && prettier --write \"packages/*/CHANGELOG.md\"",
+    "version-packages": "changeset version && node packages/ppds-kit/src/cli.ts version content/react-pdf-viewer packages/react-pdf-viewer && prettier --write \"packages/*/CHANGELOG.md\" content/react-pdf-viewer/plugin.config.json content/react-pdf-viewer/discover-more/changelog.mdx",
     "release": "pnpm --filter @kiralygyula92/react-pdf-viewer build && changeset publish",
     "ppds:validate": "node packages/ppds-kit/src/model-check.mjs react-pdf-viewer",
     "ppds:conformance": "node packages/ppds-kit/src/cli.ts conformance content/react-pdf-viewer apps/site/dist",

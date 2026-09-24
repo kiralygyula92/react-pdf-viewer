@@ -24,7 +24,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      SITE_ORIGIN: ${{ vars.SITE_ORIGIN || 'https://react-pdf-viewer.pages.dev' }}
+      SITE_ORIGIN: ${{ vars.SITE_ORIGIN || 'https://react-pdf-viewer-chi.vercel.app' }}
       HAS_CLOUDFLARE: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
     steps:
       - uses: actions/checkout@v7

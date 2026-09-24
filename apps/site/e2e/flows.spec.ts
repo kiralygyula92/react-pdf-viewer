@@ -180,7 +180,7 @@ test.describe('required flows', () => {
       article(page).getByRole('link', { name: 'changelog' }),
       '/react-pdf-viewer/discover-more/changelog/',
     );
-    await expect(page.getByRole('heading', { name: /^0\.1\.0/ })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /^1\.0\.0/ })).toBeVisible();
   });
 
   test('F7 Support: any docs page → Support → free channel', async ({ page }) => {

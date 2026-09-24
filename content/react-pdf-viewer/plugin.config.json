@@ -7,10 +7,10 @@
   "categoryId": null,
   "urlPrefix": "",
   "repo": "https://github.com/kiralygyula92/react-pdf-viewer",
-  "currentVersion": "0.1.0",
+  "currentVersion": "1.0.0",
   "versions": [
     {
-      "label": "v0.1",
+      "label": "v1.0",
       "href": "/react-pdf-viewer/",
       "current": true,
       "supported": true

@@ -5,45 +5,50 @@ Releases are automated with [Changesets](https://github.com/changesets/changeset
 
 ## One-time setup
 
-1. **npm account:** make sure you can publish under the `@kiralygyula92` scope (`npm login`, then
-   `npm whoami`).
+1. **npm account:** the package is published under the `@kiralygyula92` scope, which needs an
+   npm account (or organization) of that name. Check with `npm login` and `npm whoami`.
 2. **Token:** create an npm _granular access token_ with read and write access to the
    `@kiralygyula92` scope, and add it as the `NPM_TOKEN` repository secret
    (_Settings → Secrets and variables → Actions_). The workflow requests `id-token: write`, so
    packages are published with [provenance](https://docs.npmjs.com/generating-provenance-statements).
-3. **GitHub:** in _Settings → Actions → General_, allow GitHub Actions to create pull requests.
+3. **GitHub:** in _Settings → Actions → General → Workflow permissions_, tick **Allow GitHub
+   Actions to create and approve pull requests**. Without it the workflow cannot open the
+   "Version Packages" pull request and fails on every push to `main`.
 4. **Site analytics (Vercel only):** in the Vercel project, turn on **Web Analytics** and **Speed
    Insights** (Project → Analytics / Speed Insights → Enable). The site loads their scripts only
    when the build runs on Vercel, and both are cookieless, so no consent banner is needed. To
    check the wiring locally, build with `ANALYTICS=1` and look for the two `/_vercel/…` scripts.
-5. **Documentation site (Cloudflare Pages):** create a Pages project named `react-pdf-viewer`, then
-   add the `CLOUDFLARE_API_TOKEN` (with _Cloudflare Pages: Edit_) and `CLOUDFLARE_ACCOUNT_ID`
-   repository secrets. Once a custom domain is attached, set the `SITE_ORIGIN` repository variable
-   (for example `https://docs.example.com`) so canonical URLs, the sitemap, `llms.txt` and social
-   images use it. Without the secrets, the `Deploy site` workflow still builds and checks the site
-   but skips the upload.
-
-The first publish can also be done locally instead:
-
-```sh
-pnpm install && pnpm build && pnpm qa
-pnpm changeset version          # applies .changeset/*.md → version 0.1.0 + CHANGELOG.md
-git commit -am "chore(release): v0.1.0"
-pnpm release                    # builds and runs `changeset publish` (public access)
-git push --follow-tags
-```
+5. **Documentation site:** the site is hosted on Vercel
+   (<https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/>), built from `apps/site` with the
+   settings in `apps/site/vercel.json`. Canonical URLs, the sitemap, `llms.txt` and social images
+   use that address; set the `SITE_ORIGIN` environment variable when the site moves to another
+   domain, and update the links in both READMEs and the package's `homepage`. The optional
+   `Deploy site` workflow can also publish it to Cloudflare Pages: add the `CLOUDFLARE_API_TOKEN`
+   (with _Cloudflare Pages: Edit_) and `CLOUDFLARE_ACCOUNT_ID` repository secrets and a
+   `SITE_ORIGIN` repository variable. Without the secrets it still builds and checks the site but
+   skips the upload.
 
 ## Every release
 
 1. Pull requests add changesets (`pnpm changeset`).
-2. On `main`, the Release workflow opens or updates a **Version Packages** pull request that bumps
-   the version and writes `CHANGELOG.md`.
-3. Merge it. The workflow builds, runs the package QA and publishes to npm, then pushes the
-   `@kiralygyula92/react-pdf-viewer@x.y.z` tag and a GitHub release.
-4. Update the documentation site: copy the new `CHANGELOG.md` section into
-   `content/react-pdf-viewer/discover-more/changelog.mdx` (for the first release, replace
-   “unreleased” with the date), and bump `currentVersion` in
-   `content/react-pdf-viewer/plugin.config.json` for a new minor or major version.
+2. On `main`, the Release workflow opens or updates a **Version Packages** pull request. Its
+   `pnpm version-packages` step bumps the version, writes `CHANGELOG.md`, and brings the
+   documentation along: the site's current version and version selector, and a dated entry on the
+   changelog page (a prepared `## x.y.z (unreleased)` entry is dated; otherwise the new
+   `CHANGELOG.md` section is added).
+3. Review the pull request, including the changelog page, and merge it. The workflow builds, runs
+   the package QA and publishes to npm, then pushes the `@kiralygyula92/react-pdf-viewer@x.y.z` tag
+   and a GitHub release. The merge also redeploys the documentation site.
+
+The first publish can also be done locally instead, from a clean `main`:
+
+```sh
+pnpm install && pnpm build && pnpm qa
+pnpm version-packages           # applies .changeset/*.md → 1.0.0, CHANGELOG.md and the docs
+git commit -am "chore(release): v1.0.0"
+pnpm release                    # builds and runs `changeset publish` (public access)
+git push --follow-tags
+```
 
 ## Before a release, check
 
