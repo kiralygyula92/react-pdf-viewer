@@ -56,7 +56,7 @@ export function nextScale(current: number, direction: 1 | -1, options: ZoomOptio
   return next === undefined || scalesEqual(next, current) ? null : next;
 }
 
-/** Normalises an arbitrary requested scale: clamps to the bounds and removes float noise. */
+/** Normalizes an arbitrary requested scale: clamps to the bounds and removes float noise. */
 export function normalizeScale(scale: number, options: Pick<ZoomOptions, 'minScale' | 'maxScale'>) {
   return roundScale(clampScale(scale, options.minScale, options.maxScale));
 }

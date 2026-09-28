@@ -81,7 +81,13 @@ async function fetchSource(
     if (signal.aborted || isAbortError(error)) {
       throw error;
     }
-    const message = error instanceof Error && error.message ? error.message : undefined;
+    // `fetch` reports every network failure as a TypeError whose wording depends on the browser
+    // ("Failed to fetch", "Load failed", …); those get the viewer's own message. Other errors come
+    // from a custom fetcher and keep theirs.
+    const message =
+      error instanceof Error && !(error instanceof TypeError) && error.message
+        ? error.message
+        : undefined;
     throw createPdfViewerError('NETWORK_ERROR', message, { cause: error });
   }
 

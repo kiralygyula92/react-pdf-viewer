@@ -123,7 +123,7 @@ describe('errors', () => {
     expect(toPdfViewerError(42, 'UNKNOWN').message).toBe('Failed to load PDF document');
   });
 
-  it('passes viewer errors through and recognises aborts and cancellations', () => {
+  it('passes viewer errors through and recognizes aborts and cancellations', () => {
     const error = createPdfViewerError('HTTP_ERROR', 'Nope', { status: 500 });
     expect(isPdfViewerError(error)).toBe(true);
     expect(toPdfViewerError(error, 'UNKNOWN')).toBe(error);

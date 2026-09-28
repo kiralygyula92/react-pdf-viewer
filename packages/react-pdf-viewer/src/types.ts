@@ -88,7 +88,7 @@ export type PdfViewerErrorCode =
   | 'UNKNOWN';
 
 /**
- * A typed viewer error. Aborted loads and cancelled renders are never reported as errors.
+ * A typed viewer error. Aborted loads and canceled renders are never reported as errors.
  */
 export interface PdfViewerError {
   /** Error category. */
@@ -132,7 +132,7 @@ export interface PdfRequestOptions {
   getHttpErrorMessage?: ((response: Response) => Promise<string | undefined>) | undefined;
 }
 
-/** Toolbar customisation. */
+/** Toolbar customization. */
 export interface ToolbarConfig {
   /** Toolbar placement. Default `'bottom'`. */
   position?: 'bottom' | 'top' | undefined;
@@ -247,7 +247,7 @@ export interface PdfViewerProps extends PdfRequestOptions {
   /** Per-instance `getDocument` overrides. */
   pdfjsOptions?: PdfJsDocumentOptions | undefined;
 
-  /** `false` hides the toolbar; an object customises it. Default `true`. */
+  /** `false` hides the toolbar; an object customizes it. Default `true`. */
   toolbar?: boolean | ToolbarConfig | undefined;
   /** Viewport width (px) below which the compact layout applies. Default `960`. */
   compactBreakpoint?: number | undefined;
@@ -330,7 +330,7 @@ export interface PdfViewerProps extends PdfRequestOptions {
   onDocumentLoad?: ((info: { numPages: number; fingerprint: string }) => void) | undefined;
   /** Called after each completed page render. */
   onPageRender?: ((info: PageRenderInfo) => void) | undefined;
-  /** Called for every failure except aborts, cancelled renders and handled HTTP errors. */
+  /** Called for every failure except aborts, canceled renders and handled HTTP errors. */
   onError?: ((error: PdfViewerError) => void) | undefined;
   /** Return `false` to prevent the default download. */
   // eslint-disable-next-line @typescript-eslint/no-invalid-void-type -- callers may return nothing

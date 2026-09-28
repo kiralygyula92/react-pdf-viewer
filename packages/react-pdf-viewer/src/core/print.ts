@@ -8,7 +8,7 @@ const PRINT_TIMEOUT_MS = 60_000;
 
 /** Options for {@link printDocument}. */
 export interface PrintOptions {
-  /** Aborts page preparation (the print dialog itself cannot be cancelled). */
+  /** Aborts page preparation (the print dialog itself cannot be canceled). */
   signal?: AbortSignal | undefined;
   /** Called after each prepared page. */
   onProgress?: ((done: number, total: number) => void) | undefined;

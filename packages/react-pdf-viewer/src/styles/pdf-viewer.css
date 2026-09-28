@@ -127,7 +127,7 @@
 
   /* ── Toolbar ──────────────────────────────────────────────────────────── */
   .rpv-toolbar-wrapper {
-    /* A toolbar with opt-in controls may be wider than the nominal max-width; it stays centred. */
+    /* A toolbar with opt-in controls may be wider than the nominal max-width; it stays centered. */
     display: flex;
     justify-content: center;
     max-width: var(--_rpv-toolbar-max-width);
