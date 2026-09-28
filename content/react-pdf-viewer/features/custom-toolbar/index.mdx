@@ -9,7 +9,7 @@ symbols:
   - PdfToolbar
   - PdfToolbarProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Atoolbar
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues/new/choose
   source: packages/react-pdf-viewer/src/components/Toolbar.tsx
 ---
 
@@ -19,7 +19,7 @@ links:
 
 <Demo id="features/custom-toolbar/demo-basics" title="Your own controls" />
 
-The custom toolbar sits where the built-in one would, honouring `toolbar.position`. It re-renders with a fresh `api` whenever page, zoom, rotation or status change.
+The custom toolbar sits where the built-in one would, honoring `toolbar.position`. It re-renders with a fresh `api` whenever page, zoom, rotation or status change.
 
 ### Reusing the built-in toolbar
 
@@ -48,7 +48,7 @@ Every prop is listed in the [`PdfToolbarProps` reference](/react-pdf-viewer/api/
 Hide the toolbar (`toolbar={false}`) and render controls anywhere in your layout with a [ref](/react-pdf-viewer/imperative-api/), or build a viewer from scratch with the [headless](/react-pdf-viewer/headless/) pieces.
 
 <Callout type="warning" title="Accessibility is yours in a custom toolbar">
-  A `renderToolbar` UI replaces the built-in keyboard and screen reader behaviour. Label every
+  A `renderToolbar` UI replaces the built-in keyboard and screen reader behavior. Label every
   control, keep disabled states in sync with `canZoomIn`, `canZoomOut`, `page` and `numPages`, and
   announce page changes, as the first demo does with `aria-live`.
 </Callout>

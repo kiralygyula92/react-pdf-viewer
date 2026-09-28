@@ -9,7 +9,7 @@ symbols:
   - FitOptions
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Arendering
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues/new/choose
   source: packages/react-pdf-viewer/src/hooks/usePageRenderer.ts
 ---
 
@@ -48,4 +48,4 @@ See `--rpv-page-bg`, `--rpv-page-border`, `--rpv-page-radius` and `--rpv-page-sh
 
 - **Canvas rendering, not vector.** Pages are bitmaps; extreme zoom levels are limited by the pixel budget. Workaround: raise `maxCanvasPixels` on desktop-only apps.
 - **Rendering happens on the main thread.** PDF.js parses in a worker, but painting a complex page can briefly block interaction on slow devices. Workaround: use [continuous layout](/react-pdf-viewer/continuous-layout/), which renders only nearby pages, and avoid very high default zoom on mobile.
-- **Colour management depends on assets.** Documents with ICC profiles need the ICC assets; see [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/).
+- **Color management depends on assets.** Documents with ICC profiles need the ICC assets; see [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/).
