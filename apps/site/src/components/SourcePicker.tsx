@@ -164,7 +164,9 @@ export function SourcePicker({
                     >
                       <span className="demo-sample__title">{sample.title}</span>
                       <span className="demo-sample__meta">
-                        {sample.pages > 0 ? `${sample.pages} pages · ` : ''}
+                        {sample.pages > 0
+                          ? `${sample.pages} ${sample.pages === 1 ? 'page' : 'pages'} · `
+                          : ''}
                         {sample.notes}
                       </span>
                     </button>

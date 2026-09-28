@@ -63,10 +63,8 @@ export interface NavNode {
 /** Portfolio-level data shared by every plugin site (marketing header and footer). */
 export interface PortfolioConfig {
   name: string;
-  footer: Record<
-    'Products' | 'Resources' | 'Explore' | 'Company',
-    { title: string; href: string }[]
-  >;
+  /** Footer columns, in order: heading → links. */
+  footer: Record<string, { title: string; href: string }[]>;
   social?: { label: string; href: string }[];
   copyright: string;
   /**

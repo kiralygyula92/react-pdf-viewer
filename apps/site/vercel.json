@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": "pnpm --filter @kiralygyula92/react-pdf-viewer build && pnpm run build",
+  "buildCommand": "pnpm --filter @kiralygyula92/react-pdf-viewer build && pnpm run build && rm -rf dist/_internal dist/_redirects",
   "outputDirectory": "dist",
   "trailingSlash": true,
   "redirects": [
@@ -12,6 +12,11 @@
     },
     {
       "source": "/react-pdf-viewer/demos/document-viewer/",
+      "destination": "/react-pdf-viewer/demos/playground/",
+      "permanent": true
+    },
+    {
+      "source": "/react-pdf-viewer/discover-more/showcase/",
       "destination": "/react-pdf-viewer/demos/playground/",
       "permanent": true
     }

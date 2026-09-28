@@ -1,60 +1,54 @@
 {
   "name": "kiralygyula92",
   "footer": {
-    "Products": [
+    "Documentation": [
       {
-        "title": "React PDF Viewer",
-        "href": "/react-pdf-viewer/"
+        "title": "Installation",
+        "href": "/react-pdf-viewer/getting-started/installation/"
+      },
+      {
+        "title": "All features",
+        "href": "/react-pdf-viewer/all-features/"
+      },
+      {
+        "title": "API reference",
+        "href": "/react-pdf-viewer/api/"
+      },
+      {
+        "title": "Playground",
+        "href": "/react-pdf-viewer/demos/playground/"
       }
     ],
-    "Resources": [
+    "Project": [
       {
-        "title": "Requirements",
-        "href": "/react-pdf-viewer/getting-started/requirements/"
-      },
-      {
-        "title": "Customization",
-        "href": "/react-pdf-viewer/customization/"
-      },
-      {
-        "title": "Integrations",
-        "href": "/react-pdf-viewer/integrations/vite/"
-      }
-    ],
-    "Explore": [
-      {
-        "title": "Documentation",
-        "href": "/react-pdf-viewer/"
-      },
-      {
-        "title": "npm",
-        "href": "https://www.npmjs.com/package/@kiralygyula92/react-pdf-viewer"
-      },
-      {
-        "title": "Showcase",
-        "href": "/react-pdf-viewer/discover-more/showcase/"
+        "title": "Changelog",
+        "href": "/react-pdf-viewer/discover-more/changelog/"
       },
       {
         "title": "Roadmap",
         "href": "/react-pdf-viewer/discover-more/roadmap/"
+      },
+      {
+        "title": "Source code",
+        "href": "https://github.com/kiralygyula92/react-pdf-viewer"
+      },
+      {
+        "title": "License",
+        "href": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/LICENSE"
       }
     ],
-    "Company": [
+    "Help": [
       {
         "title": "Support",
         "href": "/react-pdf-viewer/getting-started/support/"
       },
       {
+        "title": "FAQ",
+        "href": "/react-pdf-viewer/getting-started/faq/"
+      },
+      {
         "title": "Security",
         "href": "/react-pdf-viewer/guides/security/"
-      },
-      {
-        "title": "License",
-        "href": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/LICENSE"
-      },
-      {
-        "title": "Changelog",
-        "href": "/react-pdf-viewer/discover-more/changelog/"
       }
     ]
   },

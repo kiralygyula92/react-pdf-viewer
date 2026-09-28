@@ -12,7 +12,7 @@ export interface HeadProps {
   noindex?: boolean;
 }
 
-/** Applies a stored theme before first paint, so the page never flashes the wrong colours. */
+/** Applies a stored theme before first paint, so the page never flashes the wrong colors. */
 const THEME_BOOTSTRAP = `try {
   const stored = localStorage.getItem('ppds-theme');
   if (stored === 'dark' || stored === 'light') document.documentElement.dataset.theme = stored;
@@ -62,6 +62,7 @@ export function Head({
         <link rel="alternate" type="application/rss+xml" title={feed.title} href={feed.href} />
       )}
       <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+      <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
     </>
   );

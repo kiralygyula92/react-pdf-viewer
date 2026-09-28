@@ -143,7 +143,7 @@ test.describe('required flows', () => {
     await expect(page).toHaveURL(/\/react-pdf-viewer\/rotation\/$/);
   });
 
-  test('F4 Customise: capability Customization → customization guide → theming → CSS variables', async ({
+  test('F4 Customize: capability Customization → customization guide → theming → CSS variables', async ({
     page,
   }) => {
     await page.goto('/react-pdf-viewer/zoom/');

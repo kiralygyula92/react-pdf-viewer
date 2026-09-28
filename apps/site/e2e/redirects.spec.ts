@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadRedirects, redirectTables } from 'ppds-kit';
@@ -11,10 +12,24 @@ const contentRoot = resolve(
   dirname(fileURLToPath(import.meta.url)),
   '../../../content/react-pdf-viewer',
 );
-const { fragments } = redirectTables(loadRedirects(contentRoot));
+const { fragments, paths } = redirectTables(loadRedirects(contentRoot));
 
 test.describe('legacy redirects', () => {
   test.skip(({ browserName }) => browserName !== 'chromium', 'Redirect data is browser-agnostic');
+
+  test('Vercel redirects every old path that redirects.json lists', () => {
+    // Vercel ignores `_redirects`; it redirects from vercel.json only.
+    const vercel = JSON.parse(
+      readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), '../vercel.json'), 'utf8'),
+    ) as { redirects: { source: string; destination: string; permanent: boolean }[] };
+    expect(
+      vercel.redirects.map(({ source, destination, permanent }) => [
+        source,
+        destination,
+        permanent,
+      ]),
+    ).toEqual(paths.map(([from, to]) => [from, to, true]));
+  });
 
   test('every legacy URL lands on its target page', async ({ page, baseURL }) => {
     test.setTimeout(120_000);

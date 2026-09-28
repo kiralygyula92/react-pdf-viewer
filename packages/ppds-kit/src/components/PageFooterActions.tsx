@@ -1,4 +1,4 @@
-/** “Edit this page” and “Was this page helpful?”: layout, not content. */
+/** “Edit this page” and “Report a problem”, then the previous and next pages: layout, not content. */
 export interface PageFooterActionsProps {
   repo: string;
   /** Source file path relative to the repository root; omitted for generated pages. */
@@ -19,14 +19,10 @@ export function PageFooterActions({
   previous,
   next,
 }: PageFooterActionsProps) {
-  const feedback = (answer: 'yes' | 'no') => {
-    const params = new URLSearchParams({
-      title: `Docs feedback: ${title}`,
-      labels: 'docs-feedback',
-      body: `Page: ${url}\nHelpful: ${answer}\n\nWhat could be better?\n`,
-    });
-    return `${repo}/issues/new?${params.toString()}`;
-  };
+  const report = `${repo}/issues/new?${new URLSearchParams({
+    title: `Docs: ${title}`,
+    body: `Page: ${url}\n\nWhat is wrong or missing?\n`,
+  }).toString()}`;
   const editHref = sourcePath
     ? `${repo}/edit/main/${sourcePath}`
     : generatedFrom
@@ -40,25 +36,9 @@ export function PageFooterActions({
             {sourcePath ? 'Edit this page' : 'View the source this page is generated from'}
           </a>
         )}
-        <div className="ppds-feedback" data-action="feedback">
-          <span id="ppds-feedback-label">Was this page helpful?</span>
-          <a
-            className="ppds-feedback__answer"
-            href={feedback('yes')}
-            rel="noopener"
-            aria-describedby="ppds-feedback-label"
-          >
-            Yes
-          </a>
-          <a
-            className="ppds-feedback__answer"
-            href={feedback('no')}
-            rel="noopener"
-            aria-describedby="ppds-feedback-label"
-          >
-            No
-          </a>
-        </div>
+        <a className="ppds-page-footer__report" href={report} rel="noopener" data-action="report">
+          Report a problem with this page
+        </a>
       </div>
       {(previous || next) && (
         <nav className="ppds-pager" aria-label="Previous and next pages">

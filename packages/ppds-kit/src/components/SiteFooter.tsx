@@ -1,7 +1,6 @@
-/** Global footer shared by both surfaces: four fixed columns. */
+/** Global footer shared by both surfaces: the columns `portfolio.json` defines, in order. */
+import { slugify } from '../markdown.ts';
 import type { PortfolioConfig } from '../types.ts';
-
-const COLUMNS = ['Products', 'Resources', 'Explore', 'Company'] as const;
 
 export interface SiteFooterProps {
   portfolio: PortfolioConfig;
@@ -13,17 +12,17 @@ export function SiteFooter({ portfolio, feeds = [] }: SiteFooterProps) {
     <footer className="ppds-site-footer">
       <div className="ppds-site-footer__inner">
         <div className="ppds-site-footer__columns">
-          {COLUMNS.map((column) => (
+          {Object.entries(portfolio.footer).map(([column, links]) => (
             <section
               key={column}
               className="ppds-site-footer__column"
-              aria-labelledby={`ppds-footer-${column}`}
+              aria-labelledby={`ppds-footer-${slugify(column)}`}
             >
-              <h2 id={`ppds-footer-${column}`} className="ppds-site-footer__heading">
+              <h2 id={`ppds-footer-${slugify(column)}`} className="ppds-site-footer__heading">
                 {column}
               </h2>
               <ul>
-                {portfolio.footer[column].map((link) => (
+                {links.map((link) => (
                   <li key={link.href}>
                     <a href={link.href}>{link.title}</a>
                   </li>

@@ -49,6 +49,8 @@ export async function renderOgImage(input: {
   description: string;
   eyebrow: string;
   accent?: string;
+  /** The site's logo as SVG markup (its favicon), shown beside the eyebrow. */
+  logo?: string | undefined;
 }): Promise<Uint8Array> {
   const accent = input.accent ?? '#1d4ed8';
   const text = plainGlyphs(input.description);
@@ -68,12 +70,22 @@ export async function renderOgImage(input: {
     },
     [
       h('div', { display: 'flex', alignItems: 'center', gap: '18px' }, [
-        h('div', {
-          width: '44px',
-          height: '44px',
-          borderRadius: '12px',
-          background: `linear-gradient(135deg, ${accent}, #22d3ee)`,
-        }),
+        input.logo
+          ? {
+              type: 'img',
+              props: {
+                src: `data:image/svg+xml;base64,${Buffer.from(input.logo).toString('base64')}`,
+                width: 44,
+                height: 44,
+                style: { borderRadius: '12px' },
+              },
+            }
+          : h('div', {
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              background: `linear-gradient(135deg, ${accent}, #22d3ee)`,
+            }),
         h('div', { fontSize: '30px', fontWeight: 700, color: '#a8b3c7' }, input.eyebrow),
       ]),
       h('div', { display: 'flex', flexDirection: 'column', gap: '22px' }, [

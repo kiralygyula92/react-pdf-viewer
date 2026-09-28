@@ -212,7 +212,6 @@
     "pathname": "/react-pdf-viewer/discover-more-group",
     "icon": "discover-more",
     "children": [
-      { "pathname": "/react-pdf-viewer/discover-more/showcase/" },
       { "pathname": "/react-pdf-viewer/discover-more/roadmap/" },
       { "pathname": "/react-pdf-viewer/discover-more/changelog/" }
     ]
