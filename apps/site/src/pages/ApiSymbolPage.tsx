@@ -1,6 +1,14 @@
 /** Generated reference page (archetype E), one per public symbol. */
-import type { ReactNode } from 'react';
-import { loadReference, optionsHeading, type NavPage, type ReferenceEntry } from 'ppds-kit';
+import { Fragment, type ReactNode } from 'react';
+import {
+  loadReference,
+  optionsHeading,
+  symbolDetailsHtml,
+  symbolSummary,
+  symbolSummaryHtml,
+  type NavPage,
+  type ReferenceEntry,
+} from 'ppds-kit';
 import { DocsLayout } from 'ppds-kit/components';
 import {
   CONTENT_PATH,
@@ -14,6 +22,15 @@ import {
   PLUGIN_ID,
   twin,
 } from '../lib/site.ts';
+
+/**
+ * Anchor of an option's row: its name with every run of other characters as `-`, and a name made
+ * only of symbols (`+`, `-`) spelled by code point, so every row's anchor is unique.
+ */
+function optionId(name: string): string {
+  const slug = name.replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return `option-${slug || [...name].map((c) => `u${c.codePointAt(0)?.toString(16)}`).join('-')}`;
+}
 
 type OptionRow = [
   string,
@@ -36,7 +53,7 @@ function Rows({
   return (
     <tbody>
       {entries.map(([name, option]) => (
-        <tr key={name} id={events ? undefined : `option-${name.replace(/[^A-Za-z0-9-]/g, '-')}`}>
+        <tr key={name} id={events ? undefined : optionId(name)}>
           <td>
             <code>{name}</code>
             {!events && option.deprecated && (
@@ -78,7 +95,8 @@ export function ApiSymbolPage({ name, assets }: { name: string; assets: ReactNod
   const { schema, strings } = entry;
   const pathname = `/${PLUGIN_ID}/api/${entry.slug}/`;
   const title = `${schema.name} reference`;
-  const description = (strings.symbolDescription ?? '').replace(/<[^>]+>/g, '');
+  const description = symbolSummary(entry);
+  const details = symbolDetailsHtml(entry);
   const page: NavPage = {
     pathname,
     title: schema.name,
@@ -115,14 +133,26 @@ export function ApiSymbolPage({ name, assets }: { name: string; assets: ReactNod
       assets={assets}
     >
       <header className="ppds-article__header">
-        <h1 className="ppds-article__title">{title}</h1>
+        <h1 className="ppds-article__title">
+          {/* Break opportunities between words of the identifier: UseControllable|State|Options. */}
+          <span>
+            {schema.name.split(/(?=[A-Z][a-z])/).map((part, index) => (
+              <Fragment key={index}>
+                {index > 0 && <wbr />}
+                {part}
+              </Fragment>
+            ))}{' '}
+            reference
+          </span>
+        </h1>
         <p
           className="ppds-article__subtitle"
           data-description
-          dangerouslySetInnerHTML={{ __html: strings.symbolDescription ?? '' }}
+          dangerouslySetInnerHTML={{ __html: symbolSummaryHtml(entry) }}
         />
       </header>
       <div className="ppds-prose ppds-reference" data-kind={schema.kind}>
+        {details && <div dangerouslySetInnerHTML={{ __html: details }} />}
         <h2 id="used-by">Used by</h2>
         {(schema.usedBy ?? []).length ? (
           <ul>

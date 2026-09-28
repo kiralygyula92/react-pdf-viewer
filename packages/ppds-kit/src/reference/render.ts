@@ -44,16 +44,33 @@ const cell = (text: string) => text.replace(/\|/g, '\\|').replace(/\n/g, ' ');
 const stripHtml = (text: string) =>
   text.replace(/<code>(.*?)<\/code>/g, '`$1`').replace(/<[^>]+>/g, '');
 
+/** Group heading for each kind of symbol, in the order the API index lists them. */
 export const KIND_LABEL: Record<ReferenceSchema['kind'], string> = {
-  component: 'Component',
-  function: 'Function',
-  hook: 'Hook',
-  type: 'Type',
+  component: 'Components',
+  hook: 'Hooks',
+  function: 'Functions',
+  type: 'Types',
   'setting-group': 'Settings',
   command: 'Commands',
-  event: 'Event',
-  filter: 'Filter',
+  event: 'Events',
+  filter: 'Filters',
 };
+
+/**
+ * Symbols grouped by kind, groups in {@link KIND_LABEL} order and symbols by name, for the API
+ * index and its Markdown twin.
+ */
+export function symbolsByKind(set: ReferenceSet): [label: string, entries: ReferenceEntry[]][] {
+  const kinds = Object.keys(KIND_LABEL) as ReferenceSchema['kind'][];
+  return kinds
+    .map((kind): [string, ReferenceEntry[]] => [
+      KIND_LABEL[kind],
+      [...set.symbols.values()]
+        .filter((entry) => entry.schema.kind === kind)
+        .sort((a, b) => a.schema.name.localeCompare(b.schema.name)),
+    ])
+    .filter(([, entries]) => entries.length > 0);
+}
 
 /** Heading for a reference options table, by kind. */
 export function optionsHeading(kind: ReferenceSchema['kind']): string {
@@ -64,9 +81,47 @@ export function optionsHeading(kind: ReferenceSchema['kind']): string {
   return 'Options';
 }
 
-/** A symbol's one-line description as plain Markdown. */
+/** A symbol's whole description as plain Markdown. */
 export function symbolDescription(entry: ReferenceEntry): string {
   return stripHtml(entry.strings.symbolDescription ?? '');
+}
+
+const paragraphsOf = (entry: ReferenceEntry) =>
+  (entry.strings.symbolDescription ?? '')
+    .trim()
+    .split(/\n\s*\n/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
+/** The first paragraph of a symbol's description, as one line of HTML: the page's subtitle. */
+export function symbolSummaryHtml(entry: ReferenceEntry): string {
+  return (paragraphsOf(entry)[0] ?? '').replace(/\s*\n\s*/g, ' ');
+}
+
+/** The first paragraph as one line of plain text: meta description, cards and index entries. */
+export function symbolSummary(entry: ReferenceEntry): string {
+  return symbolSummaryHtml(entry).replace(/<[^>]+>/g, '');
+}
+
+/** The paragraphs and `- ` lists after the first paragraph, as HTML. */
+export function symbolDetailsHtml(entry: ReferenceEntry): string {
+  return paragraphsOf(entry)
+    .slice(1)
+    .map((block) => {
+      if (!block.startsWith('- ')) return `<p>${block.replace(/\s*\n\s*/g, ' ')}</p>`;
+      const items: string[] = [];
+      for (const line of block.split('\n')) {
+        if (line.startsWith('- ')) items.push(line.slice(2).trim());
+        else items[items.length - 1] += ` ${line.trim()}`;
+      }
+      return `<ul>${items.map((item) => `<li>${item}</li>`).join('')}</ul>`;
+    })
+    .join('');
+}
+
+/** The paragraphs and lists after the first paragraph, as Markdown. */
+export function symbolDetailsMarkdown(entry: ReferenceEntry): string {
+  return paragraphsOf(entry).slice(1).map(stripHtml).join('\n\n');
 }
 
 /** Markdown for one reference page (archetype E), used by `.md` twins and llms consumers. */
@@ -176,17 +231,11 @@ export function referenceIndexMarkdown(
 /** The API index below its title: one group per kind, one line per symbol. */
 export function referenceIndexBody(model: PluginModel, set: ReferenceSet, origin: string): string {
   const lines: string[] = [];
-  const byKind = new Map<string, ReferenceEntry[]>();
-  for (const entry of set.symbols.values()) {
-    const list = byKind.get(entry.schema.kind) ?? [];
-    list.push(entry);
-    byKind.set(entry.schema.kind, list);
-  }
-  for (const [kind, entries] of byKind) {
-    lines.push(`## ${KIND_LABEL[kind as ReferenceSchema['kind']]}`, '');
+  for (const [label, entries] of symbolsByKind(set)) {
+    lines.push(`## ${label}`, '');
     for (const entry of entries) {
       lines.push(
-        `- [${entry.schema.name}](${absoluteUrl(origin, twinPath(`/${model.config.id}/api/${entry.slug}/`))}): ${stripHtml(entry.strings.symbolDescription ?? '')}`,
+        `- [${entry.schema.name}](${absoluteUrl(origin, twinPath(`/${model.config.id}/api/${entry.slug}/`))}): ${symbolSummary(entry)}`,
       );
     }
     lines.push('');

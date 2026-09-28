@@ -3,7 +3,7 @@
  * metadata and footer actions all come from ppds-kit; this page only joins nav data to content.
  */
 import type { ReactNode } from 'react';
-import { loadReference, slugify, type NavPage } from 'ppds-kit';
+import { loadReference, slugify, symbolSummary, type NavPage } from 'ppds-kit';
 import {
   Callout,
   CardGrid,
@@ -44,13 +44,14 @@ export function DocsPage({ pathname, assets }: { pathname: string; assets: React
   const extraHeadings: Heading[] = [];
 
   if (page.archetype === 'B') {
-    generated.api = symbols.map((symbol) => ({
-      symbol,
-      href: `/${PLUGIN_ID}/api/${reference.slugOf(symbol)}/`,
-      description: reference.symbols
-        .get(symbol)
-        ?.strings.symbolDescription?.replace(/<[^>]+>/g, ''),
-    }));
+    generated.api = symbols.map((symbol) => {
+      const entry = reference.symbols.get(symbol);
+      return {
+        symbol,
+        href: `/${PLUGIN_ID}/api/${reference.slugOf(symbol)}/`,
+        description: entry ? symbolSummary(entry) : undefined,
+      };
+    });
     extraHeadings.push({ depth: 2, slug: 'api', text: 'API' });
   }
   if (page.archetype === 'C') {

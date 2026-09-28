@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Constrains the rendered page to a box.",
+  "symbolDescription": "Constrains a rendered page to a box: fit its width, its height or both, and choose whether it may grow beyond its natural size.",
   "optionDescriptions": {
     "height": "Available height in CSS pixels, including border and padding.",
     "upscale": "Scale up to fill the box; otherwise the page only ever shrinks.",

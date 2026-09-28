@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Global PDF.js configuration. Every field is optional; unset asset URLs default to the jsDelivr\nCDN copy of the **exact installed** <code>pdfjs-dist</code> version. Self-hosting is recommended for\nproduction (see the README).",
+  "symbolDescription": "Global PDF.js configuration shared by every viewer: how the module is loaded, the worker, and the URLs of its assets.\n\nEvery field is optional. Unset asset URLs default to the jsDelivr CDN copy of the exact installed <code>pdfjs-dist</code> version; self-host them for production, as described in <a href=\"/react-pdf-viewer/pdfjs-configuration/\">PDF.js configuration</a>.",
   "optionDescriptions": {
     "cMapPacked": "Whether the CMaps are packed.",
     "cMapUrl": "CMap files, trailing slash.",

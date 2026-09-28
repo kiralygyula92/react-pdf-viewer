@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "A typed viewer error. Aborted loads and cancelled renders are never reported as errors.",
+  "symbolDescription": "A typed viewer error. Aborted loads and canceled renders are never reported as errors.",
   "optionDescriptions": {
     "cause": "The underlying error, when there is one.",
     "code": "Machine-readable category.",

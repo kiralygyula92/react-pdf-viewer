@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Options for <a href=\"/react-pdf-viewer/api/use-controllable-state/\"><code>useControllableState</code></a>.",
+  "symbolDescription": "Options for <code>useControllableState</code>: the controlled value, the initial value while uncontrolled, and the change callback.",
   "optionDescriptions": {
     "defaultValue": "Initial value while uncontrolled.",
     "name": "Prop name used in development warnings.",

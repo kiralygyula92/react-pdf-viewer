@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "A PDF viewer: one page at a time with a toolbar for zoom, navigation, fullscreen, rotation,\ndownload and print. Default props give a classic single-page layout; every\nadditional feature (text layer, links, continuous layout, thumbnails, search, …) is opt-in.",
+  "symbolDescription": "A PDF viewer: one page at a time with a toolbar for zoom, navigation, fullscreen, rotation, download and print.\n\nDefault props give a classic single-page layout; every additional feature (text layer, links, continuous layout, thumbnails, search, …) is opt-in.",
   "optionDescriptions": {
     "annotationLayer": "Clickable links: internal links navigate, external links open in a new tab with <code>rel=\"noopener noreferrer\"</code>.",
     "aria-label": "Accessible name of the viewer region.",
@@ -52,7 +52,7 @@
   "eventDescriptions": {
     "onDocumentLoad": "A document finished loading.",
     "onDownload": "Before saving; <code>data</code> holds the already-loaded bytes. Return <code>false</code> to handle the download yourself.",
-    "onError": "Every failure except aborted loads, cancelled renders and HTTP errors handled by <code>onHttpError</code>.",
+    "onError": "Every failure except aborted loads, canceled renders and HTTP errors handled by <code>onHttpError</code>.",
     "onHttpError": "Called for non-2xx responses. Return <code>true</code> when handled (e.g. after redirecting to sign-in): the viewer shows its empty state and does not call <code>onError</code>.",
     "onPageRender": "A page render completed.",
     "onPrint": "Before printing. Return <code>false</code> to handle printing yourself.",

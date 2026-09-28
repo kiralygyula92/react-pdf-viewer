@@ -1,6 +1,6 @@
 /** Generated API index (archetype K): cards come from the generated reference, never by hand. */
 import type { ReactNode } from 'react';
-import { KIND_LABEL, loadReference, slugify, type NavPage } from 'ppds-kit';
+import { loadReference, slugify, symbolsByKind, symbolSummary, type NavPage } from 'ppds-kit';
 import { CardGrid, DocsArticle, DocsLayout, type CardGridItem } from 'ppds-kit/components';
 import {
   CONTENT_ROOT,
@@ -21,17 +21,16 @@ export function ApiIndexPage({ assets }: { assets: ReactNode }) {
   const reference = loadReference(CONTENT_ROOT);
   const description = descriptions.get(page.pathname) ?? '';
 
-  const groups = new Map<string, CardGridItem[]>();
-  for (const entry of reference.symbols.values()) {
-    const label = KIND_LABEL[entry.schema.kind];
-    const list = groups.get(label) ?? [];
-    list.push({
-      title: entry.schema.name,
-      description: entry.strings.symbolDescription?.replace(/<[^>]+>/g, ''),
-      href: `/${PLUGIN_ID}/api/${entry.slug}/`,
-    });
-    groups.set(label, list);
-  }
+  const groups = new Map<string, CardGridItem[]>(
+    symbolsByKind(reference).map(([label, entries]) => [
+      label,
+      entries.map((entry) => ({
+        title: entry.schema.name,
+        description: symbolSummary(entry),
+        href: `/${PLUGIN_ID}/api/${entry.slug}/`,
+      })),
+    ]),
+  );
   const headings = [...groups.keys()].map((text) => ({ depth: 2, slug: slugify(text), text }));
 
   return (

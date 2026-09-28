@@ -24,7 +24,7 @@
     "minScale": "Zoom floor (25%).",
     "onDocumentLoad": "A document finished loading.",
     "onDownload": "Before saving; <code>data</code> holds the already-loaded bytes. Return <code>false</code> to handle the download yourself.",
-    "onError": "Every failure except aborted loads, cancelled renders and HTTP errors handled by <code>onHttpError</code>.",
+    "onError": "Every failure except aborted loads, canceled renders and HTTP errors handled by <code>onHttpError</code>.",
     "onHttpError": "Called for non-2xx responses. Return <code>true</code> when handled (e.g. after redirecting to sign-in): the viewer shows its empty state and does not call <code>onError</code>.",
     "onPageRender": "A page render completed.",
     "onPrint": "Before printing. Return <code>false</code> to handle printing yourself.",

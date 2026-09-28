@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Helpers passed to label functions.",
+  "symbolDescription": "Helpers passed to label functions, such as locale-aware number formatting, so custom labels follow the viewer's <code>locale</code>.",
   "optionDescriptions": {
     "formatNumber": "Formats an integer for the viewer's <code>locale</code> (no grouping separators)."
   }

@@ -31,7 +31,7 @@
   "toolbar-action.schema.json": "3b4b7d9235caffcd0d4473b1f3d0d22dd39380ed2dcfedacba54cf8116b41716",
   "toolbar-config.schema.json": "6e1816be57f251de808f431f74ca00527834b6f6388d725a172516b4e87db939",
   "use-controllable-state-options.schema.json": "12d25cf0906214c990e34c0b370abc698285d0cfb86abac031c76f6bf7707155",
-  "use-controllable-state.schema.json": "c8344f1cb83fe657f802722e9fda762f3092ea000288203a786c5a8f74767fb0",
+  "use-controllable-state.schema.json": "d54b262c28c57a6bf37b54acd0016efa7e5ca7da830cc881f635c050bb4d12be",
   "use-pdf-document-options.schema.json": "979e98119ca4dc3f6507a299f5c728d5e1b02ad4fb004429a7ec4437476506c5",
   "use-pdf-document-result.schema.json": "50de807ecd50f80d79b67e79b56b1e5cbb0f6e965bd6baa5af66aacadea19ba0",
   "use-pdf-document.schema.json": "bedeb2f81231b24924eb9b5bab5d91208489ee35d8d5e1143799c506d53c9492"

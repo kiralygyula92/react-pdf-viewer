@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Props for <a href=\"/react-pdf-viewer/api/pdf-page-canvas/\"><code>PdfPageCanvas</code></a>.",
+  "symbolDescription": "Props for <code>PdfPageCanvas</code>: the document and page to render, its scale, rotation and fit, the optional layers and the render callbacks.",
   "optionDescriptions": {
     "annotationLayer": "Clickable links.",
     "aria-label": "Accessible name, e.g. <code>Page 1 of 3</code>. With a name the page is an image (a group with <code>textLayer</code>); without one it is decorative.",
