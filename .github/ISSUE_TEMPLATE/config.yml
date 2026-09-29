@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Documentation
-    url: https://kiralygyula92.github.io/react-pdf-viewer/#/docs
-    about: Guides, every prop, CSS variables and the headless API.
+    url: https://react-pdf-viewer-chi.vercel.app/react-pdf-viewer/
+    about: Guides, live demos and the API reference.
   - name: Report a security vulnerability
     url: https://github.com/kiralygyula92/react-pdf-viewer/security/advisories/new
     about: Please report vulnerabilities privately.

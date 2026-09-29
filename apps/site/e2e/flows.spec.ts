@@ -133,7 +133,8 @@ test.describe('required flows', () => {
     );
     const demo = page.getByRole('figure').first();
     await demo.getByRole('button', { name: 'Show source' }).click();
-    await expect(demo.getByRole('region')).toContainText('PdfViewer');
+    // The live viewer is a region too, once it mounts: name the source panel.
+    await expect(demo.getByRole('region', { name: /source$/ })).toContainText('PdfViewer');
     await follow(
       page,
       article(page).getByRole('link', { name: 'PdfViewerProps' }),

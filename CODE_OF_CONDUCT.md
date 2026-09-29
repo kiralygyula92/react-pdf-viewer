@@ -8,8 +8,7 @@ discriminatory language are not tolerated in issues, pull requests or any other 
 
 ## Reporting
 
-Report unacceptable behavior privately to the maintainer through
-[GitHub's private contact options](https://github.com/kiralygyula92) or by opening a
+Report unacceptable behavior privately to the maintainer by opening a
 [confidential security advisory](https://github.com/kiralygyula92/react-pdf-viewer/security/advisories/new)
 marked "Code of conduct". All reports are reviewed promptly and handled confidentially.
 Maintainers may remove, edit or reject contributions, and temporarily or permanently ban
