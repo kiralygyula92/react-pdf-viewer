@@ -53,6 +53,10 @@ test.describe('responsive toolbar', () => {
     await page.keyboard.press('ArrowDown');
     const menu = page.getByRole('menu', { name: 'More actions' });
     await expect(menu.getByRole('menuitem', { name: 'Enter fullscreen' })).toBeFocused();
+    // The menu fades in; scanned mid-animation, its text reads as low contrast.
+    await menu.evaluate((element) =>
+      Promise.all(element.getAnimations({ subtree: true }).map((animation) => animation.finished)),
+    );
     const violations = await new AxeBuilder({ page })
       .include('.rpv-toolbar')
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
