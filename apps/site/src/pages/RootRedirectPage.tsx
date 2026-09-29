@@ -17,7 +17,9 @@ export function RootRedirectPage() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="color-scheme" content="light dark" />
         <title>{name}</title>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="canonical" href={absoluteUrl(origin(), docs)} />
         <meta name="robots" content="noindex, follow" />
         <LegacyRedirect />
@@ -25,11 +27,15 @@ export function RootRedirectPage() {
         <noscript>
           <meta httpEquiv="refresh" content={`0; url=${docs}`} />
         </noscript>
+        {/* Only visible for a moment, or without JavaScript until the refresh. */}
+        <style>{`body{margin:0;min-height:100vh;display:grid;place-items:center;font:1rem/1.5 system-ui,sans-serif}h1{margin:0;font-size:1.25rem}a{color:#1d4ed8}`}</style>
       </head>
       <body>
-        <p>
-          <a href={docs}>{name} documentation</a>
-        </p>
+        <main>
+          <h1>
+            <a href={docs}>{name} documentation</a>
+          </h1>
+        </main>
       </body>
     </html>
   );

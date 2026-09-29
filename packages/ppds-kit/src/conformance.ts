@@ -40,7 +40,6 @@ const SECTION_NAMES = [
   'Design resources',
 ];
 const BADGE_KINDS = new Set(['new', 'preview', 'beta', 'planned', 'deprecated', 'legacy', 'tier']);
-const FOOTER_COLUMNS = ['Products', 'Resources', 'Explore', 'Company'];
 const META_TAGS = [
   'description',
   'og:title',
@@ -301,7 +300,7 @@ export function runConformance(options: ConformanceOptions): number {
   check(
     '3',
     'Structure',
-    'Capability pages contain Basics (runnable demo first), Customization (customised demo), Limitations, API in that order',
+    'Capability pages contain Basics (runnable demo first), Customization (customized demo), Limitations, API in that order',
     (fail) => {
       for (const page of pages.filter((p) => p.archetype === 'B')) {
         const html = htmlFor(dist, page.pathname) ?? '';
@@ -328,7 +327,7 @@ export function runConformance(options: ConformanceOptions): number {
         const customization =
           /<h2[^>]*>Customization<\/h2>([\s\S]*?)<h2\b/.exec(article)?.[1] ?? '';
         if (!/data-demo=/.test(customization))
-          fail(`${page.pathname}: ## Customization must contain a demo of a customised instance`);
+          fail(`${page.pathname}: ## Customization must contain a demo of a customized instance`);
         if (!/href="\/[a-z0-9-]+\/customization\//.test(customization))
           fail(`${page.pathname}: ## Customization must link to the customization guide`);
       }
@@ -645,6 +644,10 @@ export function runConformance(options: ConformanceOptions): number {
       ) {
         fail(`${pathname}: description, og:description and twitter:description differ`);
       }
+      // Search results and link previews cut longer descriptions and pad shorter ones.
+      const description = decode(meta(html, 'description') ?? '');
+      if (description && (description.length < 50 || description.length > 170))
+        fail(`${pathname}: description is ${description.length} characters (50–170)`);
       const image = meta(html, 'og:image');
       if (image && !existsSync(join(dist, new URL(image).pathname)))
         fail(`${pathname}: og:image ${image} was not generated`);
@@ -793,8 +796,11 @@ export function runConformance(options: ConformanceOptions): number {
         /<h2[^>]*class="ppds-site-footer__heading"[^>]*>([^<]+)<\/h2>/g,
       ),
     ].map((m) => textOf(m[1] ?? ''));
-    if (columns.join('|') !== FOOTER_COLUMNS.join('|'))
-      fail(`footer columns [${columns.join(', ')}] ≠ [${FOOTER_COLUMNS.join(', ')}]`);
+    const expected = existsSync(portfolioPath)
+      ? Object.keys((JSON.parse(readFileSync(portfolioPath, 'utf8')) as PortfolioConfig).footer)
+      : [];
+    if (columns.join('|') !== expected.join('|'))
+      fail(`footer columns [${columns.join(', ')}] ≠ portfolio.json [${expected.join(', ')}]`);
   });
 
   check(

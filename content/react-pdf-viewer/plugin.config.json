@@ -3,7 +3,7 @@
   "id": "react-pdf-viewer",
   "name": "React PDF Viewer",
   "tagline": "Accessible, themeable PDF viewer for React, built on PDF.js.",
-  "description": "React PDF Viewer is an accessible, themeable React component for displaying PDF documents with PDF.js: zoom, rotation, fullscreen, search, thumbnails, download and print, with keyboard support, SSR-safe rendering and no UI-kit dependency.",
+  "description": "React PDF Viewer is an accessible, themeable PDF viewer for React, built on PDF.js: zoom, search, thumbnails, download and print, with no UI-kit dependency.",
   "categoryId": null,
   "urlPrefix": "",
   "repo": "https://github.com/kiralygyula92/react-pdf-viewer",

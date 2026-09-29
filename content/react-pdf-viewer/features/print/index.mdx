@@ -8,7 +8,7 @@ plan: free
 symbols:
   - PdfViewerProps
 links:
-  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues?q=is%3Aissue+label%3Aprint
+  issues: https://github.com/kiralygyula92/react-pdf-viewer/issues/new/choose
   source: packages/react-pdf-viewer/src/core/print.ts
 ---
 
@@ -54,7 +54,7 @@ See the [customization guide](/react-pdf-viewer/customization/).
 
 ## Limitations
 
-- **The print dialog itself cannot be cancelled by the app.** Cancel stops page preparation; once the browser's dialog is open, it belongs to the browser.
+- **The print dialog itself cannot be canceled by the app.** Cancel stops page preparation; once the browser's dialog is open, it belongs to the browser.
 - **Printing is rasterised.** Pages are rendered to images for printing, so text is not selectable in a printed-to-PDF copy. Workaround: `printMode="open-url"` prints through the browser's viewer, which keeps vector text.
 - **Hidden in compact layouts.** Below `compactBreakpoint` the print button is hidden outside fullscreen by default. Workaround: `toolbar={{ hiddenWhenCompact: [] }}`.
 - **Prepared pages are held in memory.** Every page is kept as an image until the dialog closes, so printing a very long document needs a lot of memory. Workaround: `printMode="open-url"`, which hands the document to the browser.

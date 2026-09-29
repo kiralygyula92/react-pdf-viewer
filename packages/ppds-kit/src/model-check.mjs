@@ -314,7 +314,7 @@ const apiPages = new Set([...exported].map((name) => `${P}api/${kebab(name)}/`))
 // Old URL → new URL. Besides docs pages, a target may be one of the site's internal pages.
 const redirectsPath = resolve(contentDir, 'redirects.json');
 const redirects = existsSync(redirectsPath) ? JSON.parse(readFileSync(redirectsPath, 'utf8')) : {};
-const INTERNAL = new Set(['/_internal/harness/', '/404.html']);
+const INTERNAL = new Set(['/404.html']);
 for (const [from, to] of Object.entries(redirects)) {
   check('redirects', from.startsWith('/'), `${from}: an old URL must start with /`);
   check(

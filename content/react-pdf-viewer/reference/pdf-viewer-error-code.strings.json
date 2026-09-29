@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Machine-readable category of a <a href=\"/react-pdf-viewer/api/pdf-viewer-error/\"><code>PdfViewerError</code></a>.",
+  "symbolDescription": "Machine-readable category of a <code>PdfViewerError</code>, for handling failures such as a missing password or an HTTP error in code.",
   "optionDescriptions": {
     "PDFJS_LOAD_FAILED": "The <code>pdfjs-dist</code> module or its worker failed to load.",
     "NETWORK_ERROR": "<code>fetch</code> rejected: offline, CORS, DNS, …",

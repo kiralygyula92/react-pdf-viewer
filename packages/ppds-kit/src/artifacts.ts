@@ -131,6 +131,8 @@ export async function buildSiteArtifacts(options: SiteArtifactOptions): Promise<
   write(join(dist, '_redirects'), redirectsFile(paths));
 
   // ── OG images (generated from title + description) ────────────────
+  const faviconPath = join(dist, 'favicon.svg');
+  const logo = existsSync(faviconPath) ? readFileSync(faviconPath, 'utf8') : undefined;
   let images = 0;
   for (const file of htmlFiles) {
     const html = readFileSync(file, 'utf8');
@@ -146,6 +148,7 @@ export async function buildSiteArtifacts(options: SiteArtifactOptions): Promise<
         title: decode(title),
         description: decode(readMeta(html, 'og:description') ?? ''),
         eyebrow: section,
+        logo,
       }),
     );
     images++;

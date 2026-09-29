@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Renders a single PDF page: cancellable, double-buffered, HiDPI and pixel-capped, with optional\ntext and annotation layers. The building block for custom viewers (see <code>usePdfDocument</code>).",
+  "symbolDescription": "Renders a single PDF page: cancellable, double-buffered, HiDPI and pixel-capped, with optional text and annotation layers.\n\nThe building block for custom viewers, together with <code>usePdfDocument</code>.",
   "optionDescriptions": {
     "annotationLayer": "Clickable links.",
     "aria-label": "Accessible name, e.g. <code>Page 1 of 3</code>. With a name the page is an image (a group with <code>textLayer</code>); without one it is decorative.",

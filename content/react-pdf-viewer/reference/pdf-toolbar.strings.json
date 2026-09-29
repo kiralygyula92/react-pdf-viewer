@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "The default toolbar: zoom, page navigation, fullscreen, rotate, download and print, on one\nrow. When the row does not fit, secondary actions collapse into a \"More actions\" menu. Usable\non its own, e.g. inside <code>renderToolbar</code>.",
+  "symbolDescription": "The default toolbar: zoom, page navigation, fullscreen, rotate, download and print, on one row.\n\nWhen the row does not fit, secondary actions collapse into a “More actions” menu. Usable on its own, for example inside <code>renderToolbar</code>.",
   "optionDescriptions": {
     "api": "The viewer API, from a <code>ref</code> or <code>renderToolbar</code>.",
     "compact": "Compact layout: hides <code>hiddenWhenCompact</code> actions outside fullscreen.",

@@ -14,7 +14,8 @@ import {
   referenceIndexBody,
   referenceIndexMarkdown,
   referenceMarkdown,
-  symbolDescription,
+  symbolDetailsMarkdown,
+  symbolSummary,
 } from './reference/render.ts';
 import { absoluteUrl, llmsTxt } from './surfaces.ts';
 
@@ -121,10 +122,12 @@ export function machineSurface(options: MachineSurfaceOptions): Map<string, stri
       for (const entry of entries) {
         addSection(
           `${entry.schema.name} reference`,
-          symbolDescription(entry),
+          symbolSummary(entry),
           page.sectionTitle,
           symbolPath(entry.schema.name),
-          referenceBody(entry, model, origin, 2),
+          [symbolDetailsMarkdown(entry), referenceBody(entry, model, origin, 2)]
+            .filter(Boolean)
+            .join('\n\n'),
         );
       }
       continue;
@@ -205,7 +208,7 @@ export function machineSurface(options: MachineSurfaceOptions): Map<string, stri
       [...reference.symbols.values()].map((entry) => ({
         title: `${entry.schema.name} reference`,
         pathname: symbolPath(entry.schema.name),
-        description: entry.strings.symbolDescription ?? '',
+        description: symbolSummary(entry),
         section: 'API reference',
       })),
       [

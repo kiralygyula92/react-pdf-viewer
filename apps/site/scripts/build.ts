@@ -41,6 +41,15 @@ const cssOf = (key: string, seen = new Set<string>()): string[] => {
   ];
 };
 
+/** A chunk's file and the files of everything it imports statically. */
+const jsOf = (key: string, seen: Set<string>): string[] => {
+  if (seen.has(key)) return [];
+  seen.add(key);
+  const chunk = manifest[key];
+  if (!chunk) return [];
+  return [chunk.file, ...(chunk.imports ?? []).flatMap((imported) => jsOf(imported, seen))];
+};
+
 /** Island components, so a page can preload the bundle it is about to mount. */
 const ISLAND_MODULES: Record<string, string> = {
   demo: 'src/islands/DemoFrame.tsx',
@@ -52,10 +61,14 @@ const assetsFor = (entry: EntryName | undefined, islands: string[] = []): PageAs
   const key = ENTRY_FILES[entry];
   const chunk = manifest[key];
   if (!chunk) throw new Error(`No built bundle for entry "${entry}"`);
-  const preload = islands
-    .map((island) => manifest[ISLAND_MODULES[island] ?? '']?.file)
-    .filter((file): file is string => Boolean(file))
-    .map((file) => `/${file}`);
+  // Pages with islands load the mount module, React and the islands' own bundles: preload them
+  // all, so they download in parallel with the entry instead of one after another.
+  const preloadKeys =
+    islands.length > 0
+      ? ['src/islands/mount.tsx', ...islands.flatMap((island) => ISLAND_MODULES[island] ?? [])]
+      : [];
+  const seen = new Set<string>();
+  const preload = preloadKeys.flatMap((key) => jsOf(key, seen)).map((file) => `/${file}`);
   return {
     css: [...new Set(cssOf(key))].map((file) => `/${file}`),
     js: `/${chunk.file}`,

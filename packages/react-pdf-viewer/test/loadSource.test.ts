@@ -86,10 +86,17 @@ describe('loadSource', () => {
   });
 
   it('maps fetch rejections to NETWORK_ERROR but rethrows aborts', async () => {
-    const failing = () => Promise.reject(new TypeError('Failed to fetch'));
+    // The browser's own wording varies; the viewer's message does not.
+    const failing = () => Promise.reject(new TypeError('Load failed'));
     await expect(loadSource('/a.pdf', signal(), { fetcher: failing })).rejects.toMatchObject({
       code: 'NETWORK_ERROR',
-      message: 'Failed to fetch',
+      message: 'Could not load the PDF. Check your connection and try again.',
+    });
+    // A custom fetcher's own error keeps its message.
+    const expired = () => Promise.reject(new Error('Session expired'));
+    await expect(loadSource('/a.pdf', signal(), { fetcher: expired })).rejects.toMatchObject({
+      code: 'NETWORK_ERROR',
+      message: 'Session expired',
     });
 
     const controller = new AbortController();
@@ -102,7 +109,7 @@ describe('loadSource', () => {
     ).rejects.toHaveProperty('name', 'AbortError');
   });
 
-  it('honours the caller’s abort signal without AbortSignal.any (older Safari)', async () => {
+  it('honors the caller’s abort signal without AbortSignal.any (older Safari)', async () => {
     const original = AbortSignal.any;
     Reflect.deleteProperty(AbortSignal, 'any');
     try {

@@ -54,7 +54,7 @@ export default function Page() {
 }
 ```
 
-The package entry starts with `'use client'`, so a Server Component can also render `PdfViewer` directly with serialisable props, such as a URL string. Callbacks, `ref` and `configurePdfJs` need a client module.
+The package entry starts with `'use client'`, so a Server Component can also render `PdfViewer` directly with serializable props, such as a URL string. Callbacks, `ref` and `configurePdfJs` need a client module.
 
 **4. Optional: self-host the other assets.** Copy the asset folders into `public/pdfjs/`, for example in a `postinstall` script:
 
@@ -76,7 +76,7 @@ Then pass `cMapUrl: '/pdfjs/cmaps/'`, `standardFontDataUrl: '/pdfjs/standard_fon
 
 ## Known issues
 
-- **Callbacks from a Server Component.** Passing `onError` or other functions from a Server Component fails, because functions are not serialisable. Render the viewer from a client module, as in step 2.
+- **Callbacks from a Server Component.** Passing `onError` or other functions from a Server Component fails, because functions are not serializable. Render the viewer from a client module, as in step 2.
 - **Document requests during prerendering.** Nothing is fetched on the server; documents load in the browser after hydration, so the prerendered HTML shows the loading state.
 
 ## Related

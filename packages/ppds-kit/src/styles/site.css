@@ -58,7 +58,7 @@
     --ppds-warning: #92400e;
     --ppds-warning-bg: #fffbeb;
     --ppds-focus: #2563eb;
-    --ppds-radius: 10px;
+    --ppds-radius: 12px;
     --ppds-radius-sm: 6px;
     --ppds-shadow: 0 1px 2px rgb(15 23 42 / 0.06), 0 4px 16px rgb(15 23 42 / 0.06);
     --ppds-header-height: 60px;
@@ -289,7 +289,7 @@
     color: var(--ppds-text);
     background: var(--ppds-surface);
     border: 1px solid var(--ppds-border);
-    border-radius: 14px;
+    border-radius: var(--ppds-radius);
     box-shadow: 0 30px 80px rgb(0 0 0 / 0.35);
   }
 
@@ -367,7 +367,7 @@
   }
 
   .ppds-sidebar {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
   }
 
   .ppds-sidebar__section {
@@ -464,6 +464,8 @@
     font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.5rem);
     line-height: 1.15;
     letter-spacing: -0.025em;
+    /* A long identifier as a title must not widen the page on a phone. */
+    overflow-wrap: anywhere;
   }
 
   .ppds-article__subtitle {
@@ -545,7 +547,13 @@
     font-family: var(--ppds-font-mono);
     font-size: 0.875em;
     background: var(--ppds-inline-code-bg);
-    border-radius: 5px;
+    border-radius: 4px;
+  }
+
+  /* Long identifiers, signatures and paths wrap on narrow screens instead of widening the page. */
+  .ppds-article :not(pre) > code,
+  .ppds-article a {
+    overflow-wrap: anywhere;
   }
 
   .ppds-prose pre {
@@ -553,7 +561,7 @@
     margin: 16px 0;
     overflow-x: auto;
     font-family: var(--ppds-font-mono);
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     line-height: 1.6;
     color: var(--ppds-code-text);
     background: var(--ppds-code-bg) !important;
@@ -584,7 +592,7 @@
   .ppds-prose table {
     width: 100%;
     margin: 0;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     border-collapse: collapse;
   }
 
@@ -690,7 +698,7 @@
     margin: 0 !important;
     background: var(--ppds-surface);
     border: 1px solid var(--ppds-border);
-    border-radius: 12px;
+    border-radius: var(--ppds-radius);
     transition:
       border-color 150ms ease,
       box-shadow 150ms ease,
@@ -725,7 +733,7 @@
 
   .ppds-card__description {
     margin: 6px 0 0 !important;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     color: var(--ppds-text-muted);
   }
 
@@ -752,7 +760,7 @@
   .ppds-toc__list {
     padding: 0;
     margin: 0;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     list-style: none;
     border-left: 1px solid var(--ppds-border);
   }
@@ -792,26 +800,8 @@
     gap: 12px 24px;
     align-items: center;
     justify-content: space-between;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     color: var(--ppds-text-muted);
-  }
-
-  .ppds-feedback {
-    display: inline-flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .ppds-feedback__answer {
-    padding: 2px 12px;
-    color: var(--ppds-text) !important;
-    text-decoration: none;
-    border: 1px solid var(--ppds-border);
-    border-radius: 999px;
-  }
-
-  .ppds-feedback__answer:hover {
-    border-color: var(--ppds-border-strong);
   }
 
   .ppds-pager {
@@ -829,7 +819,7 @@
     color: var(--ppds-text) !important;
     text-decoration: none;
     border: 1px solid var(--ppds-border);
-    border-radius: 12px;
+    border-radius: var(--ppds-radius);
   }
 
   .ppds-pager__link:hover {
@@ -884,7 +874,7 @@
   }
 
   .ppds-site-footer a {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     color: var(--ppds-text-muted) !important;
     text-decoration: none;
   }
@@ -1125,7 +1115,7 @@
     overflow: hidden;
     background: var(--ppds-surface);
     border: 1px solid var(--ppds-border);
-    border-radius: 14px;
+    border-radius: var(--ppds-radius);
   }
 
   .ppds-demo__stage {
@@ -1238,4 +1228,38 @@
     font-size: 0.8125rem;
     color: var(--ppds-text-subtle);
   }
+}
+
+/*
+ * Pagefind's UI in the site's own type, colors and radii, in both themes. Outside the layer and
+ * anchored on the container's id on purpose: Pagefind's stylesheet is unlayered and loads after
+ * this one, so layered or equally specific rules would lose to it.
+ */
+#ppds-search .pagefind-ui {
+  --pagefind-ui-scale: 0.8;
+  --pagefind-ui-primary: var(--ppds-accent);
+  --pagefind-ui-text: var(--ppds-text);
+  --pagefind-ui-background: var(--ppds-surface);
+  --pagefind-ui-border: var(--ppds-border);
+  --pagefind-ui-tag: var(--ppds-bg-muted);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: var(--ppds-radius-sm);
+  --pagefind-ui-font: var(--ppds-font-sans);
+}
+
+/* Search is scoped to this plugin and version already; a filter with one option filters nothing. */
+#ppds-search .pagefind-ui__filter-panel {
+  display: none;
+}
+
+#ppds-search .pagefind-ui__search-clear {
+  color: var(--ppds-text-muted);
+  background: transparent;
+  border: 0;
+}
+
+#ppds-search mark {
+  color: inherit;
+  background: var(--ppds-accent-subtle);
+  border-radius: 2px;
 }

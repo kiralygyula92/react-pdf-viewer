@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "The value / defaultValue / onValueChange pattern. Internal state is used while <code>value</code> is\n<code>undefined</code>; <code>onChange</code> fires whenever the value changes. The setter is stable. Values must not\nbe functions (a function argument is treated as an updater).",
+  "symbolDescription": "The value / defaultValue / onValueChange pattern as a hook: the one behind every controlled prop of the viewer.\n\nInternal state is used while <code>value</code> is <code>undefined</code>; <code>onChange</code> fires whenever the value changes. The setter is stable. Values must not be functions (a function argument is treated as an updater).",
   "optionDescriptions": {
     "defaultValue": "Initial value while uncontrolled.",
     "name": "Prop name used in development warnings.",

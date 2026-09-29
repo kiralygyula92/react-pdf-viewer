@@ -20,7 +20,6 @@ export function LegacyRedirect() {
     var route = hash.slice(1).split('?')[0];
     var query = hash.indexOf('?') === -1 ? '' : hash.slice(hash.indexOf('?'));
     if (route === '/view') target = '/${PLUGIN_ID}/demos/playground/' + query;
-    else if (route === '/harness') target = '/_internal/harness/' + query;
     else target = '/${PLUGIN_ID}/';
   }
   window.location.replace(target);

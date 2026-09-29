@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "How fullscreen is presented.\n\n- <code>'controlled'</code>: layout-only; the parent decides how to present fullscreen.\n- <code>'native'</code>: the browser Fullscreen API on the viewer root, falling back to <code>'overlay'</code>.\n- <code>'overlay'</code>: a fixed, full-viewport layer with a focus trap; <code>Esc</code> closes it.",
+  "symbolDescription": "How fullscreen is presented: the browser Fullscreen API, a full-viewport overlay, or layout only while the parent presents it.\n\n- <code>'controlled'</code>: layout-only; the parent decides how to present fullscreen.\n- <code>'native'</code>: the browser Fullscreen API on the viewer root, falling back to <code>'overlay'</code>.\n- <code>'overlay'</code>: a fixed, full-viewport layer with a focus trap; <code>Esc</code> closes it.",
   "optionDescriptions": {
     "controlled": "Layout only: the parent decides how to present fullscreen.",
     "native": "The browser Fullscreen API on the viewer root, falling back to <code>'overlay'</code>.",

@@ -320,7 +320,7 @@
 
   /*
    * Form controls attract host-wide rules (e.g. `input[type='text'] { width: 100%; background: #fff }`)
-   * that would beat these layered styles, so the input's box and colours are guarded with
+   * that would beat these layered styles, so the input's box and colors are guarded with
    * !important. Theme it through the --rpv-page-input-* variables instead.
    */
   .rpv-toolbar .rpv-page-input {
@@ -337,7 +337,7 @@
     color: var(--rpv-toolbar-fg, #ffffff) !important;
     text-align: center !important;
     appearance: none !important;
-    /* A recessed (darker) field keeps white digits well above 4.5:1 on the toolbar colour. */
+    /* A recessed (darker) field keeps white digits well above 4.5:1 on the toolbar color. */
     background: var(--rpv-page-input-bg, rgb(0 0 0 / 0.22)) !important;
     border: 1px solid var(--rpv-page-input-border, rgb(255 255 255 / 0.35)) !important;
     border-radius: 6px !important;

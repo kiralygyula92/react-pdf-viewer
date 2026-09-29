@@ -118,7 +118,8 @@ function signatureToString(
 ): string {
   const params = (signature.parameters ?? []).map(
     (param) =>
-      `${param.flags.isRest ? '...' : ''}${param.name}${param.flags.isOptional || param.defaultValue ? '?' : ''}: ${typeToString(param.type, depth + 1)}`,
+      // A destructured parameter has no name; TypeDoc calls it `__namedParameters`.
+      `${param.flags.isRest ? '...' : ''}${param.name === '__namedParameters' ? 'options' : param.name}${param.flags.isOptional || param.defaultValue ? '?' : ''}: ${typeToString(param.type, depth + 1)}`,
   );
   const returns = typeToString(signature.type, depth + 1);
   return arrow

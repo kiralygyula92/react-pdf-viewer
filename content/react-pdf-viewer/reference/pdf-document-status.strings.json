@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Lifecycle status of a document load.",
+  "symbolDescription": "Lifecycle status of a document load: idle without a source, loading, ready with a document, or error with a <code>PdfViewerError</code>.",
   "optionDescriptions": {
     "idle": "No source, or an HTTP error that <code>onHttpError</code> handled.",
     "loading": "Fetching or parsing the document.",

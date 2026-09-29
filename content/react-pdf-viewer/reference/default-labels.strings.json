@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "The English defaults.",
+  "symbolDescription": "The default English labels for every user-visible string and accessible name. Override any subset with the <code>labels</code> prop.",
   "optionDescriptions": {
     "document": "Accessible name of the scrollable document area.",
     "empty": "Announced when there is no document.",

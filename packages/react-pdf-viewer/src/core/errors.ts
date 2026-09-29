@@ -2,7 +2,7 @@ import type { PdfViewerError, PdfViewerErrorCode } from '../types.js';
 
 const DEFAULT_MESSAGES: Record<PdfViewerErrorCode, string> = {
   PDFJS_LOAD_FAILED: 'Failed to load the PDF.js library',
-  NETWORK_ERROR: 'Failed to fetch PDF document',
+  NETWORK_ERROR: 'Could not load the PDF. Check your connection and try again.',
   HTTP_ERROR: 'Failed to fetch PDF document',
   INVALID_PDF: 'Invalid or corrupted PDF file',
   PASSWORD_REQUIRED: 'This document is password protected',
@@ -68,7 +68,7 @@ export function isRenderCancelled(error: unknown): boolean {
 
 /**
  * Maps anything thrown by the loading or rendering pipeline to a {@link PdfViewerError}.
- * PDF.js exceptions are recognised by `name`, so this works with any `pdfjs-dist` build.
+ * PDF.js exceptions are recognized by `name`, so this works with any `pdfjs-dist` build.
  */
 export function toPdfViewerError(error: unknown, fallback: PdfViewerErrorCode): PdfViewerError {
   if (isPdfViewerError(error)) {

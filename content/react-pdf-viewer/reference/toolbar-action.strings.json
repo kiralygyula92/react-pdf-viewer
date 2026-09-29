@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Identifies a toolbar control.",
+  "symbolDescription": "Identifies a toolbar control, for choosing which controls the toolbar shows and in which order through <code>ToolbarConfig</code>.",
   "optionDescriptions": {
     "zoomOut": "Zoom out button. Zoom group.",
     "zoomLevel": "Zoom percentage; a reset button with <code>zoomReset</code>. Zoom group.",

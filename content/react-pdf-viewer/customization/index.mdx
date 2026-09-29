@@ -3,13 +3,13 @@ title: How to customize
 description: Choose the right way to change how the viewer looks and behaves, from a CSS variable to a completely custom interface.
 ---
 
-React PDF Viewer is customised in layers. Start with the lightest mechanism that achieves your goal; each step down gives more control and more responsibility.
+React PDF Viewer is customized in layers. Start with the lightest mechanism that achieves your goal; each step down gives more control and more responsibility.
 
 ## Ways to customize
 
 | You want to…                                         | Use                                          | Where                                                                         |
 | ---------------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------- |
-| Match your brand colours, radius, spacing and fonts  | CSS variables                                | [Theming](/react-pdf-viewer/customization/theming/)                           |
+| Match your brand colors, radius, spacing and fonts   | CSS variables                                | [Theming](/react-pdf-viewer/customization/theming/)                           |
 | Support dark mode                                    | `rpv-theme-dark` or `rpv-theme-auto` classes | [Theming](/react-pdf-viewer/customization/theming/#dark-mode)                 |
 | Style a state, such as loading or fullscreen         | `data-*` attributes on the root              | [Theming](/react-pdf-viewer/customization/theming/#state-based-styling)       |
 | Change or translate texts and accessible names       | `labels` and `locale`                        | [Labels and locale](/react-pdf-viewer/labels/)                                |
@@ -20,7 +20,7 @@ React PDF Viewer is customised in layers. Start with the lightest mechanism that
 
 ## How the styles are built
 
-The stylesheet is plain CSS in a cascade layer named `rpv`, with every class prefixed `rpv-`. Because it is layered, **any unlayered CSS in your app wins without `!important`**. Every colour and size reads a CSS variable with a fallback, so setting a variable on the viewer or on any ancestor changes it.
+The stylesheet is plain CSS in a cascade layer named `rpv`, with every class prefixed `rpv-`. Because it is layered, **any unlayered CSS in your app wins without `!important`**. Every color and size reads a CSS variable with a fallback, so setting a variable on the viewer or on any ancestor changes it.
 
 ```css
 .reports {

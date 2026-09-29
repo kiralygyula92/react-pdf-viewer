@@ -77,7 +77,7 @@ function widthHost(toolbar: HTMLElement): HTMLElement | null {
 
 /**
  * Width the toolbar may use. It may overhang its container by its own side
- * padding (it stays centred), but never the screen.
+ * padding (it stays centered), but never the screen.
  */
 function availableWidth(toolbar: HTMLElement): number {
   const host = widthHost(toolbar);

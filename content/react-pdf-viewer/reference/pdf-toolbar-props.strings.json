@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Props for <a href=\"/react-pdf-viewer/api/pdf-toolbar/\"><code>PdfToolbar</code></a>.",
+  "symbolDescription": "Props for <code>PdfToolbar</code>: the viewer API it controls, its labels and configuration, the compact layout and the page indicator slot.",
   "optionDescriptions": {
     "api": "The viewer API, from a <code>ref</code> or <code>renderToolbar</code>.",
     "compact": "Compact layout: hides <code>hiddenWhenCompact</code> actions outside fullscreen.",

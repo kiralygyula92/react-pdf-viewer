@@ -124,7 +124,7 @@ describe('PdfPageCanvas', () => {
       rerender(element(1 + step * 0.05));
       await waitFor(() => expect(renderTasks).toHaveLength(step + 1));
     }
-    // Every superseded render was cancelled before it could finish.
+    // Every superseded render was canceled before it could finish.
     await act(async () => {
       renderTasks.forEach((task) => task.resolve());
       await Promise.allSettled(renderTasks.map((task) => task.promise));

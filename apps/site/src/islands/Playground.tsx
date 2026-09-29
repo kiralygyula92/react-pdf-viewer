@@ -420,7 +420,6 @@ export function Playground() {
       </aside>
 
       <div className="demo-content">
-        <h1 className="demo-title">Playground</h1>
         <p className="demo-hint" aria-live="polite">
           Showing: <strong>{selection.label}</strong>
         </p>

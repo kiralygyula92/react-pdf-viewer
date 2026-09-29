@@ -54,7 +54,7 @@ export function buildPageText(items: readonly TextItemLike[]): PageText {
   return { text, folded: fold(text), offsets, items: strings };
 }
 
-/** Normalises a query: trimmed, whitespace collapsed, lower-cased. */
+/** Normalizes a query: trimmed, whitespace collapsed, lower-cased. */
 export function normalizeQuery(query: string): string {
   return query.trim().replace(/\s+/g, ' ').toLowerCase();
 }

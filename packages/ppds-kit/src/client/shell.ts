@@ -1,5 +1,5 @@
 /**
- * Browser behaviour of the docs shell: theme toggle, version selector, sidebar disclosure, table
+ * Browser behavior of the docs shell: theme toggle, version selector, sidebar disclosure, table
  * of contents highlighting and the search dialog. Plain DOM, so the shell needs no hydration.
  */
 
@@ -155,6 +155,8 @@ function search() {
       new PagefindUI({
         element: '#ppds-search',
         showSubResults: true,
+        // Docs pages have no thumbnails; without this each result keeps an empty image slot.
+        showImages: false,
         resetStyles: false,
         filters,
       });
@@ -186,7 +188,7 @@ function search() {
   });
 }
 
-/** Wires every shell behaviour. Safe to call once per page load. */
+/** Wires every shell behavior. Safe to call once per page load. */
 export function initShell() {
   themeToggle();
   versionSelect();

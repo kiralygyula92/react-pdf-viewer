@@ -118,7 +118,7 @@ function random(seed: number) {
 }
 
 const WORDS =
-  'the viewer renders each page of a portable document onto a canvas while the toolbar offers zoom rotation navigation download and print controls every sample in this collection exists to exercise one behaviour such as fitting centering continuous scrolling search or accessibility of the text layer quality matters because readers depend on documents for reports contracts research and receipts'.split(
+  'the viewer renders each page of a portable document onto a canvas while the toolbar offers zoom rotation navigation download and print controls every sample in this collection exists to exercise one behavior such as fitting centering continuous scrolling search or accessibility of the text layer quality matters because readers depend on documents for reports contracts research and receipts'.split(
     ' ',
   );
 
@@ -257,7 +257,7 @@ async function intrinsicRotation() {
   drawGrid(rotated);
   const lines: [string, number, PDFFont][] = [
     ['Page 2: /Rotate 90', 26, bold],
-    ['Shown in landscape with this text upright when /Rotate is honoured.', 14, font],
+    ['Shown in landscape with this text upright when /Rotate is honored.', 14, font],
     ['If this text runs vertically, the viewer ignored the page rotation.', 14, font],
   ];
   lines.forEach(([text, size, face], index) => {

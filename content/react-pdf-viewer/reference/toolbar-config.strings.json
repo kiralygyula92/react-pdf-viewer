@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Toolbar customisation.",
+  "symbolDescription": "Toolbar customization: where the toolbar sits, which controls it shows and in which order, and which it hides on narrow screens.",
   "optionDescriptions": {
     "actions": "Actions to show. Their order within each group is fixed.",
     "hiddenWhenCompact": "Actions hidden in compact, non-fullscreen mode.",

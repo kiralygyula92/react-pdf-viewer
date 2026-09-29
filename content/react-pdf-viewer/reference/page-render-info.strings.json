@@ -1,5 +1,5 @@
 {
-  "symbolDescription": "Details of a completed page render.",
+  "symbolDescription": "Details of a completed page render, passed to <code>onPageRender</code> and <code>onRender</code>: the page, the scale used, its size and the time it took.",
   "optionDescriptions": {
     "durationMs": "Time from request to completion.",
     "height": "Rendered CSS height in pixels.",

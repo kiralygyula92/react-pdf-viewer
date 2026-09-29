@@ -9,7 +9,7 @@
   "imports": [
     "import { useControllableState } from '@kiralygyula92/react-pdf-viewer';"
   ],
-  "signature": "useControllableState(__namedParameters: UseControllableStateOptions<T>): readonly [T, SetControllableState<T>]",
+  "signature": "useControllableState(options: UseControllableStateOptions<T>): readonly [T, SetControllableState<T>]",
   "returns": "readonly [T, SetControllableState<T>]",
   "options": {
     "value": {
