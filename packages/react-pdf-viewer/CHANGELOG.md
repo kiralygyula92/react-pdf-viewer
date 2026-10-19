@@ -1,5 +1,11 @@
 # @kingtech/react-pdf-viewer
 
+## 1.0.1
+
+### Patch Changes
+
+- Publish from GitHub Actions with provenance. The library's code and API are unchanged.
+
 ## 1.0.0
 
 ### Major Changes
