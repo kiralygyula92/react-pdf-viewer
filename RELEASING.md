@@ -9,17 +9,9 @@ only after a maintainer approves it on npmjs.com with a passkey.
 
 ## First publish
 
-npm only connects a trusted publisher to a package that already exists, so `1.0.0` is published
-once by hand, from a clean, up-to-date `main`:
-
-```sh
-cd packages/react-pdf-viewer
-npm login      # opens the browser; sign in with your passkey
-npm publish    # `prepack` builds the library; confirm 2FA in the browser
-```
-
-The `Release` workflow and the trusted-publisher connection are added right after that, so every
-later version is staged from a tag.
+npm only connects a trusted publisher to a package that already exists, so `1.0.0` was published
+once by hand (`npm publish` from `packages/react-pdf-viewer`) and tagged `v1.0.0`. Every later
+version is staged from a tag.
 
 ## How it is wired
 

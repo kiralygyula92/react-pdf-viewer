@@ -1,0 +1,76 @@
+name: Release
+
+# Pushing a v* tag on main stages that version on npm through trusted publishing: there is no npm
+# token, and the package gets provenance. A staged version goes live only after a maintainer
+# approves it on npmjs.com. See RELEASING.md. The documentation site deploys separately, on
+# Vercel, on every push to main.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm # only v* tags may deploy here (repo settings)
+    permissions:
+      contents: read
+      id-token: write # short-lived identity for npm trusted publishing
+    env:
+      LIB_DIR: packages/react-pdf-viewer # folder that holds the library's package.json
+      DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Only GitHub-made actions may run in this repository, so pnpm (the version in package.json's
+      # `packageManager`) is installed with the runner's npm, as in ci.yml.
+      - name: Install pnpm
+        run: npm install -g "$(node -p "require('./package.json').packageManager")"
+
+      # Node 22, as in ci.yml: the release tests and builds in the environment CI verified.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false # never cache in release builds
+
+      - name: Tagged commit must be on the default branch
+        run: git merge-base --is-ancestor "$GITHUB_SHA" "origin/$DEFAULT_BRANCH"
+
+      - name: Tag must match package.json version
+        working-directory: ${{ env.LIB_DIR }}
+        run: |
+          expected="v$(node -p "require('./package.json').version")"
+          if [ "$expected" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json ($expected)"
+            exit 1
+          fi
+
+      # Node 22 ships npm 10; staged publishing needs npm 11.
+      - name: Install npm 11
+        run: npm install -g npm@11
+
+      - name: npm must support staged publishing (11.15.0+)
+        run: |
+          npm -v
+          node -e "const [a,b]=process.argv[1].split('.').map(Number); process.exit(a>11||(a===11&&b>=15)?0:1)" "$(npm -v)"
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Unit tests
+        run: pnpm run --if-present test
+        working-directory: ${{ env.LIB_DIR }}
+
+      - name: Build
+        run: pnpm run build
+        working-directory: ${{ env.LIB_DIR }}
+
+      - name: Stage on npm (goes live only after you approve on npmjs.com)
+        run: npm stage publish
+        working-directory: ${{ env.LIB_DIR }}
