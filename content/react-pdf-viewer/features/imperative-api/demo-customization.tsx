@@ -1,4 +1,4 @@
-import { PdfViewer, type PdfViewerApi } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer, type PdfViewerApi } from '@kingtech/react-pdf-viewer';
 import { useRef, useState } from 'react';
 
 export default function Demo() {

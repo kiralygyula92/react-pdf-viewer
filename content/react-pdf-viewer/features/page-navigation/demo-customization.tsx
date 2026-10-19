@@ -1,4 +1,4 @@
-import { PdfViewer, type PdfViewerLabels } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer, type PdfViewerLabels } from '@kingtech/react-pdf-viewer';
 import type { CSSProperties } from 'react';
 
 // Module scope keeps the object stable between renders.

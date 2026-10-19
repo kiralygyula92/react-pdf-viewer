@@ -1,4 +1,4 @@
-import { PdfViewer, type Rotation } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer, type Rotation } from '@kingtech/react-pdf-viewer';
 import { useState } from 'react';
 
 const turn = (rotation: Rotation, quarters: number) =>

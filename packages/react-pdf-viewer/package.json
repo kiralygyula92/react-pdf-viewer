@@ -1,6 +1,6 @@
 {
-  "name": "@kiralygyula92/react-pdf-viewer",
-  "version": "0.0.0",
+  "name": "@kingtech/react-pdf-viewer",
+  "version": "1.0.0",
   "description": "Accessible, themeable React PDF viewer built on PDF.js: zoom, rotation, fullscreen, search, thumbnails, download and print, with no UI-kit dependency.",
   "keywords": [
     "react",
@@ -16,7 +16,7 @@
     "ssr"
   ],
   "license": "MIT",
-  "author": "kiralygyula92 (https://github.com/kiralygyula92)",
+  "author": "Gyula Kiraly (https://github.com/kiralygyula92)",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kiralygyula92/react-pdf-viewer.git",
@@ -43,9 +43,7 @@
   },
   "files": [
     "dist",
-    "README.md",
     "CHANGELOG.md",
-    "LICENSE",
     "NOTICE"
   ],
   "scripts": {
@@ -81,12 +79,8 @@
     "vite-plugin-dts": "^5.1.1",
     "vitest": "^5.0.1"
   },
-  "engines": {
-    "node": ">=20"
-  },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   },
   "size-limit": [
     {

@@ -1,4 +1,4 @@
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
 import type { CSSProperties } from 'react';
 
 // A stronger focus ring for the toolbar and a matching accent for the document area.

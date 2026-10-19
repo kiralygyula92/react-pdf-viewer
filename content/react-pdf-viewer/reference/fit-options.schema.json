@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { FitOptions } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { FitOptions } from '@kingtech/react-pdf-viewer';"
   ],
   "options": {
     "width": {

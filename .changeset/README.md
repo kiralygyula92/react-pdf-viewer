@@ -4,5 +4,6 @@ Run `pnpm changeset` to record a change to the published package. Every user-fac
 `packages/react-pdf-viewer` (features, fixes, public API) needs a changeset in the same pull
 request; see [CONTRIBUTING.md](../CONTRIBUTING.md).
 
-On `main`, the Release workflow opens a "Version Packages" pull request that applies pending
-changesets (version bump and `CHANGELOG.md`). Merging it publishes to npm.
+A release pull request runs `pnpm version-packages`, which applies pending changesets (version
+bump and `CHANGELOG.md`) and brings the docs to the new version; see
+[RELEASING.md](../RELEASING.md).

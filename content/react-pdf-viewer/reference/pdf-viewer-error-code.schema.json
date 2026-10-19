@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { PdfViewerErrorCode } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { PdfViewerErrorCode } from '@kingtech/react-pdf-viewer';"
   ],
   "signature": "type PdfViewerErrorCode = 'PDFJS_LOAD_FAILED' | 'NETWORK_ERROR' | 'HTTP_ERROR' | 'INVALID_PDF' | 'PASSWORD_REQUIRED' | 'INCORRECT_PASSWORD' | 'RENDER_FAILED' | 'DOWNLOAD_FAILED' | 'PRINT_FAILED' | 'UNKNOWN'",
   "options": {

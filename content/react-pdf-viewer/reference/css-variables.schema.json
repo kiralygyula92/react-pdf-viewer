@@ -2,7 +2,7 @@
   "name": "CSS variables",
   "kind": "setting-group",
   "imports": [
-    "import '@kiralygyula92/react-pdf-viewer/styles.css';"
+    "import '@kingtech/react-pdf-viewer/styles.css';"
   ],
   "options": {
     "--rpv-accent": {

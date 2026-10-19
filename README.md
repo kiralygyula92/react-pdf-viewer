@@ -1,20 +1,20 @@
 # react-pdf-viewer
 
-[![npm](https://img.shields.io/npm/v/@kiralygyula92/react-pdf-viewer)](https://www.npmjs.com/package/@kiralygyula92/react-pdf-viewer)
+[![npm](https://img.shields.io/npm/v/@kingtech/react-pdf-viewer)](https://www.npmjs.com/package/@kingtech/react-pdf-viewer)
 [![CI](https://github.com/kiralygyula92/react-pdf-viewer/actions/workflows/ci.yml/badge.svg)](https://github.com/kiralygyula92/react-pdf-viewer/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 An accessible, themeable React PDF viewer built on [PDF.js](https://github.com/mozilla/pdf.js),
-published as [`@kiralygyula92/react-pdf-viewer`](packages/react-pdf-viewer), plus its
+published as [`@kingtech/react-pdf-viewer`](packages/react-pdf-viewer), plus its
 documentation site with live demos, guides and a generated API reference.
 
 ```sh
-npm install @kiralygyula92/react-pdf-viewer pdfjs-dist
+npm install @kingtech/react-pdf-viewer pdfjs-dist
 ```
 
 ```tsx
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
-import '@kiralygyula92/react-pdf-viewer/styles.css';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
+import '@kingtech/react-pdf-viewer/styles.css';
 
 export function Document() {
   return <PdfViewer source="/files/document.pdf" />;
@@ -44,7 +44,7 @@ Requires Node 22.18+ (the docs tooling runs TypeScript directly) and pnpm (the v
 pnpm install
 pnpm build                                                     # library, then the site
 pnpm --filter site dev                                         # site at http://localhost:4321
-pnpm --filter @kiralygyula92/react-pdf-viewer build --watch    # rebuild the library on change
+pnpm --filter @kingtech/react-pdf-viewer build --watch         # rebuild the library on change
 ```
 
 | Command                                | Does                                                                                          |
@@ -71,9 +71,10 @@ Docker via `apps/site/scripts/visual.sh`, and in the CI `visual` job), so they n
 - **CI** (`.github/workflows/ci.yml`): lint → typecheck → unit → build → package QA → docs model,
   reference drift and conformance checks → e2e, plus the visual job, React 18 unit tests and the
   consumer smoke tests.
-- **Release** (`.github/workflows/release.yml`): on `main`, [Changesets](https://github.com/changesets/changesets)
-  opens a "Version Packages" pull request that also brings the docs to the new version; merging
-  it publishes to npm with provenance.
+- **Release** (`.github/workflows/release.yml`): a `v*` tag on `main` tests and builds the library
+  and stages it on npm with provenance through trusted publishing, with no npm token; each version
+  goes live once a maintainer approves it on npmjs.com. [Changesets](https://github.com/changesets/changesets)
+  (`pnpm version-packages`) writes the version, the changelog and the docs' version beforehand.
 - **Site:** hosted on Vercel, built from `apps/site` with `apps/site/vercel.json`, where it also
   reports Web Analytics and Speed Insights. The optional **Deploy site** workflow
   (`.github/workflows/deploy-site.yml`) builds and checks it on every push and pull request, and

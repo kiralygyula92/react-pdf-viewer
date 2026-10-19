@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { PdfViewerApi } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { PdfViewerApi } from '@kingtech/react-pdf-viewer';"
   ],
   "options": {
     "status": {

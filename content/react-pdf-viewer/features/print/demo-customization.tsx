@@ -1,4 +1,4 @@
-import { PdfViewer, type PdfViewerLabels } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer, type PdfViewerLabels } from '@kingtech/react-pdf-viewer';
 
 const labels: Partial<PdfViewerLabels> = {
   print: 'Print document',

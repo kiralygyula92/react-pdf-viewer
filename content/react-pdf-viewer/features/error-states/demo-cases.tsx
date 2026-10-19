@@ -1,4 +1,4 @@
-import { PdfViewer, type PdfViewerError } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer, type PdfViewerError } from '@kingtech/react-pdf-viewer';
 import { useState } from 'react';
 
 const CASES = {

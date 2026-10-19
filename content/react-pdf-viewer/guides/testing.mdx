@@ -13,7 +13,7 @@ description: Test apps that use React PDF Viewer with unit tests for your logic 
 Mock the component at the module boundary and assert what your code passes to it:
 
 ```tsx
-vi.mock('@kiralygyula92/react-pdf-viewer', () => ({
+vi.mock('@kingtech/react-pdf-viewer', () => ({
   PdfViewer: (props: { source: unknown; onPageChange?: (page: number) => void }) => (
     <button onClick={() => props.onPageChange?.(2)}>viewer for {String(props.source)}</button>
   ),

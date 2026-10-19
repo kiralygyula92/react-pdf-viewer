@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { PdfJsConfig } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { PdfJsConfig } from '@kingtech/react-pdf-viewer';"
   ],
   "options": {
     "loader": {

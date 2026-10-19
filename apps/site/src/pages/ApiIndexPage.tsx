@@ -50,9 +50,9 @@ export function ApiIndexPage({ assets }: { assets: ReactNode }) {
       <DocsArticle model={model} page={page} description={description} descriptions={descriptions}>
         <p>
           Every page in this section is generated from the TypeScript declarations and TSDoc
-          comments of <code>@kiralygyula92/react-pdf-viewer</code>, so it always matches the
-          published types. Capability pages explain when to use each symbol; these pages list
-          everything it accepts.
+          comments of <code>@kingtech/react-pdf-viewer</code>, so it always matches the published
+          types. Capability pages explain when to use each symbol; these pages list everything it
+          accepts.
         </p>
         {[...groups].map(([title, items]) => (
           <section key={title}>

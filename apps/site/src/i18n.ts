@@ -1,4 +1,4 @@
-import type { PdfViewerLabels } from '@kiralygyula92/react-pdf-viewer';
+import type { PdfViewerLabels } from '@kingtech/react-pdf-viewer';
 
 /** Hungarian labels, proving that every string is replaceable. */
 export const hungarianLabels: Partial<PdfViewerLabels> = {

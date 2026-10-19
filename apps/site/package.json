@@ -15,7 +15,7 @@
     "e2e:visual:update": "bash scripts/visual.sh --update-snapshots"
   },
   "dependencies": {
-    "@kiralygyula92/react-pdf-viewer": "workspace:*",
+    "@kingtech/react-pdf-viewer": "workspace:*",
     "@stackblitz/sdk": "^1.11.1",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",

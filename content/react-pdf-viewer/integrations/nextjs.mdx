@@ -15,7 +15,7 @@ description: Use React PDF Viewer in the Next.js App Router, including Server Co
 ```tsx
 // app/layout.tsx
 import type { ReactNode } from 'react';
-import '@kiralygyula92/react-pdf-viewer/styles.css';
+import '@kingtech/react-pdf-viewer/styles.css';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 // app/viewer.tsx
 'use client';
 
-import { configurePdfJs, PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import { configurePdfJs, PdfViewer } from '@kingtech/react-pdf-viewer';
 
 configurePdfJs({
   workerSrc: new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString(),

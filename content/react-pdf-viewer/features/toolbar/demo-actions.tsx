@@ -1,4 +1,4 @@
-import { PdfViewer, type ToolbarConfig } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer, type ToolbarConfig } from '@kingtech/react-pdf-viewer';
 
 const toolbar: ToolbarConfig = {
   actions: [

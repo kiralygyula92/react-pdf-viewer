@@ -3,7 +3,7 @@ import {
   type PdfViewerApi,
   type PdfViewerErrorCode,
   type Rotation,
-} from '@kiralygyula92/react-pdf-viewer';
+} from '@kingtech/react-pdf-viewer';
 import {
   useCallback,
   useEffect,

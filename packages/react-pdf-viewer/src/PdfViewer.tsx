@@ -108,8 +108,8 @@ function revealWithin(scroller: HTMLElement, element: HTMLElement) {
  *
  * @example
  * ```tsx
- * import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
- * import '@kiralygyula92/react-pdf-viewer/styles.css';
+ * import { PdfViewer } from '@kingtech/react-pdf-viewer';
+ * import '@kingtech/react-pdf-viewer/styles.css';
  *
  * <PdfViewer source="/files/document.pdf" fileName="document.pdf" />
  * ```

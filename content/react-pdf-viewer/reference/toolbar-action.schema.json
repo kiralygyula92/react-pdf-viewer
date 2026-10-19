@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { ToolbarAction } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { ToolbarAction } from '@kingtech/react-pdf-viewer';"
   ],
   "signature": "type ToolbarAction = 'zoomOut' | 'zoomLevel' | 'zoomIn' | 'previousPage' | 'pageIndicator' | 'nextPage' | 'fullscreen' | 'rotate' | 'download' | 'print'",
   "options": {
