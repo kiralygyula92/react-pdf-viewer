@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { PdfToolbarProps } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { PdfToolbarProps } from '@kingtech/react-pdf-viewer';"
   ],
   "options": {
     "api": {

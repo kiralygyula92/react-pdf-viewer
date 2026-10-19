@@ -1,4 +1,4 @@
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
 
 export default function Demo() {
   // A full-viewport layer inside the page: focus is trapped, the page behind stops scrolling.

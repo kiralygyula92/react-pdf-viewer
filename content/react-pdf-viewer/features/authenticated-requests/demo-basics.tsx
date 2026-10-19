@@ -1,4 +1,4 @@
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
 
 export default function Demo() {
   // Extra fetch options for URL sources: send cookies and a custom header.

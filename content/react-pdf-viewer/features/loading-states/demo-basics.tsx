@@ -1,4 +1,4 @@
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
 
 // A request that never finishes, so the loading view stays visible.
 const neverResolves = () => new Promise<Response>(() => undefined);

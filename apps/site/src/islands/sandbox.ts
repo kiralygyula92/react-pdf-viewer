@@ -1,6 +1,6 @@
 import type { Project } from '@stackblitz/sdk';
 
-const PACKAGE = '@kiralygyula92/react-pdf-viewer';
+const PACKAGE = '@kingtech/react-pdf-viewer';
 
 /**
  * A runnable Vite + React project for a demo. Bundled

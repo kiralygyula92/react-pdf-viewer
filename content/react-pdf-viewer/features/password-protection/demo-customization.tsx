@@ -1,4 +1,4 @@
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
 import { useId, useState } from 'react';
 
 function UnlockForm({

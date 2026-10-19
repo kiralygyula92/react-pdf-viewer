@@ -1,4 +1,4 @@
-import { PdfPageCanvas, usePdfDocument } from '@kiralygyula92/react-pdf-viewer';
+import { PdfPageCanvas, usePdfDocument } from '@kingtech/react-pdf-viewer';
 import { useState } from 'react';
 
 /** A two-page spread with highlighted search matches, built from the headless pieces. */

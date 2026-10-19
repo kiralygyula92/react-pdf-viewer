@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { FullscreenMode } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { FullscreenMode } from '@kingtech/react-pdf-viewer';"
   ],
   "signature": "type FullscreenMode = 'controlled' | 'native' | 'overlay'",
   "options": {

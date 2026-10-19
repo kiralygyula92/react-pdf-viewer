@@ -1,4 +1,4 @@
-import { PdfViewer, type PageRenderInfo } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer, type PageRenderInfo } from '@kingtech/react-pdf-viewer';
 import { useState } from 'react';
 
 export default function Demo() {

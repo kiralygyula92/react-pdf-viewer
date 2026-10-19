@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { PdfJsModule } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { PdfJsModule } from '@kingtech/react-pdf-viewer';"
   ],
   "signature": "type PdfJsModule = typeof PdfJsNamespace"
 }

@@ -1,5 +1,5 @@
-import { configurePdfJs, PdfViewer } from '@kiralygyula92/react-pdf-viewer';
-import '@kiralygyula92/react-pdf-viewer/styles.css';
+import { configurePdfJs, PdfViewer } from '@kingtech/react-pdf-viewer';
+import '@kingtech/react-pdf-viewer/styles.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 

@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { LabelContext } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { LabelContext } from '@kingtech/react-pdf-viewer';"
   ],
   "options": {
     "formatNumber": {

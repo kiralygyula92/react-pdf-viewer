@@ -18,19 +18,19 @@ Install the package and PDF.js with your package manager.
 **npm**
 
 ```sh
-npm install @kiralygyula92/react-pdf-viewer pdfjs-dist
+npm install @kingtech/react-pdf-viewer pdfjs-dist
 ```
 
 **pnpm**
 
 ```sh
-pnpm add @kiralygyula92/react-pdf-viewer pdfjs-dist
+pnpm add @kingtech/react-pdf-viewer pdfjs-dist
 ```
 
 **yarn**
 
 ```sh
-yarn add @kiralygyula92/react-pdf-viewer pdfjs-dist
+yarn add @kingtech/react-pdf-viewer pdfjs-dist
 ```
 
 The package is ESM-only, ships its TypeScript declarations, and has no runtime dependencies of its own.
@@ -40,8 +40,8 @@ The package is ESM-only, ships its TypeScript declarations, and has no runtime d
 Import the component and, once in your app, the stylesheet:
 
 ```tsx
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
-import '@kiralygyula92/react-pdf-viewer/styles.css';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
+import '@kingtech/react-pdf-viewer/styles.css';
 
 export function Report() {
   return <PdfViewer source="/files/report.pdf" />;
@@ -56,7 +56,7 @@ Start your development server and open the page. You should see the first page o
 
 ## Troubleshooting
 
-- **The viewer has no styles.** The stylesheet is imported separately. Add `import '@kiralygyula92/react-pdf-viewer/styles.css'` once, for example in your root layout.
+- **The viewer has no styles.** The stylesheet is imported separately. Add `import '@kingtech/react-pdf-viewer/styles.css'` once, for example in your root layout.
 - **“Failed to fetch” or a network error.** The document URL is on another origin without CORS headers. See [Authenticated requests](/react-pdf-viewer/authenticated-requests/#cross-origin-documents).
 - **`PDFJS_LOAD_FAILED`.** `pdfjs-dist` is missing or the worker URL is blocked by your Content Security Policy. Install `pdfjs-dist` and see [PDF.js configuration](/react-pdf-viewer/pdfjs-configuration/#content-security-policy).
 

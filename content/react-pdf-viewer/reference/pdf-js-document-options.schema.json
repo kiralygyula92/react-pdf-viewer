@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { PdfJsDocumentOptions } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { PdfJsDocumentOptions } from '@kingtech/react-pdf-viewer';"
   ],
   "signature": "type PdfJsDocumentOptions = Omit<DocumentInitParameters, 'url' | 'data' | 'password' | 'range' | 'worker' | 'httpHeaders' | 'withCredentials'>"
 }

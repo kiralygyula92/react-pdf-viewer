@@ -1,6 +1,6 @@
 // A Server Component: it imports the package directly (its "use client" entry becomes a client
 // boundary) and renders a client wrapper that configures the worker.
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
 import { Viewer } from './viewer';
 
 export default function Page() {

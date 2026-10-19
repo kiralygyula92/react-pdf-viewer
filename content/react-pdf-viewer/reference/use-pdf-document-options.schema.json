@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { UsePdfDocumentOptions } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { UsePdfDocumentOptions } from '@kingtech/react-pdf-viewer';"
   ],
   "options": {
     "password": {

@@ -1,5 +1,5 @@
-import { PdfViewer, type Rotation } from '@kiralygyula92/react-pdf-viewer';
-import '@kiralygyula92/react-pdf-viewer/styles.css';
+import { PdfViewer, type Rotation } from '@kingtech/react-pdf-viewer';
+import '@kingtech/react-pdf-viewer/styles.css';
 import '../pdfjs';
 import { replaceQuery, useRoute } from '../router';
 import '../styles/demos.css';

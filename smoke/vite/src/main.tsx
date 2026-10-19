@@ -3,8 +3,8 @@ import {
   PdfViewer,
   type PdfViewerApi,
   type PdfViewerError,
-} from '@kiralygyula92/react-pdf-viewer';
-import '@kiralygyula92/react-pdf-viewer/styles.css';
+} from '@kingtech/react-pdf-viewer';
+import '@kingtech/react-pdf-viewer/styles.css';
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { StrictMode, useRef } from 'react';
 import { createRoot } from 'react-dom/client';

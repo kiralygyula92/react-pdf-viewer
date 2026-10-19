@@ -8,7 +8,7 @@ description: Ship the viewer in several languages with translated labels, locale
 Store viewer labels next to the rest of your app's translations and pick the object for the active language. Define each object once (module scope or memoised), because labels are merged per object identity.
 
 ```tsx
-import type { PdfViewerLabels } from '@kiralygyula92/react-pdf-viewer';
+import type { PdfViewerLabels } from '@kingtech/react-pdf-viewer';
 
 const VIEWER_LABELS: Record<'en' | 'de', Partial<PdfViewerLabels>> = {
   en: {},

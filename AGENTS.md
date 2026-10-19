@@ -7,7 +7,7 @@ Instructions for AI coding agents working in this repository. Claude Code reads 
 
 A pnpm monorepo:
 
-- `packages/react-pdf-viewer`: the published library `@kiralygyula92/react-pdf-viewer`, an
+- `packages/react-pdf-viewer`: the published library `@kingtech/react-pdf-viewer`, an
   accessible, themeable React PDF viewer built on `pdfjs-dist`.
 - `content/react-pdf-viewer`: documentation content (site model, MDX pages, colocated demos,
   generated reference).
@@ -50,8 +50,9 @@ A pnpm monorepo:
   features, `major` for breaking changes.
 - Public API changes: TSDoc on the export, `pnpm ppds:reference`, the capability page in
   `content/react-pdf-viewer`, and a changeset. Keep the package README short: it links to the site.
-- Never publish to npm, push tags or bump versions yourself; releases go through the Release
-  workflow (see [RELEASING.md](RELEASING.md)).
+- Never publish to npm or approve a staged version. Bump versions and push `v*` tags only when the
+  maintainer asks for a release; the Release workflow then stages it on npm (see
+  [RELEASING.md](RELEASING.md)).
 
 ## Documentation
 

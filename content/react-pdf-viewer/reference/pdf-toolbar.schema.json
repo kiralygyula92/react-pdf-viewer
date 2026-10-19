@@ -7,7 +7,7 @@
   ],
   "kind": "component",
   "imports": [
-    "import { PdfToolbar } from '@kiralygyula92/react-pdf-viewer';"
+    "import { PdfToolbar } from '@kingtech/react-pdf-viewer';"
   ],
   "options": {
     "api": {

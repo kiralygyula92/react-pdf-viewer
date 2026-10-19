@@ -1,4 +1,4 @@
-import { PdfToolbar, PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import { PdfToolbar, PdfViewer } from '@kingtech/react-pdf-viewer';
 
 export default function Demo() {
   return (

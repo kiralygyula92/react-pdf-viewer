@@ -11,7 +11,7 @@ PDF.js is imported lazily the first time a document opens, so pages without a vi
 
 ```tsx
 const PdfViewer = lazy(() =>
-  import('@kiralygyula92/react-pdf-viewer').then((module) => ({ default: module.PdfViewer })),
+  import('@kingtech/react-pdf-viewer').then((module) => ({ default: module.PdfViewer })),
 );
 
 <Suspense fallback={<Spinner />}>

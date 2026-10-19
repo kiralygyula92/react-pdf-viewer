@@ -1,4 +1,4 @@
-import { PdfViewer, type PdfJsDocumentOptions } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer, type PdfJsDocumentOptions } from '@kingtech/react-pdf-viewer';
 
 // Per-instance getDocument options: silence PDF.js console warnings for this viewer only.
 const pdfjsOptions: PdfJsDocumentOptions = { verbosity: 0 };

@@ -14,8 +14,8 @@ description: Set up React PDF Viewer in a Vite app with a self-hosted PDF.js wor
 
 ```tsx
 // src/main.tsx
-import { configurePdfJs } from '@kiralygyula92/react-pdf-viewer';
-import '@kiralygyula92/react-pdf-viewer/styles.css';
+import { configurePdfJs } from '@kingtech/react-pdf-viewer';
+import '@kingtech/react-pdf-viewer/styles.css';
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 configurePdfJs({ workerSrc });
@@ -24,7 +24,7 @@ configurePdfJs({ workerSrc });
 **2. Render the viewer** anywhere in your app:
 
 ```tsx
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
 
 export function Report() {
   return <PdfViewer source="/report.pdf" fileName="report.pdf" />;

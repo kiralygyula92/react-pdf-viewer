@@ -1,5 +1,5 @@
 /*
- * @kiralygyula92/react-pdf-viewer styles.
+ * @kingtech/react-pdf-viewer styles.
  *
  * Everything lives in the `rpv` cascade layer, so any unlayered consumer rule wins without
  * specificity fights. Theme with the `--rpv-*` custom properties (see the README); they are read

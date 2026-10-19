@@ -1,4 +1,4 @@
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
 
 const css = `
   .status-aware[data-status='error'] {

@@ -1,4 +1,4 @@
-import { PdfViewer, type PdfViewerLabels } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer, type PdfViewerLabels } from '@kingtech/react-pdf-viewer';
 
 // Defined once at module scope: labels are merged per object identity.
 const hungarian: Partial<PdfViewerLabels> = {

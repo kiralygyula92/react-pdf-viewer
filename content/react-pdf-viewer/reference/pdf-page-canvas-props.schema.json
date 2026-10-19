@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { PdfPageCanvasProps } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { PdfPageCanvasProps } from '@kingtech/react-pdf-viewer';"
   ],
   "options": {
     "document": {

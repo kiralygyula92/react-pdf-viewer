@@ -1,4 +1,4 @@
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
 
 export default function Demo() {
   // Zoom in quickly with the + button: each change cancels the previous render, and the old

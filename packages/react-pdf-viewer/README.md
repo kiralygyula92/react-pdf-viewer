@@ -1,6 +1,6 @@
-# @kiralygyula92/react-pdf-viewer
+# @kingtech/react-pdf-viewer
 
-[![npm](https://img.shields.io/npm/v/@kiralygyula92/react-pdf-viewer)](https://www.npmjs.com/package/@kiralygyula92/react-pdf-viewer)
+[![npm](https://img.shields.io/npm/v/@kingtech/react-pdf-viewer)](https://www.npmjs.com/package/@kingtech/react-pdf-viewer)
 [![CI](https://github.com/kiralygyula92/react-pdf-viewer/actions/workflows/ci.yml/badge.svg)](https://github.com/kiralygyula92/react-pdf-viewer/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
@@ -21,7 +21,7 @@ dependency, SSR-safe and fully typed.
 ## Install
 
 ```sh
-npm install @kiralygyula92/react-pdf-viewer pdfjs-dist
+npm install @kingtech/react-pdf-viewer pdfjs-dist
 ```
 
 Peer dependencies: `react` and `react-dom` 18 or 19, and `pdfjs-dist` 6. See
@@ -31,8 +31,8 @@ for the tested versions and browsers.
 ## Quick start
 
 ```tsx
-import { PdfViewer } from '@kiralygyula92/react-pdf-viewer';
-import '@kiralygyula92/react-pdf-viewer/styles.css';
+import { PdfViewer } from '@kingtech/react-pdf-viewer';
+import '@kingtech/react-pdf-viewer/styles.css';
 
 export function Report() {
   return <PdfViewer source="/files/report.pdf" />;
@@ -43,7 +43,7 @@ Out of the box, PDF.js's worker and assets load from a CDN pinned to your instal
 production, self-host them once at startup (Vite shown):
 
 ```ts
-import { configurePdfJs } from '@kiralygyula92/react-pdf-viewer';
+import { configurePdfJs } from '@kingtech/react-pdf-viewer';
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 configurePdfJs({ workerSrc });

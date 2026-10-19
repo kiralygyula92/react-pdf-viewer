@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Security fixes are released for the latest minor version of `@kiralygyula92/react-pdf-viewer`.
+Security fixes are released for the latest minor version of `@kingtech/react-pdf-viewer`.
 
 ## Reporting a vulnerability
 

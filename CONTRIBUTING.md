@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve `@kiralygyula92/react-pdf-viewer`! Bug reports, docs fixes and pull
+Thanks for helping improve `@kingtech/react-pdf-viewer`! Bug reports, docs fixes and pull
 requests are all welcome.
 
 ## Getting started

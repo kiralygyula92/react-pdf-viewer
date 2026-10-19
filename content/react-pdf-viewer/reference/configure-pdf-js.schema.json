@@ -7,7 +7,7 @@
   ],
   "kind": "function",
   "imports": [
-    "import { configurePdfJs } from '@kiralygyula92/react-pdf-viewer';"
+    "import { configurePdfJs } from '@kingtech/react-pdf-viewer';"
   ],
   "signature": "configurePdfJs(next: PdfJsConfig): void",
   "returns": "void",

@@ -1,4 +1,4 @@
-import { useControllableState } from '@kiralygyula92/react-pdf-viewer';
+import { useControllableState } from '@kingtech/react-pdf-viewer';
 import { useState } from 'react';
 
 interface CounterProps {

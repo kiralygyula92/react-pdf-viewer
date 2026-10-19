@@ -7,7 +7,7 @@
   ],
   "kind": "hook",
   "imports": [
-    "import { useControllableState } from '@kiralygyula92/react-pdf-viewer';"
+    "import { useControllableState } from '@kingtech/react-pdf-viewer';"
   ],
   "signature": "useControllableState(options: UseControllableStateOptions<T>): readonly [T, SetControllableState<T>]",
   "returns": "readonly [T, SetControllableState<T>]",

@@ -7,7 +7,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { UseControllableStateOptions } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { UseControllableStateOptions } from '@kingtech/react-pdf-viewer';"
   ],
   "options": {
     "value": {

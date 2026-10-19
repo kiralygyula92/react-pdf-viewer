@@ -22,7 +22,7 @@
   ],
   "kind": "type",
   "imports": [
-    "import type { PdfViewerProps } from '@kiralygyula92/react-pdf-viewer';"
+    "import type { PdfViewerProps } from '@kingtech/react-pdf-viewer';"
   ],
   "options": {
     "source": {

@@ -12,13 +12,20 @@ concurrency:
 permissions:
   contents: read
 
+# Only GitHub-made actions may run in this repository, so pnpm (the version in package.json's
+# `packageManager`) is installed with the runner's npm rather than with pnpm/action-setup.
+# The `build` job id is the status check the main branch ruleset requires: keep it, and give the
+# job no `name`, or the check reports under the new name and pull requests wait forever.
 jobs:
-  ci:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
-      - uses: pnpm/action-setup@v6
+      - name: Install pnpm
+        run: npm install -g "$(node -p "require('./package.json').packageManager")"
 
       - uses: actions/setup-node@v7
         with:
@@ -72,12 +79,15 @@ jobs:
           retention-days: 7
 
   react18:
-    # The peer range is react >= 18: run the unit suite against React 18 too (19 runs in `ci`).
+    # The peer range is react >= 18: run the unit suite against React 18 too (19 runs in `build`).
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
-      - uses: pnpm/action-setup@v6
+      - name: Install pnpm
+        run: npm install -g "$(node -p "require('./package.json').packageManager")"
 
       - uses: actions/setup-node@v7
         with:
@@ -87,21 +97,24 @@ jobs:
       - name: Install with React 18
         run: |
           pnpm install --frozen-lockfile
-          pnpm --filter @kiralygyula92/react-pdf-viewer add -D react@^18.3.1 react-dom@^18.3.1 @types/react@^18.3.31 @types/react-dom@^18.3.7
+          pnpm --filter @kingtech/react-pdf-viewer add -D react@^18.3.1 react-dom@^18.3.1 @types/react@^18.3.31 @types/react-dom@^18.3.7
 
       - name: Typecheck
-        run: pnpm --filter @kiralygyula92/react-pdf-viewer typecheck
+        run: pnpm --filter @kingtech/react-pdf-viewer typecheck
 
       - name: Unit tests
-        run: pnpm --filter @kiralygyula92/react-pdf-viewer test
+        run: pnpm --filter @kingtech/react-pdf-viewer test
 
   consumer-smoke:
     # Installs the packed tarball into fresh Vite and Next.js (App Router, SSR) apps.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
-      - uses: pnpm/action-setup@v6
+      - name: Install pnpm
+        run: npm install -g "$(node -p "require('./package.json').packageManager")"
 
       - uses: actions/setup-node@v7
         with:
@@ -112,7 +125,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build library
-        run: pnpm --filter @kiralygyula92/react-pdf-viewer build
+        run: pnpm --filter @kingtech/react-pdf-viewer build
 
       - name: Consumer smoke tests
         run: pnpm smoke
@@ -127,8 +140,11 @@ jobs:
       VISUAL: '1'
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
-      - uses: pnpm/action-setup@v6
+      - name: Install pnpm
+        run: npm install -g "$(node -p "require('./package.json').packageManager")"
 
       - name: Install
         run: pnpm install --frozen-lockfile
