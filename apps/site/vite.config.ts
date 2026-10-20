@@ -1,14 +1,15 @@
 import mdx from '@mdx-js/rollup';
 import rehypeShiki from '@shikijs/rehype';
 import react from '@vitejs/plugin-react';
+import { cpSync, createReadStream, statSync } from 'node:fs';
+import { join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import rehypeSlug from 'rehype-slug';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import remarkSmartypants from 'remark-smartypants';
-import { defineConfig } from 'vite';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { defineConfig, type Plugin } from 'vite';
 import { rehypeHeadings } from './src/mdx/headings.ts';
 import { shikiOptions } from './src/mdx/shiki.ts';
 import { SITE_ORIGIN } from './src/origin.ts';
@@ -19,8 +20,43 @@ const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
 // under /_vercel/. Compile them in only for builds that run there (or with ANALYTICS=1 to test).
 const analytics = Boolean(process.env['VERCEL'] ?? process.env['ANALYTICS']);
 
-// PDF.js assets are self-hosted: the recommended production setup (see src/pdfjs.ts).
+// PDF.js assets are self-hosted: the recommended production setup (see src/pdfjs.ts). Each
+// directory is served at /pdfjs/<dir>/ by the dev server and copied there by the client build.
 const PDFJS_ASSET_DIRS = ['cmaps', 'standard_fonts', 'wasm', 'iccs'];
+const pdfjsDist = fileURLToPath(new URL('./node_modules/pdfjs-dist/', import.meta.url));
+
+function pdfjsAssets(): Plugin {
+  let outDir: string | undefined;
+  return {
+    name: 'pdfjs-assets',
+    configResolved(config) {
+      // The prerender's SSR build needs no assets.
+      outDir = config.build.ssr ? undefined : resolve(config.root, config.build.outDir);
+    },
+    configureServer(server) {
+      server.middlewares.use('/pdfjs/', (req, res, next) => {
+        const [dir = '', ...rest] = decodeURIComponent((req.url ?? '').split('?')[0] ?? '')
+          .replace(/^\/+/, '')
+          .split('/');
+        const root = join(pdfjsDist, dir);
+        const file = resolve(root, ...rest);
+        if (!PDFJS_ASSET_DIRS.includes(dir) || !file.startsWith(root + sep)) return next();
+        if (!statSync(file, { throwIfNoEntry: false })?.isFile()) return next();
+        res.setHeader(
+          'Content-Type',
+          file.endsWith('.wasm') ? 'application/wasm' : 'application/octet-stream',
+        );
+        createReadStream(file).pipe(res);
+      });
+    },
+    writeBundle() {
+      if (!outDir) return;
+      for (const dir of PDFJS_ASSET_DIRS) {
+        cpSync(join(pdfjsDist, dir), join(outDir, 'pdfjs', dir), { recursive: true });
+      }
+    },
+  };
+}
 
 export default defineConfig({
   define: { __VERCEL_ANALYTICS__: JSON.stringify(analytics) },
@@ -47,12 +83,7 @@ export default defineConfig({
       }),
     },
     react({ include: /\.(mdx|jsx|tsx)$/ }),
-    viteStaticCopy({
-      targets: PDFJS_ASSET_DIRS.map((dir) => ({
-        src: `node_modules/pdfjs-dist/${dir}`,
-        dest: 'pdfjs',
-      })),
-    }),
+    pdfjsAssets(),
   ],
   build: {
     manifest: true,

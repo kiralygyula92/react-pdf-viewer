@@ -11,7 +11,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/../../.."
 ROOT="$(pwd -W 2>/dev/null || pwd)"
-IMAGE="mcr.microsoft.com/playwright:v1.63.0-noble"
+IMAGE="mcr.microsoft.com/playwright:v1.64.1-noble"
 ARGS="$*"
 UPDATE=""
 [[ " $ARGS " == *" --update-snapshots "* ]] && UPDATE="--update-snapshots"
