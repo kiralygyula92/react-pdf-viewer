@@ -21,7 +21,7 @@
     "@vercel/speed-insights": "^2.0.0",
     "pdfjs-dist": "^6.4.299",
     "ppds-kit": "workspace:*",
-    "react": "^19.3.0",
+    "react": "^19.3.1",
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
