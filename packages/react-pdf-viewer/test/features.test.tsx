@@ -112,8 +112,12 @@ describe('opt-in features', () => {
     const { user } = await renderViewer({ zoomReset: true, zoomLevels: [0.5, 1, 2, 4] });
     await user.click(within(toolbar()).getByRole('button', { name: 'Zoom in' }));
     expect(zoomText()).toBe('200%');
-    await user.click(within(toolbar()).getByRole('button', { name: 'Reset zoom (200%)' }));
+    // Label in Name: the accessible name starts with the visible zoom level.
+    const reset = within(toolbar()).getByRole('button', { name: '200%, Reset zoom' });
+    expect(reset).toHaveTextContent('200%');
+    await user.click(reset);
     expect(zoomText()).toBe('100%');
+    expect(within(toolbar()).getByRole('button', { name: '100%, Reset zoom' })).toBeInTheDocument();
     await user.click(within(toolbar()).getByRole('button', { name: 'Zoom out' }));
     expect(zoomText()).toBe('50%');
   });

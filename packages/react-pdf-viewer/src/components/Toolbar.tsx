@@ -312,7 +312,9 @@ function PdfToolbarImpl({
           key={action}
           type="button"
           className="rpv-toolbar__label rpv-toolbar__zoom rpv-zoom-reset"
-          aria-label={`${labels.resetZoom} (${zoomText})`}
+          // The name starts with the visible text (WCAG 2.5.3 Label in Name), so speech input can
+          // target the button by what it shows.
+          aria-label={`${zoomText}, ${labels.resetZoom}`}
           title={labels.resetZoom}
           data-action={action}
           tabIndex={action === tabStop ? 0 : -1}
