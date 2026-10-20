@@ -134,7 +134,7 @@ jobs:
     # Same image that renders the committed baselines (apps/site/scripts/visual.sh).
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
       options: --ipc=host
     env:
       VISUAL: '1'
