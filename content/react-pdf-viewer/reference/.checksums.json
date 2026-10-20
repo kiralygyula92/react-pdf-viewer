@@ -17,7 +17,7 @@
   "pdf-request-options.schema.json": "4b9c42c6701d9ba41b2cf29ac9bfeb7a3da38e2743d71e39bf497db471b193cb",
   "pdf-source.schema.json": "c4d4bfa29ad07f94d04732567341ab7b17834080dbcd2a65390d636a62bf2e89",
   "pdf-toolbar-props.schema.json": "4cd2dbd149534ba9bf199bc0de28942faf5ca0186f0b5e70e485e63d4c6c17dd",
-  "pdf-toolbar.schema.json": "ef9fe304c409687fadafce9e38a7bedb7d991a624dcec6f2959370a2399dd563",
+  "pdf-toolbar.schema.json": "ddf02a1b6f4bca81501500d9e27ead6f16846bf34721330b51967742fc9d6930",
   "pdf-viewer-api.schema.json": "ee8b0d367ed236055d7e9ddea190595e50da4b04fb418159085b3736d6d19f8e",
   "pdf-viewer-error-code.schema.json": "268028445c7defb32ff999a22e981f3ee63557871b80a126b3e415694c10b519",
   "pdf-viewer-error.schema.json": "09ade9104288bb9f6aa7518abc915879771541f59a2ab982e9dd23d8f878c535",

@@ -1,7 +1,7 @@
 {
   "name": "PdfToolbar",
   "filename": "packages/react-pdf-viewer/src/components/Toolbar.tsx",
-  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/components/Toolbar.tsx#L412",
+  "sourceUrl": "https://github.com/kiralygyula92/react-pdf-viewer/blob/main/packages/react-pdf-viewer/src/components/Toolbar.tsx#L414",
   "usedBy": [
     "/react-pdf-viewer/custom-toolbar/"
   ],
