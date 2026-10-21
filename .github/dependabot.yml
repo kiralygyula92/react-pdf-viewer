@@ -5,6 +5,10 @@ updates:
     schedule:
       interval: weekly
     groups:
+      # React refuses to run when react and react-dom differ by even a patch version, so they are
+      # always bumped together. A dependency joins the first group it matches, so this one is first.
+      react:
+        patterns: ['react', 'react-dom']
       dev-dependencies:
         dependency-type: development
     open-pull-requests-limit: 5
