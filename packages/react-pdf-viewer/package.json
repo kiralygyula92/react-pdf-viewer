@@ -1,6 +1,6 @@
 {
   "name": "@kingtech/react-pdf-viewer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Accessible, themeable React PDF viewer built on PDF.js: zoom, rotation, fullscreen, search, thumbnails, download and print, with no UI-kit dependency.",
   "keywords": [
     "react",

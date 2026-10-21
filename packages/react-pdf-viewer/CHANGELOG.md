@@ -1,5 +1,11 @@
 # @kingtech/react-pdf-viewer
 
+## 1.0.3
+
+### Patch Changes
+
+- Built and tested against React 19.3.1. The library's code and API are unchanged.
+
 ## 1.0.2
 
 ### Patch Changes
