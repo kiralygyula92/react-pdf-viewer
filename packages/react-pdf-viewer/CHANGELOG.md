@@ -1,5 +1,13 @@
 # @kingtech/react-pdf-viewer
 
+## 1.0.4
+
+### Patch Changes
+
+- Security updates to the build and documentation tooling (launch-editor, markdown-it). The package
+  has no runtime dependencies, so installs were never affected, and the library's code and API are
+  unchanged.
+
 ## 1.0.3
 
 ### Patch Changes
