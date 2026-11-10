@@ -19,7 +19,7 @@
     "@stackblitz/sdk": "^1.11.1",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "pdfjs-dist": "^6.4.299",
+    "pdfjs-dist": "^6.5.438",
     "ppds-kit": "workspace:*",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
